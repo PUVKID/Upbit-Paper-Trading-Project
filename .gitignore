@@ -1,0 +1,25 @@
+# 인증 정보와 원본 데이터는 커밋하지 않습니다.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+__pycache__/
+.venv/
+venv/
+node_modules/
+.ipynb_checkpoints/
+*.pt
+*.pth
+*.keras
+*.h5
+*.onnx
+*.safetensors
+*.parquet
+*.sqlite*
+*.db
+*.apk
+*.exe
+*.dll
+*.zip
+*.tar
