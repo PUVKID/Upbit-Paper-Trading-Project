@@ -1,8 +1,12 @@
 <div align="center">
 
-# Upbit-Paper-Trading-Project
+# 업비트 5종목 모의투자 연구
 
-## 📈 업비트 5종목 모의투자 연구
+**Upbit-Paper-Trading-Project**
+
+**기술 분류:** 시계열 머신러닝 › 트리 앙상블 › XGBoost·확률 보정·모의체결
+
+
 
 ### 공개 시세 · XGBoost · 현물 모의체결 · 대시보드
 
@@ -16,7 +20,33 @@
 
 [빠른 시작](#quick-start) · [저장소 구성](#repository-structure) · [실험 설정](#data-settings)
 
+[예시 이미지](#preview)
+
 </div>
+
+<a name="preview"></a>
+
+## 🖼️ 예시로 보기
+
+<p align="center"><img src="assets/previews/code-explainer.png" width="900" alt="코드 기반 설명도 · Upbit-Paper-Trading-Project" /></p>
+
+**코드 기반 설명도** — `sweep_book()`의 호가 단계별 체결량·평균가·미체결량 계산 흐름입니다. 실거래 화면이나 수익 측정 결과가 아닙니다.
+
+[근거 파일 보기](engine.py)
+
+
+
+<a name="input-processing-output"></a>
+
+## 🔄 입력·처리·출력
+
+| 단계 | 이 프로젝트에서 다루는 내용 |
+| :--- | :--- |
+| 입력 | 공개 캔들·호가 |
+| 처리 | 시계열 특성·구간 분리, XGBoost·보정·모델 선택 |
+| 출력 | 모의계좌·평가·대시보드 |
+
+
 
 ---
 
