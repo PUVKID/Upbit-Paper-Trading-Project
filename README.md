@@ -1,58 +1,131 @@
-# Upbit 5-Coin Project
+<div align="center">
 
-![자료](https://img.shields.io/badge/연구·개발-코드%20아카이브-176B87) ![공개범위](https://img.shields.io/badge/데이터·모델-미포함-64748B)
+# 📈 업비트 5종목 모의투자 연구
 
-2026년 연구·개발 과정의 공개 가능한 코드와 실험 설정을 차수별로 보존한 저장소입니다. 원본 작업 자료는 수정하지 않고 공개용 사본을 구성했습니다.
+### 공개 시세 · XGBoost · 현물 모의체결 · 대시보드
 
-## 기술과 구성
+공개 캔들과 호가를 수집하고, 학습한 모델을 별도의 모의계좌에서 관찰합니다.<br>
+수집·연구·모의체결·운영 상태를 연결한 데이터 분석 시스템입니다.
 
-확인한 기술: **Python, Jupyter, JavaScript, HTML, PowerShell**.
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![XGBoost](https://img.shields.io/badge/ML-XGBoost-2563EB?style=flat-square)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
+![Paper](https://img.shields.io/badge/Trading-Paper_Only-15803D?style=flat-square)
 
-- `dashboard.py`
-- `engine.py`
-- `execution_probe.py`
-- `healthcheck.py`
-- `package.json`
-- `pnpm-lock.yaml`
-- `pnpm-workspace.yaml`
-- `requirements.txt`
-- `supervisor.py`
-- `tests`
-- `tools`
-- `upbit_auto_trader_v5.ipynb`
-- `web`
-- `보존자료`
-- `운영.ps1`
-- `원본_README.md`
+[빠른 시작](#quick-start) · [저장소 구성](#repository-structure) · [실험 설정](#data-settings)
 
-## 차수별 변경
+</div>
 
-| 차수·위치 | 파일 | 추가 | 변경 | 이전에만 존재 |
-|---|---:|---:|---:|---:|
-| `기본` | 32 | 32 | 0 | 0 |
+---
 
-자세한 비교 기준은 [버전 기록](docs/VERSIONS.md), 업로드 준비 내역은 [변경 기록](CHANGELOG.md)에 있습니다. 추가·변경·삭제 수는 같은 상위 묶음의 차수별 상대경로와 업로드 파일 SHA-256을 비교한 값입니다. 과거 개발 날짜나 동작 변경을 추정한 기록이 아닙니다.
+<a name="introduction"></a>
 
-## 재현하기
+## ✨ 프로젝트 소개
 
-1. 필요한 차수의 원본 README와 의존성 파일을 먼저 확인합니다.
-2. 별도 환경에서 해당 차수의 의존성을 설치합니다.
-3. 데이터셋·모델·인증 정보는 각자의 허가된 자료와 환경변수로 준비합니다.
+BTC·SOL·ETH·XRP·DOGE의 공개 시세를 사용해 데이터 수집, GPU 학습, 시점별 평가와 모의체결을 수행하는 연구 코드입니다. `engine.py`는 `PAPER_ONLY = True`로 구성되며 실계좌 주문과 연구 결과를 구분합니다.
 
-일부 코드는 과거 D 드라이브나 Docker 작업 경로를 참조합니다. 저장소는 코드 보관본이며 모든 실험·앱의 설치, 학습, 실행 성공을 확인한 배포본이 아닙니다.
+| 기능 | 구현 내용 |
+| :--- | :--- |
+| 시세 수집 | 완료된 캔들 수집과 과거 이력 탐색 |
+| 모델 연구 | XGBoost 학습·후보 비교·평가 구간 관리 |
+| 모의체결 | 공개 호가 잔량·수수료·슬리피지를 반영한 현물 모의계좌 |
+| 상태 화면 | 수집·모델·계좌·진단 결과 표시 |
+| 운영 감독 | 프로젝트 프로세스와 작업 상태 관리 |
+| 진단 | 데이터 무결성, 계좌 조건, 별도 체결 경로 확인 |
 
-## 공개 범위와 검증 한계
+```mermaid
+flowchart LR
+    A[공개 캔들과 호가] --> B[SQLite 저장]
+    B --> C[특성 계산과 학습]
+    C --> D[후보 평가와 모델 선택]
+    D --> E[모의계좌]
+    A --> E
+    B --> F[대시보드]
+    D --> F
+    E --> F
+    G[별도 체결 진단] --> F
+```
 
-- 노트북의 실행 결과, 실행 횟수, 위젯·셀 메타데이터와 첨부 이미지를 제거했습니다.
-- 원데이터, 의료·개인 자료, 학습 가중치, 실행 파일, 캐시와 외부 SDK를 제외했습니다.
-- 비밀키·개인정보 탐지 또는 공개 권리가 불명확한 파일 8개는 업로드하지 않았습니다. 탐지 값과 개인 기록은 저장소에 싣지 않았습니다.
-- 포함 파일의 해시와 사본 변환을 기록했습니다. 코드 전체의 기능·보안·재현성을 보증하지 않습니다.
-- GitHub Actions 원본이 포함되면 `_github-workflows-reference`에 참고용으로 보관하며 자동 실행하지 않습니다.
+<a name="repository-structure"></a>
 
-## 라이선스
+## 📁 저장소 구성
 
-기존 LICENSE·NOTICE 파일과 개별 저작권 표시를 유지합니다. 새 라이선스를 임의로 부여하지 않았습니다. 라이선스 표시가 없는 코드의 이용 조건과 외부 의존성의 조건은 별도로 확인해 주세요.
+```text
+.
+├── engine.py
+├── dashboard.py
+├── supervisor.py
+├── execution_probe.py
+├── healthcheck.py
+├── 운영.ps1
+├── requirements.txt
+├── tools/
+├── tests/
+├── web/
+├── upbit_auto_trader_v5.ipynb
+└── docs/VERSIONS.md
+```
 
-## 추가 사본 검증
+- [연구·모의투자 엔진](engine.py), [대시보드](dashboard.py), [감독 프로세스](supervisor.py).
+- [체결 진단](execution_probe.py)과 [운영 상태 검사](healthcheck.py).
+- [검사 코드](tests/)와 [버전 기록](docs/VERSIONS.md).
 
-외부 작업으로 바뀐 웹 파일 두 개는 원본을 두 번 안정적으로 읽어 현재 내용과 SHA-256을 확인한 사본입니다. 원본 기능을 수정하거나 앱 전체를 실행하지 않았습니다.
+<a name="implementation"></a>
+
+## 🧩 주요 기술과 실행 경계
+
+NumPy·pandas로 데이터를 구성하고 XGBoost를 학습합니다. 운영 데이터는 SQLite와 JSON으로 기록합니다. `collector`, `trainer`, `paper`, `experiment`, `check-gpu`가 엔진의 명령 진입점입니다.
+
+`execution_probe.py`는 별도 계좌에서 매수·매도 경로를 검사합니다. 이 결과를 전략 계좌의 거래나 수익과 합치지 않습니다. `healthcheck.py`는 계좌·데이터·장치 근거의 조건을 확인하며, 그 통과가 투자 성능을 의미하지 않습니다.
+
+<a name="quick-start"></a>
+
+## 🚀 빠른 시작
+
+소스 확인용 Python 환경을 준비하고 명령 구성을 확인합니다.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements.txt
+.\.venv\Scripts\python engine.py --help
+```
+
+실제 운영에는 자신에게 맞는 `engine-config.json`, `service.json`, 실행 경로와 데이터 저장 환경이 필요합니다. 두 설정 파일과 운영 DB·모델·계좌 장부는 이 공개 사본에 포함되어 있지 않습니다.
+
+기존 `운영.ps1`과 Docker 제어 도구는 원래 프로젝트 경로·컨테이너·마운트를 검사합니다. 다른 컴퓨터에서 그대로 실행 가능한 설치 프로그램으로 취급하지 말고 설정과 경로 계약을 먼저 읽으세요. 활성 SQLite를 Windows와 Linux에서 동시에 열지 않도록 실행 환경을 일관되게 유지해야 합니다.
+
+<a name="data-settings"></a>
+
+## 📊 데이터 구성과 실험 설정
+
+| 항목 | 코드의 구성 |
+| :--- | :--- |
+| 종목 | KRW-BTC, KRW-SOL, KRW-ETH, KRW-XRP, KRW-DOGE |
+| 시간봉 | 1·3·5·10·15·30·60·240분과 일봉 |
+| 기본봉 | 5분 |
+| 기본 의존성 | NumPy, pandas, XGBoost 3.0.5 |
+| 수집 자료 | 공개 캔들·호가 |
+| 저장 자료 | 캔들 DB, 모델 명세, 실험 결과, 모의계좌 기록 |
+
+시간순 학습·평가 구간과 잠금 시험 구간을 구분해야 합니다. 정확도만 보지 않고 클래스 분포·다수 클래스 기준·Macro F1·Balanced accuracy·비용 반영 모의손익을 함께 검토하는 구조입니다. 수익률과 거래 횟수는 실제 결과 파일 없이 미리 제시하지 않습니다.
+
+<a name="troubleshooting"></a>
+
+## 🛠️ 문제 해결
+
+| 증상 | 확인할 내용 |
+| :--- | :--- |
+| 설정 파일 오류 | 공개 사본에 없는 실행 설정을 준비했는지 확인 |
+| Docker 경로 검사가 실패함 | 기존 컨테이너 이름·마운트·프로젝트 경로 계약 |
+| SQLite 오류 | 동일 환경의 단일 소유 원칙과 DB/WAL 일관성 |
+| GPU 학습을 시작하지 못함 | XGBoost·GPU 드라이버와 장치 확인 결과 |
+| 거래가 발생하지 않음 | 모델 준비·신호·비용·진입 조건·진단 기록 |
+| 체결 진단 수익이 다름 | 별도 진단 계좌와 전략 계좌의 결과를 구분 |
+
+---
+
+<div align="center">
+
+**데이터와 모델, 모의체결의 근거를 따로 기록합니다.**
+
+</div>
