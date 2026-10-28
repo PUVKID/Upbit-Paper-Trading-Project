@@ -1,17 +1,10 @@
 <div align="center">
 
-# 🪙 업비트 5종목 모의투자 연구
+# 🪙 Upbit Paper Trading Project
 
-**Upbit-Paper-Trading-Project**
+XGBoost 예측과 모의체결·대시보드를 연결한 가상자산 모의투자 도구입니다.
 
 **기술 분류:** 시계열 머신러닝 › 트리 앙상블 › XGBoost·확률 보정·모의체결
-
-
-
-### ✨ 공개 시세 · XGBoost · 현물 모의체결 · 대시보드
-
-공개 캔들과 호가를 수집하고, 학습한 모델을 별도의 모의계좌에서 관찰합니다.<br>
-수집·연구·모의체결·운영 상태를 연결한 데이터 분석 시스템입니다.
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![XGBoost](https://img.shields.io/badge/ML-XGBoost-2563EB?style=flat-square)
@@ -23,6 +16,25 @@
 [예시 이미지](#preview)
 
 </div>
+
+<a name="overview"></a>
+
+## 🗺️ 한눈에 보는 구성
+
+<p align="center"><img src="assets/overview.png" width="960" alt="프로젝트의 입력·처리·출력을 정리한 설명도" /></p>
+보관한 프로젝트 자료의 흐름을 정리한 설명도입니다.
+
+## ✨ 최신 차수에서 달라진 점
+
+시세 수집·연구 결과와 호가 기반 모의체결을 연결하는 코드 묶음입니다.
+
+공개 코드의 모의계좌와 실제 주문은 구분합니다. 숫자 차수나 사용자 최종 확정은 확인되지 않습니다.
+
+- 엔진의 PAPER_ONLY 설정과 모의계좌 흐름을 먼저 확인합니다. 이 코드의 기록을 실제 주문·수익으로 해석하지 않습니다.
+- 엔진의 함수 단위로 시세 처리와 모의 거래 상태 갱신을 추적할 수 있습니다. 연구 모델과 화면은 별도 구성요소입니다.
+
+**자료별 안내:** [기본](docs/versions/stage-1.md) · [전체 기록](docs/VERSIONS.md)
+
 
 <a name="preview"></a>
 
