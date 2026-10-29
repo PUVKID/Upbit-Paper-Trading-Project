@@ -41,6 +41,11 @@ class ResearchTests(unittest.TestCase):
             raw["open"] = raw["close"] = price
             raw["high"], raw["low"] = price + 100, price - 100
             features = engine.build_features({5: raw})
+            actual_utc = engine.utc
+
+            def fixture_clock(value=None):
+                return actual_utc("2026-10-24T00:00:00Z" if value is None else value)
+
             fitted = []
             policies = []
 
@@ -59,7 +64,8 @@ class ResearchTests(unittest.TestCase):
             # 적합/예측만 통제하며 기간 분할·감사·진단·승격·원자적 보고서는 실제 코드로 실행합니다.
             with patch.object(engine, "ROOT", root), patch("engine.CandleStore"), \
                  patch("engine.load_market_features", return_value=features), patch("engine.fit_gpu", side_effect=fit), \
-                 patch("engine.predict_booster", side_effect=predict), patch("engine.tune_rule", side_effect=policy):
+                 patch("engine.predict_booster", side_effect=predict), patch("engine.tune_rule", side_effect=policy), \
+                 patch("engine.utc", side_effect=fixture_clock):
                 report = engine.train_cycle(config, live=True)
             self.assertEqual(len(fitted), len(engine.MARKETS))
             self.assertEqual(len(policies), len(engine.MARKETS))

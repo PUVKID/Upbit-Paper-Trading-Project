@@ -34,10 +34,11 @@ function table(id, items, render, columns, label = '저장된 기록 대기') {
 }
 function details(id, entries) {
   const fragment = document.createDocumentFragment();
-  for (const [label, value] of entries) {
+  for (const [label, value, id] of entries) {
     const group = document.createElement('div');
     const term = document.createElement('dt');
     const description = document.createElement('dd');
+    if (id) description.id = id;
     term.textContent = label;
     description.textContent = text(value);
     group.append(term, description);
@@ -221,16 +222,69 @@ function render() {
   const gpuFits = marketEntries.flatMap(([, report]) => report.gpu || []);
   const states = {running: '진행 중', complete: '완료', failed: '오류', error: '오류'};
   const stages = {features: '피처 구성', fit: '후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '완료'};
+  const stepIndex = t.state === 'running' ? ({features: 0, fit: 1, calibration: 2, locked_test: 2, complete: 3})[t.stage] : undefined;
+  const stepNames = ['데이터 준비', '모델 학습', '평가', '적용 검토'];
+  [...$('workflow-steps').children].forEach((item, index) => {
+    item.classList.toggle('current', index === stepIndex);
+    if (index === stepIndex) item.setAttribute('aria-current', 'step');
+    else item.removeAttribute('aria-current');
+  });
+  set('workflow-status', stepIndex === undefined ? `현재 단계: ${states[t.state] || '기록 대기'}` : `현재 단계: ${stepNames[stepIndex]} · ${stages[t.stage]}`);
+  set('workflow-title', t.state === 'running' ? '가격의 흐름을 배우고 있어요' : t.state === 'complete' ? '이번 학습을 마쳤어요' : ['failed', 'error'].includes(t.state) ? '학습 상태를 확인하고 있어요' : '가격의 흐름을 배우는 과정');
+  details('learning-strip', [
+    ['현재 단계', stepIndex === undefined ? (states[t.state] || '기록 대기') : stepNames[stepIndex]],
+    ['완료 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],
+    ['학습 회차', number(s.services?.trainer?.iteration)],
+    ['GPU 모델 · 장치 전체', gpu.gpu_name || '미기록'],
+    ['학습 자료 · 최근 집계', numeric(t.rows) ? `${number(t.rows)}개` : '미집계'],
+    ['학습 항목 · 최근 집계', numeric(t.features) ? `${number(t.features)}개` : '미집계']
+  ]);
+  const stripIcons = ['timer', 'check', 'refresh-cw', 'cpu', 'receipt-text', 'database'];
+  [...$('learning-strip').children].forEach((item, index) => {
+    const icon = document.createElement('i');
+    icon.dataset.lucide = stripIcons[index];
+    item.prepend(icon);
+  });
+  const currentEntries = [
+    ['현재 코인', coinNames[t.market?.replace('KRW-', '')] || text(t.market)],
+    ['현재 상태 · 단계', `${states[t.state] || text(t.state)} · ${stages[t.stage] || text(t.stage)}`],
+    ['완료 후보 / 전체 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],
+    ['현재 후보', text(t.candidate)], ['실시간 진행 시작', date(t.progress_started_utc)],
+    ['현재 진행 경과', numeric(t.elapsed_seconds) ? `${number(t.elapsed_seconds, 1)}초` : '대기'],
+    ['모델 반복 진행', numeric(t.current_round) || numeric(t.target_rounds) ? `${numeric(t.current_round) ? number(t.current_round) : '미기록'} / ${numeric(t.target_rounds) ? number(t.target_rounds) : '미기록'}회` : '미기록'],
+    ['데이터 · 최근 집계', numeric(t.rows) ? `${number(t.rows)}개` : '대기'],
+    ['특징 · 최근 집계', numeric(t.features) ? `${number(t.features)}개` : '대기'],
+    ['기본 시간봉', numeric(t.timeframe) ? `${number(t.timeframe)}분` : text(t.timeframe)],
+    ['GPU 사용률 · 장치 전체', numeric(gpu.gpu_utilization_pct) ? `${number(gpu.gpu_utilization_pct)}%` : '대기']
+  ];
+  if (numeric(t.learning_rate)) currentEntries.push(['학습률 · eta', `${number(t.learning_rate, 5)} · 한 번에 반영하는 정도`]);
+  details('current-learning', currentEntries);
+  const research = s.research || {};
+  details('recent-experiment-summary', [
+    ['예측 대상', numeric(research.horizon_minutes) ? `다음 ${number(research.horizon_minutes)}분의 가격 움직임` : '예측 기간 미기록'],
+    ['실험 방식', '다양한 조건으로 순환 실험'],
+    ['관측 항목', '정확도 · 정밀도 · 재현율 · F1 점수 · 혼동 행렬'],
+    ['평가 결과', numeric(s.validation?.accuracy) ? `후속 평가 정확도 ${percent(s.validation.accuracy)} · ${research.promoted === true ? '운용 적용' : research.promoted === false ? '운용 미적용' : '적용 여부 미기록'}` : '평가 결과 미기록']
+  ]);
+  details('recent-experiment', [
+    ['실험 내용', numeric(research.horizon_minutes) ? `${number(research.horizon_minutes)}분 후 가격 방향 분류` : '예측 기간 미기록'],
+    ['표본 가중 방식', research.class_weight_mode === 'bounded_inverse_sqrt' ? '분류별 표본 불균형을 고려한 가중치' : research.class_weight_mode === 'recency' ? '최근 표본에 비중을 둔 가중치' : '미기록'],
+    ['예측 기간', numeric(research.horizon_minutes) ? `${number(research.horizon_minutes)}분` : '미기록', 'recent-experiment-horizon'],
+    ['라벨 기준', numeric(research.label_threshold) ? `변화율 ${percent(research.label_threshold)} 기준` : '미기록', 'recent-experiment-threshold'],
+    ['분류', '하락 · 관망 · 상승'],
+    ['평가 정확도', numeric(s.validation?.accuracy) ? percent(s.validation.accuracy) : '미기록'],
+    ['적용 여부', research.promoted === true ? '승격됨' : research.promoted === false ? '운용에 적용하지 않음' : '미기록', 'recent-experiment-promotion']
+  ]);
   details('training-details', [
     ['현재 진행 상태', states[t.state] || text(t.state)], ['현재 단계', stages[t.stage] || text(t.stage)],
     ['현재 처리 시장', text(t.market)], ['시장 내 후보 번호', text(t.candidate)],
     ['전체 완료 후보 / 전체 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`], ['기본 시간봉', numeric(t.timeframe) ? `${number(t.timeframe)}분` : text(t.timeframe)],
     ['GPU · 장치 전체', text(gpu.gpu_name)], ['GPU 메모리 · 장치 전체', `${number(gpu.gpu_memory_used_mb)} / ${number(gpu.gpu_memory_total_mb)} MiB`],
     ['GPU 사용률 · 장치 전체', numeric(gpu.gpu_utilization_pct) ? `${number(gpu.gpu_utilization_pct)}%` : '대기'], ['GPU 관측', `${text(gpu.state)} · ${date(gpu.checked_utc)}`],
-    ['진행 상태 갱신', date(t.updated_utc)], ['학습 후보 실제 시작', date(t.started_utc)],
-    ['학습 후보 실제 완료', t.finished_utc ? date(t.finished_utc) : '완료 시각 미기록'],
-    ['학습 후보 총 소요', numeric(t.duration_seconds) ? `${number(t.duration_seconds, 2)}초` : '대기'],
-    ['보고서 기록 시각', date(t.recorded_utc)], ['현재 진행 시작', date(t.progress_started_utc)],
+    ['진행 상태 갱신', date(t.updated_utc)], ['직전 완료 모델 실제 시작', date(t.started_utc)],
+    ['직전 완료 모델 실제 완료', t.finished_utc ? date(t.finished_utc) : '완료 시각 미기록'],
+    ['직전 완료 모델 총 소요', numeric(t.duration_seconds) ? `${number(t.duration_seconds, 2)}초` : '대기'],
+    ['보고서 기록 시각', date(t.recorded_utc)], ['실시간 진행 시작', date(t.progress_started_utc), 'current-learning-started'],
     ['현재 진행 경과', numeric(t.elapsed_seconds) ? `${number(t.elapsed_seconds, 2)}초` : '대기'],
     ['현재 단계 표본 / 튜닝 표본', `${number(t.rows)} / ${number(t.tune_rows)}`],
     ['특성 수', number(t.features)], ['현재 부스팅 반복 / 최대 반복', `${number(t.current_round)} / ${number(t.target_rounds)}`],
@@ -238,8 +292,9 @@ function render() {
     ['최적화 학습률 · eta', numeric(t.learning_rate) ? number(t.learning_rate, 5) : '미기록'],
     ['실제 학습 데이터 시작', date(starts[0])], ['실제 학습 데이터 종료', date(ends.at(-1))],
     ['실제 학습 표본 수', trainSplits.length ? number(trainSplits.reduce((sum, split) => sum + split.rows, 0)) : '대기'],
-    ['최신 학습 후보', text(t.model_id)], ['현재 운용 모델 · 포인터', text(s.current_model?.run)],
-    ['최근 모의계좌 적용 모델', text(a.model_run)], ['진행 파일 실행 ID', text(t.run)],
+    ['최근 완료 실험 후보', text(research.candidate_id), 'recent-experiment-candidate'],
+    ['직전 완료 모델 ID', text(t.model_id)], ['현재 운용 모델 · 포인터', text(s.current_model?.run)],
+    ['최근 모의계좌 적용 모델', text(a.model_run)], ['진행 실행 ID', text(t.run), 'current-learning-run'],
     ['학습 후보 승격 판단', promotion.promote === true ? '승격 대상' : promotion.promote === false ? '승격하지 않음' : '판단 대기'],
     ['승격 사유', text(promotion.reason)],
     ['승격 비교 기준', promotion.comparison_baseline === 'cash' ? '현금 보유 · 수익률 0' : promotion.probability_comparable === true ? '검증된 운용 모델 · 확률·거래 비교' : '기록 대기'],
@@ -282,6 +337,7 @@ function render() {
   const sources = Object.values(s.sources || {});
   set('source-state', `스냅숏 ${sources.filter(v => v === 'ok').length}개 연결 · ${sources.filter(v => v !== 'ok').length}개 대기/확인 필요`);
   drawCharts();
+  icons();
 }
 function canvas(id) {
   const element = $(id);
@@ -297,6 +353,8 @@ function canvas(id) {
 }
 function drawCharts() {
   if (!snapshot) return;
+  const palette = getComputedStyle(document.documentElement);
+  const color = name => palette.getPropertyValue(name).trim();
   const hours = $('range').value;
   const cutoff = hours === 'all' ? -Infinity : Date.now() - Number(hours) * 3600000;
   const points = (snapshot.equity || []).filter(row => numeric(row.equity) && Number.isFinite(Date.parse(row.timestamp)) && Date.parse(row.timestamp) >= cutoff).sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
@@ -305,7 +363,7 @@ function drawCharts() {
   const chart = canvas('equity-chart');
   if (chart) {
     const {ctx, width: w, height: h} = chart;
-    ctx.strokeStyle = '#e7ece8';
+    ctx.strokeStyle = color('--line');
     for (let i = 0; i < 4; i++) { const y = 20 + i * (h - 50) / 3; ctx.beginPath(); ctx.moveTo(75, y); ctx.lineTo(w - 12, y); ctx.stroke(); }
     if (points.length) {
       const values = points.map(row => row.equity);
@@ -315,11 +373,11 @@ function drawCharts() {
       const start = Date.parse(points[0].timestamp), end = Date.parse(points.at(-1).timestamp);
       const x = row => 75 + (end === start ? .5 : (Date.parse(row.timestamp) - start) / (end - start)) * Math.max(1, w - 90);
       const y = value => 20 + (max - value) / (max - min) * (h - 50);
-      ctx.fillStyle = '#75847b';
+      ctx.fillStyle = color('--muted');
       for (let i = 0; i < 4; i++) ctx.fillText(number(max - i * (max - min) / 3), 0, 24 + i * (h - 50) / 3);
-      ctx.strokeStyle = '#188467'; ctx.lineWidth = 2;
+      ctx.strokeStyle = color('--teal'); ctx.lineWidth = 2;
       ctx.beginPath(); points.forEach((row, i) => i ? ctx.lineTo(x(row), y(row.equity)) : ctx.moveTo(x(row), y(row.equity))); ctx.stroke();
-      if (points.length === 1) { ctx.fillStyle = '#188467'; ctx.beginPath(); ctx.arc(x(points[0]), y(points[0].equity), 4, 0, Math.PI * 2); ctx.fill(); }
+      if (points.length === 1) { ctx.fillStyle = color('--teal'); ctx.beginPath(); ctx.arc(x(points[0]), y(points[0].equity), 4, 0, Math.PI * 2); ctx.fill(); }
     }
   }
   const datasets = (snapshot.datasets || []).filter(row => numeric(row.rows) && ($('data-filter').value === 'all' || row.symbol?.replace('KRW-', '') === $('data-filter').value));
@@ -329,7 +387,7 @@ function drawCharts() {
     const totals = coins.map(symbol => ({symbol, rows: datasets.filter(row => row.symbol?.replace('KRW-', '') === symbol).reduce((sum, row) => sum + row.rows, 0)}));
     const max = Math.max(1, ...totals.map(row => row.rows));
     const {ctx, width: w, height: h} = bars;
-    totals.forEach((row, i) => { const y = 12 + i * (h - 20) / 4; ctx.fillStyle = '#63756a'; ctx.fillText(row.symbol, 0, y + 14); ctx.fillStyle = ['#188467', '#548dac', '#8474a7', '#b29b51'][i]; ctx.fillRect(48, y, (w - 145) * row.rows / max, 20); ctx.fillStyle = '#45594c'; ctx.fillText(number(row.rows), Math.max(50, 56 + (w - 145) * row.rows / max), y + 14); });
+    totals.forEach((row, i) => { const y = 12 + i * (h - 20) / 4; ctx.fillStyle = color('--muted'); ctx.fillText(row.symbol, 0, y + 14); ctx.fillStyle = color(['--teal', '--blue', '--violet', '--gold', '--coral'][i]); ctx.fillRect(48, y, Math.max(0, w - 145) * row.rows / max, 20); ctx.fillStyle = color('--ink'); ctx.fillText(number(row.rows), Math.max(50, 56 + Math.max(0, w - 145) * row.rows / max), y + 14); });
   }
 }
 async function refresh() {
@@ -359,6 +417,7 @@ function openTab(button) {
     tab.setAttribute('aria-selected', String(selected)); tab.tabIndex = selected ? 0 : -1;
     $(tab.dataset.tab).hidden = !selected;
   }
+  set('page-title', {account: '자금 현황', training: 'AI 학습', data: '시장', trades: '거래'}[button.dataset.tab]);
   drawCharts();
   window.dispatchEvent(new Event('resize'));
 }
@@ -535,14 +594,17 @@ function arrangeWorkspace() {
   const title = document.createElement('summary');
   title.textContent = '학습 세부 관측·평가·진단 원문';
   raw.append(title);
-  // 필터와 실제 진행률은 계속 노출하고 모든 기존 표는 펼침 안에 유지합니다.
+  raw.append($('accuracy-target'));
+  // 기술 지표·필터·원문 표는 상세에 보존하고 개념도와 요약만 먼저 표시합니다.
   const head = training.firstElementChild;
   const progressLine = $('training-progress').parentElement;
-  for (const node of [...training.children]) if (node !== head && node !== progressLine) raw.append(node);
+  for (const node of [...training.children]) if (node !== head && node !== progressLine && !node.classList.contains('learning-workspace') && !node.classList.contains('learning-information')) raw.append(node);
   training.append(raw);
+  raw.prepend(head, progressLine);
   raw.prepend($('stage-rail'));
 }
 arrangeWorkspace();
+openTab($('tab-training'));
 window.dispatchEvent(new Event('resize'));
 for (const detail of document.querySelectorAll('details')) detail.addEventListener('toggle', () => { if (detail.open) render(); });
 icons();
@@ -568,3 +630,30 @@ function updateMotionButton() {
 }
 $('motion-toggle').addEventListener('click', () => { motionEnabled = !motionEnabled; updateMotionButton(); });
 updateMotionButton();
+
+function updateThemeButton() {
+  const dark = document.documentElement.dataset.theme === 'dark';
+  const button = $('theme-toggle');
+  const label = dark ? '라이트 모드로 전환' : '다크 모드로 전환';
+  button.setAttribute('aria-pressed', String(dark));
+  button.setAttribute('aria-label', label);
+  button.title = document.documentElement.dataset.themeStorage === 'unavailable' ? `${label} · 선택 저장 불가` : label;
+  const icon = document.createElement('i');
+  icon.dataset.lucide = dark ? 'sun' : 'moon';
+  button.replaceChildren(icon);
+  icons();
+}
+$('theme-toggle').addEventListener('click', () => {
+  const root = document.documentElement;
+  root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  try {
+    localStorage.setItem('upbit-theme', root.dataset.theme);
+    delete root.dataset.themeStorage;
+  } catch (error) {
+    root.dataset.themeStorage = 'unavailable';
+  }
+  updateThemeButton();
+  drawCharts();
+  window.dispatchEvent(new Event('resize'));
+});
+updateThemeButton();

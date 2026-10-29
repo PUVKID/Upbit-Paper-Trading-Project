@@ -269,7 +269,11 @@ def public_get(store, endpoint, params, collection):
 def candles_from_api(payload, tf, now=None):
     rows = []
     for row in payload:
+        if not isinstance(row["candle_date_time_utc"], str):
+            raise ValueError("캔들 시각이 유효하지 않습니다")
         stamp = utc(row["candle_date_time_utc"])
+        if pd.isna(stamp):
+            raise ValueError("캔들 시각이 유효하지 않습니다")
         if stamp + pd.Timedelta(minutes=minutes(tf)) <= utc(now):
             rows.append((stamp, row["opening_price"], row["high_price"], row["low_price"],
                          row["trade_price"], row["candle_acc_trade_volume"]))
@@ -285,6 +289,31 @@ def candles_from_api(payload, tf, now=None):
         (frame.low > frame[["open", "close"]].min(axis=1))).any():
         raise ValueError("OHLC 범위가 유효하지 않습니다")
     return frame[~frame.index.duplicated()]
+
+
+def collection_frame(payload, tf, market, params, data_dir):
+    try:
+        return candles_from_api(payload, tf)
+    except ValueError as error:
+        if str(error) not in {"캔들 값이 유효하지 않습니다", "OHLC 범위가 유효하지 않습니다"}:
+            raise
+    valid = []
+    for row in payload:
+        try:
+            candles_from_api([row], tf)
+        except ValueError as error:
+            if str(error) not in {"캔들 값이 유효하지 않습니다", "OHLC 범위가 유효하지 않습니다"}:
+                raise
+            # 원본을 고치거나 버리지 않고 격리 저장이 성공한 뒤에만 커서를 진행합니다.
+            identity = json.dumps([market, str(tf), row], sort_keys=True, allow_nan=False)
+            digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()
+            target = Path(data_dir) / "quarantine" / (digest + ".json")
+            if not target.exists():
+                atomic_json(target, {"market": market, "timeframe": str(tf), "raw": row,
+                                     "reason": str(error), "request": params, "recorded_at": iso(None)})
+        else:
+            valid.append(row)
+    return candles_from_api(valid, tf)
 
 
 def collect_cycle(config, backfill=False, pages=None):
@@ -303,7 +332,7 @@ def collect_cycle(config, backfill=False, pages=None):
                     params["to"] = cursor
                 endpoint = "candles/days" if str(tf) == "day" else f"candles/minutes/{tf}"
                 payload = public_get(store, endpoint, params, config["collection"])
-                frame = candles_from_api(payload, tf)
+                frame = collection_frame(payload, tf, market, params, config["data_dir"])
                 oldest = min((utc(r["candle_date_time_utc"]) for r in payload), default=None)
                 if cursor and oldest is not None and oldest >= utc(cursor):
                     raise RuntimeError(f"페이지 커서가 과거로 진행하지 않습니다: {market}/{tf}")
@@ -314,9 +343,11 @@ def collect_cycle(config, backfill=False, pages=None):
                 if exhausted:
                     break
     datasets = store.summary()
+    quarantined = sum(1 for _ in (Path(config["data_dir"]) / "quarantine").glob("*.json"))
     atomic_json(Path(config["data_dir"]) / "summary.json", {
         "updated_at": iso(None), "data": {"total_rows": sum(d["rows"] for d in datasets),
-        "backfill": backfill, "status": "수집 진행 중; 제공된 봉만 보존, 무거래 누락은 보간하지 않음"}, "datasets": datasets})
+        "backfill": backfill, "quarantined_count": quarantined,
+        "status": f"수집 진행 중; 오류 원본 {quarantined}개 격리; 무거래 누락은 보간하지 않음"}, "datasets": datasets})
     return datasets
 
 
@@ -569,6 +600,18 @@ def sweep_book(units, side, amount, fee=0.0005, slippage=0.0005):
             "fee_paid": abs(cash - gross), "unfilled": remaining, "partial": remaining > 1e-8}
 
 
+def volatility_stop_fraction(volatility, stop_cap):
+    volatility = float(volatility)
+    if not math.isfinite(volatility) or volatility < 0:
+        raise ValueError("현재 변동성이 유효하지 않습니다")
+    return min(stop_cap, max(min(0.005, stop_cap), 2 * volatility))
+
+
+def roundtrip_cost_factor(settings):
+    return ((1 - settings["slippage"]) * (1 - settings["fee"]) /
+            ((1 + settings["slippage"]) * (1 + settings["fee"])))
+
+
 class Portfolio:
     def __init__(self, settings=None, state=None):
         self.settings = copy.deepcopy(DEFAULT_CONFIG["paper"] if settings is None else settings)
@@ -584,6 +627,9 @@ class Portfolio:
         }
         if self.state["cash"] < 0 or any(v["qty"] < 0 for v in self.state["positions"].values()):
             raise ValueError("현물 계좌에 음수 잔액/공매도가 있습니다")
+        # 기존 장부와 모델 정책을 유지하는 신규진입 리스크 보강입니다.
+        self.state.setdefault("stop_reentry_until", {})
+        self.state["risk_overlay"] = "stop_horizon_quote_cost_v1"
 
     def equity(self, prices):
         total = self.state["cash"]
@@ -624,6 +670,15 @@ class Portfolio:
             fill = execute(market, "sell", position["qty"], at_price)
             if fill["qty"] <= 0:
                 return
+            if reason == "stop_loss":
+                until = position.get("expires_at")
+                if until is None:
+                    horizon = self.state.get("risk_horizon_minutes", {}).get(
+                        market, DEFAULT_CONFIG["training"]["horizon"] * minutes(DEFAULT_CONFIG["base_timeframe"]))
+                    # 만료 미기록 legacy는 손절부터 전체 지평을 보수적으로 보류합니다.
+                    if isinstance(horizon, (int, float)) and not isinstance(horizon, bool) and math.isfinite(horizon) and horizon > 0:
+                        until = iso(utc(execution_at if at_time is None else at_time) + pd.Timedelta(horizon, unit="min"))
+                self.state["stop_reentry_until"][market] = until
             old_qty = position["qty"]
             basis = position["cost"] * fill["qty"] / old_qty
             position["qty"] = max(0.0, old_qty - fill["qty"])
@@ -669,6 +724,21 @@ class Portfolio:
             if market in sold:
                 decision["reason"] = "sold_this_cycle"
                 continue
+            cooldowns = self.state["stop_reentry_until"]
+            if market in cooldowns:
+                try:
+                    if cooldowns[market] is None:
+                        raise ValueError("재진입 보류 만료시각이 없습니다")
+                    until = utc(cooldowns[market])
+                    if pd.isna(until):
+                        raise ValueError("재진입 보류 만료시각이 유효하지 않습니다")
+                except (ValueError, TypeError, OverflowError):
+                    decision.update(reason="invalid_reentry_expiry", blocked_until=cooldowns[market])
+                    continue
+                if execution_at < until:
+                    decision.update(reason="stop_reentry_cooldown", blocked_until=iso(until))
+                    continue
+                del cooldowns[market]
             exposure = sum(p["qty"] * prices[m] for m, p in self.state["positions"].items())
             initial = self.state["initial_cash"]
             budget = min(self.state["cash"], initial * self.settings["max_allocation"],
@@ -684,6 +754,28 @@ class Portfolio:
             if fill["qty"] <= 0:
                 decision["reason"] = "no_ask_liquidity"
                 continue
+            net_budget = self.state.get("entry_cost_limits", {}).get(market)
+            if books is not None and net_budget is not None:
+                if not math.isfinite(net_budget) or net_budget <= 0:
+                    decision["reason"] = "invalid_entry_cost_limit"
+                    continue
+                exit_fill = execute(market, "sell", fill["qty"])
+                if exit_fill["partial"]:
+                    decision["reason"] = "insufficient_exit_liquidity"
+                    continue
+                base_factor = self.state.get("entry_cost_baselines", {}).get(market, roundtrip_cost_factor(self.settings))
+                if not math.isfinite(base_factor) or base_factor <= 0:
+                    decision["reason"] = "invalid_entry_cost_baseline"
+                    continue
+                retention = exit_fill["cash"] / fill["cash"]
+                # 라벨은 기본 수수료·슬리피지 차감 후입니다. 추가 호가비용만 비율로 반영합니다.
+                remaining_budget = (1 + net_budget) * retention / base_factor - 1
+                decision.update(roundtrip_cost=1 - retention, incremental_quote_drag=1 - retention / base_factor,
+                                net_label_budget=net_budget, net_label_budget_after_book_cost=remaining_budget,
+                                cost_budget_scope="순수익 라벨 기준의 위험 예산 대리값; 기대이익 아님")
+                if remaining_budget <= 0:
+                    decision["reason"] = "execution_cost_exceeds_label_budget"
+                    continue
             decision.update(reason="buy_filled", partial=fill["partial"])
             self.state["cash"] = max(0.0, self.state["cash"] - fill["cash"])
             self.state["positions"][market] = {"qty": fill["qty"], "cost": fill["cash"], "entry_price": fill["vwap"]}
@@ -721,8 +813,22 @@ def backtest_portfolio(frames, probabilities, rules, settings):
     if common is None or len(common) < 2:
         raise ValueError("공통계좌 백테스트에 공통 완료 봉이 부족합니다")
     portfolio = Portfolio(settings)
+    portfolio.state["risk_horizon_minutes"] = {m: rules[m].get("horizon_minutes",
+        DEFAULT_CONFIG["training"]["horizon"] * minutes(DEFAULT_CONFIG["base_timeframe"])) for m in frames}
+    portfolio.state["entry_cost_limits"] = {m: rules[m]["net_label_threshold"] for m in frames if "net_label_threshold" in rules[m]}
+    portfolio.state["entry_cost_baselines"] = {m: rules[m].get("label_cost_factor", roundtrip_cost_factor(settings)) for m in frames}
+    volatility_columns = {}
+    for market, frame in frames.items():
+        bar_minutes = int((utc(frame.index[0]) - utc(frame.open_time.iloc[0])).total_seconds() / 60)
+        column = ("day" if bar_minutes == 1440 else str(bar_minutes)) + "_volatility"
+        if column not in frame and any(c.endswith("_volatility") or c.startswith("available_") for c in frame.columns):
+            raise ValueError(f"{market}: 기본 시간봉 변동성 피처가 없습니다")
+        volatility_columns[market] = column if column in frame else None
     signals = {m: pd.Series(signals_from_proba(probabilities[m], rules[m]), index=frames[m].index) for m in frames}
     pending, pending_at = {}, None
+    pending_stops = {m: settings["stop_loss"] for m in frames}
+    volatility_ready = {m: False for m in frames}
+    volatility_fallback_rows = {m: 0 for m in frames}
     for stamp in common:
         rows = {m: frames[m].loc[stamp] for m in frames}
         opening = {m: float(r.open) for m, r in rows.items()}
@@ -732,7 +838,15 @@ def backtest_portfolio(frames, probabilities, rules, settings):
                     for m in frames if pending_at is not None and rules[m].get("horizon_minutes")}
         execution_at = utc(next(iter(rows.values())).open_time)
         portfolio.process(stamp, opening, executable, mark_prices=closing, entry_expiries=expiries,
-                          expiry_prices=closing, execution_at=execution_at)
+                          expiry_prices=closing, execution_at=execution_at, stop_fractions=pending_stops)
+        # 초기 미준비 fixture만 고정 손절로 표시합니다. 운영 학습은 전체 피처 dropna 후 들어옵니다.
+        for market, column in volatility_columns.items():
+            if column is None or pd.isna(rows[market][column]) and not volatility_ready[market]:
+                pending_stops[market] = settings["stop_loss"]
+                volatility_fallback_rows[market] += 1
+            else:
+                pending_stops[market] = volatility_stop_fraction(rows[market][column], settings["stop_loss"])
+                volatility_ready[market] = True
         pending, pending_at = {m: int(signals[m].loc[stamp]) for m in frames}, stamp
     state = portfolio.state
     exit_reasons = {reason: sum(e["side"] == "sell" and e["reason"] == reason for e in state["trades"])
@@ -741,6 +855,8 @@ def backtest_portfolio(frames, probabilities, rules, settings):
             "executions": len(state["trades"]), "fees_paid": state["fees_paid"], "equity": state["equity"],
             "realized_pnl": sum(e.get("realized_pnl", 0) for e in state["trades"]), "exit_reasons": exit_reasons,
             "common_rows": len(common), "start": iso(common[0]), "end": iso(common[-1]),
+            "risk_overlay": state["risk_overlay"], "historical_quote_costs": "과거 호가 없음; 스프레드 성과 미검증",
+            "volatility_fallback_rows": volatility_fallback_rows,
             "valuation": "기말 현물의 매도 수수료·슬리피지 차감 청산가치", "fill": "신호 이후 다음 봉 시가"}
 
 
@@ -1010,7 +1126,9 @@ def assess_promotion(config, frames, probabilities, rules):
         current_probs = {m: predict_package(current_dir, current, m, frame) for m, frame in frames.items()}
         incumbent = {"logloss": sum(len(frames[m]) * logloss(frames[m].label, current_probs[m]) for m in frames) / total
                      if same_labels else None}
-        current_rules = {m: current["packages"][m]["rule"] for m in frames}
+        current_rules = {m: {**current["packages"][m]["rule"],
+                             "net_label_threshold": current_config["training"]["label_threshold"],
+                             "label_cost_factor": roundtrip_cost_factor(current_config["paper"])} for m in frames}
         current_portfolio = backtest_portfolio(frames, current_probs, current_rules, config["paper"])
         incumbent.update({k: current_portfolio[k] for k in ("net_return", "MDD")})
         if same_labels:
@@ -1132,6 +1250,7 @@ def train_cycle(config, final=False, live=False):
         policy_probs, evaluated = probabilities(policy_frame), probabilities(validation)
         rule = tune_rule(policy_frame, policy_probs, config["paper"], market, tr["min_closed_trades"],
                          tr["horizon"] * minutes(config["base_timeframe"]))
+        rule.update(net_label_threshold=tr["label_threshold"], label_cost_factor=roundtrip_cost_factor(config["paper"]))
         trials = rule.pop("trials")
         majority = int(split["train"].label.astype(int).value_counts().idxmax())
         metrics = classification_metrics(validation.label, evaluated, majority)
@@ -1271,6 +1390,10 @@ def paper_signals(config, store, portfolio, now):
     diagnostics = {}
     portfolio.state["inference_diagnostics"] = diagnostics
     portfolio.state["entry_expiries"] = {}
+    portfolio.state["entry_cost_limits"] = {}
+    portfolio.state["entry_cost_baselines"] = {}
+    portfolio.state["risk_horizon_minutes"] = {m: minutes(config["base_timeframe"]) * config["training"]["horizon"]
+                                               for m in config["markets"]}
     portfolio.state["deployment_guard"] = None
     try:
         directory, manifest = load_current(config)
@@ -1287,6 +1410,9 @@ def paper_signals(config, store, portfolio, now):
     for market in config["markets"]:
         try:
             model_config = manifest["config"]
+            portfolio.state["risk_horizon_minutes"][market] = minutes(model_config["base_timeframe"]) * model_config["training"]["horizon"]
+            portfolio.state["entry_cost_limits"][market] = model_config["training"]["label_threshold"]
+            portfolio.state["entry_cost_baselines"][market] = roundtrip_cost_factor(model_config["paper"])
             start = now - pd.Timedelta(minutes=max(minutes(tf) for tf in model_config["timeframes"]) * 28 + 2880)
             frame = load_market_features(store, market, model_config, start, now)
             latest_raw = iso(frame.index[-1]) if not frame.empty else None
@@ -1310,8 +1436,7 @@ def paper_signals(config, store, portfolio, now):
             probs = predict_package(directory, manifest, market, frame.iloc[-1:])
             signal = int(signals_from_proba(probs, manifest["packages"][market]["rule"])[0])
             vol = float(frame[str(model_config["base_timeframe"]) + "_volatility"].iloc[-1])
-            if not math.isfinite(vol) or vol < 0:
-                raise ValueError("현재 변동성이 유효하지 않습니다")
+            stop = volatility_stop_fraction(vol, config["paper"]["stop_loss"])
             signals[market] = signal
             rule = manifest["packages"][market]["rule"]
             diagnostics[market].update(probabilities=probs[0].tolist(), argmax=int(probs[0].argmax()),
@@ -1321,8 +1446,7 @@ def paper_signals(config, store, portfolio, now):
             signal_times[market] = signal_time
             expiry = utc(signal_time) + pd.Timedelta(minutes=minutes(model_config["base_timeframe"]) * model_config["training"]["horizon"])
             portfolio.state["entry_expiries"][market] = iso(expiry)
-            stop_cap = config["paper"]["stop_loss"]
-            stops[market] = min(stop_cap, max(min(0.005, stop_cap), 2 * vol))
+            stops[market] = stop
         except expected_errors as exc:
             signals[market] = 1
             errors[market] = {"type": type(exc).__name__, "message": str(exc), "stage": "inference"}

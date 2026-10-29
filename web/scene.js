@@ -24,6 +24,7 @@
   let currentView = {x: 0, y: 0};
   let mobile = false;
   let allocation = null;
+  let trainingScene = null;
   const labels = [];
   const format = value => value.toLocaleString('ko-KR');
   const valid = value => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
@@ -320,13 +321,14 @@
   observer.observe(host);
   const intersection = new IntersectionObserver(syncVisibility);
   intersection.observe(host);
-  window.addEventListener('resize', () => { resize(); allocation?.resize(); syncVisibility(); });
+  window.addEventListener('resize', () => { resize(); allocation?.resize(); trainingScene?.refresh(); syncVisibility(); });
   window.addEventListener('scroll', syncVisibility, {passive: true});
   window.addEventListener('pagehide', () => { disposed = true; allocation?.dispose(); cleanupResources(); observer.disconnect(); intersection.disconnect(); }, {once: true});
   window.UpbitScene = {
     update(snapshot) {
       syncVisibility();
       allocation?.update(snapshot);
+      trainingScene?.update(snapshot);
       rows = coins.map(coin => ({coin, ...parseCounts(snapshot.markets?.[`KRW-${coin}`])}));
       const next = JSON.stringify(rows);
       if (next === signature) return;
@@ -336,9 +338,390 @@
       if (ready) status.textContent = available ? `과거 후속 평가 최대 확률 예측 · 표본 수는 확률이 아닙니다 · ${available}/${coins.length}개 시장 기록 · 막대 높이 공통 척도` : '실측 예측 표본 대기 · 빈 막대는 생성하지 않습니다';
       if (ready) setTargets();
     },
-    setMotion(value) { motion = Boolean(value); stopTimer(); targetView = {x: 0, y: 0}; schedule(); },
-    stats() { return {renderframes, paused: !ready || !active(), ready, mobile, pending: !rows.some(row => row.values), counts: rows.map(row => ({coin: row.coin, values: row.values, source: row.source})), meshes: meshes.length, pixelRatio: ready ? renderer.getPixelRatio() : null, allocation: allocation?.stats()}; }
+    setMotion(value) { motion = Boolean(value); stopTimer(); targetView = {x: 0, y: 0}; schedule(); trainingScene?.refresh(); },
+    stats() { return {renderframes, paused: !ready || !active(), ready, mobile, pending: !rows.some(row => row.values), counts: rows.map(row => ({coin: row.coin, values: row.values, source: row.source})), meshes: meshes.length, pixelRatio: ready ? renderer.getPixelRatio() : null, allocation: allocation?.stats(), training: trainingScene?.stats()}; }
   };
+  function createTrainingScene() {
+    const stage = document.getElementById('training-stage');
+    const element = document.getElementById('training-scene');
+    const fallbackText = document.getElementById('training-scene-fallback');
+    const state = {ready:false, renderframes:0, visible:false, stage:null, meshes:0, pixelRatio:null, geometryMode:true, artDirection:'layered-glass'};
+    const T = window.UpbitVendors?.THREE;
+    const RoundedBox = window.UpbitVendors?.RoundedBoxGeometry;
+    const geometries = [], materials = [], textures = [], modules = [], packets = [];
+    const accents = [0x08b6a7, 0x388ee8, 0xf17f70, 0xe8b346];
+    const centers = [-1.98, 1.26, 4.5, 7.38];
+    const lights = [], accentMaterials = [], levels = [0, 0, 0, 0];
+    const phases = {lens:0, review:0};
+    const glassLayers = [], labelRedraws = [];
+    let renderer3, scene3, camera3, environment3, gear, fan, lens, reviewScan;
+    let timer3 = null, stopped = false, cleaned = false, lastFrame = 0;
+    const canAnimate = () => state.ready && state.visible && !document.hidden && motion && !reduced.matches && state.stage !== null && !stopped;
+    const transitionsAllowed = () => motion && !reduced.matches;
+    function stop3() {
+      if (timer3 !== null) clearTimeout(timer3);
+      timer3 = null;
+    }
+    function cleanup3() {
+      if (cleaned) return;
+      cleaned = true;
+      stop3();
+      geometries.forEach(value => value.dispose());
+      materials.forEach(value => value.dispose());
+      textures.forEach(value => value.dispose());
+      environment3?.dispose();
+      renderer3?.dispose();
+    }
+    function showFallback(message) {
+      state.ready = false;
+      element.hidden = true;
+      stage.classList.add('workflow-fallback');
+      fallbackText.hidden = false;
+      fallbackText.textContent = message;
+      cleanup3();
+    }
+    function material(options, physical = false) {
+      const result = physical ? new T.MeshPhysicalMaterial(options) : new T.MeshStandardMaterial(options);
+      materials.push(result);
+      return result;
+    }
+    function mesh(parent, geometry, surface, x = 0, y = 0, z = 0) {
+      geometries.push(geometry);
+      const result = new T.Mesh(geometry, surface);
+      result.position.set(x, y, z);
+      result.castShadow = !surface.transparent && !surface.transmission;
+      parent.add(result);
+      state.meshes++;
+      return result;
+    }
+    function box(parent, w, h, d, surface, x = 0, y = 0, z = 0, radius = .06) {
+      return mesh(parent, new RoundedBox(w, h, d, 2, Math.min(radius, w / 3, h / 3, d / 3)), surface, x, y, z);
+    }
+    function ring(parent, radius, tube, surface, x = 0, y = 0, z = 0) {
+      return mesh(parent, new T.TorusGeometry(radius, tube, 8, 36), surface, x, y, z);
+    }
+    function glazed(parent, w, h, d, surface, outline, x, y, z) {
+      const pane = box(parent,w,h,d,surface,x,y,z,.06);
+      if (outline) {
+        const frame = new T.BoxGeometry(w-.015,h-.01,d-.015);
+        const edge = new T.EdgesGeometry(frame);
+        frame.dispose();
+        geometries.push(edge);
+        pane.add(new T.LineSegments(edge,outline));
+      }
+      return pane;
+    }
+    function projectAnchors() {
+      if (!camera3 || !stage.clientWidth) return;
+      scene3.updateMatrixWorld(true);
+      camera3.updateMatrixWorld(true);
+      state.anchors = modules.map((module, index) => {
+        const point = module.localToWorld(new T.Vector3(0, -.35, .8)).project(camera3);
+        return {index, x:(point.x + 1) * stage.clientWidth / 2, y:(1 - point.y) * stage.clientHeight / 2,
+          projected:{x:point.x,y:point.y,z:point.z}, normalizedX:(point.x + 1) / 2, normalizedY:(1 - point.y) / 2};
+      });
+    }
+    function updateLights(smooth, delta) {
+      let changing = false;
+      for (let index = 0; index < 4; index++) {
+        const target = state.stage === index ? 1 : 0;
+        levels[index] += (target - levels[index]) * (smooth ? 1 - Math.exp(-delta * 9) : 1);
+        if (Math.abs(target - levels[index]) < .002) levels[index] = target;
+        else changing = true;
+        const level = levels[index];
+        lights[index].intensity = .04 + level * 1.4;
+        accentMaterials[index].emissiveIntensity = .01 + level * .08;
+        accentMaterials[index].color.setHex(0x738b91).lerp(new T.Color(accents[index]), .25 + level * .75);
+      }
+      return changing;
+    }
+    function draw() {
+      timer3 = null;
+      if (!state.ready || !state.visible || document.hidden || stopped) return;
+      const now = performance.now();
+      const delta = Math.min(.08, Math.max(0, (now - lastFrame) / 1000));
+      lastFrame = now;
+      const animate = canAnimate();
+      const changing = updateLights(transitionsAllowed(), delta);
+      // 실제 단계의 부품 시간만 전진시키며 단계 번호를 시간으로 만들지 않습니다.
+      if (animate) {
+        if (state.stage === 0) gear.rotation.z -= delta * .4;
+        if (state.stage === 1) fan.rotation.z += delta * .8;
+        if (state.stage === 2) {
+          phases.lens += delta * 1.8;
+          lens.position.x = Math.sin(phases.lens) * .1;
+          lens.position.y = 1.1 + Math.cos(phases.lens) * .045;
+          lens.rotation.y = Math.sin(phases.lens) * .08;
+        }
+        if (state.stage === 3) {
+          phases.review += delta * 2;
+          reviewScan.position.y = 1.05 + Math.sin(phases.review) * .32;
+        }
+        glassLayers.forEach((pane,index) => {
+          pane.userData.phase += delta;
+          pane.position.y = pane.userData.restY + (pane.userData.stage === state.stage ? Math.sin(pane.userData.phase + index * .6) * .018 : 0);
+        });
+        packets.forEach(packet => {
+          if (packet.userData.stage !== state.stage) return;
+          packet.userData.phase = (packet.userData.phase + delta * .3) % 1;
+          packet.position.x = packet.userData.start + packet.userData.phase * packet.userData.length;
+          packet.rotation.x += delta * 2;
+        });
+      }
+      packets.forEach(packet => { packet.visible = state.stage === packet.userData.stage; });
+      renderer3.render(scene3, camera3);
+      state.renderframes++;
+      if (animate || (changing && transitionsAllowed())) timer3 = setTimeout(draw, Math.ceil(1000 / 24));
+    }
+    function refresh() {
+      stop3();
+      const theme = document.documentElement.dataset.theme;
+      if (state.ready && state.labelTheme !== theme) {
+        state.labelTheme = theme;
+        labelRedraws.forEach(redraw => redraw());
+      }
+      state.visible = inViewport(stage);
+      if (state.visible && state.ready && !document.hidden && !stopped) {
+        // 외부 갱신도 같은 프레임 상한을 지키며 정지 중에는 상태 변경 때만 그립니다.
+        timer3 = setTimeout(draw, Math.max(0, Math.ceil(1000 / 24 - (performance.now() - lastFrame))));
+      }
+    }
+    function resize3() {
+      if (!state.ready || stopped || !stage.clientWidth || !stage.clientHeight) return;
+      const width = stage.clientWidth, height = stage.clientHeight, aspect = width / height;
+      renderer3.setPixelRatio(Math.min(devicePixelRatio || 1, 1.25));
+      state.pixelRatio = renderer3.getPixelRatio();
+      renderer3.setSize(width, height, false);
+      const view = Math.max(4.4, 18 / aspect);
+      camera3.left = -view * aspect / 2; camera3.right = view * aspect / 2;
+      camera3.top = view / 2; camera3.bottom = -view / 2;
+      camera3.updateProjectionMatrix();
+      projectAnchors();
+      refresh();
+    }
+    try {
+      if (!T || !RoundedBox || !window.UpbitVendors.RoomEnvironment) throw new Error('입체 모델 라이브러리 미연결');
+      renderer3 = new T.WebGLRenderer({canvas:element,alpha:true,antialias:true,powerPreference:'low-power'});
+      renderer3.setClearColor(0xffffff,0);
+      renderer3.outputColorSpace = T.SRGBColorSpace;
+      renderer3.toneMapping = T.ACESFilmicToneMapping;
+      renderer3.toneMappingExposure = 1;
+      renderer3.shadowMap.enabled = true;
+      renderer3.shadowMap.type = T.PCFSoftShadowMap;
+      scene3 = new T.Scene();
+      const pmrem = new T.PMREMGenerator(renderer3);
+      const room = new window.UpbitVendors.RoomEnvironment();
+      try { environment3 = pmrem.fromScene(room, .04); scene3.environment = environment3.texture; }
+      finally { room.dispose(); pmrem.dispose(); }
+      camera3 = new T.OrthographicCamera(-9,9,2.2,-2.2,.1,60);
+      camera3.position.set(0,7.8,15);
+      camera3.lookAt(0,0,0);
+      scene3.add(new T.HemisphereLight(0xffffff,0x7d9a9f,1.5));
+      const keyLight = new T.DirectionalLight(0xffffff,2.5);
+      keyLight.position.set(-4,8,6);
+      keyLight.castShadow = true;
+      keyLight.shadow.mapSize.set(1024,1024);
+      Object.assign(keyLight.shadow.camera,{left:-10,right:10,top:5,bottom:-5,near:1,far:30});
+      keyLight.shadow.bias = -.001;
+      keyLight.shadow.normalBias = .025;
+      scene3.add(keyLight);
+      const white = material({color:0xf0f5fa,metalness:.15,roughness:.2});
+      const dark = material({color:0x425461,metalness:.5,roughness:.24});
+      const metal = material({color:0xc6d4e0,metalness:.6,roughness:.24});
+      const glass = material({color:0xd0e7f3,roughness:.07,metalness:.12,transparent:true,opacity:.17,depthWrite:false,clearcoat:1,envMapIntensity:1.8,side:T.FrontSide},true);
+      const outline = new T.LineBasicMaterial({color:0x93b6d0,transparent:true,opacity:.15});
+      materials.push(outline);
+      const tealGlass = material({color:0x3ed5cd,roughness:.13,transmission:.65,thickness:.25,opacity:1,clearcoat:1},true);
+      const aquaSheet = material({color:0x19c5d0,roughness:.12,metalness:.03,transparent:true,opacity:.38,depthWrite:false,clearcoat:.5,side:T.DoubleSide},true);
+      const coral = material({color:0xf17f70,metalness:.3,roughness:.25});
+      const shadowSurface = new T.ShadowMaterial({transparent:true,opacity:.065,depthWrite:false});
+      materials.push(shadowSurface);
+      const ground = box(scene3,18,.015,4,shadowSurface,0,-.47,0,.004);
+      ground.castShadow = false;
+      ground.receiveShadow = true;
+      for (let i = 0; i < 4; i++) {
+        const module = new T.Group();
+        module.position.x = centers[i];
+        module.rotation.y = -.37;
+        scene3.add(module);
+        modules.push(module);
+        const accent = material({color:accents[i],emissive:accents[i],emissiveIntensity:.01,metalness:0,roughness:.3,clearcoat:.35,envMapIntensity:.35},true);
+        accentMaterials.push(accent);
+        const light = new T.PointLight(accents[i],.04,4,2);
+        light.position.set(centers[i],1.4,1.6);
+        scene3.add(light);
+        lights.push(light);
+        box(module,2.42,.19,1.88,accent,0,-.29,0,.08);
+        box(module,2.35,.14,1.81,white,0,-.12,0,.07);
+        box(module,2.14,.045,1.6,accent,0,-.015,0,.02);
+        // 원본 시안처럼 세 겹의 얇은 유리 공간이 작은 상징물을 감쌉니다.
+        for (let layer = 0; layer < 3; layer++) {
+          const pane = glazed(module,2.08,.48,1.6,glass,null,0,.28+layer*.5,0);
+          pane.userData = {stage:i,phase:0,restY:pane.position.y};
+          glassLayers.push(pane);
+        }
+      }
+      const input = new T.Group();
+      input.position.set(-6.45,0,.8);
+      scene3.add(input);
+      box(input,4.6,.22,1.9,white,0,-.25,0);
+      box(input,4.45,.07,1.75,tealGlass,0,-.09,0);
+      const coinColors = [0xe8b346,0x29cbb1,0x748cdb,0x83acbb,0xe3ba63];
+      coins.forEach((coin,index) => {
+        const panel = new T.Group();
+        panel.position.set((index-2)*.86,1.25,(index%2)*-.18);
+        panel.rotation.y = -.15;
+        panel.userData.coin = coin;
+        input.add(panel);
+        glazed(panel,.81,2.5,.075,glass,outline,0,0,0);
+        const ink = material({color:coinColors[index],metalness:.35,roughness:.25});
+        for (let stripe = 0; stripe < 5; stripe++) {
+          box(panel,.055,.16+stripe*.055,.045,ink,(stripe-2)*.085,-.35+stripe*.06,.09,.012);
+        }
+        // 글자만 그리는 명판이며 전체 그림이나 실제 가격 텍스처를 사용하지 않습니다.
+        const labelCanvas = document.createElement('canvas');
+        labelCanvas.width = 256; labelCanvas.height = 128;
+        const context = labelCanvas.getContext('2d');
+        const paintLabel = () => {
+          context.clearRect(0,0,256,128);
+          context.fillStyle = document.documentElement.dataset.theme === 'dark' ? '#f1f9ff' : '#263e50';
+          context.font = '700 84px Nanum, sans-serif';
+          context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(coin,128,42);
+          context.font = '700 42px Nanum, sans-serif'; context.fillText('자료',128,106);
+        };
+        paintLabel();
+        const label = new T.CanvasTexture(labelCanvas);
+        label.colorSpace = T.SRGBColorSpace;
+        textures.push(label);
+        labelRedraws.push(() => { paintLabel(); label.needsUpdate = true; });
+        const labelMaterial = material({map:label,color:0xffffff,roughness:.55,transparent:true,depthWrite:false});
+        box(panel,.7,.46,.012,labelMaterial,0,.85,.06,.004);
+      });
+      document.fonts.load('700 58px Nanum').then(fonts => {
+        if (stopped || cleaned) return;
+        state.labelFontLoaded = fonts.length > 0;
+        labelRedraws.forEach(redraw => redraw());
+        refresh();
+      }, () => {
+        if (!stopped && !cleaned) state.labelFontLoaded = false;
+      });
+      const prep = modules[0];
+      for (let i = 0; i < 4; i++) {
+        glazed(prep,1.02,1.2,.07,aquaSheet,outline,-.2+i*.16,1.02,-.12-i*.19);
+      }
+      gear = new T.Group(); gear.position.set(.02,.95,.55); gear.scale.setScalar(.65); prep.add(gear);
+      ring(gear,.34,.1,accentMaterials[0]);
+      for (let i = 0; i < 10; i++) {
+        const tooth = box(gear,.16,.2,.16,accentMaterials[0],Math.sin(i*Math.PI/5)*.43,Math.cos(i*Math.PI/5)*.43,0,.025);
+        tooth.rotation.z = -i*Math.PI/5;
+      }
+      mesh(gear,new T.CylinderGeometry(.14,.14,.16,24),metal).rotation.x = Math.PI/2;
+      const gpu = modules[1];
+      box(gpu,1.23,.2,.95,dark,0,.89,0,.09);
+      box(gpu,1.08,.035,.8,metal,0,1.01,0,.06);
+      const chipLabel = document.createElement('canvas'); chipLabel.width = 256; chipLabel.height = 128;
+      const chipContext = chipLabel.getContext('2d');
+      const paintChip = () => {
+        chipContext.fillStyle = '#3a5365'; chipContext.fillRect(0,0,256,128);
+        chipContext.fillStyle = '#f3fbff'; chipContext.font = '700 68px Nanum, sans-serif';
+        chipContext.textAlign = 'center'; chipContext.textBaseline = 'middle'; chipContext.fillText('GPU',128,64);
+      };
+      paintChip();
+      const chipTexture = new T.CanvasTexture(chipLabel); chipTexture.colorSpace = T.SRGBColorSpace; textures.push(chipTexture);
+      labelRedraws.push(() => { paintChip(); chipTexture.needsUpdate = true; });
+      const chipFace = material({map:chipTexture,roughness:.3});
+      box(gpu,.91,.015,.59,chipFace,0,1.04,0,.006);
+      // 팬 대신 칩 아래 빛이 천천히 흐르므로 기계 부품의 인상을 줄입니다.
+      fan = new T.Group(); fan.position.set(0,.73,0); fan.rotation.x = -Math.PI/2; gpu.add(fan);
+      ring(fan,.58,.018,accentMaterials[1]);
+      box(fan,.15,.035,.025,accentMaterials[1],.57,0,0,.01);
+      const evaluation = modules[2];
+      glazed(evaluation,1.12,.83,.055,glass,outline,0,.85,-.25);
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 4; col++) box(evaluation,.13,.08,.02,(row+col)%3 === 0 ? coral : metal,-.32+col*.21,.62+row*.18,-.2,.015);
+      }
+      lens = new T.Group(); lens.position.set(0,1.1,.4); lens.scale.setScalar(.72); evaluation.add(lens);
+      ring(lens,.47,.095,dark);
+      ring(lens,.38,.027,accentMaterials[2],0,0,.025);
+      const lensGlass = material({color:0xa4e7ec,transmission:.95,thickness:.18,roughness:.06,opacity:1,ior:1.5,clearcoat:1},true);
+      mesh(lens,new T.CylinderGeometry(.38,.38,.1,40),lensGlass).rotation.x = Math.PI/2;
+      const handle = box(lens,.14,.57,.14,metal,-.42,-.48,0,.045); handle.rotation.z = -.65;
+      const review = modules[3];
+      box(review,.7,1.13,.47,dark,-.1,.83,0,.1);
+      box(review,.61,1.02,.025,metal,-.1,.83,.25,.06);
+      for (let i = 0; i < 4; i++) {
+        box(review,.4,.045,.025,white,-.12,1.18-i*.2,.28,.018);
+      }
+      reviewScan = box(review,.5,.025,.025,accentMaterials[3],-.1,1.05,.3,.01);
+      // 검토 단계는 적용 성공을 단정하는 체크 표시 대신 서버의 스캔으로 표현합니다.
+      const paths = [[-4.1,centers[0]-.95],[centers[0]+1.05,centers[1]-.95],[centers[1]+1.05,centers[2]-.95],[centers[2]+1.05,centers[3]-.95]];
+      paths.forEach(([start,end],index) => {
+        const curve = new T.CatmullRomCurve3([new T.Vector3(start,-.03,.25),new T.Vector3((start+end)/2,.03,.25),new T.Vector3(end,-.03,.25)]);
+        mesh(scene3,new T.TubeGeometry(curve,16,.055,8,false),tealGlass);
+        for (let i = 0; i < 3; i++) {
+          const packet = box(scene3,.1,.1,.1,accentMaterials[index],start+(end-start)*i/3,.06,.25,.025);
+          packet.userData = {stage:index,start,length:end-start,phase:i/3};
+          packet.visible = false;
+          packets.push(packet);
+        }
+      });
+      state.ready = true;
+      fallbackText.hidden = true;
+      element.hidden = false;
+      stage.classList.remove('workflow-fallback');
+      element.setAttribute('aria-label','BTC·SOL·ETH·XRP·DOGE 자료 패널과 데이터 준비 기어·GPU 팬·평가 렌즈·서버 검토의 실제 입체 모델. 실제 학습 단계만 점등되며 패널 무늬는 실측 가격이 아닙니다.');
+      resize3();
+    } catch (error) {
+      showFallback('3D를 표시할 수 없습니다. 아래 데이터 준비·모델 학습·결과 평가·적용 검토의 실제 단계를 확인해 주세요.');
+    }
+    const sizeObserver = new ResizeObserver(resize3);
+    sizeObserver.observe(stage);
+    const onVisibility = () => {
+      const wasVisible = state.visible;
+      state.visible = inViewport(stage);
+      if (!state.visible || document.hidden) stop3();
+      else if (!wasVisible || canAnimate()) refresh();
+    };
+    const visibilityObserver = new IntersectionObserver(onVisibility);
+    visibilityObserver.observe(stage);
+    const onDocumentVisibility = () => { if (document.hidden) stop3(); else refresh(); };
+    document.addEventListener('visibilitychange',onDocumentVisibility);
+    reduced.addEventListener('change',refresh);
+    window.addEventListener('scroll',onVisibility,{passive:true});
+    const onContextLost = event => {
+      event.preventDefault();
+      showFallback('3D 연결이 중단되었습니다. 아래 실제 단계와 진행 수치를 확인해 주세요.');
+    };
+    element.addEventListener('webglcontextlost',onContextLost);
+    window.addEventListener('pagehide',() => {
+      stopped = true;
+      state.ready = false;
+      sizeObserver.disconnect(); visibilityObserver.disconnect();
+      document.removeEventListener('visibilitychange',onDocumentVisibility);
+      reduced.removeEventListener('change',refresh);
+      window.removeEventListener('scroll',onVisibility);
+      element.removeEventListener('webglcontextlost',onContextLost);
+      cleanup3();
+    },{once:true});
+    return {
+      refresh,
+      update(snapshot) {
+        const t = snapshot?.training || {};
+        const next = t.state === 'running' ? ({features:0,fit:1,calibration:2,locked_test:2,complete:3})[t.stage] ?? null : null;
+        const changed = state.stage !== next;
+        state.stage = next;
+        if (state.ready && !transitionsAllowed()) updateLights(false,0);
+        if (changed || (canAnimate() && timer3 === null)) refresh();
+      },
+      stats() {
+        const position = object => ({x:object.position.x,y:object.position.y,z:object.position.z});
+        return {...state, paused:!canAnimate(), activeLights:lights.map((light,index) => ({index,intensity:light.intensity,color:'#'+accentMaterials[index].color.getHexString(),lightColor:'#'+light.color.getHexString()})),
+          movingParts:state.ready ? {gear:{rotation:gear.rotation.z,position:position(gear)},fan:{rotation:fan.rotation.z,position:position(fan)},
+            lens:{rotation:phases.lens,position:position(lens)},review:{rotation:phases.review,position:position(reviewScan)},
+            packets:packets.map(packet => ({stage:packet.userData.stage,rotation:packet.rotation.x,position:position(packet),visible:packet.visible}))} : {}};
+      }
+    };
+  }
   function createAllocation() {
     const element = document.getElementById('allocation-scene');
     const stage = document.getElementById('allocation-stage');
@@ -515,5 +898,6 @@
   }
   init();
   allocation = createAllocation();
+  trainingScene = createTrainingScene();
   renderCounts();
 })();

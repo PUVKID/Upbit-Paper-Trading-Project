@@ -1,0 +1,12 @@
+{
+  "initial_capital": 10000000,
+  "market_mode": "spot-paper",
+  "paper_start": "2026-10-26T15:28:27+09:00",
+  "notifications": false,
+  "collector": {"args": ["--config", "engine-config.json", "collector", "--once", "--pages", "2"], "interval_seconds": 15, "timeout_seconds": 600},
+  "backfill": {"args": ["--config", "engine-config.json", "collector", "--once", "--backfill", "--pages", "20"], "interval_seconds": 10, "timeout_seconds": 3600},
+  "trainer": {"args": ["--config", "engine-config.json", "trainer", "--once"], "interval_seconds": 0, "timeout_seconds": 21600},
+  "paper": {"args": ["--config", "engine-config.json", "paper", "--once"], "interval_seconds": 15, "timeout_seconds": 90},
+  "dashboard": {"script": "dashboard.py", "args": ["--host", "0.0.0.0", "--port", "8765"], "interval_seconds": 1, "timeout_seconds": null},
+  "health": {"script": "healthcheck.py", "args": [], "interval_seconds": 300, "timeout_seconds": 60}
+}

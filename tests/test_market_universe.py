@@ -201,6 +201,8 @@ class MarketTransitionPromotionTests(unittest.TestCase):
         frame = engine.build_features({5: candles(7)})
         frame["open"] = frame["close"] = [100_000, 100_000, exit_prices[0], 100_000,
                                           exit_prices[1], 100_000, exit_prices[2]]
+        # 승격 적격 조건을 검사하는 완성 피처이며 2% 손절 상한에 대응하는 변동성을 명시합니다.
+        frame["5_volatility"] = 0.01
         frame["label"] = 1
         frames = {m: frame.copy() for m in markets}
         probabilities = {m: np.tile([.01, .98, .01], (7, 1)) for m in markets}
@@ -267,7 +269,8 @@ class MarketTransitionPromotionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             config = isolated_config(Path(temp))
             save_manifest(config, MARKETS[:-1])
-            result = self.compare(config, exit_prices=(98_000, 101_400, 101_400))
+            # 첫 손실은 손절선 이내로 두어 재진입 보류와 독립적으로 위험조정수익 거부를 확인합니다.
+            result = self.compare(config, exit_prices=(98_500, 101_400, 101_400))
         self.assertGreater(result["candidate"]["net_return"], 0)
         self.assertLessEqual(result["eligibility"]["objective"], 0)
         self.assertFalse(result["promote"])
@@ -396,8 +399,9 @@ class MarketModelAndPaperTests(unittest.TestCase):
             def quotes(store, endpoint, params, collection):
                 self.assertEqual(endpoint, "orderbook")
                 self.assertEqual(params, {"markets": "KRW-BTC,KRW-SOL,KRW-ETH,KRW-XRP,KRW-DOGE"})
+                # 배관 검사는 비용 예산 이내 호가를 사용하며 넓은 호가 거부는 별도 리스크 회귀로 확인합니다.
                 return [{"market": m, "timestamp": int(now.timestamp() * 1000), "orderbook_units": [
-                    {"ask_price": 301, "bid_price": 299, "ask_size": 100_000, "bid_size": 100_000}]} for m in MARKETS]
+                    {"ask_price": 301, "bid_price": 300, "ask_size": 100_000, "bid_size": 100_000}]} for m in MARKETS]
 
             def features(store, market, cfg, start, end):
                 return pd.DataFrame({"x": [1.0], "5_volatility": [.005]},
