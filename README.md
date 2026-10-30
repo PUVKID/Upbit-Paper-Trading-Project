@@ -2,6 +2,15 @@
 
 # 🪙 Upbit Paper Trading Project
 
+## 최신 변경
+
+| 확인된 차수·위치 | 내용 | 설명·비교 |
+|---|---|---|
+| 기존 공개 기본 | 시세 수집·GPU 연구·현물 모의체결 | [기존 기록](docs/versions/stage-1.md) · [보존 기준](https://github.com/PUVKID/Upbit-Paper-Trading-Project/tree/5d365eeff59b0d6d81607b336f14d238303c57a0) |
+| 2026-10-30 GPU 처리량 개선 | 인덱스 정렬·행렬 재사용·1시장 선행 준비·단계 시간 | [설명](docs/versions/gpu-throughput-20261030.md) · [전체 코드 비교](docs/versions/gpu-throughput-20261030-engine-diff.md) · [회귀 검사](tests/test_gpu_throughput.py) |
+
+기존 차수 번호가 확인되지 않아 임의 번호를 붙이지 않았습니다. 이번 변경은 학습 처리량 개선이며 GPU100%상시 사용·정확도95%·수익 향상을 달성했다는 뜻이 아닙니다. [실측과 제약](docs/2026-10-30_GPU처리량_개선.md)을 함께 확인하십시오.
+
 XGBoost 예측과 모의체결·대시보드를 연결한 가상자산 모의투자 도구입니다.
 
 **기술 분류:** 시계열 머신러닝 › 트리 앙상블 › XGBoost·확률 보정·모의체결
