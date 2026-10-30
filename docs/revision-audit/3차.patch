@@ -1,0 +1,660 @@
+--- 133824초기/README.md
++++ 현행3차/README.md
+@@ -1,12 +1,43 @@
+-# 3차 · 외부 대용량 자료 연구 연결부 보존
+-
+-보존 확인 시각: 2026-10-30T13:38:24.840480+09:00. 대상 6개 파일을 두 번 읽어 SHA-256 일치를 확인했습니다. 이 시점의 **부분 소스 보관본**이며 완성된 독립 실행 패키지나 검증 완료 제품이 아닙니다. 원본 프로젝트는 다른 작업에서 변경될 수 있어 이후 변경을 자동으로 포함하지 않습니다.
+-
+-- external_data.py: 공식 Binance 공개 시장 자료 수집, SHA-256·ZIP/청크·완료 분봉 검증, 별도 외부 SQLite 저장 코드입니다.
+-- external_features.py: 3차/work 경로 경계, Linux 읽기 전용 DB, 상태·스키마·최근 범위 검사와 과거 방향 특징 결합 코드입니다.
+-- 연결부/engine.py: 원본 부모 루트의 엔진을 보존한 사본입니다. 이 폴더에서 바로 실행하는 배치가 아닙니다. 원본 상대 구조의 3차 모듈과 연동하도록 작성된 코드입니다.
+-- 검사/: 수집·외부 특징 관련 검사 소스를 보존합니다. 이번 아카이브 검토에서는 구문만 확인했으며 실제 단위 검사·DB·다운로드·GPU 학습·모의계좌 실행은 수행하지 않았습니다.
+-
+-[요구·데이터 계약](docs/요구사항_및_데이터계약.md) · [공개 파일·전체 차이](../docs/revision-audit/3차.md)
+-
+-운영 work/·원자료·DB/WAL·모델·계좌·로그·실제 키는 포함하지 않습니다. 30GB는 수집 목표이며 확보 완료·학습 성공·수익 보장이 아닙니다. 기존 GPU 개선 보존본과 이전 루트 공개본은 그대로 보존합니다.
++# 3차 대용량 자료 학습
++
++## 실행 순서
++
++1. 외부 거래소의 고유 아카이브50GB를 다운로드하고SHA256검증·청크집계를 마칩니다.
++2. 다섯 종목의 최신성·최근14일범위·실제 DB스키마·파일무결성까지 확인한 뒤GPU학습을 시작합니다.
++3. 이후 업비트에서 요청당200개씩완성봉을 중복없이누적하며 재학습합니다. 외부특징에 필요한최신보조시세도 갱신합니다.
++4. 기존 업비트 현물 모의계좌는 다운로드·학습과 별개로 계속 운용합니다. 새 모델은 기존 시간순검증·비용 차감손익·승격기준을 통과할 때만 적용됩니다.
++
++가상 원금은기존합계1,000만원을 이어 사용합니다. 실제주문·인증키·레버리지·강제거래·외부알림은 없습니다. 100%정확도·수익·상시GPU100%를 보장하지 않습니다. 다운로드/처리에CPU와저장장치가필요하며학습전용CUDA검사는유지합니다.
++
++## 구성
++
++- `external_data.py`: 공식 월간/일간 캔들·체결파일 수집, 원본 SHA256검증, 스트리밍1분봉집계와실시간업데이트.
++- `external_features.py`: 외부분봉실제schema검사·50GB학습시작조건·상대가격/거래흐름11개특징. 원화가격·업비트라벨과섞지않습니다.
++- `manage.py`:3차수집기만시작·상태·정상정지합니다. 공용컨테이너나기존감독프로세스를재시작하지않습니다.
++- `engine-config.json`:이번차수설정스냅숏. 활성공통엔진은부모`engine.py`이며정규실행설정은부모`engine-config.json`과동일합니다. 부모의장부·시세·모델을복제하지않고이어사용합니다.
++- `work/archives`:검증된원본파일. `work/data/external.sqlite3`:분봉집계. `work/status.json`:진행상태. 운영자료는GitHub에공개하지않습니다.
++- `docs/요구사항_및_데이터계약.md`:요구변경·저장schema·분리/보호조건의상세기록.
++
++## 운영
++
++기존2026컨테이너에서프로젝트root를작업폴더로하여실행합니다.
++
++```powershell
++& 'C:/Program Files/Docker/Docker/resources/bin/docker.exe' exec -w '/workspace/2026/Upbit 5-Coin Project' 2026 .venv/bin/python 3차/manage.py status
++```
++
++`status`대신`start`·`stop`·`restart`를사용할수있습니다. 이명령의정지는외부수집기만대상입니다. 전체모의운영정지는부모`운영.ps1 stop`도함께실행해야합니다. 정상종료시간초과는오류로보고하고다른프로젝트를강제종료하지않습니다.
++
++대시보드는기존 http://127.0.0.1:8765/ 를사용합니다. 초기자료준비는학습완료100%와구분해표시합니다. 전체운영에는컴퓨터·Docker·프로젝트서비스가계속실행되어야합니다. 컨테이너재시작후수집기와기존감독서비스를다시확인해야합니다.
++
++## 용량과 한계
++
++50GB는실제검증·처리된고유압축파일바이트목표이며메모리에50GB를동시에올리는뜻이아닙니다. DB인덱스·임시복제·압축해제중복파일로목표를채우지않습니다. 원시체결은학습용분봉통계로집계하므로원시체결건수·고유분봉수·학습행수는서로다릅니다. 최종파일단위로최대6GB정도목표를초과할수있습니다.
++
++현재다운로드와준비중이며50GB확보·새모델학습·수익검증을완료했다고보고하지않습니다. 실제수치는`work/status.json`과대시보드에서확인합니다. 통제된작은파일·합성DB시험은실제50GB학습성적이아닙니다.
++
++아카이브의현재파일·해시·디스크여유20GB·필수schema를검사합니다. 해시캐시는파일동일성변경또는1시간에재검증하며기동시다시검사합니다. 공식CHECKSUM은아카이브재사용시다시확인합니다. 같은권한의공격자가소스와상태까지고치는상황에대한서버보증경계는아닙니다. 과거실제공개가용시각의전송지연을복원한자료가아니므로후속실시간모의검증도별도로필요합니다.
++
++## 출처와 공개
++
++[Binance Public Data](https://github.com/binance/binance-public-data), [시장자료전용공개API](https://developers.binance.com/en/docs/products/spot/faqs/market_data_only), [자료이용조건](https://raw.githubusercontent.com/binance/binance-public-data/master/TERMS_AND_CONDITIONS.md)을확인했습니다. 개인비상업연구·모의체결용이며실주문·유료신호배포로사용하지않습니다. 원시자료·모델·계좌·운영로그·개인지침은공개하지않고코드와집계검사기록만반영합니다.
+--- 133824초기/engine-config.json
++++ 현행3차/engine-config.json
+@@ -0,0 +1,39 @@
++{
++  "collection": {"recent_pages": 2, "backfill_pages_per_cycle": 20, "poll_seconds": 30, "request_interval": 0.18, "retries": 4},
++  "external": {"enabled": "auto", "wait_for_dataset": true, "target_bytes": 50000000000,
++               "db_path": "3차/work/data/external.sqlite3", "status_path": "3차/work/status.json"},
++  "training": {
++    "train_days": 36500,
++    "tune_days": 2,
++    "calibration_days": 2,
++    "rule_days": 2,
++    "validation_days": 2,
++    "min_closed_trades": 3,
++    "horizon_candidates": [12, 24],
++    "threshold_candidates": [0.006, 0.003],
++    "class_weight_candidates": ["recency", "bounded_inverse_sqrt"],
++    "class_weight_mode": "recency",
++    "class_weight_cap": 3.0,
++    "holdout_days": 1,
++    "holdout_start": "2026-10-19T00:00:00Z",
++    "holdout_end": "2026-10-20T00:00:00Z",
++    "max_rows_per_market": 2000000,
++    "max_raw_rows": 8000000,
++    "candidate_depths": [3, 5, 7],
++    "rounds": 400,
++    "retrain_seconds": 0
++  },
++  "paper": {
++    "initial_cash": 10000000,
++    "start_time": "2026-10-26T06:28:27Z",
++    "max_allocation": 0.125,
++    "max_total_allocation": 0.5,
++    "daily_loss_limit": 0.015,
++    "stop_loss": 0.02,
++    "take_profit": 0.04,
++    "fee": 0.0005,
++    "slippage": 0.0005,
++    "min_order": 5000,
++    "poll_seconds": 15
++  }
++}
+--- 133824초기/external_data.py
++++ 현행3차/external_data.py
+@@ -36,6 +36,34 @@
+ BAR_COLUMNS = ['open_time', 'open', 'high', 'low', 'close', 'volume',
+                'quote_volume', 'trade_count', 'taker_quote_volume']
+ STOP = threading.Event()
++
++
++class ArchiveIntegrityError(ValueError):
++    """안전한 일반 파일의 크기·해시 불일치만 복구 대상으로 구분합니다."""
++
++
++def file_sha256(path):
++    fd = os.open(path, os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0))
++    with os.fdopen(fd, 'rb') as stream:
++        return hashlib.file_digest(stream, 'sha256').hexdigest()
++BAR_TYPES = {'symbol': 'TEXT', 'open_time': 'INTEGER', 'open': 'REAL', 'high': 'REAL', 'low': 'REAL',
++             'close': 'REAL', 'volume': 'REAL', 'quote_volume': 'REAL', 'trade_count': 'INTEGER',
++             'taker_quote_volume': 'REAL', 'source': 'TEXT'}
++
++
++def disk_budget(path, additional=0):
++    if shutil.disk_usage(path).free < RESERVE_BYTES + max(1_048_576, additional):
++        raise OSError('외부 자료 쓰기를 중단합니다: 디스크 여유20GB보호선 부족')
++
++
++def check_schema(db):
++    kind = db.execute("SELECT type FROM sqlite_master WHERE name='bars'").fetchone()
++    info = db.execute('PRAGMA table_info(bars)').fetchall()
++    if (kind != ('table',) or [(r[1], r[2].upper()) for r in info] != list(BAR_TYPES.items())
++            or {r[1]: r[5] for r in info if r[5]} != {'symbol': 1, 'open_time': 2}):
++        raise ValueError('외부 bars 실제 스키마 또는 기본키가 계약과 다릅니다')
++    if db.execute("SELECT value FROM metadata WHERE key='schema'").fetchone() != ('binance_spot_v1',):
++        raise ValueError('외부 DB 스키마 식별자가 계약과 다릅니다')
+ 
+ 
+ def utc_ms():
+@@ -182,6 +210,9 @@
+         self.path = Path(path)
+         self.path.parent.mkdir(parents=True, exist_ok=True)
+         with self.connect() as db:
++            if db.execute("SELECT 1 FROM sqlite_master WHERE name='bars'").fetchone():
++                check_schema(db)
++                return
+             db.executescript('''CREATE TABLE IF NOT EXISTS bars(
+                 symbol TEXT NOT NULL, open_time INTEGER NOT NULL, open REAL, high REAL, low REAL, close REAL,
+                 volume REAL, quote_volume REAL, trade_count INTEGER, taker_quote_volume REAL, source TEXT,
+@@ -189,6 +220,7 @@
+                 CREATE TABLE IF NOT EXISTS stats(symbol TEXT PRIMARY KEY, rows INTEGER, first_open_ms INTEGER, last_open_ms INTEGER);
+                 CREATE TABLE IF NOT EXISTS metadata(key TEXT PRIMARY KEY,value TEXT);
+                 INSERT OR IGNORE INTO metadata VALUES('schema','binance_spot_v1');''')
++            check_schema(db)
+ 
+     def connect(self):
+         from contextlib import contextmanager
+@@ -211,6 +243,7 @@
+         frame = validate_bars(frame)
+         if frame.empty:
+             return 0
++        disk_budget(self.path.parent, len(frame) * 1024)
+         if (frame.open_time + 60000 > utc_ms()).any():
+             raise ValueError('미완성 외부 분봉입니다')
+         rows = [(symbol, int(r[0]), *map(float, r[1:7]), int(r[7]), float(r[8]), source)
+@@ -230,10 +263,17 @@
+             return {s: {'rows': n, 'first_open_ms': first, 'last_open_ms': last}
+                     for s, n, first, last in db.execute('SELECT * FROM stats')}
+ 
++    def archive_evidence(self, target, ingested, verified):
++        with self.connect() as db:
++            db.executemany('INSERT OR REPLACE INTO metadata VALUES(?,?)',
++                           [('target_archive_bytes', str(target)), ('ingested_archive_bytes', str(ingested)),
++                            ('verified_archive_bytes', str(verified))])
++
+     def ready(self, now_ms):
+         stats = self.summary()
+         cutoff = (now_ms // 60000 - 14 * 1440) * 60000
+         with self.connect() as db:
++            check_schema(db)
+             recent = {s: db.execute('SELECT COUNT(*) FROM bars WHERE symbol=? AND open_time>=?',
+                                      (s, cutoff)).fetchone()[0] for s in SYMBOLS}
+         return all(s in stats and stats[s]['rows'] >= 20000
+@@ -296,28 +336,84 @@
+         self.lock = threading.RLock()
+         self.manifest_path = self.work / 'archive_manifest.json'
+         self.manifest = json.loads(self.manifest_path.read_text(encoding='utf-8')) if self.manifest_path.exists() else {}
++        if not isinstance(self.manifest, dict):
++            raise ValueError('외부 아카이브 목록 형식 오류')
++        self.integrity_cache = {}
++        self.integrity_errors = {}
+         self.runtime = {'state': '시작', 'bulk_error': None, 'live_error': None, 'archive_current': None}
++
++    def verified_file(self, name, item):
++        if (not isinstance(item, dict) or name != item.get('name') or item.get('symbol') not in SYMBOLS
++                or not re.fullmatch(r'(BTCUSDT|SOLUSDT|ETHUSDT|XRPUSDT|DOGEUSDT)-(1m|aggTrades)-\d{4}-\d{2}(-\d{2})?\.zip', name)
++                or type(item.get('bytes')) is not int or not 0 < item['bytes'] <= MAX_ARCHIVE
++                or not isinstance(item.get('sha256'), str) or not re.fullmatch('[a-f0-9]{64}', item['sha256'])):
++            raise ValueError('아카이브 원본 목록·이름·크기·해시 형식이 잘못됐습니다')
++        path = self.archives / name
++        if not path.is_file() or path.is_symlink() or path.resolve().parent != self.archives.resolve():
++            raise ValueError('검증 원본 파일이 없거나 경계를 벗어났습니다')
++        info = path.stat()
++        identity = (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
++        if info.st_size != item['bytes']:
++            raise ArchiveIntegrityError('검증 원본의 현재 크기가 다릅니다')
++        cached = self.integrity_cache.get(name)
++        if (cached and cached['identity'] == identity and cached['sha256'] == item['sha256']
++                and time.monotonic() - cached['checked_at'] < 3600):
++            return True
++        actual = file_sha256(path)
++        after = path.stat()
++        if ((after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns) != identity
++                or actual != item['sha256']):
++            raise ArchiveIntegrityError('검증 원본의 현재 SHA256 또는 파일 동일성이 다릅니다')
++        self.integrity_cache[name] = {'identity': identity, 'sha256': actual, 'checked_at': time.monotonic()}
++        return True
++
++    def verified_items(self):
++        verified = []
++        for name, item in self.manifest.items():
++            if not isinstance(item, dict) or item.get('sha256_verified') is not True:
++                continue
++            try:
++                self.verified_file(name, item)
++            except (OSError, ValueError) as error:
++                self.integrity_errors[name] = str(error)
++                self.integrity_cache.pop(name, None)
++            else:
++                self.integrity_errors.pop(name, None)
++                verified.append(item)
++        return verified
+ 
+     def status(self, **fields):
+         with self.lock:
+             self.runtime.update(fields)
+             stats = self.store.summary()
+-            verified = [item for item in self.manifest.values() if item.get('sha256_verified')]
++            verified = self.verified_items()
+             total = sum(item['bytes'] for item in verified)
+             ingested = sum(item['bytes'] for item in verified if item.get('ingested'))
++            self.store.archive_evidence(self.target, ingested, total)
+             result = {'schema_version': 1, 'updated_at': dt.datetime.now(dt.timezone.utc).isoformat(),
+-                      'training_ready': ingested >= self.target and self.store.ready(utc_ms()),
++                      'training_ready': not self.integrity_errors and ingested >= self.target and self.store.ready(utc_ms()),
+                       'target_archive_bytes': self.target, 'ingested_archive_bytes': ingested,
+                       'verified_archive_bytes': total, 'verified_archives': len(verified),
+                       'unique_minute_rows': sum(v['rows'] for v in stats.values()), 'markets': stats,
+                       'db_schema': 'binance_spot_v1', 'paper_only': True, **self.runtime}
+-            result['error'] = result['bulk_error'] or result['live_error']
++            result['integrity_errors'] = dict(self.integrity_errors)
++            result['error'] = result['bulk_error'] or result['live_error'] or ('원본 파일 무결성 확인 실패' if self.integrity_errors else None)
+             atomic_json(self.work / 'status.json', result)
+             return result
+ 
+     def download(self, spec):
+         name, url = spec['name'], spec['url']
++        if spec != archive_spec(spec['symbol'], spec['kind'], spec['period'], spec['frequency']):
++            raise ValueError('외부 아카이브 요청 명세가 고정 계약과 다릅니다')
++        if spec['symbol'] not in SYMBOLS or spec['kind'] not in ('klines', 'aggTrades'):
++            raise ValueError('지원하지 않는 아카이브 시장 또는 종류입니다')
++        if not re.fullmatch(r'\d{4}-\d{2}(-\d{2})?', spec['period']):
++            raise ValueError('아카이브 날짜 경로 오류')
+         path = self.archives / name
++        if (self.archives.is_symlink() or self.archives.resolve().parent != self.work.resolve()
++                or path.is_symlink() or (path.exists() and not path.is_file())
++                or path.resolve().parent != self.archives.resolve()):
++            raise ValueError('다운로드 원본 경로·링크 경계 오류')
+         with open_public(url + '.CHECKSUM') as response:
+             checksum = response.read(4097).decode('ascii')
+         expected = re.fullmatch(r'([a-fA-F0-9]{64})\s+\*?' + re.escape(name) + r'\s*', checksum)
+@@ -325,25 +421,41 @@
+             raise ValueError('체크섬 형식 또는 파일명 불일치')
+         digest = expected.group(1).lower()
+         if path.exists():
+-            with path.open('rb') as stream:
+-                actual = hashlib.file_digest(stream, 'sha256').hexdigest()
++            item = {**spec, 'bytes': path.stat().st_size, 'sha256': digest}
++            try:
++                self.verified_file(name, item)
++                actual = digest
++            except ArchiveIntegrityError:
++                actual = file_sha256(path)
+             if actual != digest:
+                 # 기존 잘못된 원본도 삭제하지 않고 격리합니다.
+-                path.rename(path.with_name(path.name + '.rejected-' + uuid.uuid4().hex[:8]))
++                rejected = path.with_name(path.name + '.rejected-' + uuid.uuid4().hex[:8])
++                path.rename(rejected)
++                atomic_json(rejected.with_name(rejected.name + '.json'),
++                            {'source_url': url, 'original_name': name, 'preserved_file': rejected.name,
++                             'actual_sha256': actual, 'current_official_sha256': digest,
++                             'previous_manifest': self.manifest.get(name),
++                             'observed_at': dt.datetime.now(dt.timezone.utc).isoformat()})
++                logging.error('원본 변경/손상 보존 %s 실제SHA256=%s 기대=%s', rejected.name, actual, digest)
++                self.integrity_cache.pop(name, None)
+             else:
+                 return path, digest
+-        temporary = path.with_suffix('.zip.part')
++        temporary = path.with_name(path.name + '.' + uuid.uuid4().hex + '.part')
++        created = False
+         try:
+-            with open_public(url, timeout=45) as response, temporary.open('wb') as stream:
++            with open_public(url, timeout=45) as response, temporary.open('xb') as stream:
++                created = True
+                 length = int(response.headers.get('Content-Length', '0'))
+-                if length > MAX_ARCHIVE or shutil.disk_usage(self.work).free < length + RESERVE_BYTES:
++                if length > MAX_ARCHIVE:
+                     raise OSError('외부 아카이브 크기 또는 디스크 여유 경계')
++                disk_budget(self.work, length or MAX_ARCHIVE)
+                 actual, size = hashlib.sha256(), 0
+                 started = time.monotonic()
+                 while chunk := response.read(1024 * 1024):
+                     if STOP.is_set():
+                         raise InterruptedError('사용자 중단')
+                     size += len(chunk)
++                    disk_budget(self.work, len(chunk))
+                     if size > MAX_ARCHIVE or time.monotonic() - started > 1800:
+                         raise TimeoutError('파일 크기 또는 다운로드 시간 상한 초과')
+                     if size % (32 * 1024 * 1024) == 0:
+@@ -356,7 +468,8 @@
+                     raise ValueError('다운로드 크기 또는 SHA256 검증 실패')
+             os.replace(temporary, path)
+         finally:
+-            temporary.unlink(missing_ok=True)
++            if created:
++                temporary.unlink(missing_ok=True)
+         return path, digest
+ 
+     def ingest(self, spec, path):
+@@ -372,18 +485,23 @@
+                 for frame in parsed:
+                     if STOP.is_set():
+                         raise InterruptedError('사용자 중단')
++                    disk_budget(self.work, len(frame) * 1024)
+                     count += self.store.save(spec['symbol'], frame, spec['name'])
+         return count
+ 
+     def archive(self, spec):
+         existing = self.manifest.get(spec['name'], {})
+         path = self.archives / spec['name']
+-        if existing.get('ingested') and path.exists() and path.stat().st_size == existing.get('bytes'):
+-            return
+         self.status(state='외부 자료 수집', archive_current=spec['name'], download_bytes=0)
+         for attempt in range(3):
++            if STOP.is_set():
++                raise InterruptedError('사용자 중단')
+             try:
+                 path, digest = self.download(spec)
++                if existing.get('ingested') is True and existing.get('sha256') == digest:
++                    self.integrity_errors.pop(spec['name'], None)
++                    self.status(bulk_error=None, archive_current=None)
++                    return
+                 with self.lock:
+                     self.manifest[spec['name']] = {**spec, 'bytes': path.stat().st_size,
+                                                    'sha256': digest, 'sha256_verified': True, 'ingested': False}
+@@ -404,6 +522,8 @@
+                 if error.code not in (429, 500, 502, 503, 504) or attempt == 2:
+                     raise
+                 STOP.wait(min(60, max(2 ** (attempt + 1), float(error.headers.get('Retry-After', 0)))))
++            except InterruptedError:
++                raise
+             except (OSError, TimeoutError, urllib.error.URLError):
+                 if attempt == 2:
+                     raise
+@@ -421,6 +541,7 @@
+             if not isinstance(payload, list) or not payload:
+                 raise ValueError('실시간 공개 분봉이 비어 있거나 오류입니다')
+             frame = parse_klines(pd.DataFrame(payload), utc_ms())
++            disk_budget(self.work, len(frame) * 1024)
+             self.store.save(symbol, frame, 'binance-public-live-klines')
+             if STOP.wait(.25):
+                 return
+@@ -447,11 +568,11 @@
+                             break
+                         self.archive(spec)
+                     for spec in bulk_plan(now):
+-                        if STOP.is_set() or self.status()['verified_archive_bytes'] >= self.target:
++                        if STOP.is_set() or self.status()['ingested_archive_bytes'] >= self.target:
+                             break
+                         self.archive(spec)
+                     if not STOP.is_set():
+-                        self.status(state='목표 자료 확보 후 실시간 갱신' if self.status()['verified_archive_bytes'] >= self.target
++                        self.status(state='목표 자료 확보 후 실시간 갱신' if self.status()['ingested_archive_bytes'] >= self.target
+                                     else '공식 자료 범위 탐색 완료; 다음 갱신 대기')
+                         STOP.wait(3600)
+                 except InterruptedError:
+--- 133824초기/external_features.py
++++ 현행3차/external_features.py
+@@ -22,10 +22,19 @@
+                    "ext_range", "ext_body", "ext_volume_ratio", "ext_quote_volume_ratio",
+                    "ext_trade_count_ratio", "ext_volatility", "ext_taker_buy_ratio"]
+ READ_CHUNK_ROWS = 50000
++MIN_DATASET_BYTES = 50000000000
+ MIN_OPEN_MS = 1483228800000
+ MAX_AGE = pd.Timedelta(minutes=5)
+ # 결측을 무제한 이월하지 않으며 최신 추론에서는 별도로 현재 시각 대비 5분도 검사합니다.
+ JOIN_TOLERANCE = pd.Timedelta(minutes=2)
++
++
++class DatasetNotReady(RuntimeError):
++    """신규 학습은 대기하되 기존 모델 운용을 바꾸지 않는 준비 상태입니다."""
++
++    def __init__(self, evidence):
++        self.evidence = evidence
++        super().__init__(evidence["reason"])
+ 
+ 
+ def _utc(value):
+@@ -36,13 +45,18 @@
+ 
+ 
+ def validate_config(settings, root):
+-    if not isinstance(settings, dict) or set(settings) - {"enabled", "db_path", "status_path"}:
++    if not isinstance(settings, dict) or set(settings) - {"enabled", "db_path", "status_path", "wait_for_dataset", "target_bytes"}:
+         raise ValueError("지원하지 않는 외부 자료 설정입니다")
+     result = {"enabled": False, "db_path": "3차/work/data/external.sqlite3",
+-              "status_path": "3차/work/status.json", **settings}
++              "status_path": "3차/work/status.json", "wait_for_dataset": False,
++              "target_bytes": MIN_DATASET_BYTES, **settings}
+     mode = result["enabled"]
+     if type(mode) is not bool and not (isinstance(mode, str) and mode == "auto"):
+         raise ValueError("external.enabled는 false/true/auto만 허용합니다")
++    if type(result["wait_for_dataset"]) is not bool or (result["wait_for_dataset"] and mode is False):
++        raise ValueError("외부 자료 대기는 bool이며 외부 사용 설정과 함께 지정해야 합니다")
++    if type(result["target_bytes"]) is not int or result["target_bytes"] < MIN_DATASET_BYTES:
++        raise ValueError("외부 자료 목표는 최소 50,000,000,000바이트 정수여야 합니다")
+     root = Path(root).resolve()
+     boundary = (root / "3차" / "work").resolve()
+     if not boundary.is_relative_to(root):
+@@ -73,6 +87,11 @@
+         raise ValueError("외부 DB metadata 스키마 버전이 다릅니다")
+ 
+ 
++def _query_deadline(db):
++    deadline = time.monotonic() + 25
++    db.set_progress_handler(lambda: int(time.monotonic() > deadline), 10000)
++
++
+ @contextlib.contextmanager
+ def _database(settings, root):
+     # 테스트 DB를 포함하여 외부 bars는 Linux 밖에서 절대로 열지 않습니다.
+@@ -82,8 +101,7 @@
+     if not path.is_file():
+         raise FileNotFoundError("외부 bars DB가 없습니다")
+     db = sqlite3.connect(path.as_uri() + "?mode=ro", uri=True, timeout=5)
+-    deadline = time.monotonic() + 25
+-    db.set_progress_handler(lambda: int(time.monotonic() > deadline), 10000)
++    _query_deadline(db)
+     try:
+         db.execute("PRAGMA query_only=ON")
+         db.execute("BEGIN")
+@@ -102,7 +120,7 @@
+             and value % 60000 == 0)
+ 
+ 
+-def _status_ready(payload, now):
++def _status_ready(payload, now, target):
+     if (not isinstance(payload, dict) or type(payload.get("schema_version")) is not int
+             or payload["schema_version"] != 1 or payload.get("db_schema") != DB_SCHEMA
+             or payload.get("training_ready") is not True):
+@@ -111,8 +129,11 @@
+     if pd.Timestamp(payload["updated_at"]).utcoffset().total_seconds() != 0 or not pd.Timedelta(0) <= now - updated <= MAX_AGE:
+         raise ValueError("외부 상태 갱신 시각이 오래되었거나 미래입니다")
+     if any(not _nonnegative_int(payload.get(k)) for k in
+-           ("verified_archive_bytes", "target_archive_bytes", "unique_minute_rows")) or payload["target_archive_bytes"] <= 0:
++           ("verified_archive_bytes", "target_archive_bytes", "ingested_archive_bytes", "unique_minute_rows")):
+         raise ValueError("외부 상태의 용량/행 수가 유효하지 않습니다")
++    if (payload["target_archive_bytes"] < target or payload["ingested_archive_bytes"] < target
++            or payload["verified_archive_bytes"] < payload["ingested_archive_bytes"]):
++        raise ValueError("검증·적재된 고유 외부 아카이브가 목표 용량에 미달합니다")
+     if not isinstance(payload.get("state"), str) or not payload["state"] or payload.get("error") is not None:
+         raise ValueError("외부 상태가 오류 또는 미확인 상태입니다")
+     markets = payload.get("markets")
+@@ -133,13 +154,28 @@
+     resolved = validate_config(settings, root)
+     now = _utc(now)
+     evidence = {"requested": resolved["enabled"], "checked_at": now.isoformat()}
+-    if resolved["enabled"] != "auto":
+-        return resolved, {**evidence, "training_ready": resolved["enabled"], "reason": "명시 설정"}
++    if resolved["enabled"] != "auto" and not resolved["wait_for_dataset"]:
++        return resolved, {**evidence, "training_ready": None, "reason": "명시 설정; 준비 검사 미실행"}
++    evidence.update(verified_archive_bytes=0, ingested_archive_bytes=0,
++                    target_archive_bytes=resolved["target_bytes"])
+     try:
+         payload = json.loads((Path(root) / resolved["status_path"]).read_text(encoding="utf-8"))
+-        _status_ready(payload, now)
++        if isinstance(payload, dict):
++            for key in ("verified_archive_bytes", "ingested_archive_bytes"):
++                if _nonnegative_int(payload.get(key)):
++                    evidence[key] = payload[key]
++            evidence["reported_target_archive_bytes"] = payload.get("target_archive_bytes")
++        _status_ready(payload, now, resolved["target_bytes"])
+         now_ms = int(now.timestamp() * 1000)
+         with _database(resolved, root) as db:
++            metadata = dict(db.execute("SELECT key,value FROM metadata WHERE key IN ('target_archive_bytes','ingested_archive_bytes','verified_archive_bytes')"))
++            for key in ("target_archive_bytes", "ingested_archive_bytes", "verified_archive_bytes"):
++                value = metadata.get(key)
++                if not isinstance(value, str) or not value.isascii() or not value.isdecimal() or int(value) < resolved["target_bytes"]:
++                    raise ValueError(f"외부 DB metadata.{key}의 50GB 목표/적재 근거가 부족합니다")
++            if (int(metadata["verified_archive_bytes"]) < int(metadata["ingested_archive_bytes"])
++                    or int(metadata["ingested_archive_bytes"]) < payload["ingested_archive_bytes"]):
++                raise ValueError("외부 DB와 상태의 검증/적재 용량 근거가 일치하지 않습니다")
+             actual = {}
+             for symbol, reported in payload["markets"].items():
+                 count, first, last = db.execute("SELECT COUNT(*),MIN(open_time),MAX(open_time) FROM bars WHERE symbol=?", (symbol,)).fetchone()
+@@ -158,8 +194,8 @@
+         resolved["enabled"] = True
+         return resolved, {**evidence, "training_ready": True, "reason": "상태 및 실제 DB 검사 통과", "markets": actual}
+     except (OSError, ValueError, TypeError, KeyError, OverflowError, sqlite3.Error, RuntimeError) as exc:
+-        resolved["enabled"] = False
+-        return resolved, {**evidence, "training_ready": False, "reason": str(exc), "error_type": type(exc).__name__}
++        raise DatasetNotReady({**evidence, "training_ready": False, "reason": str(exc),
++                               "error_type": type(exc).__name__}) from exc
+ 
+ 
+ def ratio_features(raw, now):
+@@ -234,7 +270,12 @@
+         carry = pd.DataFrame()
+         previous_end = None
+         features = ratio_features(pd.DataFrame(), now)
+-        while rows := cursor.fetchmany(READ_CHUNK_ROWS):
++        while True:
++            # CPU 특징 계산 시간은 다음 SQL 호출의 제한 시간을 소진하지 않습니다.
++            _query_deadline(db)
++            rows = cursor.fetchmany(READ_CHUNK_ROWS)
++            if not rows:
++                break
+             chunk = pd.DataFrame.from_records(rows, columns=list(BAR_TYPES))
+             if not carry.empty:
+                 chunk = pd.concat([carry, chunk], ignore_index=True)
+--- 133824초기/manage.py
++++ 현행3차/manage.py
+@@ -0,0 +1,85 @@
++"""공유 컨테이너를 건드리지 않고3차 수집기만 제어합니다."""
++import argparse
++import json
++import os
++from pathlib import Path
++import signal
++import subprocess
++import sys
++import time
++
++ROOT = Path(__file__).resolve().parent
++PROJECT = ROOT.parent
++SCRIPT = ROOT / 'external_data.py'
++
++
++def matches(pid):
++    try:
++        proc = Path('/proc') / str(pid)
++        if proc.joinpath('cwd').resolve() != PROJECT.resolve():
++            return False
++        arguments = proc.joinpath('cmdline').read_bytes().split(b'\0')
++        values = [a.decode('utf-8') for a in arguments if a]
++        scripts = [a for a in values[1:] if not a.startswith('-')]
++        return (len(scripts) == 2 and (PROJECT / scripts[0]).resolve() == SCRIPT.resolve()
++                and scripts[1] == 'run')
++    except (FileNotFoundError, ProcessLookupError, PermissionError, UnicodeError):
++        return False
++
++
++def processes():
++    return [int(p.name) for p in Path('/proc').iterdir() if p.name.isdecimal() and matches(int(p.name))]
++
++
++def stop():
++    if not hasattr(os, 'pidfd_open') or not hasattr(signal, 'pidfd_send_signal'):
++        raise RuntimeError('PID 재사용 방지 기능이 없는 환경에서는 정지하지 않습니다')
++    found = processes()
++    for pid in found:
++        fd = os.pidfd_open(pid)
++        try:
++            if matches(pid):
++                signal.pidfd_send_signal(fd, signal.SIGTERM)
++        finally:
++            os.close(fd)
++    deadline = time.monotonic() + 100
++    while any(matches(pid) for pid in found):
++        if time.monotonic() >= deadline:
++            raise TimeoutError('수집기 정상 종료 시간 초과; 강제 종료하지 않았습니다')
++        time.sleep(.25)
++    return found
++
++
++def start():
++    current = processes()
++    if current:
++        return current
++    (ROOT / 'work').mkdir(parents=True, exist_ok=True)
++    with (ROOT / 'work/console.log').open('ab') as stream:
++        child = subprocess.Popen([str(PROJECT / '.venv/bin/python'), '-u', str(SCRIPT), 'run'],
++                                 cwd=PROJECT, stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT,
++                                 start_new_session=True, close_fds=True)
++    deadline = time.monotonic() + 5
++    while time.monotonic() < deadline:
++        if child.poll() is not None:
++            raise RuntimeError(f'수집기 시작 실패: 종료코드{child.returncode}')
++        if matches(child.pid):
++            return [child.pid]
++        time.sleep(.1)
++    raise RuntimeError('수집기 신원 확인 시간 초과')
++
++
++def main():
++    if sys.platform != 'linux':
++        raise RuntimeError('기존2026 Linux 컨테이너 전용 도구입니다')
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('action', choices=['start', 'stop', 'restart', 'status'])
++    args = parser.parse_args()
++    if args.action in ('stop', 'restart'):
++        stop()
++    pids = start() if args.action in ('start', 'restart') else processes()
++    print(json.dumps({'action': args.action, 'pids': pids, 'shared_container_restarted': False}))
++
++
++if __name__ == '__main__':
++    main()
+--- 133824초기/변경기록.md
++++ 현행3차/변경기록.md
+@@ -0,0 +1,41 @@
++# 3차 변경 기록
++
++## 기준과 차수
++
++직전 공개 기준은`892f759d1baad8ada8fbdbdd9f801b259dfa586c`입니다. 로컬 보존 대응표에서1차·2차경로존재를확인했으며이번추가본을3차폴더로분리했습니다. 이전1·2차의개인운영자료포함압축원본은공개하지않고보존합니다. 존재확인과공개파일별세부비교가능여부는다르므로확인하지못한구버전효과를추정하지않습니다.
++
++[직전공개기준](https://github.com/PUVKID/Upbit-Paper-Trading-Project/tree/892f759d1baad8ada8fbdbdd9f801b259dfa586c) · [최신전체Git차이](https://github.com/PUVKID/Upbit-Paper-Trading-Project/compare/892f759d1baad8ada8fbdbdd9f801b259dfa586c...main)
++
++## 파일별 차이
++
++| 구분 | 파일 | 실제 변화 |
++|---|---|---|
++| 추가 | `3차/external_data.py` |공식고유ZIP50GB목표·SHA256·청크분봉집계·실시간5시장·디스크20GB보호·스키마/원본무결성·적재완료기준|
++| 추가 | `3차/external_features.py` |외부DB읽기전용검사·50GB준비판정·11개단위없는특징·닫힌시각과거결합·누락보호|
++| 추가 | `3차/manage.py` |cwd/정확스크립트/argv확인·pidfd정상정지·외부수집기별도제어|
++| 추가 | `3차/engine-config.json` |초기50GB처리전학습대기·auto외부사용·공통모의계좌설정스냅숏|
++| 추가 | `3차/README.md`, 본문서, `3차/docs/요구사항_및_데이터계약.md` |최신50GB→GPU학습→업비트200건증분/모의매매병행조건·이전정정이력·자료계약·한계|
++| 추가 | `tests/test_external_data.py` |파서/마이크로초/체크섬/실파일누락손상/용량게이트/디스크/schema/링크/프로세스경계17검사|
++| 추가 | `tests/test_external_features.py` |과거방향결합·미완성/누락/변조·auto회차동결·50GB대기·기존모델호환·청산유지21검사|
++| 추가 | `tests/test_external_dashboard.py` |다운로드대기에직전100%진행률비표시·외부용량·비공개오류차단1검사|
++| 수정 | `engine.py` |설정키·동적외부모듈연결·회차별해석동결·준비미달대기와설정근거기록. GPU핵심5함수는직전과동일|
++| 수정 | `engine-config.json` |외부auto·wait_for_dataset=true·target_bytes50GB·3차저장경로추가|
++| 수정 | `dashboard.py` |허용외부요약필드만공개·현재waiting_data진행과직전완료후보분리|
++| 수정 | `web/app.js` |기존요약과홈진행률에다운로드검증·처리/50GB·고유분봉표시. 숫자좁은폭축약. HTML/CSS배치와3D형상불변|
++| 수정 | README·CHANGELOG·차수색인 |3차경로와정확한변경/제외/검증범위연결|
++
++기존 코드의주석·공백·들여쓰기차이도연결된전체Git차이에서볼수있습니다. 새바이너리·삭제파일·새외부의존성은없습니다. GPU학습률0.05·깊이·라운드·라벨·원금·수수료·승격·손실기준을임의완화하지않았습니다. 코드와설정이바뀌었다고95%/100%정확도나수익개선으로표현하지않습니다.
++
++## 검증과 실제 실행
++
++최종구현자host전체251개검사는15.924초에통과했으며선언된환경별생략15개가있습니다. 정적90개오류0,1.031초였습니다. 외부수집Linux17개와외부특징Linux21개도별도통과했습니다. 이는합성/격리fixture검사이며실제50GB를시험중생성한것은아닙니다. 별도검증자의최종판정과반영커밋은독립결과및로컬반영영수증에서확인합니다.
++
++5시장실시간4995완성분봉과첫BTC월간ZIP2,054,117바이트/43,200분봉의실다운로드·SHA256·집계를확인했습니다. 이후실제백그라운드수집이계속진행되며50GB미달에는trainer가waiting_data/download로대기합니다. 기존모의매매와손절·청산은별도계속합니다. 실확보량은변하므로정적인본문수치를완료량으로쓰지않습니다.
++
++기존GPU최적화정규회차는약979초에서약405초로완료된실측이있습니다. 자료·후보·부하가달라일정가속배수를보장하지않습니다. 이번3차외부자료학습은50GB처리뒤시작하므로아직새모델의성적·수익을달성했다고보고하지않습니다.
++
++## 실패와 제외
++
++독립사전검사에서디스크여유·허위캐시·누락원본·schema·미적재재시도·링크경계를FAIL로확인하여수리했습니다. 이전FAIL은로컬증거에유지하고뒤의PASS로삭제하지않습니다. 공개기록에는개인로그와실제계좌를복제하지않습니다.
++
++원본50GB·데이터베이스·모델가중치·가상계좌·수집로그·개인지침·비밀·로컬독립영수증·사전실패원문은공개에서제외합니다. 데이터이용약관에따른출처와비상업연구범위를유지합니다. 완성모델만승격하며정확도100%까지반드시성공하거나24시간GPU100%를유지한다는보장은없습니다.

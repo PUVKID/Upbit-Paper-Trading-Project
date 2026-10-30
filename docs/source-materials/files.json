@@ -1,0 +1,1018 @@
+[
+  {
+    "path": "3차/README.md",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: 3차/README.md",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 4627,
+    "sha256": "88372312421f212080d1afaf365844e46abf53001448594c9c395dc20925a0de"
+  },
+  {
+    "path": "3차/docs/요구사항_및_데이터계약.md",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: 3차/docs/요구사항_및_데이터계약.md",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 8169,
+    "sha256": "d1f46287aade733cd663046c69639b54c566b1f3934d9308a1ee1b47879c09d9"
+  },
+  {
+    "path": "3차/engine-config.json",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: 3차/engine-config.json",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 1278,
+    "sha256": "39099ca5e2d6655f7af6c855da67da2e09b2a239911a78bcb96242f4631485ad"
+  },
+  {
+    "path": "3차/external_data.py",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: 3차/external_data.py",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 31276,
+    "sha256": "89f33fec5e8418d4f9ab8b2dd604afb01df3819ba65ed9260050f593356e4a37"
+  },
+  {
+    "path": "3차/external_features.py",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: 3차/external_features.py",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 17323,
+    "sha256": "1ea7e1d133938d354dfe853bf190033362631894d7c606788cf240140db31b7b"
+  },
+  {
+    "path": "3차/manage.py",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: 3차/manage.py",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 3118,
+    "sha256": "25b98a04516847cd922b38c68f665a4fe12fe267dac13dc8013071300cdfa376"
+  },
+  {
+    "path": "3차/검사/test_external_data.py",
+    "source": "3차/검사/test_external_data.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 4265,
+    "sha256": "55e9b1657af2c5d7aa842b9931d9873dd0a9a1812b4b9ce268b681220e3348a3"
+  },
+  {
+    "path": "3차/검사/test_external_features.py",
+    "source": "3차/검사/test_external_features.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 14983,
+    "sha256": "8b11c5ad0baf115d6f3ca6bfee0bec4c2ec95a9174cae74c5b70345a12018d7f"
+  },
+  {
+    "path": "3차/변경기록.md",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: 3차/변경기록.md",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 4943,
+    "sha256": "22a8877d35a66de5eaefd765c782880901661e65ce5043f6b7bed1ca04f033e4"
+  },
+  {
+    "path": "3차/연결부/engine.py",
+    "source": "3차/연결부/engine.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 102911,
+    "sha256": "0413e50c1d081ce85bc060899dffb5f82d5fbf2245dc1793a2a88c6768df548a"
+  },
+  {
+    "path": "CHANGELOG.md",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: CHANGELOG.md",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 6352,
+    "sha256": "d03c7467829cef426e05635280d8d7a59eba045b6f0b1543c1a3d7f267537f2d"
+  },
+  {
+    "path": "README.md",
+    "source": "현행 공개 안내 문서: 원격 efd88ce의 3차 설명과 기존 차수·자료 색인 통합",
+    "kind": "현행 통합 안내 문서",
+    "reason": "원격 README와 기존 공개용 차수·자료·화면 안내를 통합한 문서이며 원격 raw 사본과 구분합니다.",
+    "bytes": 16431,
+    "sha256": "4bd51a052cef932923d93e324abbe9dbc665f7eba92f1dfd839799df81449ac5"
+  },
+  {
+    "path": "dashboard.py",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: dashboard.py",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 33621,
+    "sha256": "01b628748ce57c6686770898d0b5be2afa36d7671409970c3edb00094edb0ec5"
+  },
+  {
+    "path": "docs/2026_실행환경_이전.md",
+    "source": "docs/2026_실행환경_이전.md",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 2682,
+    "sha256": "37daea09e329890f035f11114b0e2ee4b9783dab249832605532012f72583d4d"
+  },
+  {
+    "path": "docs/2차_중립원인_연속학습.md",
+    "source": "docs/2차_중립원인_연속학습.md",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 2677,
+    "sha256": "8e14acf017c2ef17267348f724d96bcdfb712af4be549aad0d9e0a9fd4b5ea3d"
+  },
+  {
+    "path": "docs/글래스_대시보드_요구사항.md",
+    "source": "docs/글래스_대시보드_요구사항.md",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 2960,
+    "sha256": "ca69e2c0267f8315b8f92cfc73c0ff5abedb482799f16de23232db8140e02691"
+  },
+  {
+    "path": "docs/설계_요구사항.md",
+    "source": "docs/설계_요구사항.md",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 5751,
+    "sha256": "d8456fc2798d670bcbe122529c5aeb277bf0419daec61653c6080a0d116afa49"
+  },
+  {
+    "path": "docs/초보자_대시보드_개편.md",
+    "source": "docs/초보자_대시보드_개편.md",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 3994,
+    "sha256": "a6e17f47d1b3fd257bf013f4b6c222aafaf3b93fa77c32fbdfbdc0abf1aa6f63"
+  },
+  {
+    "path": "engine-config.json",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: engine-config.json",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 1278,
+    "sha256": "39099ca5e2d6655f7af6c855da67da2e09b2a239911a78bcb96242f4631485ad"
+  },
+  {
+    "path": "engine.py",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: engine.py",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 104789,
+    "sha256": "bb132af274660fef567cc1bad5b7f4d7c1cf4427bbe9fcdb6c3701f8ac2896c5"
+  },
+  {
+    "path": "tests/test_dashboard.py",
+    "source": "tests/test_dashboard.py",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 34117,
+    "sha256": "7ff2ef764f6835cf616b7c69df80ff326e272c3e74f2214dce78ec1be8db9bec"
+  },
+  {
+    "path": "tests/test_external_dashboard.py",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: tests/test_external_dashboard.py",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 1877,
+    "sha256": "a2f4d5e0b3a5d2799143f700552e56c68f2bcee05d77b0033aa8c0ada421e905"
+  },
+  {
+    "path": "tests/test_external_data.py",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: tests/test_external_data.py",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 13400,
+    "sha256": "b8ebe565850f6edfa7d62762323ce122f223cc51d58a61b631e723c54454826b"
+  },
+  {
+    "path": "tests/test_external_features.py",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: tests/test_external_features.py",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 27054,
+    "sha256": "271b8644968060ea03311cb0f73ddac7c87cdde9cbaeb3dd9d8ec753b7b7fcf1"
+  },
+  {
+    "path": "tools/build_ui.cjs",
+    "source": "tools/build_ui.cjs",
+    "kind": "원본 파일",
+    "reason": "로컬 UI 번들·라이선스·코인자산을 구성하는 CommonJS 빌드 소스, 내용 전체 판독",
+    "bytes": 1215,
+    "sha256": "683809c568b508ba5362218b66892fe69cab98af4f07f04dd6d387cbad54cc4a"
+  },
+  {
+    "path": "web/app.js",
+    "source": "원격 efd88ce80887dc64fc1166415ac90944feed429f :: web/app.js",
+    "kind": "관측 원격 현행 입력",
+    "reason": "동시 개발 원격 raw 수용; D원본초기수집본과별도출처",
+    "bytes": 49154,
+    "sha256": "4b4225e7b7bef75285a2504938c258dfa8a2ef32d49c8d27bd780e17320bf8ae"
+  },
+  {
+    "path": "web/assets/btc.png",
+    "source": "web/assets/btc.png",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 2589,
+    "sha256": "8022fd53c251f18cb39cefede445f1c78a3b265989232f0bb46b9c4622e55a9e"
+  },
+  {
+    "path": "web/assets/doge.png",
+    "source": "web/assets/doge.png",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 1597,
+    "sha256": "4a789f36f6ca12a6d1901ab8441a9cab7a4a9a5fd4ba87c887c4d45c729fffce"
+  },
+  {
+    "path": "web/assets/eth.png",
+    "source": "web/assets/eth.png",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 3437,
+    "sha256": "99bf2102cc13a51bb226f931b8d0fa4c5b3ca9dc4179167e89d7ee3f677c3fdb"
+  },
+  {
+    "path": "web/assets/learning-glass.png",
+    "source": "web/assets/learning-glass.png",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 1178531,
+    "sha256": "00b32184c1bced24747adb7d651d05ff61909d16c5691c106d81f19acc5bf77c"
+  },
+  {
+    "path": "web/assets/sol.png",
+    "source": "web/assets/sol.png",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 4222,
+    "sha256": "b9296ce1118a6d150e57049190aeb4c024199e0787e0c6198c244230b8d704f5"
+  },
+  {
+    "path": "web/assets/xrp.png",
+    "source": "web/assets/xrp.png",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 2393,
+    "sha256": "0875539d872ac02066c129360ade039e835bd7b9b2320f3a4d24ed4ef72c3051"
+  },
+  {
+    "path": "web/fonts/NanumGothic-Bold.ttf",
+    "source": "web/fonts/NanumGothic-Bold.ttf",
+    "kind": "원본 파일",
+    "reason": "제품 로컬글꼴 리소스: 동봉 OFL 원문 근거, 바이너리 크기/해시 보존",
+    "bytes": 2073868,
+    "sha256": "f96298f9fb18e364d2370f4c3ce948ac67a2b61af992d7234bc15c42b033c674"
+  },
+  {
+    "path": "web/vendor.bundle.js",
+    "source": "web/vendor.bundle.js",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 756412,
+    "sha256": "9ca8a8c2d62edcc23100bb54b3ef7be64067431802d5a1db5b5667a622fbb804"
+  },
+  {
+    "path": "보존자료/압축원본소스/GPU최적화전_20261030/engine.py",
+    "source": "보존자료/GPU최적화전_20261030.zip :: engine.py",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 95433,
+    "sha256": "881286923229ef1ba4ada1f4e04e782bf3428ae3ae73918c3fc0ff53dd203eda"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_개편전_20261026/dashboard.py",
+    "source": "보존자료/대시보드_개편전_20261026.zip :: dashboard.py",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 32021,
+    "sha256": "52ba3b97470ddf48cfada85a898388c730648bc37798314d7758c9f485961e6f"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_개편전_20261026/web/app.js",
+    "source": "보존자료/대시보드_개편전_20261026.zip :: web/app.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 28430,
+    "sha256": "5b316838808411d2a8060ca7b8c3cbccf0dfb764d929d74bc4881b55a488c756"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_개편전_20261026/web/index.html",
+    "source": "보존자료/대시보드_개편전_20261026.zip :: web/index.html",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 9008,
+    "sha256": "00f01ae5ec8a431a3bb6289390c0fee48e97e3d3b786ce6407ac00657aebd256"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_개편전_20261026/web/style.css",
+    "source": "보존자료/대시보드_개편전_20261026.zip :: web/style.css",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 6754,
+    "sha256": "7692cf4e52706a09e99ce692fecf14414ef3343b7c1a2ae4209f423c48ecd2b2"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/dashboard.py",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: dashboard.py",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 32975,
+    "sha256": "13b263b8e7b5af8a2db5422eaa832a6429803befb3d62f17232a7a362e150a05"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/app.js",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/app.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 38833,
+    "sha256": "95aa15c2d9e8794e7469e4051e64a234467935b9bd61264a35c0d699619bc556"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/index.html",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/index.html",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 12124,
+    "sha256": "de9304d82a8a54097ea8f461db6fc8885d54a0ebc2b4073af178b52636385b2c"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/scene.js",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/scene.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 13288,
+    "sha256": "cca630068c5f8e39f23afab6c105b2d9fec0587530b0b2f1d75c5cdc11d5cb28"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/style.css",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/style.css",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 21152,
+    "sha256": "9ff8103002c81ee5810a8ec6038f001f2eff5c55e92b3c8bd7037c30fc4e0211"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor-entry.js",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/vendor-entry.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 745,
+    "sha256": "b1554bd759c9746c7e460afbd25bd86c89f6aaf736c844a5a9614ede5f2e2eb9"
+  },
+  {
+    "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor.bundle.js",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/vendor.bundle.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 753352,
+    "sha256": "5453c154076600113e83d3cfa13db991fccc9da8310046fd0f45f2914b74ff2b"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_시안재현전/web/app.js",
+    "source": "보존자료/웹_20261028_시안재현전.zip :: web/app.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 44995,
+    "sha256": "099902346dc6fc9bf196caac5671172466e7fe67ddc9376cbfedc3bae64a6a77"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_시안재현전/web/index.html",
+    "source": "보존자료/웹_20261028_시안재현전.zip :: web/index.html",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 14648,
+    "sha256": "b0e678c43117b6d6c8e2036bd6b40bff4a1db66d0e9702f9a695a9eb16655bd6"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_시안재현전/web/scene.js",
+    "source": "보존자료/웹_20261028_시안재현전.zip :: web/scene.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 32911,
+    "sha256": "419d863f3c8eddbcc951afe2c1e8bead84b8b46f058d99cc06b7882eb2786b8b"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_시안재현전/web/style.css",
+    "source": "보존자료/웹_20261028_시안재현전.zip :: web/style.css",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 18514,
+    "sha256": "7b479ff8610d020dd5f83743516d91b7395a97b440d5fe8592054debbd7f2216"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_실제3D전/web/scene.js",
+    "source": "보존자료/웹_20261028_실제3D전.zip :: web/scene.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 31940,
+    "sha256": "fcb70a5fb13b6a63f3a6809c263da3ecc66455d73b197f77bdf520fb624bd2bf"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_실제3D전/web/style.css",
+    "source": "보존자료/웹_20261028_실제3D전.zip :: web/style.css",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 22998,
+    "sha256": "c3c6308dda90c88151381c0c02214f3bb8ab52c0816e0ab3aa01a3516f1348de"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_실제3D전/web/vendor-entry.js",
+    "source": "보존자료/웹_20261028_실제3D전.zip :: web/vendor-entry.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 1373,
+    "sha256": "8c55f115d70f2976c3fed64070cab910c5aa27b26510ecbac38ffdac3d8ac792"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_실제3D전/web/vendor.bundle.js",
+    "source": "보존자료/웹_20261028_실제3D전.zip :: web/vendor.bundle.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 2326155,
+    "sha256": "87de8bedb4c65f60d5f36c8b9a1766c5c8de631416e66368e4b70ed2f1e77c15"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_유리시안재정리전/web/scene.js",
+    "source": "보존자료/웹_20261028_유리시안재정리전.zip :: web/scene.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 43406,
+    "sha256": "ee7b09c2f33db63cc050f4a55510c947ed63bdf7afd766e0a83fa53eaa6fb812"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_유리시안재정리전/web/style.css",
+    "source": "보존자료/웹_20261028_유리시안재정리전.zip :: web/style.css",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 23595,
+    "sha256": "bcdac5ca3fada32377974744f873f8e913b67d02394dbf9faaf1b7be444802ac"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_학습개편전/web/app.js",
+    "source": "보존자료/웹_20261028_학습개편전.zip :: web/app.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 41132,
+    "sha256": "0a06a1d17848d53a346a5c8cdeb3360ddcbd7e85dd5cacef160215b6f4b3f618"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_학습개편전/web/index.html",
+    "source": "보존자료/웹_20261028_학습개편전.zip :: web/index.html",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 12464,
+    "sha256": "31485766cb10a4471572fafa58bcbce7eccb119c40b28ce0e8c0bc9104f90d1a"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_학습개편전/web/scene.js",
+    "source": "보존자료/웹_20261028_학습개편전.zip :: web/scene.js",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 25441,
+    "sha256": "5d922de878de275ba701c76f1b4c5887371a73aa3c13733b13d45adc3ae7b74d"
+  },
+  {
+    "path": "보존자료/압축원본소스/웹_20261028_학습개편전/web/style.css",
+    "source": "보존자료/웹_20261028_학습개편전.zip :: web/style.css",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 15254,
+    "sha256": "7c3a162f73aee7b6b957213ba0106f32bf714745929dc6ba3811ecacc8f0d409"
+  },
+  {
+    "path": "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/bootstrap_doge.py",
+    "source": "보존자료/이전_일회성_컨테이너_이전도구.zip :: bootstrap_doge.py",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 2292,
+    "sha256": "30b2418413ba0173efaa69ebae40108906ad1e5b5b858362049c8622c3480a1d"
+  },
+  {
+    "path": "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/deploy_glass.py",
+    "source": "보존자료/이전_일회성_컨테이너_이전도구.zip :: deploy_glass.py",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 4650,
+    "sha256": "dbd8bfcc671fcc7d9cd879930ca9e4f8bfe506847f8f46e4ca82753b66a7c3bd"
+  },
+  {
+    "path": "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/migrate_project.ps1",
+    "source": "보존자료/이전_일회성_컨테이너_이전도구.zip :: migrate_project.ps1",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 4073,
+    "sha256": "8dca603a29d6256267bd93c8205572f1714b55ab58d1a37685d9173bb6096c7d"
+  },
+  {
+    "path": "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/prepare_2026.py",
+    "source": "보존자료/이전_일회성_컨테이너_이전도구.zip :: prepare_2026.py",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 2437,
+    "sha256": "10c0ad73057a2bdabbe370f1d02c4bc7f86b07ceba6c20466adeec1e92c2869a"
+  },
+  {
+    "path": "보존자료/압축원본소스/전용컨테이너_폐기설정/Dockerfile",
+    "source": "보존자료/전용컨테이너_폐기설정.zip :: Dockerfile",
+    "kind": "ZIP 멤버",
+    "reason": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "bytes": 815,
+    "sha256": "c11fa119583076b822e7f71eac005c09ad04fe72148fe3cdf46326d9af9b675d"
+  },
+  {
+    "path": "보존자료/이전_대응표.json",
+    "source": "보존자료/이전_대응표.json",
+    "kind": "원본 파일",
+    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
+    "bytes": 566937,
+    "sha256": "590b16ca3b2c6e345427b8a3c9223f952ec9d08be39b2e05aa2e19f6ce337321"
+  },
+  {
+    "path": "보존자료/작업소스/work/archive/20261026-db-io-failure/data-recovery-20261026T154614/damaged-preservation.json",
+    "source": "work/archive/20261026-db-io-failure/data-recovery-20261026T154614/damaged-preservation.json",
+    "kind": "원본 파일",
+    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
+    "bytes": 683,
+    "sha256": "6805c8e50f763d17e8c0c04d674da5c2dac0cc11b693a3e412461815caf82a57"
+  },
+  {
+    "path": "보존자료/작업소스/work/archive/20261026-db-io-failure/data-recovery-20261026T154614/untouched-after.json",
+    "source": "work/archive/20261026-db-io-failure/data-recovery-20261026T154614/untouched-after.json",
+    "kind": "원본 파일",
+    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
+    "bytes": 18507,
+    "sha256": "8ae8313d3a6284d625327ae301e107d5f69abc1cefc97f856c9ab47609c9793f"
+  },
+  {
+    "path": "보존자료/작업소스/work/paper/state.json",
+    "source": "work/paper/state.json",
+    "kind": "원본 파일",
+    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
+    "bytes": 544891,
+    "sha256": "34cd768de2b6a429da3cf85898cc8b16db7081d710a7b70386f8080cd75d76f3"
+  },
+  {
+    "path": "보존자료/작업소스/work/publication/CHANGELOG.md",
+    "source": "work/publication/CHANGELOG.md",
+    "kind": "원본 파일",
+    "reason": "과거 제품문서 원문 보존: 재생성된 현행 감사문서와 별도 경로·바이트SHA로 구분",
+    "bytes": 6352,
+    "sha256": "d03c7467829cef426e05635280d8d7a59eba045b6f0b1543c1a3d7f267537f2d"
+  },
+  {
+    "path": "보존자료/작업소스/work/publication/README.md",
+    "source": "work/publication/README.md",
+    "kind": "원본 파일",
+    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
+    "bytes": 12442,
+    "sha256": "23f284c56ace061eca53639aa4e1a1418bbe89dd007c9e99b5d70c7abb041ed9"
+  },
+  {
+    "path": "보존자료/작업소스/work/publication/dashboard.py",
+    "source": "work/publication/dashboard.py",
+    "kind": "원본 파일",
+    "reason": "과거 제품문서 원문 보존: 재생성된 현행 감사문서와 별도 경로·바이트SHA로 구분",
+    "bytes": 33621,
+    "sha256": "01b628748ce57c6686770898d0b5be2afa36d7671409970c3edb00094edb0ec5"
+  },
+  {
+    "path": "보존자료/작업소스/work/publication/docs/VERSIONS.md",
+    "source": "work/publication/docs/VERSIONS.md",
+    "kind": "원본 파일",
+    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
+    "bytes": 2366,
+    "sha256": "a4bbb18cb4c0c588078719da8c6efc9fba13993f37aba9836dfdb033c5baf518"
+  },
+  {
+    "path": "보존자료/작업소스/work/publication/engine-config.json",
+    "source": "work/publication/engine-config.json",
+    "kind": "원본 파일",
+    "reason": "과거 제품문서 원문 보존: 재생성된 현행 감사문서와 별도 경로·바이트SHA로 구분",
+    "bytes": 1278,
+    "sha256": "39099ca5e2d6655f7af6c855da67da2e09b2a239911a78bcb96242f4631485ad"
+  },
+  {
+    "path": "보존자료/작업소스/work/publication/engine.py",
+    "source": "work/publication/engine.py",
+    "kind": "원본 파일",
+    "reason": "과거 제품문서 원문 보존: 재생성된 현행 감사문서와 별도 경로·바이트SHA로 구분",
+    "bytes": 104789,
+    "sha256": "bb132af274660fef567cc1bad5b7f4d7c1cf4427bbe9fcdb6c3701f8ac2896c5"
+  },
+  {
+    "path": "보존자료/작업소스/work/publication/web/app.js",
+    "source": "work/publication/web/app.js",
+    "kind": "원본 파일",
+    "reason": "과거 제품문서 원문 보존: 재생성된 현행 감사문서와 별도 경로·바이트SHA로 구분",
+    "bytes": 49154,
+    "sha256": "4b4225e7b7bef75285a2504938c258dfa8a2ef32d49c8d27bd780e17320bf8ae"
+  },
+  {
+    "path": "후속보존/2026-10-30_133824_3차초기부분/README.md",
+    "source": "2026-10-30 13:38:24 초기수집 :: 3차/README.md",
+    "kind": "초기 시점 원문",
+    "reason": "기존stagingraw파일을별도시점으로바이트보존",
+    "bytes": 1637,
+    "sha256": "f3f8b8312d35b6b77485b400249c47a4387aec311ca4bcabbb1ae48bff93caf6"
+  },
+  {
+    "path": "후속보존/2026-10-30_133824_3차초기부분/docs/요구사항_및_데이터계약.md",
+    "source": "2026-10-30 13:38:24 초기수집 :: 3차/docs/요구사항_및_데이터계약.md",
+    "kind": "초기 시점 원문",
+    "reason": "기존stagingraw파일을별도시점으로바이트보존",
+    "bytes": 8169,
+    "sha256": "d1f46287aade733cd663046c69639b54c566b1f3934d9308a1ee1b47879c09d9"
+  },
+  {
+    "path": "후속보존/2026-10-30_133824_3차초기부분/external_data.py",
+    "source": "2026-10-30 13:38:24 초기수집 :: 3차/external_data.py",
+    "kind": "초기 시점 원문",
+    "reason": "기존stagingraw파일을별도시점으로바이트보존",
+    "bytes": 24279,
+    "sha256": "5b6273402ce7b8abb295cf9d0008eebddbfe0d8a399321b6c77348d210a73ac0"
+  },
+  {
+    "path": "후속보존/2026-10-30_133824_3차초기부분/external_features.py",
+    "source": "2026-10-30 13:38:24 초기수집 :: 3차/external_features.py",
+    "kind": "초기 시점 원문",
+    "reason": "기존stagingraw파일을별도시점으로바이트보존",
+    "bytes": 14561,
+    "sha256": "6620ae9ae914661f4026f7663dd244de04d677047e40322bc852a7481eb46c50"
+  },
+  {
+    "path": "후속보존/2026-10-30_133824_3차초기부분/검사/test_external_data.py",
+    "source": "2026-10-30 13:38:24 초기수집 :: 3차/검사/test_external_data.py",
+    "kind": "초기 시점 원문",
+    "reason": "기존stagingraw파일을별도시점으로바이트보존",
+    "bytes": 4265,
+    "sha256": "55e9b1657af2c5d7aa842b9931d9873dd0a9a1812b4b9ce268b681220e3348a3"
+  },
+  {
+    "path": "후속보존/2026-10-30_133824_3차초기부분/검사/test_external_features.py",
+    "source": "2026-10-30 13:38:24 초기수집 :: 3차/검사/test_external_features.py",
+    "kind": "초기 시점 원문",
+    "reason": "기존stagingraw파일을별도시점으로바이트보존",
+    "bytes": 14983,
+    "sha256": "8b11c5ad0baf115d6f3ca6bfee0bec4c2ec95a9174cae74c5b70345a12018d7f"
+  },
+  {
+    "path": "후속보존/2026-10-30_133824_3차초기부분/연결부/engine.py",
+    "source": "2026-10-30 13:38:24 초기수집 :: 3차/연결부/engine.py",
+    "kind": "초기 시점 원문",
+    "reason": "기존stagingraw파일을별도시점으로바이트보존",
+    "bytes": 102911,
+    "sha256": "0413e50c1d081ce85bc060899dffb5f82d5fbf2245dc1793a2a88c6768df548a"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/README.md",
+    "source": "후속보존/2026-10-30_GPU처리량/README.md",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 2151,
+    "sha256": "c47bb0d9c9ebaf3a071778591fd8fe8abf962acfa35b291e6fb5558739200f84"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/dashboard.py",
+    "source": "후속보존/2026-10-30_GPU처리량/dashboard.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 33047,
+    "sha256": "f6de70b70dbb71797fcaeb0ebdbcea7f31e4b225c59bdbfe18a940bc6bf7289b"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/docs/2026-10-30_GPU처리량_개선.md",
+    "source": "후속보존/2026-10-30_GPU처리량/docs/2026-10-30_GPU처리량_개선.md",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 5199,
+    "sha256": "ef36464f60cb73699461e880443b7a847b53afe03582e56033a859e5bfd758c1"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/engine-config.json",
+    "source": "후속보존/2026-10-30_GPU처리량/engine-config.json",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 1087,
+    "sha256": "0cec34748049355178881834a46e100ab79236cee93fb21b1988cc1959c549cd"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/engine.py",
+    "source": "후속보존/2026-10-30_GPU처리량/engine.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 100122,
+    "sha256": "52921c24eb4aa8ea02c7f829a483ad64877cb7c89bb40db42e3f9fde0eed1209"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/execution_probe.py",
+    "source": "후속보존/2026-10-30_GPU처리량/execution_probe.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 3593,
+    "sha256": "ce0e31f2dfd28b09e99500ca445344b015e364d42d9b00c7a5df41f078771ed3"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/healthcheck.py",
+    "source": "후속보존/2026-10-30_GPU처리량/healthcheck.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 14001,
+    "sha256": "ef036fa93a8cf9d5eef3a10e655dd384a8876e4c6b0b62b87be55d865a540657"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/package.json",
+    "source": "후속보존/2026-10-30_GPU처리량/package.json",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 305,
+    "sha256": "d624c76d8486af5cc84d7f6be63a16030163e76c92bed45e8cd30d0f62fe9268"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/pnpm-lock.yaml",
+    "source": "후속보존/2026-10-30_GPU처리량/pnpm-lock.yaml",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 9541,
+    "sha256": "2a9251359e02ac7b77036013424d5117a530c5d9a711f4efd70fac865d981007"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/pnpm-workspace.yaml",
+    "source": "후속보존/2026-10-30_GPU처리량/pnpm-workspace.yaml",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 29,
+    "sha256": "ac02d96368617c760f093cfe61fdec64b6244007ab3553e0d6621f706f54a353"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/requirements.txt",
+    "source": "후속보존/2026-10-30_GPU처리량/requirements.txt",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 49,
+    "sha256": "2fe137119c74a3401d9ad10f85725df7884a08b3eb73f4b100ad00b26bb3663e"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/service.json",
+    "source": "후속보존/2026-10-30_GPU처리량/service.json",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 942,
+    "sha256": "fd88671a6ff4c96bee66693964b5fd7521abc2f648debcf12dd8464ea260cc11"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/supervisor.py",
+    "source": "후속보존/2026-10-30_GPU처리량/supervisor.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 9599,
+    "sha256": "4a2635c42145c201a4e57399df94dfd90149b0361b307d5c9607ff6d1ebab1a3"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_artifact_scope.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_artifact_scope.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 1071,
+    "sha256": "3d8a0b47e8b1fcbb38eb066eef5b99499866eb3c46f05239a5cdff274da57815"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_capital_contract.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_capital_contract.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 3613,
+    "sha256": "63da2e65ec6aedf8cfec809f7362f9998356d25705991b66fe8db4c8f4b29018"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_collection_recovery.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_collection_recovery.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 4089,
+    "sha256": "a24eb88d917e6b6e73e1a8d9f25f08a05dc6a005507df55f12e05c8648d835fe"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_dashboard.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_dashboard.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 28869,
+    "sha256": "315f9675c9283fd8ee3566906142d7c21ffafc821726901e9129cd9c4cad2226"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_docker_control.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_docker_control.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 13273,
+    "sha256": "6640052922ea812b992ce04adec8cbf932c5833676bc547ab2509d384883146e"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_engine.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_engine.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 26461,
+    "sha256": "a6d82c7b333dce8d8cfb5621fd343181f48f289dc257d5281aeb8dbe004f6562"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_execution_probe.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_execution_probe.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 2537,
+    "sha256": "ad5139f2580621469dc6899b02267e1d21e336cd2d13728ff229b6316b916d28"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_gpu_throughput.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_gpu_throughput.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 12153,
+    "sha256": "820879baf02215bab6c51f171597f01d6a0ee1d7a28c03e0b314bc26ae517270"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_health_recovery.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_health_recovery.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 9003,
+    "sha256": "ca7944d81bcb6699fcaf2e3c731ae63fbd80294f7bc8769cb2a3016de9bb5050"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_healthcheck.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_healthcheck.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 3389,
+    "sha256": "d3e9c2d7564e804447a6d3ef69c23bc9f1519f64365815dcd011b2031a1afa21"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_loss_risk_regressions.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_loss_risk_regressions.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 15841,
+    "sha256": "f3a6390b490d30bd6b6f8b03fb6c28157a9ae432f729e49bf39815d83a225279"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_market_universe.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_market_universe.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 25427,
+    "sha256": "a9d46fc0714f09444dc5b357c1e5326da440ba5e08dd6ed5160ff0969bd19f46"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_research.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_research.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 19486,
+    "sha256": "55b3d8403df01ac95335f41e88c4f9ff1eea244b72eb80c29806ae3e4474e4d1"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_runtime_boundary.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_runtime_boundary.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 1443,
+    "sha256": "0c3fd716179660f179126a993f1dc2aa4a3d686a59fef57afb7aa4be0a0127eb"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_supervisor.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_supervisor.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 7991,
+    "sha256": "3ea9c39786e0f3d08ae6fdca4f47289052fe1fd6c874898ffaf496f011d9503c"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tests/test_ui_option_values.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tests/test_ui_option_values.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 1332,
+    "sha256": "6ab5ea68d9e6e861b17b59140d8ffaf87264bc5ff72572e441e820bddd1d3537"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tools/consolidate_history.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tools/consolidate_history.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 2965,
+    "sha256": "a93304f39c0cb4036c21841e92d2ad22b7525010a00ab2b06ee65459e391f6a0"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tools/container_runtime.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tools/container_runtime.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 7763,
+    "sha256": "b023d7bbf52596f5750ff0f7cb62d51b2d93bb3eb1a4d18c8c78dd34450d0345"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tools/docker_control.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tools/docker_control.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 9137,
+    "sha256": "e6f2ae77f18db1a74b0455fc2e954458c6a737ff89d52b80d979adc7d63c7e04"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/tools/validate_artifacts.py",
+    "source": "후속보존/2026-10-30_GPU처리량/tools/validate_artifacts.py",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 5870,
+    "sha256": "56b9b2b6de1dde7e58702a3ff7f9c5e3d9c91f5371898e1f7ecd08a636a7de3d"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/upbit_auto_trader_v5.ipynb",
+    "source": "후속보존/2026-10-30_GPU처리량/upbit_auto_trader_v5.ipynb",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 7834,
+    "sha256": "7979b65c63ad0b5f4b8696fd9c916e621ba9c8bb7e974f84fb26918bb6a61c5d"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/app.js",
+    "source": "보존자료/웹_20261028_실제3D전.zip :: web/app.js",
+    "kind": "ZIP 멤버",
+    "reason": "공개 입력과 원문 바이트 SHA-256 동일",
+    "bytes": 47768,
+    "sha256": "28b44177c7b07d11d8d9e9d1f4a3f464d1173764002a2a16e398acd831a52c52"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/fonts/OFL.txt",
+    "source": "보존자료/대시보드_개편전_20261026.zip :: web/fonts/OFL.txt",
+    "kind": "ZIP 멤버",
+    "reason": "공개 입력과 원문 바이트 SHA-256 동일",
+    "bytes": 4534,
+    "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/index.html",
+    "source": "보존자료/웹_20261028_실제3D전.zip :: web/index.html",
+    "kind": "ZIP 멤버",
+    "reason": "공개 입력과 원문 바이트 SHA-256 동일",
+    "bytes": 15527,
+    "sha256": "8ccc26df2d2db9bd3b115eef4ddbe317aaed35e5b484227265f64d5cfc65bec0"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/licenses/cryptocurrency-icons.txt",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/licenses/cryptocurrency-icons.txt",
+    "kind": "ZIP 멤버",
+    "reason": "공개 입력과 원문 바이트 SHA-256 동일",
+    "bytes": 7048,
+    "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/licenses/lucide.txt",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/licenses/lucide.txt",
+    "kind": "ZIP 멤버",
+    "reason": "공개 입력과 원문 바이트 SHA-256 동일",
+    "bytes": 3208,
+    "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/licenses/three.txt",
+    "source": "보존자료/대시보드_단순화전_20261026.zip :: web/licenses/three.txt",
+    "kind": "ZIP 멤버",
+    "reason": "공개 입력과 원문 바이트 SHA-256 동일",
+    "bytes": 1081,
+    "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/scene.js",
+    "source": "후속보존/2026-10-30_GPU처리량/web/scene.js",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 46127,
+    "sha256": "0d6edf79d4c98702101e9d983abb742a590998849dd358ac981bb5770c991d4c"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/style.css",
+    "source": "후속보존/2026-10-30_GPU처리량/web/style.css",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 24018,
+    "sha256": "4fb27c6d44f2aefeea08318f883e1a6bba17a115ff57b9b2f9736b759875460f"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/web/vendor-entry.js",
+    "source": "보존자료/웹_20261028_유리시안재정리전.zip :: web/vendor-entry.js",
+    "kind": "ZIP 멤버",
+    "reason": "공개 입력과 원문 바이트 SHA-256 동일",
+    "bytes": 1389,
+    "sha256": "408ced812668d956316c352d308321eb07d5164c6ab22c8bd70788cea54d0a74"
+  },
+  {
+    "path": "후속보존/2026-10-30_GPU처리량/운영.ps1",
+    "source": "후속보존/2026-10-30_GPU처리량/운영.ps1",
+    "kind": "공개 보관 입력",
+    "reason": "원본/시점 보존 대응은 비공개 파일별 검토 명세에 기록",
+    "bytes": 725,
+    "sha256": "1515e653ac9363814a056d47b574deeba90c3408c129a8d93c44b3e9878d263e"
+  }
+]

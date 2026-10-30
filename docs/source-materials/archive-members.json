@@ -1,0 +1,586 @@
+[
+  {
+    "archive": "보존자료/GPU최적화전_20261030.zip",
+    "member": "engine.py",
+    "source_sha256": "881286923229ef1ba4ada1f4e04e782bf3428ae3ae73918c3fc0ff53dd203eda",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/GPU최적화전_20261030/engine.py"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_개편전_20261026.zip",
+    "member": "web/app.js",
+    "source_sha256": "5b316838808411d2a8060ca7b8c3cbccf0dfb764d929d74bc4881b55a488c756",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_개편전_20261026/web/app.js"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_개편전_20261026.zip",
+    "member": "web/index.html",
+    "source_sha256": "00f01ae5ec8a431a3bb6289390c0fee48e97e3d3b786ce6407ac00657aebd256",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_개편전_20261026/web/index.html"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_개편전_20261026.zip",
+    "member": "web/style.css",
+    "source_sha256": "7692cf4e52706a09e99ce692fecf14414ef3343b7c1a2ae4209f423c48ecd2b2",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_개편전_20261026/web/style.css"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_개편전_20261026.zip",
+    "member": "web/fonts/OFL.txt",
+    "source_sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/fonts/OFL.txt",
+      "후속보존/2026-10-30_GPU처리량/web/fonts/OFL.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_개편전_20261026.zip",
+    "member": "dashboard.py",
+    "source_sha256": "52ba3b97470ddf48cfada85a898388c730648bc37798314d7758c9f485961e6f",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_개편전_20261026/dashboard.py"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/app.js",
+    "source_sha256": "95aa15c2d9e8794e7469e4051e64a234467935b9bd61264a35c0d699619bc556",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/app.js"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/index.html",
+    "source_sha256": "de9304d82a8a54097ea8f461db6fc8885d54a0ebc2b4073af178b52636385b2c",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/index.html"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/scene.js",
+    "source_sha256": "cca630068c5f8e39f23afab6c105b2d9fec0587530b0b2f1d75c5cdc11d5cb28",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/scene.js"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/style.css",
+    "source_sha256": "9ff8103002c81ee5810a8ec6038f001f2eff5c55e92b3c8bd7037c30fc4e0211",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/style.css"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/vendor-entry.js",
+    "source_sha256": "b1554bd759c9746c7e460afbd25bd86c89f6aaf736c844a5a9614ede5f2e2eb9",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor-entry.js"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/vendor.bundle.js",
+    "source_sha256": "5453c154076600113e83d3cfa13db991fccc9da8310046fd0f45f2914b74ff2b",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor.bundle.js"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/fonts/OFL.txt",
+    "source_sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/fonts/OFL.txt",
+      "후속보존/2026-10-30_GPU처리량/web/fonts/OFL.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/licenses/cryptocurrency-icons.txt",
+    "source_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/cryptocurrency-icons.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/cryptocurrency-icons.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/licenses/lucide.txt",
+    "source_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/lucide.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/lucide.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "web/licenses/three.txt",
+    "source_sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/three.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/three.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/대시보드_단순화전_20261026.zip",
+    "member": "dashboard.py",
+    "source_sha256": "13b263b8e7b5af8a2db5422eaa832a6429803befb3d62f17232a7a362e150a05",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/dashboard.py"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/app.js",
+    "source_sha256": "099902346dc6fc9bf196caac5671172466e7fe67ddc9376cbfedc3bae64a6a77",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_시안재현전/web/app.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/index.html",
+    "source_sha256": "b0e678c43117b6d6c8e2036bd6b40bff4a1db66d0e9702f9a695a9eb16655bd6",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_시안재현전/web/index.html"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/scene.js",
+    "source_sha256": "419d863f3c8eddbcc951afe2c1e8bead84b8b46f058d99cc06b7882eb2786b8b",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_시안재현전/web/scene.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/style.css",
+    "source_sha256": "7b479ff8610d020dd5f83743516d91b7395a97b440d5fe8592054debbd7f2216",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_시안재현전/web/style.css"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/vendor-entry.js",
+    "source_sha256": "b1554bd759c9746c7e460afbd25bd86c89f6aaf736c844a5a9614ede5f2e2eb9",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor-entry.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/vendor.bundle.js",
+    "source_sha256": "5453c154076600113e83d3cfa13db991fccc9da8310046fd0f45f2914b74ff2b",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor.bundle.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/fonts/OFL.txt",
+    "source_sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/fonts/OFL.txt",
+      "후속보존/2026-10-30_GPU처리량/web/fonts/OFL.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/licenses/cryptocurrency-icons.txt",
+    "source_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/cryptocurrency-icons.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/cryptocurrency-icons.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/licenses/lucide.txt",
+    "source_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/lucide.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/lucide.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_시안재현전.zip",
+    "member": "web/licenses/three.txt",
+    "source_sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/three.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/three.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/app.js",
+    "source_sha256": "28b44177c7b07d11d8d9e9d1f4a3f464d1173764002a2a16e398acd831a52c52",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "후속보존/2026-10-30_GPU처리량/web/app.js",
+      "후속보존/2026-10-30_GPU처리량/web/app.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/index.html",
+    "source_sha256": "8ccc26df2d2db9bd3b115eef4ddbe317aaed35e5b484227265f64d5cfc65bec0",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/index.html",
+      "후속보존/2026-10-30_GPU처리량/web/index.html"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/scene.js",
+    "source_sha256": "fcb70a5fb13b6a63f3a6809c263da3ecc66455d73b197f77bdf520fb624bd2bf",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_실제3D전/web/scene.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/style.css",
+    "source_sha256": "c3c6308dda90c88151381c0c02214f3bb8ab52c0816e0ab3aa01a3516f1348de",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_실제3D전/web/style.css"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/vendor-entry.js",
+    "source_sha256": "8c55f115d70f2976c3fed64070cab910c5aa27b26510ecbac38ffdac3d8ac792",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_실제3D전/web/vendor-entry.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/vendor.bundle.js",
+    "source_sha256": "87de8bedb4c65f60d5f36c8b9a1766c5c8de631416e66368e4b70ed2f1e77c15",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_실제3D전/web/vendor.bundle.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/fonts/OFL.txt",
+    "source_sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/fonts/OFL.txt",
+      "후속보존/2026-10-30_GPU처리량/web/fonts/OFL.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/licenses/cryptocurrency-icons.txt",
+    "source_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/cryptocurrency-icons.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/cryptocurrency-icons.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/licenses/lucide.txt",
+    "source_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/lucide.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/lucide.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_실제3D전.zip",
+    "member": "web/licenses/three.txt",
+    "source_sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/three.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/three.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/app.js",
+    "source_sha256": "28b44177c7b07d11d8d9e9d1f4a3f464d1173764002a2a16e398acd831a52c52",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "후속보존/2026-10-30_GPU처리량/web/app.js",
+      "후속보존/2026-10-30_GPU처리량/web/app.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/index.html",
+    "source_sha256": "8ccc26df2d2db9bd3b115eef4ddbe317aaed35e5b484227265f64d5cfc65bec0",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/index.html",
+      "후속보존/2026-10-30_GPU처리량/web/index.html"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/scene.js",
+    "source_sha256": "ee7b09c2f33db63cc050f4a55510c947ed63bdf7afd766e0a83fa53eaa6fb812",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_유리시안재정리전/web/scene.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/style.css",
+    "source_sha256": "bcdac5ca3fada32377974744f873f8e913b67d02394dbf9faaf1b7be444802ac",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_유리시안재정리전/web/style.css"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/vendor-entry.js",
+    "source_sha256": "408ced812668d956316c352d308321eb07d5164c6ab22c8bd70788cea54d0a74",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/vendor-entry.js",
+      "후속보존/2026-10-30_GPU처리량/web/vendor-entry.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/vendor.bundle.js",
+    "source_sha256": "9ca8a8c2d62edcc23100bb54b3ef7be64067431802d5a1db5b5667a622fbb804",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/vendor.bundle.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/fonts/OFL.txt",
+    "source_sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/fonts/OFL.txt",
+      "후속보존/2026-10-30_GPU처리량/web/fonts/OFL.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/licenses/cryptocurrency-icons.txt",
+    "source_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/cryptocurrency-icons.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/cryptocurrency-icons.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/licenses/lucide.txt",
+    "source_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/lucide.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/lucide.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_유리시안재정리전.zip",
+    "member": "web/licenses/three.txt",
+    "source_sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/three.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/three.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/app.js",
+    "source_sha256": "0a06a1d17848d53a346a5c8cdeb3360ddcbd7e85dd5cacef160215b6f4b3f618",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_학습개편전/web/app.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/index.html",
+    "source_sha256": "31485766cb10a4471572fafa58bcbce7eccb119c40b28ce0e8c0bc9104f90d1a",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_학습개편전/web/index.html"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/scene.js",
+    "source_sha256": "5d922de878de275ba701c76f1b4c5887371a73aa3c13733b13d45adc3ae7b74d",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_학습개편전/web/scene.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/style.css",
+    "source_sha256": "7c3a162f73aee7b6b957213ba0106f32bf714745929dc6ba3811ecacc8f0d409",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/웹_20261028_학습개편전/web/style.css"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/vendor-entry.js",
+    "source_sha256": "b1554bd759c9746c7e460afbd25bd86c89f6aaf736c844a5a9614ede5f2e2eb9",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor-entry.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/vendor.bundle.js",
+    "source_sha256": "5453c154076600113e83d3cfa13db991fccc9da8310046fd0f45f2914b74ff2b",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor.bundle.js"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/fonts/OFL.txt",
+    "source_sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/fonts/OFL.txt",
+      "후속보존/2026-10-30_GPU처리량/web/fonts/OFL.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/licenses/cryptocurrency-icons.txt",
+    "source_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/cryptocurrency-icons.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/cryptocurrency-icons.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/licenses/lucide.txt",
+    "source_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/lucide.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/lucide.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/웹_20261028_학습개편전.zip",
+    "member": "web/licenses/three.txt",
+    "source_sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
+    "public_targets": [
+      "web/licenses/three.txt",
+      "후속보존/2026-10-30_GPU처리량/web/licenses/three.txt"
+    ]
+  },
+  {
+    "archive": "보존자료/이전_일회성_컨테이너_이전도구.zip",
+    "member": "deploy_glass.py",
+    "source_sha256": "dbd8bfcc671fcc7d9cd879930ca9e4f8bfe506847f8f46e4ca82753b66a7c3bd",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/deploy_glass.py"
+    ]
+  },
+  {
+    "archive": "보존자료/이전_일회성_컨테이너_이전도구.zip",
+    "member": "bootstrap_doge.py",
+    "source_sha256": "30b2418413ba0173efaa69ebae40108906ad1e5b5b858362049c8622c3480a1d",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/bootstrap_doge.py"
+    ]
+  },
+  {
+    "archive": "보존자료/이전_일회성_컨테이너_이전도구.zip",
+    "member": "prepare_2026.py",
+    "source_sha256": "10c0ad73057a2bdabbe370f1d02c4bc7f86b07ceba6c20466adeec1e92c2869a",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/prepare_2026.py"
+    ]
+  },
+  {
+    "archive": "보존자료/이전_일회성_컨테이너_이전도구.zip",
+    "member": "migrate_project.ps1",
+    "source_sha256": "8dca603a29d6256267bd93c8205572f1714b55ab58d1a37685d9173bb6096c7d",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/migrate_project.ps1"
+    ]
+  },
+  {
+    "archive": "보존자료/전용컨테이너_폐기설정.zip",
+    "member": "Dockerfile",
+    "source_sha256": "c11fa119583076b822e7f71eac005c09ad04fe72148fe3cdf46326d9af9b675d",
+    "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
+    "public_targets": [
+      "보존자료/압축원본소스/전용컨테이너_폐기설정/Dockerfile"
+    ]
+  }
+]

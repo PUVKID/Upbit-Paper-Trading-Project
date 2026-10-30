@@ -1,0 +1,2312 @@
+diff --git a/3차/README.md b/3차/README.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..bcff199cd1b92bb9f2ca0eb7a6946cd78a534777
+--- /dev/null
++++ b/3차/README.md
+@@ -0,0 +1,43 @@
++# 3차 대용량 자료 학습
++
++## 실행 순서
++
++1. 외부 거래소의 고유 아카이브50GB를 다운로드하고SHA256검증·청크집계를 마칩니다.
++2. 다섯 종목의 최신성·최근14일범위·실제 DB스키마·파일무결성까지 확인한 뒤GPU학습을 시작합니다.
++3. 이후 업비트에서 요청당200개씩완성봉을 중복없이누적하며 재학습합니다. 외부특징에 필요한최신보조시세도 갱신합니다.
++4. 기존 업비트 현물 모의계좌는 다운로드·학습과 별개로 계속 운용합니다. 새 모델은 기존 시간순검증·비용 차감손익·승격기준을 통과할 때만 적용됩니다.
++
++가상 원금은기존합계1,000만원을 이어 사용합니다. 실제주문·인증키·레버리지·강제거래·외부알림은 없습니다. 100%정확도·수익·상시GPU100%를 보장하지 않습니다. 다운로드/처리에CPU와저장장치가필요하며학습전용CUDA검사는유지합니다.
++
++## 구성
++
++- `external_data.py`: 공식 월간/일간 캔들·체결파일 수집, 원본 SHA256검증, 스트리밍1분봉집계와실시간업데이트.
++- `external_features.py`: 외부분봉실제schema검사·50GB학습시작조건·상대가격/거래흐름11개특징. 원화가격·업비트라벨과섞지않습니다.
++- `manage.py`:3차수집기만시작·상태·정상정지합니다. 공용컨테이너나기존감독프로세스를재시작하지않습니다.
++- `engine-config.json`:이번차수설정스냅숏. 활성공통엔진은부모`engine.py`이며정규실행설정은부모`engine-config.json`과동일합니다. 부모의장부·시세·모델을복제하지않고이어사용합니다.
++- `work/archives`:검증된원본파일. `work/data/external.sqlite3`:분봉집계. `work/status.json`:진행상태. 운영자료는GitHub에공개하지않습니다.
++- `docs/요구사항_및_데이터계약.md`:요구변경·저장schema·분리/보호조건의상세기록.
++
++## 운영
++
++기존2026컨테이너에서프로젝트root를작업폴더로하여실행합니다.
++
++```powershell
++& 'C:/Program Files/Docker/Docker/resources/bin/docker.exe' exec -w '/workspace/2026/Upbit 5-Coin Project' 2026 .venv/bin/python 3차/manage.py status
++```
++
++`status`대신`start`·`stop`·`restart`를사용할수있습니다. 이명령의정지는외부수집기만대상입니다. 전체모의운영정지는부모`운영.ps1 stop`도함께실행해야합니다. 정상종료시간초과는오류로보고하고다른프로젝트를강제종료하지않습니다.
++
++대시보드는기존 http://127.0.0.1:8765/ 를사용합니다. 초기자료준비는학습완료100%와구분해표시합니다. 전체운영에는컴퓨터·Docker·프로젝트서비스가계속실행되어야합니다. 컨테이너재시작후수집기와기존감독서비스를다시확인해야합니다.
++
++## 용량과 한계
++
++50GB는실제검증·처리된고유압축파일바이트목표이며메모리에50GB를동시에올리는뜻이아닙니다. DB인덱스·임시복제·압축해제중복파일로목표를채우지않습니다. 원시체결은학습용분봉통계로집계하므로원시체결건수·고유분봉수·학습행수는서로다릅니다. 최종파일단위로최대6GB정도목표를초과할수있습니다.
++
++현재다운로드와준비중이며50GB확보·새모델학습·수익검증을완료했다고보고하지않습니다. 실제수치는`work/status.json`과대시보드에서확인합니다. 통제된작은파일·합성DB시험은실제50GB학습성적이아닙니다.
++
++아카이브의현재파일·해시·디스크여유20GB·필수schema를검사합니다. 해시캐시는파일동일성변경또는1시간에재검증하며기동시다시검사합니다. 공식CHECKSUM은아카이브재사용시다시확인합니다. 같은권한의공격자가소스와상태까지고치는상황에대한서버보증경계는아닙니다. 과거실제공개가용시각의전송지연을복원한자료가아니므로후속실시간모의검증도별도로필요합니다.
++
++## 출처와 공개
++
++[Binance Public Data](https://github.com/binance/binance-public-data), [시장자료전용공개API](https://developers.binance.com/en/docs/products/spot/faqs/market_data_only), [자료이용조건](https://raw.githubusercontent.com/binance/binance-public-data/master/TERMS_AND_CONDITIONS.md)을확인했습니다. 개인비상업연구·모의체결용이며실주문·유료신호배포로사용하지않습니다. 원시자료·모델·계좌·운영로그·개인지침은공개하지않고코드와집계검사기록만반영합니다.
+diff --git a/3차/docs/요구사항_및_데이터계약.md b/3차/docs/요구사항_및_데이터계약.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..aca046235d00b73efe85702eb7fb3d2d5af859f4
+--- /dev/null
++++ b/3차/docs/요구사항_및_데이터계약.md
+@@ -0,0 +1,51 @@
++# 3차 외부 대용량 자료 연구
++
++## 최신 정정
++
++같은 날 후속 사용자 요청으로 아래 초기30GB목표와자료준비중기본학습계속조건은대체됩니다. 최종흐름은외부고유아카이브50,000,000,000바이트다운로드·검증·청크처리완료→GPU초기학습→이후업비트요청당200개새봉을중복없이누적하며재학습입니다. 진행중인기존학습회차는정상종료하고다음새학습은50GB준비를기다립니다. 모의매매·기존포지션청산은항상별도진행합니다. 같은50GB를매회다시다운받거나최근200개만으로모델을덮어쓰지않습니다. 외부특징모델에필요한최신보조시세도계속갱신합니다.
++
++`training_ready`는단순범위조건이아니라SHA검증과적재를마친고유아카이브`ingested_archive_bytes`50GB이상및5종목최신성·최근14일98%이상완성분봉을모두만족해야합니다. `verified_archive_bytes`와`ingested_archive_bytes`를구분하고후자가학습시작조건입니다. 실제압축파일하나의크기만큼목표를초과할수있으며기존디스크여유20GB경계는유지합니다. `external.wait_for_dataset=true`이면조건미달시trainer는실측다운로드상태를남기며유한간격폴링하고학습호출·가짜성공회차·오류폭주를만들지않습니다. false인기존설정과구manifest는호환합니다. 아래이전요구기록은삭제하지않으며충돌시이절이우선합니다.
++
++확인일2026-10-30. 사용자는 새 차수에 외부 거래소 자료 약30GB를 모아 GPU 학습을 확대하고 업비트 현물 모의매매를 이어가기를 요청했습니다. 기존 보존 대응표에1차·2차를 확인했으며 이번3차는 이전 결과를 덮어쓰지 않습니다.
++
++## 경계
++
++실제 주문·외부 알림·계좌 초기화·공유 컨테이너 재시작은 하지 않습니다. 정확도100% 또는 수익은 보장하지 않으며 전체표본 정확도·다수클래스 기준선·MacroF1·시간순 후속평가·비용 차감 손익으로만 판정합니다. 기존 중립·승격·손실·출금 불가·잠금 시험 조건을 유지합니다. 데이터 파일30GB 자체는 성능 지표가 아닙니다.
++
++새 자료는3차/work 아래에만 저장합니다. 기존 업비트 DB·계좌·모델은 부모프로젝트work를 이어 사용하며 복사하거나 초기화하지 않습니다. 데이터수집작업은 기존학습·모의매매를방해하지않는별도프로세스입니다. GPU개선까지의부모engine.py를보존하고공유연결지점만최소수정합니다.
++
++## 외부 자료
++
++Binance Vision의공식 spot monthly/daily klines 및 aggTrades 아카이브를 사용합니다. BTCUSDT·SOLUSDT·ETHUSDT·XRPUSDT·DOGEUSDT와 업비트 KRW5종목 대응은 고정합니다. 원화 가격으로 둔갑시키거나 레코드를 출처 구분 없이 기존 candles에 넣지 않습니다. 공개키 없이 시장자료 GET만 허용하고 실제주문 API는 사용하지 않습니다.
++
++수집 목표는 검증한 압축아카이브30,000,000,000바이트이며 복제·압축해제중복·DB인덱스로 용량을 채우지 않습니다. 실제 확보량·검증된 고유 파일 수·고유분봉수·학습행수는 별개입니다. 파일을30GB이상메모리에동시에적재하지않고ZIP을스트리밍청크로집계합니다. 가용디스크최소20GB여유를남기며파일별유한재시도와HTTP404·429·5xx를구분합니다. 오래된파일갱신이가능하므로SHA256 CHECKSUM을검증하고원본/출처/단위/기간을기록합니다.
++
++Binance공식문서에2025이후spot아카이브의마이크로초변경이명시되어있습니다. 기존밀리초와구분해UTC로정규화하고완성분만저장합니다. 월간·일간중복은minutePK로중복학습하지않습니다. 원시체결은1분OHLCV/거래대금/체결수/주도매수대금을스트리밍집계하며이를실제학습특징에사용합니다. 원시파일용량을학습행수로부풀리지않습니다.
++
++## 저장 계약
++
++`3차/work/data/external.sqlite3`의`bars`:
++
++`symbol TEXT, open_time INTEGER, open REAL, high REAL, low REAL, close REAL, volume REAL, quote_volume REAL, trade_count INTEGER, taker_quote_volume REAL, source TEXT, PRIMARY KEY(symbol,open_time)`.
++
++open_time은UTC밀리초분시작정수이며완료시각은open_time+60000입니다. 가격·양수·OHLC·체결수·주도대금 범위를 검사합니다.0거래량봉은허용하되미래완성봉은저장하지않습니다. SQLite/WAL은Linux안에서만엽니다. 부모콜렉터가스키마와수집·정규화를소유합니다.
++
++`3차/work/status.json`은`schema_version=1`, `training_ready`bool, `updated_at`UTC ISO, `verified_archive_bytes`, `target_archive_bytes`, `unique_minute_rows`, `markets`symbol별`rows,first_open_ms,last_open_ms`, `state`, `error`를 가집니다. 준비판정은5종목각각최소30일이상범위·최소20000완성분봉·최신봉5분이내·스키마일치입니다. 범위30일이연속30일을보장한다는뜻은아니며결측은특징결측으로남깁니다. 수집중에는기존기본학습을계속하며외부준비완료시다음회차부터외부특징을사용합니다. 수집오류는상태와로그로노출하고누락을성공으로숨기지않습니다.
++
++## 학습 연결
++
++준비판정 보완: 단순한 처음/끝 범위만으로 중간 공백을 준비완료로 처리하지 않도록 각 종목 최근14일의완성분봉98%이상도필요합니다. 이검사는symbol/open_time기본키범위별로조회하여전이력반복스캔을하지않습니다. 일봉/월봉아카이브가아직제공되지않았다는404는자료없음으로별도기록하며네트워크오류와구분합니다.
++
++deep작업자는engine.py와3차/external_features.py,tests/test_external_features.py를소유합니다. 기본설정에external.enabled=`false|true|"auto"`, db_path/status_path를명시하며모든경로는프로젝트3차/work안에서검증합니다. auto는한학습회차시작에준비판정과true/false를동결해manifest에기록합니다. 기존manifest에설정이없으면기존92특징경로를유지합니다. true인데자료/스키마가손상되면명시적오류이며조용한기본모델대체는금지합니다.
++
++외부1분봉의닫힌시각을UTC로맞춘뒤변화율·거래량비율·변동성·주도매수비율등가격단위가없는특징을과거방향으로결합합니다. USD/USDT가격을KRW정답이나체결가격으로쓰지않습니다. 외부가격수준자체는입력하지않습니다. 최신특징은외부자료가준비된최신닫힌분봉까지만사용합니다. 무제한forwardfill·미래시간결합·결측0채움금지. 튜닝/후속평가의고정분리와보호기간은유지합니다.
++
++모의추론은manifest에동결한설정을따라동일한특징을사용합니다. 외부누락·오래됨이면신규매수보류사유를남기고기존손절/청산은계속합니다. 준비자료가충분해지기전기존92특징모델운용은계속합니다. 자동교체는기존정규학습과승격경계만통과하며강제적용은하지않습니다.
++
++## 검증과 공개
++
++단위변환·체크섬·경로/압축폭탄·재시도·중복·집계·불량·미완성자료를검사합니다. 미래누수·모델schema호환·auto동결·유효훈련행수·매수실패시청산·현물장부연속성을독립검증합니다. 기존공식명세는완화하지않습니다. 실제외부파일다운로드·5시장실제API·자료기반GPU실험과공개원격일치확인을남깁니다.
++
++원자료·모델·장부·개인로그·토큰은공개하지않습니다. 코드와집계검증기록·3차설명만기존GitHub저장소에반영합니다. Binance Vision약관의개인비상업연구범위와출처표기를유지하며실제주문·상업신호로전용하지않습니다.
++
++공식확인: https://github.com/binance/binance-public-data 및 https://raw.githubusercontent.com/binance/binance-public-data/master/TERMS_AND_CONDITIONS.md , https://developers.binance.com/en/docs/products/spot/faqs/market_data_only .
+diff --git a/3차/engine-config.json b/3차/engine-config.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..0c9fa9278e0b307fc568ff656834810877ae3e62
+--- /dev/null
++++ b/3차/engine-config.json
+@@ -0,0 +1,39 @@
++{
++  "collection": {"recent_pages": 2, "backfill_pages_per_cycle": 20, "poll_seconds": 30, "request_interval": 0.18, "retries": 4},
++  "external": {"enabled": "auto", "wait_for_dataset": true, "target_bytes": 50000000000,
++               "db_path": "3차/work/data/external.sqlite3", "status_path": "3차/work/status.json"},
++  "training": {
++    "train_days": 36500,
++    "tune_days": 2,
++    "calibration_days": 2,
++    "rule_days": 2,
++    "validation_days": 2,
++    "min_closed_trades": 3,
++    "horizon_candidates": [12, 24],
++    "threshold_candidates": [0.006, 0.003],
++    "class_weight_candidates": ["recency", "bounded_inverse_sqrt"],
++    "class_weight_mode": "recency",
++    "class_weight_cap": 3.0,
++    "holdout_days": 1,
++    "holdout_start": "2026-10-19T00:00:00Z",
++    "holdout_end": "2026-10-20T00:00:00Z",
++    "max_rows_per_market": 2000000,
++    "max_raw_rows": 8000000,
++    "candidate_depths": [3, 5, 7],
++    "rounds": 400,
++    "retrain_seconds": 0
++  },
++  "paper": {
++    "initial_cash": 10000000,
++    "start_time": "2026-10-26T06:28:27Z",
++    "max_allocation": 0.125,
++    "max_total_allocation": 0.5,
++    "daily_loss_limit": 0.015,
++    "stop_loss": 0.02,
++    "take_profit": 0.04,
++    "fee": 0.0005,
++    "slippage": 0.0005,
++    "min_order": 5000,
++    "poll_seconds": 15
++  }
++}
+diff --git a/3차/external_data.py b/3차/external_data.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..14f044a8e4708080c15bb71f9e7eb114a57d7b10
+--- /dev/null
++++ b/3차/external_data.py
+@@ -0,0 +1,616 @@
++"""공식 외부 시세를 검증·청크 집계하여 연구 전용으로 저장합니다."""
++from __future__ import annotations
++
++import argparse
++import datetime as dt
++import hashlib
++import json
++import logging
++from logging.handlers import RotatingFileHandler
++import os
++from pathlib import Path, PurePosixPath
++import re
++import shutil
++import signal
++import sqlite3
++import sys
++import threading
++import time
++import urllib.error
++import urllib.parse
++import urllib.request
++import uuid
++import zipfile
++
++import numpy as np
++import pandas as pd
++
++ROOT = Path(__file__).resolve().parent
++WORK = ROOT / 'work'
++SYMBOLS = ('BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT', 'DOGEUSDT')
++BASE = 'https://data.binance.vision/'
++LIVE = 'https://data-api.binance.vision/api/v3/klines'
++TARGET_BYTES = 50_000_000_000
++RESERVE_BYTES = 20_000_000_000
++MAX_ARCHIVE = 6_000_000_000
++BAR_COLUMNS = ['open_time', 'open', 'high', 'low', 'close', 'volume',
++               'quote_volume', 'trade_count', 'taker_quote_volume']
++STOP = threading.Event()
++
++
++class ArchiveIntegrityError(ValueError):
++    """안전한 일반 파일의 크기·해시 불일치만 복구 대상으로 구분합니다."""
++
++
++def file_sha256(path):
++    fd = os.open(path, os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0))
++    with os.fdopen(fd, 'rb') as stream:
++        return hashlib.file_digest(stream, 'sha256').hexdigest()
++BAR_TYPES = {'symbol': 'TEXT', 'open_time': 'INTEGER', 'open': 'REAL', 'high': 'REAL', 'low': 'REAL',
++             'close': 'REAL', 'volume': 'REAL', 'quote_volume': 'REAL', 'trade_count': 'INTEGER',
++             'taker_quote_volume': 'REAL', 'source': 'TEXT'}
++
++
++def disk_budget(path, additional=0):
++    if shutil.disk_usage(path).free < RESERVE_BYTES + max(1_048_576, additional):
++        raise OSError('외부 자료 쓰기를 중단합니다: 디스크 여유20GB보호선 부족')
++
++
++def check_schema(db):
++    kind = db.execute("SELECT type FROM sqlite_master WHERE name='bars'").fetchone()
++    info = db.execute('PRAGMA table_info(bars)').fetchall()
++    if (kind != ('table',) or [(r[1], r[2].upper()) for r in info] != list(BAR_TYPES.items())
++            or {r[1]: r[5] for r in info if r[5]} != {'symbol': 1, 'open_time': 2}):
++        raise ValueError('외부 bars 실제 스키마 또는 기본키가 계약과 다릅니다')
++    if db.execute("SELECT value FROM metadata WHERE key='schema'").fetchone() != ('binance_spot_v1',):
++        raise ValueError('외부 DB 스키마 식별자가 계약과 다릅니다')
++
++
++def utc_ms():
++    return time.time_ns() // 1_000_000
++
++
++def atomic_json(path, data):
++    path = Path(path)
++    path.parent.mkdir(parents=True, exist_ok=True)
++    temporary = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
++    try:
++        temporary.write_text(json.dumps(data, ensure_ascii=False, allow_nan=False, indent=2), encoding='utf-8')
++        os.replace(temporary, path)
++    finally:
++        temporary.unlink(missing_ok=True)
++
++
++def timestamp_ms(values):
++    values = pd.to_numeric(values, errors='raise')
++    if not np.isfinite(values).all() or (values % 1 != 0).any():
++        raise ValueError('UTC 시각은 유한한 정수여야 합니다')
++    values = values.astype('int64')
++    micros = values >= 100_000_000_000_000
++    if micros.any() and not micros.all():
++        raise ValueError('한 파일 안에서 시간 단위가 섞였습니다')
++    result = values // 1000 if micros.all() else values
++    if ((result < 1_400_000_000_000) | (result > 4_102_444_800_000)).any():
++        raise ValueError('지원하지 않는 시세 시각입니다')
++    return result
++
++
++def validate_bars(frame):
++    if frame.empty:
++        return frame
++    numeric = frame[BAR_COLUMNS].to_numpy(dtype=np.float64)
++    if not np.isfinite(numeric).all():
++        raise ValueError('외부 분봉에 비유한 값이 있습니다')
++    if (frame.open_time % 60000 != 0).any() or (frame.trade_count % 1 != 0).any():
++        raise ValueError('분봉 시작 또는 체결수가 정수 경계와 다릅니다')
++    if (frame[['open', 'high', 'low', 'close']] <= 0).any().any():
++        raise ValueError('가격은 양수여야 합니다')
++    if ((frame.high < frame[['open', 'close', 'low']].max(axis=1)) |
++        (frame.low > frame[['open', 'close', 'high']].min(axis=1))).any():
++        raise ValueError('외부 분봉 OHLC 범위 오류')
++    if (frame[['volume', 'quote_volume', 'trade_count', 'taker_quote_volume']] < 0).any().any():
++        raise ValueError('음수 거래량 또는 체결수입니다')
++    if (frame.taker_quote_volume > frame.quote_volume * (1 + 1e-8) + 1e-8).any():
++        raise ValueError('주도 매수 대금이 전체 거래대금을 넘습니다')
++    return frame
++
++
++def parse_klines(raw, now_ms):
++    if raw.shape[1] != 12:
++        raise ValueError('외부 kline 열은12개여야 합니다')
++    raw = raw.copy()
++    if len(raw) and str(raw.iloc[0, 0]).lower() in ('open_time', 'open time'):
++        raw = raw.iloc[1:]
++    starts = timestamp_ms(raw[0])
++    ends = timestamp_ms(raw[6])
++    if not (ends == starts + 59999).all():
++        raise ValueError('외부 분봉 완료 시각이 간격과 다릅니다')
++    frame = pd.DataFrame({'open_time': starts})
++    for name, column in [('open', 1), ('high', 2), ('low', 3), ('close', 4), ('volume', 5),
++                         ('quote_volume', 7), ('trade_count', 8), ('taker_quote_volume', 10)]:
++        frame[name] = pd.to_numeric(raw[column], errors='raise')
++    base_buy = pd.to_numeric(raw[9], errors='raise')
++    if (base_buy < 0).any() or (base_buy > frame.volume * (1 + 1e-8) + 1e-8).any():
++        raise ValueError('주도 매수 수량이 거래량 범위를 넘습니다')
++    validate_bars(frame)
++    if not frame.open_time.is_monotonic_increasing or frame.open_time.duplicated().any():
++        raise ValueError('분봉 시각 중복 또는 역행입니다')
++    return frame.loc[frame.open_time + 60000 <= now_ms, BAR_COLUMNS].reset_index(drop=True)
++
++
++def aggregate_trade_chunks(chunks, now_ms):
++    carry = None
++    last_time = None
++    last_id = None
++    for raw in chunks:
++        if raw.shape[1] != 8:
++            raise ValueError('외부 aggTrades 열은8개여야 합니다')
++        raw = raw.copy()
++        if len(raw) and str(raw.iloc[0, 0]).lower() in ('agg_trade_id', 'aggregate_trade_id'):
++            raw = raw.iloc[1:]
++        if raw.empty:
++            continue
++        stamps = timestamp_ms(raw[5])
++        ids = pd.to_numeric(raw[0], errors='raise').astype('int64')
++        if (not stamps.is_monotonic_increasing or (last_time is not None and stamps.iloc[0] < last_time)
++                or not ids.is_monotonic_increasing or ids.duplicated().any()
++                or (last_id is not None and ids.iloc[0] <= last_id)):
++            raise ValueError('체결 시각 또는 식별자 순서가 역행·중복됩니다')
++        maker = raw[6].astype(str).str.lower()
++        if not maker.isin(['true', 'false']).all():
++            raise ValueError('매수 주도 방향 값이 올바르지 않습니다')
++        price, quantity = pd.to_numeric(raw[1], errors='raise'), pd.to_numeric(raw[2], errors='raise')
++        first, last = pd.to_numeric(raw[3], errors='raise'), pd.to_numeric(raw[4], errors='raise')
++        if (not np.isfinite(price).all() or not np.isfinite(quantity).all()
++                or (price <= 0).any() or (quantity <= 0).any()
++                or (first % 1 != 0).any() or (last % 1 != 0).any() or (last < first).any()):
++            raise ValueError('체결 가격·수량·개수 오류')
++        values = pd.DataFrame({'open_time': stamps // 60000 * 60000, 'price': price, 'quantity': quantity,
++                               'quote': price * quantity, 'trades': last - first + 1})
++        values['buy'] = values.quote.where(maker.eq('false'), 0.)
++        grouped = values.groupby('open_time', sort=True).agg(
++            open=('price', 'first'), high=('price', 'max'), low=('price', 'min'), close=('price', 'last'),
++            volume=('quantity', 'sum'), quote_volume=('quote', 'sum'),
++            trade_count=('trades', 'sum'), taker_quote_volume=('buy', 'sum')).reset_index()
++        if carry is not None:
++            if grouped.open_time.iloc[0] == carry['open_time']:
++                row = grouped.iloc[0].copy()
++                row['open'] = carry['open']
++                row['high'], row['low'] = max(row['high'], carry['high']), min(row['low'], carry['low'])
++                for name in ('volume', 'quote_volume', 'trade_count', 'taker_quote_volume'):
++                    row[name] += carry[name]
++                grouped.iloc[0] = row
++            else:
++                grouped = pd.concat([pd.DataFrame([carry]), grouped], ignore_index=True)
++        carry = grouped.iloc[-1].to_dict()
++        finished = grouped.iloc[:-1]
++        if not finished.empty:
++            yield validate_bars(finished[finished.open_time + 60000 <= now_ms]).reset_index(drop=True)
++        last_time, last_id = int(stamps.iloc[-1]), int(ids.iloc[-1])
++    if carry is not None and carry['open_time'] + 60000 <= now_ms:
++        yield validate_bars(pd.DataFrame([carry])[BAR_COLUMNS])
++
++
++def archive_member(archive, expected):
++    members = archive.infolist()
++    if len(members) != 1:
++        raise ValueError('아카이브에는 CSV 하나만 있어야 합니다')
++    member = members[0]
++    if (member.filename != expected or PurePosixPath(member.filename).name != member.filename
++            or member.is_dir() or member.flag_bits & 1 or member.file_size > 128_000_000_000
++            or member.file_size > max(1, member.compress_size) * 1000):
++        raise ValueError('압축 경로·암호화·크기 경계 오류')
++    return member
++
++
++class ExternalStore:
++    def __init__(self, path):
++        if sys.platform != 'linux':
++            raise RuntimeError('외부 운영 SQLite도 Linux 내부에서만 접근하십시오')
++        self.path = Path(path)
++        self.path.parent.mkdir(parents=True, exist_ok=True)
++        with self.connect() as db:
++            if db.execute("SELECT 1 FROM sqlite_master WHERE name='bars'").fetchone():
++                check_schema(db)
++                return
++            db.executescript('''CREATE TABLE IF NOT EXISTS bars(
++                symbol TEXT NOT NULL, open_time INTEGER NOT NULL, open REAL, high REAL, low REAL, close REAL,
++                volume REAL, quote_volume REAL, trade_count INTEGER, taker_quote_volume REAL, source TEXT,
++                PRIMARY KEY(symbol,open_time));
++                CREATE TABLE IF NOT EXISTS stats(symbol TEXT PRIMARY KEY, rows INTEGER, first_open_ms INTEGER, last_open_ms INTEGER);
++                CREATE TABLE IF NOT EXISTS metadata(key TEXT PRIMARY KEY,value TEXT);
++                INSERT OR IGNORE INTO metadata VALUES('schema','binance_spot_v1');''')
++            check_schema(db)
++
++    def connect(self):
++        from contextlib import contextmanager
++
++        @contextmanager
++        def connection():
++            db = sqlite3.connect(self.path, timeout=30)
++            try:
++                db.execute('PRAGMA journal_mode=WAL')
++                db.execute('PRAGMA busy_timeout=30000')
++                with db:
++                    yield db
++            finally:
++                db.close()
++        return connection()
++
++    def save(self, symbol, frame, source):
++        if symbol not in SYMBOLS:
++            raise ValueError('지원하지 않는 외부 시장입니다')
++        frame = validate_bars(frame)
++        if frame.empty:
++            return 0
++        disk_budget(self.path.parent, len(frame) * 1024)
++        if (frame.open_time + 60000 > utc_ms()).any():
++            raise ValueError('미완성 외부 분봉입니다')
++        rows = [(symbol, int(r[0]), *map(float, r[1:7]), int(r[7]), float(r[8]), source)
++                for r in frame[BAR_COLUMNS].itertuples(index=False, name=None)]
++        with self.connect() as db:
++            before = db.total_changes
++            db.executemany('INSERT OR IGNORE INTO bars VALUES(?,?,?,?,?,?,?,?,?,?,?)', rows)
++            inserted = db.total_changes - before
++            db.execute('''INSERT INTO stats VALUES(?,?,?,?) ON CONFLICT(symbol) DO UPDATE SET
++                          rows=rows+excluded.rows,first_open_ms=MIN(first_open_ms,excluded.first_open_ms),
++                          last_open_ms=MAX(last_open_ms,excluded.last_open_ms)''',
++                       (symbol, inserted, int(frame.open_time.min()), int(frame.open_time.max())))
++        return inserted
++
++    def summary(self):
++        with self.connect() as db:
++            return {s: {'rows': n, 'first_open_ms': first, 'last_open_ms': last}
++                    for s, n, first, last in db.execute('SELECT * FROM stats')}
++
++    def archive_evidence(self, target, ingested, verified):
++        with self.connect() as db:
++            db.executemany('INSERT OR REPLACE INTO metadata VALUES(?,?)',
++                           [('target_archive_bytes', str(target)), ('ingested_archive_bytes', str(ingested)),
++                            ('verified_archive_bytes', str(verified))])
++
++    def ready(self, now_ms):
++        stats = self.summary()
++        cutoff = (now_ms // 60000 - 14 * 1440) * 60000
++        with self.connect() as db:
++            check_schema(db)
++            recent = {s: db.execute('SELECT COUNT(*) FROM bars WHERE symbol=? AND open_time>=?',
++                                     (s, cutoff)).fetchone()[0] for s in SYMBOLS}
++        return all(s in stats and stats[s]['rows'] >= 20000
++                   and stats[s]['last_open_ms'] - stats[s]['first_open_ms'] >= 30 * 86400000
++                   and 0 <= now_ms - stats[s]['last_open_ms'] <= 300000
++                   and recent.get(s, 0) >= 14 * 1440 * .98 for s in SYMBOLS)
++
++
++def archive_spec(symbol, kind, period, frequency='monthly'):
++    interval = '/1m' if kind == 'klines' else ''
++    name = f'{symbol}-{kind + "-1m" if kind == "klines" else kind}-{period}.zip'
++    if kind == 'klines':
++        name = f'{symbol}-1m-{period}.zip'
++    key = f'data/spot/{frequency}/{kind}/{symbol}{interval}/{name}'
++    return {'symbol': symbol, 'kind': kind, 'period': period, 'frequency': frequency, 'name': name, 'url': BASE + key}
++
++
++def previous_month(year, month):
++    return (year - 1, 12) if month == 1 else (year, month - 1)
++
++
++def bootstrap_plan(now):
++    now = pd.Timestamp(now)
++    year, month = previous_month(now.year, now.month)
++    for symbol in SYMBOLS:
++        yield archive_spec(symbol, 'klines', f'{year:04d}-{month:02d}')
++    for day in range(1, now.day):
++        for symbol in SYMBOLS:
++            yield archive_spec(symbol, 'klines', f'{now.year:04d}-{now.month:02d}-{day:02d}', 'daily')
++
++
++def bulk_plan(now):
++    year, month = previous_month(*previous_month(now.year, now.month))
++    while (year, month) >= (2017, 8):
++        for symbol in SYMBOLS:
++            yield archive_spec(symbol, 'aggTrades', f'{year:04d}-{month:02d}')
++        year, month = previous_month(year, month)
++
++
++def open_public(url, timeout=30):
++    parsed = urllib.parse.urlparse(url)
++    if parsed.scheme != 'https' or parsed.hostname not in ('data.binance.vision', 'data-api.binance.vision'):
++        raise ValueError('공식 공개 시세 HTTPS 주소만 허용합니다')
++    response = urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'personal-paper-research/3'}, method='GET'), timeout=timeout)
++    final = urllib.parse.urlparse(response.geturl())
++    if final.scheme != 'https' or final.hostname not in ('data.binance.vision', 'data-api.binance.vision'):
++        response.close()
++        raise ValueError('허용하지 않는 외부 리다이렉트입니다')
++    return response
++
++
++class Collector:
++    def __init__(self, work=WORK, target=TARGET_BYTES):
++        self.work = Path(work)
++        self.work.mkdir(parents=True, exist_ok=True)
++        self.archives = self.work / 'archives'
++        self.archives.mkdir(exist_ok=True)
++        self.store = ExternalStore(self.work / 'data/external.sqlite3')
++        self.target = target
++        self.lock = threading.RLock()
++        self.manifest_path = self.work / 'archive_manifest.json'
++        self.manifest = json.loads(self.manifest_path.read_text(encoding='utf-8')) if self.manifest_path.exists() else {}
++        if not isinstance(self.manifest, dict):
++            raise ValueError('외부 아카이브 목록 형식 오류')
++        self.integrity_cache = {}
++        self.integrity_errors = {}
++        self.runtime = {'state': '시작', 'bulk_error': None, 'live_error': None, 'archive_current': None}
++
++    def verified_file(self, name, item):
++        if (not isinstance(item, dict) or name != item.get('name') or item.get('symbol') not in SYMBOLS
++                or not re.fullmatch(r'(BTCUSDT|SOLUSDT|ETHUSDT|XRPUSDT|DOGEUSDT)-(1m|aggTrades)-\d{4}-\d{2}(-\d{2})?\.zip', name)
++                or type(item.get('bytes')) is not int or not 0 < item['bytes'] <= MAX_ARCHIVE
++                or not isinstance(item.get('sha256'), str) or not re.fullmatch('[a-f0-9]{64}', item['sha256'])):
++            raise ValueError('아카이브 원본 목록·이름·크기·해시 형식이 잘못됐습니다')
++        path = self.archives / name
++        if not path.is_file() or path.is_symlink() or path.resolve().parent != self.archives.resolve():
++            raise ValueError('검증 원본 파일이 없거나 경계를 벗어났습니다')
++        info = path.stat()
++        identity = (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
++        if info.st_size != item['bytes']:
++            raise ArchiveIntegrityError('검증 원본의 현재 크기가 다릅니다')
++        cached = self.integrity_cache.get(name)
++        if (cached and cached['identity'] == identity and cached['sha256'] == item['sha256']
++                and time.monotonic() - cached['checked_at'] < 3600):
++            return True
++        actual = file_sha256(path)
++        after = path.stat()
++        if ((after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns) != identity
++                or actual != item['sha256']):
++            raise ArchiveIntegrityError('검증 원본의 현재 SHA256 또는 파일 동일성이 다릅니다')
++        self.integrity_cache[name] = {'identity': identity, 'sha256': actual, 'checked_at': time.monotonic()}
++        return True
++
++    def verified_items(self):
++        verified = []
++        for name, item in self.manifest.items():
++            if not isinstance(item, dict) or item.get('sha256_verified') is not True:
++                continue
++            try:
++                self.verified_file(name, item)
++            except (OSError, ValueError) as error:
++                self.integrity_errors[name] = str(error)
++                self.integrity_cache.pop(name, None)
++            else:
++                self.integrity_errors.pop(name, None)
++                verified.append(item)
++        return verified
++
++    def status(self, **fields):
++        with self.lock:
++            self.runtime.update(fields)
++            stats = self.store.summary()
++            verified = self.verified_items()
++            total = sum(item['bytes'] for item in verified)
++            ingested = sum(item['bytes'] for item in verified if item.get('ingested'))
++            self.store.archive_evidence(self.target, ingested, total)
++            result = {'schema_version': 1, 'updated_at': dt.datetime.now(dt.timezone.utc).isoformat(),
++                      'training_ready': not self.integrity_errors and ingested >= self.target and self.store.ready(utc_ms()),
++                      'target_archive_bytes': self.target, 'ingested_archive_bytes': ingested,
++                      'verified_archive_bytes': total, 'verified_archives': len(verified),
++                      'unique_minute_rows': sum(v['rows'] for v in stats.values()), 'markets': stats,
++                      'db_schema': 'binance_spot_v1', 'paper_only': True, **self.runtime}
++            result['integrity_errors'] = dict(self.integrity_errors)
++            result['error'] = result['bulk_error'] or result['live_error'] or ('원본 파일 무결성 확인 실패' if self.integrity_errors else None)
++            atomic_json(self.work / 'status.json', result)
++            return result
++
++    def download(self, spec):
++        name, url = spec['name'], spec['url']
++        if spec != archive_spec(spec['symbol'], spec['kind'], spec['period'], spec['frequency']):
++            raise ValueError('외부 아카이브 요청 명세가 고정 계약과 다릅니다')
++        if spec['symbol'] not in SYMBOLS or spec['kind'] not in ('klines', 'aggTrades'):
++            raise ValueError('지원하지 않는 아카이브 시장 또는 종류입니다')
++        if not re.fullmatch(r'\d{4}-\d{2}(-\d{2})?', spec['period']):
++            raise ValueError('아카이브 날짜 경로 오류')
++        path = self.archives / name
++        if (self.archives.is_symlink() or self.archives.resolve().parent != self.work.resolve()
++                or path.is_symlink() or (path.exists() and not path.is_file())
++                or path.resolve().parent != self.archives.resolve()):
++            raise ValueError('다운로드 원본 경로·링크 경계 오류')
++        with open_public(url + '.CHECKSUM') as response:
++            checksum = response.read(4097).decode('ascii')
++        expected = re.fullmatch(r'([a-fA-F0-9]{64})\s+\*?' + re.escape(name) + r'\s*', checksum)
++        if expected is None:
++            raise ValueError('체크섬 형식 또는 파일명 불일치')
++        digest = expected.group(1).lower()
++        if path.exists():
++            item = {**spec, 'bytes': path.stat().st_size, 'sha256': digest}
++            try:
++                self.verified_file(name, item)
++                actual = digest
++            except ArchiveIntegrityError:
++                actual = file_sha256(path)
++            if actual != digest:
++                # 기존 잘못된 원본도 삭제하지 않고 격리합니다.
++                rejected = path.with_name(path.name + '.rejected-' + uuid.uuid4().hex[:8])
++                path.rename(rejected)
++                atomic_json(rejected.with_name(rejected.name + '.json'),
++                            {'source_url': url, 'original_name': name, 'preserved_file': rejected.name,
++                             'actual_sha256': actual, 'current_official_sha256': digest,
++                             'previous_manifest': self.manifest.get(name),
++                             'observed_at': dt.datetime.now(dt.timezone.utc).isoformat()})
++                logging.error('원본 변경/손상 보존 %s 실제SHA256=%s 기대=%s', rejected.name, actual, digest)
++                self.integrity_cache.pop(name, None)
++            else:
++                return path, digest
++        temporary = path.with_name(path.name + '.' + uuid.uuid4().hex + '.part')
++        created = False
++        try:
++            with open_public(url, timeout=45) as response, temporary.open('xb') as stream:
++                created = True
++                length = int(response.headers.get('Content-Length', '0'))
++                if length > MAX_ARCHIVE:
++                    raise OSError('외부 아카이브 크기 또는 디스크 여유 경계')
++                disk_budget(self.work, length or MAX_ARCHIVE)
++                actual, size = hashlib.sha256(), 0
++                started = time.monotonic()
++                while chunk := response.read(1024 * 1024):
++                    if STOP.is_set():
++                        raise InterruptedError('사용자 중단')
++                    size += len(chunk)
++                    disk_budget(self.work, len(chunk))
++                    if size > MAX_ARCHIVE or time.monotonic() - started > 1800:
++                        raise TimeoutError('파일 크기 또는 다운로드 시간 상한 초과')
++                    if size % (32 * 1024 * 1024) == 0:
++                        if shutil.disk_usage(self.work).free < RESERVE_BYTES:
++                            raise OSError('디스크 여유가20GB미만입니다')
++                        self.status(download_bytes=size)
++                    stream.write(chunk)
++                    actual.update(chunk)
++                if (length and size != length) or actual.hexdigest() != digest:
++                    raise ValueError('다운로드 크기 또는 SHA256 검증 실패')
++            os.replace(temporary, path)
++        finally:
++            if created:
++                temporary.unlink(missing_ok=True)
++        return path, digest
++
++    def ingest(self, spec, path):
++        count = 0
++        with zipfile.ZipFile(path) as archive:
++            member = archive_member(archive, spec['name'][:-4] + '.csv')
++            with archive.open(member) as stream:
++                chunks = pd.read_csv(stream, header=None, chunksize=200000)
++                if spec['kind'] == 'klines':
++                    parsed = (parse_klines(chunk, utc_ms()) for chunk in chunks)
++                else:
++                    parsed = aggregate_trade_chunks(chunks, utc_ms())
++                for frame in parsed:
++                    if STOP.is_set():
++                        raise InterruptedError('사용자 중단')
++                    disk_budget(self.work, len(frame) * 1024)
++                    count += self.store.save(spec['symbol'], frame, spec['name'])
++        return count
++
++    def archive(self, spec):
++        existing = self.manifest.get(spec['name'], {})
++        path = self.archives / spec['name']
++        self.status(state='외부 자료 수집', archive_current=spec['name'], download_bytes=0)
++        for attempt in range(3):
++            if STOP.is_set():
++                raise InterruptedError('사용자 중단')
++            try:
++                path, digest = self.download(spec)
++                if existing.get('ingested') is True and existing.get('sha256') == digest:
++                    self.integrity_errors.pop(spec['name'], None)
++                    self.status(bulk_error=None, archive_current=None)
++                    return
++                with self.lock:
++                    self.manifest[spec['name']] = {**spec, 'bytes': path.stat().st_size,
++                                                   'sha256': digest, 'sha256_verified': True, 'ingested': False}
++                    atomic_json(self.manifest_path, self.manifest)
++                inserted = self.ingest(spec, path)
++                with self.lock:
++                    self.manifest[spec['name']].update(ingested=True, inserted_rows=inserted)
++                    atomic_json(self.manifest_path, self.manifest)
++                self.status(bulk_error=None, archive_current=None)
++                return
++            except urllib.error.HTTPError as error:
++                if error.code == 404:
++                    logging.warning('공식 미제공 파일 %s', spec['name'])
++                    with self.lock:
++                        self.manifest[spec['name']] = {**spec, 'available': False, 'http_status': 404}
++                        atomic_json(self.manifest_path, self.manifest)
++                    return
++                if error.code not in (429, 500, 502, 503, 504) or attempt == 2:
++                    raise
++                STOP.wait(min(60, max(2 ** (attempt + 1), float(error.headers.get('Retry-After', 0)))))
++            except InterruptedError:
++                raise
++            except (OSError, TimeoutError, urllib.error.URLError):
++                if attempt == 2:
++                    raise
++                STOP.wait(2 ** (attempt + 1))
++        raise RuntimeError('외부 자료 재시도가 완료되지 않았습니다')
++
++    def live_cycle(self):
++        for symbol in SYMBOLS:
++            query = urllib.parse.urlencode({'symbol': symbol, 'interval': '1m', 'limit': 1000})
++            with open_public(LIVE + '?' + query) as response:
++                raw = response.read(2_000_001)
++            if len(raw) > 2_000_000:
++                raise ValueError('실시간 응답 크기 상한 초과')
++            payload = json.loads(raw)
++            if not isinstance(payload, list) or not payload:
++                raise ValueError('실시간 공개 분봉이 비어 있거나 오류입니다')
++            frame = parse_klines(pd.DataFrame(payload), utc_ms())
++            disk_budget(self.work, len(frame) * 1024)
++            self.store.save(symbol, frame, 'binance-public-live-klines')
++            if STOP.wait(.25):
++                return
++        self.status(live_error=None, live_updated_at=dt.datetime.now(dt.timezone.utc).isoformat())
++
++    def live_loop(self):
++        while not STOP.is_set():
++            try:
++                self.live_cycle()
++            except Exception as error:
++                logging.exception('외부 실시간 수집 실패')
++                self.status(live_error=f'{type(error).__name__}: {error}')
++            STOP.wait(15)
++
++    def run(self):
++        thread = threading.Thread(target=self.live_loop, name='external-live')
++        thread.start()
++        try:
++            while not STOP.is_set():
++                try:
++                    now = pd.Timestamp.now(tz='UTC')
++                    for spec in bootstrap_plan(now):
++                        if STOP.is_set():
++                            break
++                        self.archive(spec)
++                    for spec in bulk_plan(now):
++                        if STOP.is_set() or self.status()['ingested_archive_bytes'] >= self.target:
++                            break
++                        self.archive(spec)
++                    if not STOP.is_set():
++                        self.status(state='목표 자료 확보 후 실시간 갱신' if self.status()['ingested_archive_bytes'] >= self.target
++                                    else '공식 자료 범위 탐색 완료; 다음 갱신 대기')
++                        STOP.wait(3600)
++                except InterruptedError:
++                    break
++                except Exception as error:
++                    logging.exception('외부 대용량 수집 실패')
++                    self.status(state='오류 기록 후 재시도', bulk_error=f'{type(error).__name__}: {error}')
++                    STOP.wait(60)
++        finally:
++            STOP.set()
++            thread.join(timeout=90)
++            if thread.is_alive():
++                raise RuntimeError('외부 실시간 수집 스레드가 종료되지 않았습니다')
++            self.status(state='중지됨')
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('action', choices=['run', 'live-once', 'status'])
++    args = parser.parse_args()
++    if sys.platform != 'linux':
++        raise RuntimeError('외부 데이터 서비스는 기존 Linux2026 컨테이너에서 실행하십시오')
++    WORK.mkdir(parents=True, exist_ok=True)
++    handler = RotatingFileHandler(WORK / 'collector.log', maxBytes=4_000_000, backupCount=3, encoding='utf-8')
++    logging.basicConfig(level=logging.INFO, handlers=[handler], format='%(asctime)s %(levelname)s %(message)s')
++    signal.signal(signal.SIGTERM, lambda *_: STOP.set())
++    signal.signal(signal.SIGINT, lambda *_: STOP.set())
++    import fcntl
++    with (WORK / 'collector.lock').open('a+b') as lock:
++        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++        collector = Collector()
++        if args.action == 'run':
++            collector.run()
++        elif args.action == 'live-once':
++            collector.live_cycle()
++        else:
++            print(json.dumps(collector.status(), ensure_ascii=False))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/3차/external_features.py b/3차/external_features.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4cdc5628c26b989bb39b75b4bd1403860d6891fc
+--- /dev/null
++++ b/3차/external_features.py
+@@ -0,0 +1,295 @@
++"""외부 완료 분봉을 읽기 전용으로 검사하고 단위 없는 특징만 결합합니다."""
++from __future__ import annotations
++
++import contextlib
++import json
++from pathlib import Path, PureWindowsPath
++import sqlite3
++import sys
++import time
++
++import numpy as np
++import pandas as pd
++
++
++MARKET_SYMBOLS = {"KRW-BTC": "BTCUSDT", "KRW-SOL": "SOLUSDT", "KRW-ETH": "ETHUSDT",
++                  "KRW-XRP": "XRPUSDT", "KRW-DOGE": "DOGEUSDT"}
++DB_SCHEMA = "binance_spot_v1"
++BAR_TYPES = {"symbol": "TEXT", "open_time": "INTEGER", "open": "REAL", "high": "REAL",
++             "low": "REAL", "close": "REAL", "volume": "REAL", "quote_volume": "REAL",
++             "trade_count": "INTEGER", "taker_quote_volume": "REAL", "source": "TEXT"}
++FEATURE_COLUMNS = ["ext_return_1", "ext_return_5", "ext_return_15", "ext_return_24",
++                   "ext_range", "ext_body", "ext_volume_ratio", "ext_quote_volume_ratio",
++                   "ext_trade_count_ratio", "ext_volatility", "ext_taker_buy_ratio"]
++READ_CHUNK_ROWS = 50000
++MIN_DATASET_BYTES = 50000000000
++MIN_OPEN_MS = 1483228800000
++MAX_AGE = pd.Timedelta(minutes=5)
++# 결측을 무제한 이월하지 않으며 최신 추론에서는 별도로 현재 시각 대비 5분도 검사합니다.
++JOIN_TOLERANCE = pd.Timedelta(minutes=2)
++
++
++class DatasetNotReady(RuntimeError):
++    """신규 학습은 대기하되 기존 모델 운용을 바꾸지 않는 준비 상태입니다."""
++
++    def __init__(self, evidence):
++        self.evidence = evidence
++        super().__init__(evidence["reason"])
++
++
++def _utc(value):
++    stamp = pd.Timestamp(value)
++    if pd.isna(stamp) or stamp.tzinfo is None:
++        raise ValueError("외부 자료 시각은 시간대가 있는 UTC 시각이어야 합니다")
++    return stamp.tz_convert("UTC")
++
++
++def validate_config(settings, root):
++    if not isinstance(settings, dict) or set(settings) - {"enabled", "db_path", "status_path", "wait_for_dataset", "target_bytes"}:
++        raise ValueError("지원하지 않는 외부 자료 설정입니다")
++    result = {"enabled": False, "db_path": "3차/work/data/external.sqlite3",
++              "status_path": "3차/work/status.json", "wait_for_dataset": False,
++              "target_bytes": MIN_DATASET_BYTES, **settings}
++    mode = result["enabled"]
++    if type(mode) is not bool and not (isinstance(mode, str) and mode == "auto"):
++        raise ValueError("external.enabled는 false/true/auto만 허용합니다")
++    if type(result["wait_for_dataset"]) is not bool or (result["wait_for_dataset"] and mode is False):
++        raise ValueError("외부 자료 대기는 bool이며 외부 사용 설정과 함께 지정해야 합니다")
++    if type(result["target_bytes"]) is not int or result["target_bytes"] < MIN_DATASET_BYTES:
++        raise ValueError("외부 자료 목표는 최소 50,000,000,000바이트 정수여야 합니다")
++    root = Path(root).resolve()
++    boundary = (root / "3차" / "work").resolve()
++    if not boundary.is_relative_to(root):
++        raise ValueError("외부 자료 경계가 프로젝트를 벗어났습니다")
++    for key in ("db_path", "status_path"):
++        value = result[key]
++        if not isinstance(value, str) or not value.strip() or "\x00" in value or value.startswith("file:"):
++            raise ValueError(f"external.{key} 경로가 유효하지 않습니다")
++        if sys.platform != "win32" and (PureWindowsPath(value).drive or "\\" in value):
++            raise ValueError("다른 운영체제의 절대 경로를 외부 자료 경로로 사용하지 않습니다")
++        target = (root / value).resolve()
++        if not target.is_relative_to(boundary) or target == boundary:
++            raise ValueError("외부 자료 경로는 프로젝트 3차/work 내부여야 합니다")
++        # manifest는 호스트/컨테이너에 공통인 프로젝트 상대 경로만 보존합니다.
++        result[key] = target.relative_to(root).as_posix()
++    if result["db_path"] == result["status_path"]:
++        raise ValueError("외부 DB와 상태 파일 경로는 달라야 합니다")
++    return result
++
++
++def _check_schema(db):
++    kind = db.execute("SELECT type FROM sqlite_master WHERE name='bars'").fetchone()
++    info = db.execute("PRAGMA table_info(bars)").fetchall()
++    if (kind != ("table",) or [(r[1], r[2].upper()) for r in info] != list(BAR_TYPES.items())
++            or {r[1]: r[5] for r in info if r[5]} != {"symbol": 1, "open_time": 2}):
++        raise ValueError("외부 bars 스키마/기본키가 계약과 다릅니다")
++    if db.execute("SELECT value FROM metadata WHERE key='schema'").fetchone() != (DB_SCHEMA,):
++        raise ValueError("외부 DB metadata 스키마 버전이 다릅니다")
++
++
++def _query_deadline(db):
++    deadline = time.monotonic() + 25
++    db.set_progress_handler(lambda: int(time.monotonic() > deadline), 10000)
++
++
++@contextlib.contextmanager
++def _database(settings, root):
++    # 테스트 DB를 포함하여 외부 bars는 Linux 밖에서 절대로 열지 않습니다.
++    if sys.platform != "linux":
++        raise RuntimeError("외부 bars SQLite는 Linux 도커 내부에서만 접근하십시오")
++    path = Path(root) / settings["db_path"]
++    if not path.is_file():
++        raise FileNotFoundError("외부 bars DB가 없습니다")
++    db = sqlite3.connect(path.as_uri() + "?mode=ro", uri=True, timeout=5)
++    _query_deadline(db)
++    try:
++        db.execute("PRAGMA query_only=ON")
++        db.execute("BEGIN")
++        _check_schema(db)
++        yield db
++    finally:
++        db.close()
++
++
++def _nonnegative_int(value):
++    return type(value) is int and value >= 0
++
++
++def _minute(value, now_ms):
++    return (_nonnegative_int(value) and MIN_OPEN_MS <= value <= now_ms - 60000
++            and value % 60000 == 0)
++
++
++def _status_ready(payload, now, target):
++    if (not isinstance(payload, dict) or type(payload.get("schema_version")) is not int
++            or payload["schema_version"] != 1 or payload.get("db_schema") != DB_SCHEMA
++            or payload.get("training_ready") is not True):
++        raise ValueError("외부 상태 스키마/준비 표시가 유효하지 않습니다")
++    updated = _utc(payload["updated_at"])
++    if pd.Timestamp(payload["updated_at"]).utcoffset().total_seconds() != 0 or not pd.Timedelta(0) <= now - updated <= MAX_AGE:
++        raise ValueError("외부 상태 갱신 시각이 오래되었거나 미래입니다")
++    if any(not _nonnegative_int(payload.get(k)) for k in
++           ("verified_archive_bytes", "target_archive_bytes", "ingested_archive_bytes", "unique_minute_rows")):
++        raise ValueError("외부 상태의 용량/행 수가 유효하지 않습니다")
++    if (payload["target_archive_bytes"] < target or payload["ingested_archive_bytes"] < target
++            or payload["verified_archive_bytes"] < payload["ingested_archive_bytes"]):
++        raise ValueError("검증·적재된 고유 외부 아카이브가 목표 용량에 미달합니다")
++    if not isinstance(payload.get("state"), str) or not payload["state"] or payload.get("error") is not None:
++        raise ValueError("외부 상태가 오류 또는 미확인 상태입니다")
++    markets = payload.get("markets")
++    if not isinstance(markets, dict) or set(markets) != set(MARKET_SYMBOLS.values()):
++        raise ValueError("외부 상태의 다섯 종목이 일치하지 않습니다")
++    now_ms = int(now.timestamp() * 1000)
++    for values in markets.values():
++        if (not isinstance(values, dict) or not _nonnegative_int(values.get("rows")) or values["rows"] < 20000
++                or not all(_minute(values.get(k), now_ms) for k in ("first_open_ms", "last_open_ms"))
++                or values["last_open_ms"] - values["first_open_ms"] < 30 * 86400000
++                or now_ms - values["last_open_ms"] - 60000 > 300000):
++            raise ValueError("외부 상태의 범위/완료 분봉 수/최신성이 부족합니다")
++    if sum(v["rows"] for v in markets.values()) != payload["unique_minute_rows"]:
++        raise ValueError("외부 상태의 고유 행 수 합계가 다릅니다")
++
++
++def resolve_for_training(settings, root, now):
++    resolved = validate_config(settings, root)
++    now = _utc(now)
++    evidence = {"requested": resolved["enabled"], "checked_at": now.isoformat()}
++    if resolved["enabled"] != "auto" and not resolved["wait_for_dataset"]:
++        return resolved, {**evidence, "training_ready": None, "reason": "명시 설정; 준비 검사 미실행"}
++    evidence.update(verified_archive_bytes=0, ingested_archive_bytes=0,
++                    target_archive_bytes=resolved["target_bytes"])
++    try:
++        payload = json.loads((Path(root) / resolved["status_path"]).read_text(encoding="utf-8"))
++        if isinstance(payload, dict):
++            for key in ("verified_archive_bytes", "ingested_archive_bytes"):
++                if _nonnegative_int(payload.get(key)):
++                    evidence[key] = payload[key]
++            evidence["reported_target_archive_bytes"] = payload.get("target_archive_bytes")
++        _status_ready(payload, now, resolved["target_bytes"])
++        now_ms = int(now.timestamp() * 1000)
++        with _database(resolved, root) as db:
++            metadata = dict(db.execute("SELECT key,value FROM metadata WHERE key IN ('target_archive_bytes','ingested_archive_bytes','verified_archive_bytes')"))
++            for key in ("target_archive_bytes", "ingested_archive_bytes", "verified_archive_bytes"):
++                value = metadata.get(key)
++                if not isinstance(value, str) or not value.isascii() or not value.isdecimal() or int(value) < resolved["target_bytes"]:
++                    raise ValueError(f"외부 DB metadata.{key}의 50GB 목표/적재 근거가 부족합니다")
++            if (int(metadata["verified_archive_bytes"]) < int(metadata["ingested_archive_bytes"])
++                    or int(metadata["ingested_archive_bytes"]) < payload["ingested_archive_bytes"]):
++                raise ValueError("외부 DB와 상태의 검증/적재 용량 근거가 일치하지 않습니다")
++            actual = {}
++            for symbol, reported in payload["markets"].items():
++                count, first, last = db.execute("SELECT COUNT(*),MIN(open_time),MAX(open_time) FROM bars WHERE symbol=?", (symbol,)).fetchone()
++                recent = db.execute("SELECT COUNT(*) FROM bars WHERE symbol=? AND open_time>=? AND open_time<=?",
++                                    (symbol, now_ms - 14 * 86400000, now_ms - 60000)).fetchone()[0]
++                if (count < max(20000, reported["rows"]) or not _minute(first, now_ms) or not _minute(last, now_ms)
++                        or last - first < 30 * 86400000 or now_ms - last - 60000 > 300000
++                        or first > reported["first_open_ms"] or last < reported["last_open_ms"]
++                        or recent < 14 * 1440 * .98):
++                    raise ValueError(f"{symbol}: 실제 DB의 범위/봉 수/최신성/최근 14일 98% 커버리지 부족")
++                latest = pd.read_sql_query("SELECT * FROM bars WHERE symbol=? ORDER BY open_time DESC LIMIT 25", db,
++                                           params=(symbol,)).iloc[::-1]
++                ratio_features(latest, now)
++                actual[symbol] = {"rows": count, "first_open_ms": first, "last_open_ms": last,
++                                  "recent_14d_rows": recent}
++        resolved["enabled"] = True
++        return resolved, {**evidence, "training_ready": True, "reason": "상태 및 실제 DB 검사 통과", "markets": actual}
++    except (OSError, ValueError, TypeError, KeyError, OverflowError, sqlite3.Error, RuntimeError) as exc:
++        raise DatasetNotReady({**evidence, "training_ready": False, "reason": str(exc),
++                               "error_type": type(exc).__name__}) from exc
++
++
++def ratio_features(raw, now):
++    if raw.empty:
++        return pd.DataFrame(columns=FEATURE_COLUMNS, index=pd.DatetimeIndex([], tz="UTC", name="close_time"), dtype=np.float32)
++    if set(raw.columns) != set(BAR_TYPES):
++        raise ValueError("외부 분봉 열이 저장 계약과 다릅니다")
++    times = raw.open_time.to_numpy()
++    numeric = list(BAR_TYPES)[2:10]
++    values = raw[numeric].to_numpy(dtype=np.float64)
++    now_ms = int(_utc(now).timestamp() * 1000)
++    if (not np.issubdtype(times.dtype, np.integer) or np.any(times < MIN_OPEN_MS)
++            or np.any(times > now_ms - 60000) or np.any(times % 60000) or np.any(np.diff(times) <= 0)
++            or not np.isfinite(values).all() or np.any(values[:, :4] <= 0)
++            or np.any(values[:, 4:] < 0) or np.any(raw.high < raw[["open", "close", "low"]].max(axis=1))
++            or np.any(raw.low > raw[["open", "close", "high"]].min(axis=1))
++            or np.any(raw.trade_count % 1) or np.any(raw.taker_quote_volume > raw.quote_volume)
++            or not raw.symbol.isin(MARKET_SYMBOLS.values()).all()
++            or raw.symbol.nunique() != 1
++            or not raw.source.map(lambda value: isinstance(value, str) and bool(value)).all()):
++        raise ValueError("외부 분봉의 UTC 밀리초/완료 시각/단위/가격/수량 범위 오류")
++    index = pd.to_datetime(times + 60000, unit="ms", utc=True)
++    index.name = "close_time"
++    data = raw[numeric].copy()
++    data.index = index
++    out = pd.DataFrame(index=index)
++    for n in (1, 5, 15, 24):
++        previous = data.close.reindex(index - pd.Timedelta(minutes=n)).to_numpy()
++        out[f"ext_return_{n}"] = data.close.to_numpy() / previous - 1
++    out["ext_range"] = (data.high - data.low) / data.close
++    out["ext_body"] = (data.close - data.open) / data.open
++    contiguous = pd.Series(times, index=index).diff(23).eq(23 * 60000)
++    for source, name in (("volume", "volume"), ("quote_volume", "quote_volume"), ("trade_count", "trade_count")):
++        average = data[source].rolling(24).mean().replace(0, np.nan)
++        out[f"ext_{name}_ratio"] = (data[source] / average).where(contiguous)
++    out["ext_volatility"] = out.ext_return_1.rolling(24).std()
++    out["ext_taker_buy_ratio"] = data.taker_quote_volume / data.quote_volume.replace(0, np.nan)
++    return out[FEATURE_COLUMNS].replace([np.inf, -np.inf], np.nan).astype(np.float32)
++
++
++def join_features(base, features):
++    left = base.sort_index()
++    if not isinstance(left.index, pd.DatetimeIndex) or left.index.tz is None or not left.index.is_unique:
++        raise ValueError("외부 특징 결합 대상은 고유한 UTC 시간 인덱스여야 합니다")
++    right = features.copy()
++    right.index = right.index.tz_convert(left.index.tz).as_unit(left.index.unit)
++    right["available_external"] = right.index
++    return pd.merge_asof(left, right.sort_index(), left_index=True, right_index=True, direction="backward",
++                         allow_exact_matches=True, tolerance=JOIN_TOLERANCE)
++
++
++def load_and_join(base, market, settings, root, now):
++    settings = validate_config(settings, root)
++    if settings["enabled"] is not True:
++        raise ValueError("외부 특징 사용 여부는 회차/manifest의 bool로 동결되어야 합니다")
++    if market not in MARKET_SYMBOLS:
++        raise ValueError("지원하지 않는 외부 시장 대응입니다")
++    now = _utc(now)
++    with _database(settings, root) as db:
++        symbol = MARKET_SYMBOLS[market]
++        if db.execute("SELECT 1 FROM bars WHERE symbol=? LIMIT 1", (symbol,)).fetchone() is None:
++            raise ValueError(f"{symbol}: 외부 분봉 자료가 비어 있습니다")
++        if base.empty:
++            return join_features(base, ratio_features(pd.DataFrame(), now))
++        left = base.sort_index()
++        start = int((_utc(left.index.min()) - pd.Timedelta(minutes=26)).timestamp() * 1000)
++        end = int(min(_utc(left.index.max()), now).timestamp() * 1000) - 60000
++        cursor = db.execute("SELECT * FROM bars WHERE symbol=? AND open_time>=? AND open_time<=? ORDER BY open_time",
++                            (symbol, start, end))
++        joined = pd.DataFrame(np.nan, index=left.index, columns=FEATURE_COLUMNS, dtype=np.float32)
++        joined["available_external"] = pd.Series(pd.NaT, index=left.index, dtype=left.index.dtype)
++        carry = pd.DataFrame()
++        previous_end = None
++        features = ratio_features(pd.DataFrame(), now)
++        while True:
++            # CPU 특징 계산 시간은 다음 SQL 호출의 제한 시간을 소진하지 않습니다.
++            _query_deadline(db)
++            rows = cursor.fetchmany(READ_CHUNK_ROWS)
++            if not rows:
++                break
++            chunk = pd.DataFrame.from_records(rows, columns=list(BAR_TYPES))
++            if not carry.empty:
++                chunk = pd.concat([carry, chunk], ignore_index=True)
++            features = ratio_features(chunk, now)
++            selected = left.index <= features.index[-1]
++            if previous_end is not None:
++                selected &= left.index > previous_end
++            targets = left.index[selected]
++            if len(targets):
++                part = join_features(pd.DataFrame(index=targets), features)
++                joined.loc[targets, :] = part
++            previous_end = features.index[-1]
++            carry = chunk.tail(24)
++        targets = left.index if previous_end is None else left.index[left.index > previous_end]
++        if len(targets):
++            joined.loc[targets, :] = join_features(pd.DataFrame(index=targets), features)
++    return left.join(joined)
+diff --git a/3차/manage.py b/3차/manage.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..66ae4cdd0348fa2f6925b1cad033bd24a6456923
+--- /dev/null
++++ b/3차/manage.py
+@@ -0,0 +1,85 @@
++"""공유 컨테이너를 건드리지 않고3차 수집기만 제어합니다."""
++import argparse
++import json
++import os
++from pathlib import Path
++import signal
++import subprocess
++import sys
++import time
++
++ROOT = Path(__file__).resolve().parent
++PROJECT = ROOT.parent
++SCRIPT = ROOT / 'external_data.py'
++
++
++def matches(pid):
++    try:
++        proc = Path('/proc') / str(pid)
++        if proc.joinpath('cwd').resolve() != PROJECT.resolve():
++            return False
++        arguments = proc.joinpath('cmdline').read_bytes().split(b'\0')
++        values = [a.decode('utf-8') for a in arguments if a]
++        scripts = [a for a in values[1:] if not a.startswith('-')]
++        return (len(scripts) == 2 and (PROJECT / scripts[0]).resolve() == SCRIPT.resolve()
++                and scripts[1] == 'run')
++    except (FileNotFoundError, ProcessLookupError, PermissionError, UnicodeError):
++        return False
++
++
++def processes():
++    return [int(p.name) for p in Path('/proc').iterdir() if p.name.isdecimal() and matches(int(p.name))]
++
++
++def stop():
++    if not hasattr(os, 'pidfd_open') or not hasattr(signal, 'pidfd_send_signal'):
++        raise RuntimeError('PID 재사용 방지 기능이 없는 환경에서는 정지하지 않습니다')
++    found = processes()
++    for pid in found:
++        fd = os.pidfd_open(pid)
++        try:
++            if matches(pid):
++                signal.pidfd_send_signal(fd, signal.SIGTERM)
++        finally:
++            os.close(fd)
++    deadline = time.monotonic() + 100
++    while any(matches(pid) for pid in found):
++        if time.monotonic() >= deadline:
++            raise TimeoutError('수집기 정상 종료 시간 초과; 강제 종료하지 않았습니다')
++        time.sleep(.25)
++    return found
++
++
++def start():
++    current = processes()
++    if current:
++        return current
++    (ROOT / 'work').mkdir(parents=True, exist_ok=True)
++    with (ROOT / 'work/console.log').open('ab') as stream:
++        child = subprocess.Popen([str(PROJECT / '.venv/bin/python'), '-u', str(SCRIPT), 'run'],
++                                 cwd=PROJECT, stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT,
++                                 start_new_session=True, close_fds=True)
++    deadline = time.monotonic() + 5
++    while time.monotonic() < deadline:
++        if child.poll() is not None:
++            raise RuntimeError(f'수집기 시작 실패: 종료코드{child.returncode}')
++        if matches(child.pid):
++            return [child.pid]
++        time.sleep(.1)
++    raise RuntimeError('수집기 신원 확인 시간 초과')
++
++
++def main():
++    if sys.platform != 'linux':
++        raise RuntimeError('기존2026 Linux 컨테이너 전용 도구입니다')
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('action', choices=['start', 'stop', 'restart', 'status'])
++    args = parser.parse_args()
++    if args.action in ('stop', 'restart'):
++        stop()
++    pids = start() if args.action in ('start', 'restart') else processes()
++    print(json.dumps({'action': args.action, 'pids': pids, 'shared_container_restarted': False}))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/3차/변경기록.md b/3차/변경기록.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..b93935f45b99e33e6c421fa18116eac7b006e7bf
+--- /dev/null
++++ b/3차/변경기록.md
+@@ -0,0 +1,41 @@
++# 3차 변경 기록
++
++## 기준과 차수
++
++직전 공개 기준은`892f759d1baad8ada8fbdbdd9f801b259dfa586c`입니다. 로컬 보존 대응표에서1차·2차경로존재를확인했으며이번추가본을3차폴더로분리했습니다. 이전1·2차의개인운영자료포함압축원본은공개하지않고보존합니다. 존재확인과공개파일별세부비교가능여부는다르므로확인하지못한구버전효과를추정하지않습니다.
++
++[직전공개기준](https://github.com/PUVKID/Upbit-Paper-Trading-Project/tree/892f759d1baad8ada8fbdbdd9f801b259dfa586c) · [최신전체Git차이](https://github.com/PUVKID/Upbit-Paper-Trading-Project/compare/892f759d1baad8ada8fbdbdd9f801b259dfa586c...main)
++
++## 파일별 차이
++
++| 구분 | 파일 | 실제 변화 |
++|---|---|---|
++| 추가 | `3차/external_data.py` |공식고유ZIP50GB목표·SHA256·청크분봉집계·실시간5시장·디스크20GB보호·스키마/원본무결성·적재완료기준|
++| 추가 | `3차/external_features.py` |외부DB읽기전용검사·50GB준비판정·11개단위없는특징·닫힌시각과거결합·누락보호|
++| 추가 | `3차/manage.py` |cwd/정확스크립트/argv확인·pidfd정상정지·외부수집기별도제어|
++| 추가 | `3차/engine-config.json` |초기50GB처리전학습대기·auto외부사용·공통모의계좌설정스냅숏|
++| 추가 | `3차/README.md`, 본문서, `3차/docs/요구사항_및_데이터계약.md` |최신50GB→GPU학습→업비트200건증분/모의매매병행조건·이전정정이력·자료계약·한계|
++| 추가 | `tests/test_external_data.py` |파서/마이크로초/체크섬/실파일누락손상/용량게이트/디스크/schema/링크/프로세스경계17검사|
++| 추가 | `tests/test_external_features.py` |과거방향결합·미완성/누락/변조·auto회차동결·50GB대기·기존모델호환·청산유지21검사|
++| 추가 | `tests/test_external_dashboard.py` |다운로드대기에직전100%진행률비표시·외부용량·비공개오류차단1검사|
++| 수정 | `engine.py` |설정키·동적외부모듈연결·회차별해석동결·준비미달대기와설정근거기록. GPU핵심5함수는직전과동일|
++| 수정 | `engine-config.json` |외부auto·wait_for_dataset=true·target_bytes50GB·3차저장경로추가|
++| 수정 | `dashboard.py` |허용외부요약필드만공개·현재waiting_data진행과직전완료후보분리|
++| 수정 | `web/app.js` |기존요약과홈진행률에다운로드검증·처리/50GB·고유분봉표시. 숫자좁은폭축약. HTML/CSS배치와3D형상불변|
++| 수정 | README·CHANGELOG·차수색인 |3차경로와정확한변경/제외/검증범위연결|
++
++기존 코드의주석·공백·들여쓰기차이도연결된전체Git차이에서볼수있습니다. 새바이너리·삭제파일·새외부의존성은없습니다. GPU학습률0.05·깊이·라운드·라벨·원금·수수료·승격·손실기준을임의완화하지않았습니다. 코드와설정이바뀌었다고95%/100%정확도나수익개선으로표현하지않습니다.
++
++## 검증과 실제 실행
++
++최종구현자host전체251개검사는15.924초에통과했으며선언된환경별생략15개가있습니다. 정적90개오류0,1.031초였습니다. 외부수집Linux17개와외부특징Linux21개도별도통과했습니다. 이는합성/격리fixture검사이며실제50GB를시험중생성한것은아닙니다. 별도검증자의최종판정과반영커밋은독립결과및로컬반영영수증에서확인합니다.
++
++5시장실시간4995완성분봉과첫BTC월간ZIP2,054,117바이트/43,200분봉의실다운로드·SHA256·집계를확인했습니다. 이후실제백그라운드수집이계속진행되며50GB미달에는trainer가waiting_data/download로대기합니다. 기존모의매매와손절·청산은별도계속합니다. 실확보량은변하므로정적인본문수치를완료량으로쓰지않습니다.
++
++기존GPU최적화정규회차는약979초에서약405초로완료된실측이있습니다. 자료·후보·부하가달라일정가속배수를보장하지않습니다. 이번3차외부자료학습은50GB처리뒤시작하므로아직새모델의성적·수익을달성했다고보고하지않습니다.
++
++## 실패와 제외
++
++독립사전검사에서디스크여유·허위캐시·누락원본·schema·미적재재시도·링크경계를FAIL로확인하여수리했습니다. 이전FAIL은로컬증거에유지하고뒤의PASS로삭제하지않습니다. 공개기록에는개인로그와실제계좌를복제하지않습니다.
++
++원본50GB·데이터베이스·모델가중치·가상계좌·수집로그·개인지침·비밀·로컬독립영수증·사전실패원문은공개에서제외합니다. 데이터이용약관에따른출처와비상업연구범위를유지합니다. 완성모델만승격하며정확도100%까지반드시성공하거나24시간GPU100%를유지한다는보장은없습니다.
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 36799b6484d216fe3c266372d5fdc4abcfbba834..c546f5a14699e7c55adde4b3e30071cb7043c4c2 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,12 @@
+ # 변경 기록
+ 
++## 2026-10-30 3차 외부50GB와 순차 학습
++
++- `3차/`에공식외부자료수집·SHA256·스트리밍분봉집계·상대특징·수집기제어·설정·자료계약과변경기록을추가했습니다.
++- `engine.py`, 설정, 대시보드API와기존요약표시를연결하고세신규회귀파일을추가했습니다. 학습률·GPU핵심5함수·승격·모의원금·거래기준은유지했습니다.
++- 실제파일무결성·디스크여유·스키마·검증/적재50GBgate·링크·대기진행률의사전FAIL을확인하고수리했습니다. 이전실패를삭제하지않았습니다.
++- [전체파일목록과차이·검증·공개제외](3차/변경기록.md)를기록했습니다. 신규바이너리·삭제·새의존성은없습니다. 원본자료·모델·장부·로그·개인지침은공개하지않습니다.
++
+ ## 2026-10-30 GPU 처리량 개선
+ 
+ - `engine.py`의 DB임시정렬 제거·완료시각 검증, 후보별DMatrix 재사용, 최대1시장 특징 선행 준비, 파라미터·단계별 시간 기록을 반영했습니다.
+diff --git a/README.md b/README.md
+index d040abea7f2bfc0cbfff8c0e0ff18e8998d4bed8..54f79f00acf4eaa84ba13e40f1fa0ada918fe61c 100644
+--- a/README.md
++++ b/README.md
+@@ -4,6 +4,18 @@
+ 
+ ## 최신 변경
+ 
++### 3차 외부50GB 초기학습
++
++[3차 실행 설명](3차/README.md) · [파일별 변경과 전체 비교](3차/변경기록.md) · [저장·준비 계약](3차/docs/요구사항_및_데이터계약.md)
++
++외부 고유아카이브50GB의 다운로드·SHA256검증·스트리밍집계를 마친 뒤GPU학습을 시작하고, 이후업비트에서 요청당200개씩완성봉을누적하며재학습합니다. 기존검증모델의현물모의매매는계속유지합니다. 초기50GB준비중이며확보완료·새모델성적·정확도100%·수익달성을주장하지않습니다.
++
++| 확인된 차수 | 보존과 공개 범위 | 안내 |
++|---|---|---|
++| 1차·2차 | 로컬보존대응표에서존재확인. 개인운영자료포함압축원본은공개제외, 세부차이비교미확인 | [확인범위와한계](3차/변경기록.md) |
++| 기존 공개 기본·GPU개선 | 기존공개Git이력에보존 | [GPU개선설명](docs/versions/gpu-throughput-20261030.md) |
++| 3차 | 외부수집·특징·초기학습gate·설정·검사·운영설명 | [3차폴더](3차/) · [변경기록](3차/변경기록.md) |
++
+ | 확인된 차수·위치 | 내용 | 설명·비교 |
+ |---|---|---|
+ | 기존 공개 기본 | 시세 수집·GPU 연구·현물 모의체결 | [기존 기록](docs/versions/stage-1.md) · [보존 기준](https://github.com/PUVKID/Upbit-Paper-Trading-Project/tree/5d365eeff59b0d6d81607b336f14d238303c57a0) |
+diff --git a/dashboard.py b/dashboard.py
+index 92b3a144d255b93e49575c383f132d3b62f6f629..f2684d8f734d088ce77dd43f3bb544d8ca2e7330 100644
+--- a/dashboard.py
++++ b/dashboard.py
+@@ -30,6 +30,7 @@ FIELDS = {
+     "rounds": "run round candidate state accuracy macro_f1 balanced_accuracy baseline_accuracy samples duration_seconds started_utc finished_utc recorded_utc split locked_accuracy locked_samples",
+     "service": "state start_utc started_utc checked_utc finished_utc failed_utc stopped_utc iteration consecutive_failures exit_code previous_finished_utc success_gap_seconds successful_cycles next_iteration interval_seconds duration_seconds",
+     "gpu": "state checked_utc gpu_name gpu_memory_total_mb gpu_memory_used_mb gpu_utilization_pct",
++    "external_data": "schema_version state updated_at training_ready verified_archive_bytes ingested_archive_bytes target_archive_bytes verified_archives unique_minute_rows has_error",
+     "split": "rows period_start period_end",
+     "gpu_fit": "actual_device requested_device best_iteration depth xgboost_version boosted_rounds duration_seconds validation_logloss last_validation_logloss validation_scope train_rows tune_rows features eta",
+     "test_state": "status used_for_selection",
+@@ -333,9 +334,12 @@ class SnapshotAdapter:
+         data = sections["data"]
+         markets = market_report(training)
+         progress = mapping(self.read("work/service/training_progress.json"))
++        external_source = mapping(self.read("3차/work/status.json"))
+         current = mapping(training.get("training"))
+         completed = progress.get("completed_candidates", current.get("completed_candidates"))
+         total = progress.get("total_candidates", current.get("total_candidates"))
++        if progress.get("status") == "waiting_data":
++            completed = total = None
+         training_view = {**training, "state": progress.get("status", current.get("status", training.get("state"))),
+                          "stage": progress.get("stage"), "market": progress.get("market"),
+                          "candidate": progress.get("candidate", training.get("candidate")),
+@@ -354,6 +358,8 @@ class SnapshotAdapter:
+                          "learning_rate": progress.get("learning_rate", progress.get("eta"))}
+         if finite(completed) and finite(total) and total > 0:
+             training_view["progress"] = completed / total
++        if progress.get("status") == "waiting_data":
++            training_view["progress"] = None
+         # 보고서 설정 전체가 아닌 실제 사용 시간봉 한 항목만 표시합니다.
+         training_view["timeframe"] = mapping(training.get("config")).get("base_timeframe")
+         locked = mapping(training.get("locked_test"))
+@@ -449,6 +455,7 @@ class SnapshotAdapter:
+             "class_distribution": aggregate_distribution(markets) if markets else distribution(training.get("class_distribution")),
+             "rounds": self.experiments() or rows(training.get("rounds", combined.get("rounds")), "rounds"),
+             "data": project(data, "data"),
++            "external_data": project({**external_source, "has_error": external_source.get("error") is not None}, "external_data"),
+             "datasets": rows(dataset_values, "datasets"),
+             "services": {name: project(self.read(f"work/service/{name}.json"), "service")
+                          for name in ("collector", "backfill", "trainer", "paper", "health")},
+diff --git a/docs/VERSIONS.md b/docs/VERSIONS.md
+index 59c4ad6c2708d0328f72e7cd5dc282b71a380b7d..b609b30e57e52f3239d9fa9b8e24635ecddad72b 100644
+--- a/docs/VERSIONS.md
++++ b/docs/VERSIONS.md
+@@ -1,5 +1,15 @@
+ # 현재 공개 파일과 차수별 변화
+ 
++## 3차 대용량 자료 연구
++
++보존대응표에서1차·2차의존재를확인했고이번새소스는3차로분리했습니다. 이전개인운영자료와구체비교미확인부분은공개완료로주장하지않습니다. 기존`기본`공개자료와로컬차수번호를임의로대응시키지않습니다.
++
++| 확인 차수 | 내용과 연결 | 직전 비교 |
++|---|---|---|
++| 1차·2차 | 개인운영자료포함압축원본로컬보존,공개제외 | 세부비교미확인 |
++| 기존 공개 GPU 개선 | [보존커밋](https://github.com/PUVKID/Upbit-Paper-Trading-Project/tree/892f759d1baad8ada8fbdbdd9f801b259dfa586c) | [기존설명](versions/gpu-throughput-20261030.md) |
++| 3차 | [폴더](../3차/) · [설명](../3차/README.md) · [파일별추가수정목록](../3차/변경기록.md) | [전체Git차이](https://github.com/PUVKID/Upbit-Paper-Trading-Project/compare/892f759d1baad8ada8fbdbdd9f801b259dfa586c...main) |
++
+ ## 2026-10-30 추가 개선
+ 
+ 기존 `기본` 자료는 기준 커밋 `5d365eeff59b0d6d81607b336f14d238303c57a0`에 보존했습니다. 아래 기존32개 집계는 그 시점의 기록이며 새 파일 합계로 해석하지 않습니다.
+diff --git a/engine-config.json b/engine-config.json
+index 9403d0397b82b25fcbe002e84e9cb708d42e6cdd..0c9fa9278e0b307fc568ff656834810877ae3e62 100644
+--- a/engine-config.json
++++ b/engine-config.json
+@@ -1,5 +1,7 @@
+ {
+   "collection": {"recent_pages": 2, "backfill_pages_per_cycle": 20, "poll_seconds": 30, "request_interval": 0.18, "retries": 4},
++  "external": {"enabled": "auto", "wait_for_dataset": true, "target_bytes": 50000000000,
++               "db_path": "3차/work/data/external.sqlite3", "status_path": "3차/work/status.json"},
+   "training": {
+     "train_days": 36500,
+     "tune_days": 2,
+diff --git a/engine.py b/engine.py
+index cbf2ffef8be8fec47fefa4acc6570b3c4c0d527f..0343588338566692eebbabc8f4d627fd4be861d2 100644
+--- a/engine.py
++++ b/engine.py
+@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
+ from contextvars import ContextVar
+ import copy
+ import hashlib
++from importlib import import_module
+ import itertools
+ import json
+ import math
+@@ -14,6 +15,7 @@ import os
+ from pathlib import Path
+ import sqlite3
+ import sys
++import threading
+ import time
+ import traceback
+ import urllib.error
+@@ -36,6 +38,9 @@ DEFAULT_CONFIG = {
+     "data_dir": "work/data", "models_dir": "work/models",
+     "reports_dir": "work/reports", "markets": list(MARKETS),
+     "timeframes": list(TIMEFRAMES), "base_timeframe": 5,
++    "external": {"enabled": False, "db_path": "3차/work/data/external.sqlite3",
++                 "status_path": "3차/work/status.json", "wait_for_dataset": False,
++                 "target_bytes": 50000000000},
+     "collection": {"recent_pages": 10, "backfill_pages_per_cycle": 5,
+                    "poll_seconds": 30, "request_interval": 0.16, "retries": 4},
+     "training": {"horizon": 12, "label_threshold": 0.006,
+@@ -95,6 +100,8 @@ def load_config(path=None):
+             if key not in config:
+                 raise ValueError(f"지원하지 않는 설정: {key}")
+             if isinstance(config[key], dict):
++                if key == "external" and not isinstance(value, dict):
++                    raise ValueError("external 설정은 객체여야 합니다")
+                 unknown = set(value) - set(config[key])
+                 if unknown:
+                     raise ValueError(f"지원하지 않는 설정: {key}.{sorted(unknown)}")
+@@ -155,6 +162,7 @@ def load_config(path=None):
+     if min(collection["recent_pages"], collection["backfill_pages_per_cycle"], collection["poll_seconds"], paper["poll_seconds"]) <= 0:
+         raise ValueError("수집 페이지와 대기 시간은 양수여야 합니다")
+     utc(paper["start_time"])
++    config["external"] = import_module("3차.external_features").validate_config(config["external"], ROOT)
+     return config
+ 
+ 
+@@ -1103,7 +1111,15 @@ def load_market_features(store, market, config, start, end):
+         if raw.empty:
+             raise ValueError(f"수집된 {market}/{tf} 봉이 없습니다")
+         frames[str(tf)] = raw
+-    return build_features(frames, config["base_timeframe"]).tail(tr["max_rows_per_market"])
++    result = build_features(frames, config["base_timeframe"]).tail(tr["max_rows_per_market"])
++    if "external" in config:
++        external = import_module("3차.external_features")
++        settings = external.validate_config(config["external"], ROOT)
++        if type(settings["enabled"]) is not bool:
++            raise ValueError("외부 특징 사용 여부는 회차 시작에 bool로 동결되어야 합니다")
++        if settings["enabled"]:
++            result = external.load_and_join(result, market, settings, ROOT, utc(None))
++    return result
+ 
+ 
+ def stable_hash(value):
+@@ -1243,6 +1259,11 @@ def train_cycle(config, final=False, live=False):
+     started_at = iso(None)
+     if final and live:
+         raise ValueError("실시간 학습은 잠금 시험을 평가할 수 없습니다")
++    config = copy.deepcopy(config)
++    external_resolution = None
++    if "external" in config:
++        config["external"], external_resolution = import_module("3차.external_features").resolve_for_training(
++            config["external"], ROOT, utc(started_at))
+     audit = ExperimentAudit(Path(config["data_dir"]) / "experiment_audit.sqlite3")
+     consumed = audit.consumed_periods()
+     research = {"scope": "명시 설정 단일 연구", "candidate_id": "explicit", "sequence": None}
+@@ -1268,7 +1289,7 @@ def train_cycle(config, final=False, live=False):
+     report_plan = {k: [iso(a), iso(b)] for k, (a, b) in plan.items()}
+     report = {"run": run, "updated_at": iso(None), "paper_only": True,
+               "source_hash": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+-              "config": config, "periods": report_plan,
++              "config": config, "periods": report_plan, "external_resolution": external_resolution,
+               "locked_test": {"status": "미평가", "used_for_selection": False},
+               "research": {"schema_version": 2, **research, "status": "running",
+                            "protected_periods": [[iso(a), iso(b)] for a, b in protected_periods(config, consumed)],
+@@ -1371,7 +1392,7 @@ def train_cycle(config, final=False, live=False):
+                 "deployment": report["promotion"]["eligibility"],
+                 "run": run, "feature_columns": columns, "packages": packages, "config": config,
+                 "source_hash": report["source_hash"], "paper_only": True,
+-                "plan": report["periods"], "created_at": iso(None)}
++                "plan": report["periods"], "created_at": iso(None), "external_resolution": external_resolution}
+     atomic_json(directory / "manifest.json", manifest)
+     manifest_hash = stable_hash(manifest)
+     if final:
+@@ -1417,6 +1438,30 @@ def train_cycle(config, final=False, live=False):
+     return report
+ 
+ 
++def wait_for_training_data(config, stop=None, initial=None):
++    stop = threading.Event() if stop is None else stop
++    external = import_module("3차.external_features")
++    pending = initial
++    while not stop.is_set():
++        if pending is None:
++            try:
++                external.resolve_for_training(config["external"], ROOT, utc(None))
++                return
++            except external.DatasetNotReady as exc:
++                pending = exc
++        evidence = pending.evidence
++        progress(status="waiting_data", stage="download", error=None, reason=evidence["reason"],
++                 verified_archive_bytes=evidence.get("verified_archive_bytes", 0),
++                 ingested_archive_bytes=evidence.get("ingested_archive_bytes", 0),
++                 target_archive_bytes=evidence.get("target_archive_bytes", 50000000000),
++                 checked_at=evidence["checked_at"], rows=None, features=None,
++                 run=None, started_at=None, elapsed_seconds=None)
++        if stop.wait(12):
++            break
++        pending = None
++    raise KeyboardInterrupt("외부 자료 대기 중 중단 요청")
++
++
+ def predict_package(directory, manifest, market, frame):
+     import xgboost as xgb
+     package = manifest["packages"][market]
+@@ -1459,6 +1504,16 @@ def load_current(config):
+     columns = manifest.get("feature_columns")
+     if not isinstance(columns, list) or not columns or len(set(columns)) != len(columns):
+         raise ValueError("완성 모델의 피처 목록이 유효하지 않습니다")
++    external_columns = [c for c in columns if c.startswith("ext_")]
++    if isinstance(model_config, dict) and "external" in model_config:
++        external = import_module("3차.external_features")
++        settings = external.validate_config(model_config["external"], ROOT)
++        if type(settings["enabled"]) is not bool:
++            raise ValueError("완성 모델의 외부 설정이 bool로 동결되지 않았습니다")
++        if external_columns != (external.FEATURE_COLUMNS if settings["enabled"] else []):
++            raise ValueError("완성 모델의 외부 특징 스키마가 설정과 다릅니다")
++    elif external_columns:
++        raise ValueError("외부 특징 모델에 동결된 외부 설정이 없습니다")
+     for market, package in manifest["packages"].items():
+         if market not in MARKETS:
+             raise ValueError("지원하지 않는 모델 시장")
+@@ -1510,6 +1565,16 @@ def paper_signals(config, store, portfolio, now):
+             frame = load_market_features(store, market, model_config, start, now)
+             latest_raw = iso(frame.index[-1]) if not frame.empty else None
+             missing = [c for c in manifest["feature_columns"] if not frame.empty and pd.isna(frame[c].iloc[-1])]
++            if model_config.get("external", {}).get("enabled") is True and not frame.empty:
++                available = frame.get("available_external")
++                external_time = available.iloc[-1] if available is not None else pd.NaT
++                age = now - utc(external_time) if not pd.isna(external_time) else None
++                if (any(c.startswith("ext_") for c in missing) or age is None
++                        or age < pd.Timedelta(0) or age > pd.Timedelta(minutes=5)):
++                    diagnostics[market] = {"checked_at": iso(now), "model_run": manifest["run"],
++                                           "latest_raw_bar": latest_raw, "missing_latest_features": missing,
++                                           "reason": "external_features_unavailable"}
++                    continue
+             frame = frame.dropna(subset=manifest["feature_columns"])
+             diagnostics[market] = {"checked_at": iso(now), "model_run": manifest["run"],
+                                    "latest_raw_bar": latest_raw, "missing_latest_features": missing,
+@@ -1517,6 +1582,12 @@ def paper_signals(config, store, portfolio, now):
+             if frame.empty:
+                 diagnostics[market]["reason"] = "no_complete_features"
+                 continue
++            if model_config.get("external", {}).get("enabled") is True:
++                selected_time = frame["available_external"].iloc[-1]
++                selected_age = now - utc(selected_time) if not pd.isna(selected_time) else None
++                if selected_age is None or not pd.Timedelta(0) <= selected_age <= pd.Timedelta(minutes=5):
++                    diagnostics[market]["reason"] = "external_features_unavailable"
++                    continue
+             age = (now - frame.index[-1]).total_seconds()
+             diagnostics[market].update(signal_time=iso(frame.index[-1]), feature_age_seconds=age)
+             if age < 0 or age > minutes(model_config["base_timeframe"]) * 120:
+@@ -1676,7 +1747,11 @@ def main(argv=None):
+                 interval = config["collection"]["poll_seconds"]
+                 summary = {"datasets": len(result), "rows": sum(r["rows"] for r in result)}
+             elif args.command == "trainer":
+-                result = train_cycle(config, live=True)
++                try:
++                    result = train_cycle(config, live=True)
++                except import_module("3차.external_features").DatasetNotReady as exc:
++                    wait_for_training_data(config, initial=exc)
++                    continue
+                 interval, summary = config["training"]["retrain_seconds"], {"run": result["run"]}
+             else:
+                 result = paper_cycle(config)
+diff --git a/tests/test_external_dashboard.py b/tests/test_external_dashboard.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f261f4e1dfdfa2f9d7fad3cd2f6ebdb09534eb6c
+--- /dev/null
++++ b/tests/test_external_dashboard.py
+@@ -0,0 +1,35 @@
++"""다운로드 대기를 완료된 학습으로 표시하지 않는지 검사합니다."""
++import json
++from pathlib import Path
++import tempfile
++import unittest
++
++import dashboard
++
++
++class ExternalDashboardTests(unittest.TestCase):
++    def test_waiting_data_exposes_volume_but_not_private_error_or_old_progress(self):
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp)
++            values = {'work/reports/training.json': {'progress': 1.0, 'training': {'completed_candidates': 15, 'total_candidates': 15}},
++                      'work/service/training_progress.json': {'status': 'waiting_data', 'stage': 'download'},
++                      '3차/work/status.json': {'schema_version': 1, 'state': '외부 자료 수집',
++                          'verified_archive_bytes': 5000, 'ingested_archive_bytes': 4000,
++                          'target_archive_bytes': 50000000000, 'unique_minute_rows': 100,
++                          'training_ready': False, 'error': 'private-error-original', 'api_key': 'private-test-secret'}}
++            for name, value in values.items():
++                path = root / name
++                path.parent.mkdir(parents=True, exist_ok=True)
++                path.write_text(json.dumps(value), encoding='utf-8')
++            status = dashboard.SnapshotAdapter(root).status()
++            self.assertEqual(status['training']['state'], 'waiting_data')
++            self.assertIsNone(status['training']['progress'])
++            self.assertIsNone(status['training']['candidate_index'])
++            self.assertEqual(status['external_data']['ingested_archive_bytes'], 4000)
++            self.assertTrue(status['external_data']['has_error'])
++            self.assertNotIn('private-error-original', json.dumps(status))
++            self.assertNotIn('private-test-secret', json.dumps(status))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/tests/test_external_data.py b/tests/test_external_data.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4dcc764f4bc695865f3da812db46e1c11b8c90fb
+--- /dev/null
++++ b/tests/test_external_data.py
+@@ -0,0 +1,248 @@
++"""외부 아카이브의 단위·정제·중복·집계 경계를 검사합니다."""
++import importlib
++import hashlib
++import io
++import sys
++import tempfile
++import unittest
++import zipfile
++from pathlib import Path
++from unittest.mock import MagicMock, Mock, patch
++
++import numpy as np
++import pandas as pd
++
++external = importlib.import_module('3차.external_data')
++
++
++class ExternalParserTests(unittest.TestCase):
++    def kline(self, unit=1):
++        start = 1735689600000
++        return pd.DataFrame([[start * unit, 100., 103., 99., 102., 5.,
++                              (start + 60000) * unit - 1, 510., 3, 2., 204., 0]])
++
++    def test_millisecond_and_microsecond_archives_produce_same_completed_bar(self):
++        now = 1735689720000
++        a = external.parse_klines(self.kline(), now)
++        b = external.parse_klines(self.kline(1000), now)
++        pd.testing.assert_frame_equal(a, b)
++        self.assertEqual(a.open_time.iloc[0], 1735689600000)
++
++    def test_unfinished_bar_is_not_available_early(self):
++        self.assertTrue(external.parse_klines(self.kline(), 1735689659999).empty)
++
++    def test_invalid_ohlc_or_buy_volume_is_rejected(self):
++        for index, value in ((2, 101.), (9, 7.), (7, -1.)):
++            frame = self.kline()
++            frame.iloc[0, index] = value
++            with self.subTest(column=index), self.assertRaises(ValueError):
++                external.parse_klines(frame, 1735689720000)
++
++    def test_aggregation_combines_chunks_without_double_counting(self):
++        start = 1735689600000
++        chunks = [pd.DataFrame([[1, 100., 2., 1, 2, start, False, True],
++                                [2, 102., 1., 3, 3, start+1000, True, True]]),
++                  pd.DataFrame([[3, 101., 3., 4, 5, start+2000, False, True],
++                                [4, 99., 1., 6, 6, start+60000, True, True]])]
++        result = pd.concat(list(external.aggregate_trade_chunks(chunks, start+120000)), ignore_index=True)
++        self.assertEqual(len(result), 2)
++        first = result.iloc[0]
++        self.assertEqual((first.open, first.high, first.low, first.close), (100, 102, 100, 101))
++        self.assertEqual(first.volume, 6)
++        self.assertEqual(first.quote_volume, 605)
++        self.assertEqual(first.taker_quote_volume, 503)
++        self.assertEqual(first.trade_count, 5)
++
++    def test_trade_timestamp_regression_and_invalid_boolean_are_rejected(self):
++        for values in ([[1, 100, 1, 1, 1, 1735689600100, 'perhaps', True]],
++                       [[1, 100, 1, 1, 1, 1735689600100, True, True],
++                        [2, 100, 1, 2, 2, 1735689600000, True, True]]):
++            with self.subTest(values=values), self.assertRaises(ValueError):
++                list(external.aggregate_trade_chunks([pd.DataFrame(values)], 1735689720000))
++
++    def test_zip_path_and_multiple_member_are_rejected(self):
++        for names in (['../escape.csv'], ['a.csv', 'b.csv']):
++            data = io.BytesIO()
++            with zipfile.ZipFile(data, 'w') as archive:
++                for name in names:
++                    archive.writestr(name, 'x')
++            data.seek(0)
++            with zipfile.ZipFile(data) as archive, self.assertRaises(ValueError):
++                external.archive_member(archive, 'a.csv')
++
++    def test_bootstrap_does_not_request_incomplete_daily_or_monthly_archive(self):
++        plan = list(external.bootstrap_plan(pd.Timestamp('2026-10-30T12:00:00Z')))
++        self.assertEqual(len({p['symbol'] for p in plan}), 5)
++        self.assertTrue(all('2026-10-30.zip' not in p['name'] for p in plan))
++        self.assertTrue(all(p['kind'] == 'klines' for p in plan))
++
++
++class ExternalDownloadTests(unittest.TestCase):
++    def collector(self, folder, target=50_000_000_000):
++        store = Mock()
++        store.summary.return_value = {}
++        store.ready.return_value = True
++        with patch.object(external, 'ExternalStore', return_value=store):
++            return external.Collector(folder, target)
++
++    def response(self, content):
++        result = io.BytesIO(content)
++        result.headers = {'Content-Length': str(len(content))}
++        return result
++
++    def test_download_checks_sha_before_accepting_archive(self):
++        spec = external.archive_spec('BTCUSDT', 'klines', '2026-09')
++        content = b'controlled-archive-bytes'
++        for correct in (True, False):
++            digest = hashlib.sha256(content).hexdigest() if correct else '0' * 64
++            with self.subTest(correct=correct), tempfile.TemporaryDirectory() as temp:
++                collector = self.collector(Path(temp))
++                responses = [self.response((digest+'  '+spec['name']+'\n').encode()), self.response(content)]
++                with patch.object(external, 'open_public', side_effect=responses):
++                    if correct:
++                        path, actual = collector.download(spec)
++                        self.assertEqual(path.read_bytes(), content)
++                        self.assertEqual(actual, digest)
++                    else:
++                        with self.assertRaisesRegex(ValueError, 'SHA256'):
++                            collector.download(spec)
++                        self.assertFalse((collector.archives / spec['name']).exists())
++                self.assertFalse(list(collector.archives.glob('*.part')))
++
++    def test_fifty_gb_gate_counts_only_verified_and_ingested_archives(self):
++        with tempfile.TemporaryDirectory() as temp:
++            collector = self.collector(Path(temp))
++            collector.manifest = {'sample': {'bytes': 50_000_000_000, 'sha256_verified': True, 'ingested': False}}
++            # 용량 계산만 격리하며 실제 파일 누락·손상은 아래 별도 시험에서 검사합니다.
++            with patch.object(collector, 'verified_items', side_effect=lambda: [v for v in collector.manifest.values() if v['sha256_verified']]):
++                self.assertFalse(collector.status()['training_ready'])
++                collector.manifest['sample']['ingested'] = True
++                self.assertTrue(collector.status()['training_ready'])
++                collector.manifest['sample']['bytes'] -= 1
++                self.assertFalse(collector.status()['training_ready'])
++                collector.manifest['sample']['bytes'] = 50_000_000_000
++                collector.manifest['sample']['sha256_verified'] = False
++                self.assertFalse(collector.status()['training_ready'])
++
++    def test_real_missing_or_same_size_corrupt_archive_cannot_open_gate(self):
++        with tempfile.TemporaryDirectory() as temp:
++            collector = self.collector(Path(temp), target=8)
++            spec = external.archive_spec('BTCUSDT', 'klines', '2026-09')
++            item = {**spec, 'bytes': 8, 'sha256': hashlib.sha256(b'12345678').hexdigest(),
++                    'sha256_verified': True, 'ingested': True}
++            collector.manifest = {spec['name']: item}
++            self.assertFalse(collector.status()['training_ready'])
++            self.assertEqual(collector.status()['verified_archive_bytes'], 0)
++            path = collector.archives / spec['name']
++            path.write_bytes(b'12345678')
++            self.assertTrue(collector.status()['training_ready'])
++            path.write_bytes(b'87654321')
++            self.assertFalse(collector.status()['training_ready'])
++            self.assertEqual(collector.status()['ingested_archive_bytes'], 0)
++
++    def test_ingest_stops_before_save_when_disk_reserve_is_exhausted(self):
++        with tempfile.TemporaryDirectory() as temp:
++            collector = self.collector(Path(temp))
++            spec = external.archive_spec('BTCUSDT', 'klines', '2026-09')
++            path = Path(temp) / spec['name']
++            text = ExternalParserTests().kline().to_csv(index=False, header=False)
++            with zipfile.ZipFile(path, 'w') as archive:
++                archive.writestr(spec['name'][:-4]+'.csv', text)
++            with patch.object(external.shutil, 'disk_usage', return_value=Mock(free=0)):
++                with self.assertRaisesRegex(OSError, '20GB'):
++                    collector.ingest(spec, path)
++            collector.store.save.assert_not_called()
++
++    def test_verified_but_not_ingested_target_is_retried_not_declared_complete(self):
++        with tempfile.TemporaryDirectory() as temp:
++            collector = self.collector(Path(temp))
++            stop = external.threading.Event()
++            spec = external.archive_spec('BTCUSDT', 'aggTrades', '2026-08')
++            state = {'verified_archive_bytes': 50_000_000_000, 'ingested_archive_bytes': 0}
++            with patch.object(external, 'STOP', stop), patch.object(external.threading, 'Thread') as thread, \
++                 patch.object(external, 'bootstrap_plan', return_value=[]), \
++                 patch.object(external, 'bulk_plan', return_value=[spec]), \
++                 patch.object(collector, 'status', return_value=state), \
++                 patch.object(collector, 'archive', side_effect=lambda value: stop.set()) as archive, \
++                 patch.object(stop, 'wait', side_effect=lambda value: stop.set()):
++                thread.return_value.is_alive.return_value = False
++                collector.run()
++            archive.assert_called_once_with(spec)
++
++
++class ExternalProcessBoundaryTests(unittest.TestCase):
++    def test_only_exact_collector_script_and_cwd_can_match(self):
++        manage = importlib.import_module('3차.manage')
++        for correct_cwd, script, action, expected in (
++                (True, str(manage.SCRIPT), 'run', True),
++                (False, str(manage.SCRIPT), 'run', False),
++                (True, str(manage.PROJECT / 'supervisor.py'), 'run', False),
++                (True, str(manage.SCRIPT), 'status', False)):
++            proc, cwd, cmdline = Mock(), Mock(), Mock()
++            cwd.resolve.return_value = manage.PROJECT.resolve() if correct_cwd else manage.ROOT.resolve()
++            cmdline.read_bytes.return_value = ('python\0-u\0'+script+'\0'+action+'\0').encode()
++            proc.joinpath.side_effect = lambda name: cwd if name == 'cwd' else cmdline
++            with self.subTest(script=script, action=action), patch.object(manage, 'Path') as path:
++                path.return_value.__truediv__.return_value = proc
++                self.assertEqual(manage.matches(123), expected)
++
++
++@unittest.skipUnless(sys.platform == 'linux', '심볼릭 링크 경계는 실제 Linux에서 검사합니다')
++class ExternalPathBoundaryTests(unittest.TestCase):
++    def test_archive_symlink_is_rejected_before_network_or_hash_fallback(self):
++        with tempfile.TemporaryDirectory() as temp:
++            helper = ExternalDownloadTests()
++            collector = helper.collector(Path(temp) / 'work')
++            spec = external.archive_spec('BTCUSDT', 'klines', '2026-09')
++            outside = Path(temp) / 'outside'
++            outside.write_bytes(b'keep-original')
++            (collector.archives / spec['name']).symlink_to(outside)
++            with patch.object(external, 'open_public') as network, self.assertRaisesRegex(ValueError, '경계'):
++                collector.download(spec)
++            network.assert_not_called()
++            self.assertEqual(outside.read_bytes(), b'keep-original')
++
++    def test_old_part_symlink_is_not_followed_or_removed(self):
++        with tempfile.TemporaryDirectory() as temp:
++            helper = ExternalDownloadTests()
++            collector = helper.collector(Path(temp) / 'work')
++            spec = external.archive_spec('BTCUSDT', 'klines', '2026-09')
++            outside = Path(temp) / 'outside'
++            outside.write_bytes(b'keep-original')
++            legacy = collector.archives / (spec['name'] + '.part')
++            legacy.symlink_to(outside)
++            content = b'archive-content'
++            digest = hashlib.sha256(content).hexdigest()
++            with patch.object(external, 'open_public', side_effect=[
++                    helper.response((digest+'  '+spec['name']+'\n').encode()), helper.response(content)]):
++                path, _ = collector.download(spec)
++            self.assertEqual(path.read_bytes(), content)
++            self.assertFalse(path.is_symlink())
++            self.assertTrue(legacy.is_symlink())
++            self.assertEqual(outside.read_bytes(), b'keep-original')
++
++
++@unittest.skipUnless(sys.platform == 'linux', '외부 운영 SQLite도 Linux에서만 검사합니다')
++class ExternalStoreTests(unittest.TestCase):
++    def test_existing_wrong_schema_is_rejected_before_marker_normalization(self):
++        import sqlite3
++        with tempfile.TemporaryDirectory() as temp:
++            path = Path(temp) / 'external.sqlite3'
++            db = sqlite3.connect(path)
++            db.execute('CREATE TABLE bars(symbol TEXT,open_time INTEGER)')
++            db.commit()
++            db.close()
++            with self.assertRaisesRegex(ValueError, '스키마'):
++                external.ExternalStore(path)
++
++    def test_first_completed_bar_is_immutable_and_duplicate_count_stays_one(self):
++        with tempfile.TemporaryDirectory() as temp:
++            store = external.ExternalStore(Path(temp) / 'external.sqlite3')
++            frame = external.parse_klines(ExternalParserTests().kline(), 1735689720000)
++            self.assertEqual(store.save('BTCUSDT', frame, 'verified-source'), 1)
++            self.assertEqual(store.save('BTCUSDT', frame, 'same-minute'), 0)
++            self.assertEqual(store.summary()['BTCUSDT']['rows'], 1)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/tests/test_external_features.py b/tests/test_external_features.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..73420cc6f36425fe000da9aff3992a1622184705
+--- /dev/null
++++ b/tests/test_external_features.py
+@@ -0,0 +1,451 @@
++"""외부 자료의 시점·단위·준비 판정과 기존 매매 경계를 검사합니다."""
++import copy
++import importlib
++from pathlib import Path
++import sqlite3
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++import numpy as np
++import pandas as pd
++
++import engine
++
++
++NOW = pd.Timestamp("2026-10-30T00:00:00Z")
++SYMBOLS = ("BTCUSDT", "SOLUSDT", "ETHUSDT", "XRPUSDT", "DOGEUSDT")
++SCHEMA = ("CREATE TABLE bars(symbol TEXT,open_time INTEGER,open REAL,high REAL,low REAL,"
++          "close REAL,volume REAL,quote_volume REAL,trade_count INTEGER,taker_quote_volume REAL,"
++          "source TEXT,PRIMARY KEY(symbol,open_time))")
++
++
++def external():
++    return importlib.import_module("3차.external_features")
++
++
++def bars(count=60, start="2026-10-29T22:00:00Z"):
++    index = pd.date_range(start, periods=count, freq="min")
++    close = np.arange(count, dtype=float) + 100
++    return pd.DataFrame({"symbol": "BTCUSDT", "open_time": index.as_unit("ns").asi8 // 1000000,
++                         "open": close, "high": close + 1, "low": close - 1, "close": close,
++                         "volume": 10., "quote_volume": 1000., "trade_count": 10,
++                         "taker_quote_volume": 250., "source": "통제된 자료"})
++
++
++def settings(enabled=True, wait=False):
++    return {"enabled": enabled, "db_path": "3차/work/data/external.sqlite3",
++            "status_path": "3차/work/status.json", "wait_for_dataset": wait, "target_bytes": 50000000000}
++
++
++def status():
++    first = int((NOW - pd.Timedelta(days=31)).timestamp() * 1000)
++    last = int((NOW - pd.Timedelta(minutes=1)).timestamp() * 1000)
++    return {"schema_version": 1, "db_schema": "binance_spot_v1", "training_ready": True, "updated_at": NOW.isoformat(),
++            "verified_archive_bytes": 50000000000, "target_archive_bytes": 50000000000,
++            "ingested_archive_bytes": 50000000000,
++            "unique_minute_rows": 100005,
++            "markets": {s: {"rows": 20001, "first_open_ms": first, "last_open_ms": last}
++                        for s in SYMBOLS}, "state": "ready", "error": None}
++
++
++def make_db(root, ready=False):
++    path = root / settings()["db_path"]
++    path.parent.mkdir(parents=True, exist_ok=True)
++    with sqlite3.connect(path) as db:
++        db.execute(SCHEMA)
++        db.execute("CREATE TABLE metadata(key TEXT PRIMARY KEY,value TEXT)")
++        db.execute("INSERT INTO metadata VALUES('schema','binance_spot_v1')")
++        db.executemany("INSERT INTO metadata VALUES(?,?)", (("target_archive_bytes", "50000000000"),
++                                                          ("ingested_archive_bytes", "50000000000"),
++                                                          ("verified_archive_bytes", "50000000000")))
++        if ready:
++            times = [int((NOW - pd.Timedelta(days=31)).timestamp() * 1000)]
++            times.extend(int(NOW.timestamp() * 1000) - n * 60000 for n in range(20000, 0, -1))
++            for symbol in SYMBOLS:
++                db.executemany("INSERT INTO bars VALUES(?,?,?,?,?,?,?,?,?,?,?)",
++                               ((symbol, t, 100., 101., 99., 100., 10., 1000., 10, 250., "fixture")
++                                for t in times))
++    return path
++
++
++class ExternalConfigTests(unittest.TestCase):
++    def test_default_and_old_manifest_keep_original_feature_path(self):
++        config = engine.load_config()
++        self.assertIn("external", config)
++        self.assertIs(config["external"]["enabled"], False)
++        config.pop("external")
++        raw = bars().rename(columns={"quote_volume": "unused"})
++        raw.index = pd.to_datetime(raw.open_time, unit="ms", utc=True)
++        config.update(timeframes=[1], base_timeframe=1)
++        with patch.object(engine.CandleStore, "read", return_value=raw[["open", "high", "low", "close", "volume"]]):
++            frame = engine.load_market_features(engine.CandleStore.__new__(engine.CandleStore), "KRW-BTC", config,
++                                                NOW - pd.Timedelta(days=1), NOW)
++        self.assertFalse(any(c.startswith("ext_") for c in frame))
++
++    def test_invalid_modes_unknown_fields_and_path_escape_rejected(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            for mode in (1, 0, None, "true", "false", [], {}):
++                with self.subTest(mode=mode), self.assertRaises(ValueError):
++                    external().validate_config(settings(mode), root)
++            for key in ("db_path", "status_path"):
++                for path in ("../escape", "work/data/old.sqlite3", "3차/work/../../escape", "", "file:evil?mode=ro"):
++                    candidate = settings()
++                    candidate[key] = path
++                    with self.subTest(key=key, path=path), self.assertRaises(ValueError):
++                        external().validate_config(candidate, root)
++            with self.assertRaises(ValueError):
++                external().validate_config({**settings(), "unexpected": 1}, root)
++
++    def test_auto_missing_status_blocks_training_without_base_fallback(self):
++        with tempfile.TemporaryDirectory() as directory:
++            with self.assertRaises(external().DatasetNotReady) as error:
++                external().resolve_for_training(settings("auto", True), Path(directory), NOW)
++            self.assertFalse(error.exception.evidence["training_ready"])
++
++    def test_windows_rejects_bars_before_sqlite_open_even_when_status_says_ready(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            engine.atomic_json(root / settings()["status_path"], status())
++            with patch.object(external().sys, "platform", "win32"), patch.object(external().sqlite3, "connect") as connect:
++                with self.assertRaises(external().DatasetNotReady):
++                    external().resolve_for_training(settings("auto"), root, NOW)
++                with self.assertRaisesRegex(RuntimeError, "Linux"):
++                    external().load_and_join(pd.DataFrame(index=pd.DatetimeIndex([NOW])), "KRW-BTC", settings(), root, NOW)
++            connect.assert_not_called()
++
++
++class ExternalRatioTests(unittest.TestCase):
++    def test_closed_minute_backward_join_never_uses_future_or_price_levels(self):
++        raw = bars()
++        base = pd.DataFrame({"close": [100000., 100001., 100002.]},
++                            index=pd.DatetimeIndex(["2026-10-29T22:30:30Z", "2026-10-29T23:02:00Z", "2026-10-29T23:03:00Z"]))
++        result = external().join_features(base, external().ratio_features(raw, NOW))
++        self.assertAlmostEqual(float(result.ext_return_1.iloc[0]), 129 / 128 - 1, places=7)
++        self.assertEqual(result.available_external.iloc[0], pd.Timestamp("2026-10-29T22:30:00Z"))
++        self.assertTrue(result.filter(like="ext_").iloc[-1].isna().all())
++        self.assertEqual(result.close.tolist(), [100000., 100001., 100002.])
++        scaled = raw.copy()
++        scaled[["open", "high", "low", "close", "quote_volume", "taker_quote_volume"]] *= 1000
++        pd.testing.assert_frame_equal(external().ratio_features(raw, NOW), external().ratio_features(scaled, NOW),
++                                      check_exact=False, rtol=1e-6, atol=1e-7)
++        self.assertFalse(any(c in result for c in ("ext_close", "ext_label", "ext_open")))
++
++    def test_gaps_and_zero_activity_are_nan_not_zero_or_filled(self):
++        raw = bars().drop(index=30)
++        features = external().ratio_features(raw, NOW)
++        self.assertTrue(pd.isna(features.loc[pd.Timestamp("2026-10-29T22:32:00Z"), "ext_return_1"]))
++        self.assertTrue(pd.isna(features.loc[pd.Timestamp("2026-10-29T22:40:00Z"), "ext_volatility"]))
++        quiet = bars()
++        quiet[["volume", "quote_volume", "trade_count", "taker_quote_volume"]] = 0
++        self.assertTrue(external().ratio_features(quiet, NOW).ext_taker_buy_ratio.isna().all())
++
++    def test_wrong_units_duplicates_future_and_invalid_ranges_rejected(self):
++        for column, value in (("open_time", 1793311200), ("open_time", 1793311200000000),
++                              ("open_time", 1793311200001), ("high", 1), ("close", float("inf")),
++                              ("volume", -1), ("trade_count", 1.5), ("taker_quote_volume", 1001),
++                              ("open_time", int(NOW.timestamp() * 1000))):
++            raw = bars()
++            if column == "trade_count":
++                raw[column] = raw[column].astype(float)
++            raw.loc[5, column] = value
++            with self.subTest(column=column, value=value), self.assertRaises(ValueError):
++                external().ratio_features(raw, NOW)
++        with self.assertRaises(ValueError):
++            external().ratio_features(pd.concat([bars(), bars().iloc[:1]]), NOW)
++
++
++@unittest.skipUnless(sys.platform == "linux", "외부 bars SQLite는 Linux 전용입니다")
++class ExternalDatabaseTests(unittest.TestCase):
++    def test_real_database_readiness_and_bool_freeze_not_json_assertion(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            make_db(root, ready=True)
++            engine.atomic_json(root / settings()["status_path"], status())
++            frozen, evidence = external().resolve_for_training(settings("auto"), root, NOW)
++            self.assertIs(frozen["enabled"], True)
++            self.assertTrue(evidence["training_ready"])
++            engine.atomic_json(root / settings()["status_path"], {**status(), "training_ready": False})
++            still_frozen, _ = external().resolve_for_training(frozen, root, NOW)
++            self.assertIs(still_frozen["enabled"], True)
++            with self.assertRaises(external().DatasetNotReady):
++                external().resolve_for_training(settings("auto"), root, NOW)
++
++    def test_fake_ready_empty_bad_schema_and_stale_status_do_not_enable_auto(self):
++        for corruption in ("empty", "schema", "missing", "stale", "string_bool", "future", "count"):
++            with self.subTest(corruption=corruption), tempfile.TemporaryDirectory() as directory:
++                root = Path(directory)
++                path = make_db(root, ready=corruption not in ("empty", "schema", "missing"))
++                payload = status()
++                if corruption == "schema":
++                    with sqlite3.connect(path) as db:
++                        db.execute("ALTER TABLE bars RENAME TO old_bars")
++                        db.execute("CREATE TABLE bars(symbol TEXT,open_time INTEGER)")
++                elif corruption == "missing":
++                    path.unlink()
++                elif corruption == "stale":
++                    payload["updated_at"] = (NOW - pd.Timedelta(minutes=6)).isoformat()
++                elif corruption == "string_bool":
++                    payload["training_ready"] = "true"
++                elif corruption == "future":
++                    payload["markets"]["BTCUSDT"]["last_open_ms"] = int(NOW.timestamp() * 1000)
++                elif corruption == "count":
++                    payload["unique_minute_rows"] = True
++                engine.atomic_json(root / settings()["status_path"], payload)
++                with self.assertRaises(external().DatasetNotReady) as error:
++                    external().resolve_for_training(settings("auto"), root, NOW)
++                self.assertFalse(error.exception.evidence["training_ready"])
++
++    def test_old_30gb_status_or_insufficient_ingested_metadata_never_starts_new_training(self):
++        for corruption in ("old_target", "small_ingested", "metadata", "coverage", "db_version"):
++            with self.subTest(corruption=corruption), tempfile.TemporaryDirectory() as directory:
++                root = Path(directory)
++                path = make_db(root, ready=True)
++                payload = status()
++                if corruption == "old_target":
++                    payload["target_archive_bytes"] = 30000000000
++                elif corruption == "small_ingested":
++                    payload["ingested_archive_bytes"] = 18000000
++                else:
++                    with sqlite3.connect(path) as db:
++                        if corruption == "metadata":
++                            db.execute("UPDATE metadata SET value='18000000' WHERE key='ingested_archive_bytes'")
++                        elif corruption == "db_version":
++                            db.execute("UPDATE metadata SET value='old' WHERE key='schema'")
++                        else:
++                            db.execute("DELETE FROM bars WHERE symbol='BTCUSDT' AND open_time>? AND open_time<?",
++                                       (int((NOW - pd.Timedelta(days=5)).timestamp() * 1000),
++                                        int((NOW - pd.Timedelta(days=3)).timestamp() * 1000)))
++                engine.atomic_json(root / settings()["status_path"], payload)
++                with self.assertRaises(external().DatasetNotReady):
++                    external().resolve_for_training(settings("auto", True), root, NOW)
++
++    def test_bounded_poll_waits_until_ready_and_remains_stop_responsive(self):
++        import threading
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            path = make_db(root, ready=True)
++            payload = status()
++            payload["ingested_archive_bytes"] = 18000000
++            engine.atomic_json(root / settings()["status_path"], payload)
++            config = copy.deepcopy(engine.DEFAULT_CONFIG)
++            config["external"] = settings("auto", True)
++            stop = threading.Event()
++            waits = []
++
++            def poll(seconds):
++                waits.append(seconds)
++                engine.atomic_json(root / settings()["status_path"], status())
++                return False
++
++            with patch.object(engine, "ROOT", root), patch.object(engine, "utc", return_value=NOW), \
++                 patch.object(engine, "progress") as progress, patch.object(stop, "wait", side_effect=poll):
++                engine.wait_for_training_data(config, stop)
++            self.assertEqual(waits, [12])
++            self.assertEqual(progress.call_args.kwargs["status"], "waiting_data")
++            self.assertEqual(progress.call_args.kwargs["stage"], "download")
++            self.assertEqual(progress.call_args.kwargs["ingested_archive_bytes"], 18000000)
++            self.assertEqual(progress.call_args.kwargs["target_archive_bytes"], 50000000000)
++            stop.set()
++            with self.assertRaises(KeyboardInterrupt):
++                engine.wait_for_training_data(config, stop)
++
++
++class ExternalTrainingGateTests(unittest.TestCase):
++    def test_default_exposes_explicit_dataset_wait_policy(self):
++        self.assertIn("wait_for_dataset", engine.load_config()["external"])
++        self.assertIn("target_bytes", engine.load_config()["external"])
++
++    def test_direct_train_cycle_blocks_before_audit_or_new_model_directory(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            config = copy.deepcopy(engine.DEFAULT_CONFIG)
++            config["external"] = settings("auto", True)
++            with patch.object(engine, "ROOT", root), patch.object(engine, "ExperimentAudit") as audit:
++                with self.assertRaises(external().DatasetNotReady):
++                    engine.train_cycle(config, live=True)
++            audit.assert_not_called()
++            self.assertEqual(list(root.iterdir()), [])
++
++    def test_invalid_dataset_gate_configuration_is_rejected(self):
++        with tempfile.TemporaryDirectory() as directory:
++            self.assertEqual(external().validate_config(settings("auto", True), Path(directory))["target_bytes"], 50000000000)
++            for target in (30000000000, 0, True, 50000000000.0, "50000000000"):
++                with self.subTest(target=target), self.assertRaises(ValueError):
++                    external().validate_config({**settings("auto", True), "target_bytes": target}, Path(directory))
++            with self.assertRaises(ValueError):
++                external().validate_config(settings(False, True), Path(directory))
++
++    def test_main_trainer_waits_without_reporting_a_successful_base_cycle(self):
++        import contextlib
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            config = copy.deepcopy(engine.DEFAULT_CONFIG)
++            config["external"] = settings("auto", True)
++            with patch.object(engine, "ROOT", root), patch.object(engine, "load_config", return_value=config), \
++                 patch.object(engine, "process_lock", return_value=contextlib.nullcontext()), \
++                 patch.object(engine, "ExperimentAudit") as audit, patch.object(engine, "progress") as progress, \
++                 patch("engine.threading.Event.wait", side_effect=KeyboardInterrupt):
++                with self.assertRaises(KeyboardInterrupt):
++                    engine.main(["trainer", "--once"])
++            audit.assert_not_called()
++            self.assertEqual(progress.call_args.kwargs["status"], "waiting_data")
++            self.assertEqual(list(root.iterdir()), [])
++
++    def test_manifest_schema_compatibility_requires_frozen_bool_and_exact_external_columns(self):
++        from test_market_universe import isolated_config, save_manifest
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            config = isolated_config(root)
++            model_dir, manifest = save_manifest(config)
++
++            def save():
++                engine.atomic_json(model_dir / "manifest.json", manifest)
++                engine.atomic_json(Path(config["models_dir"]) / "current.json",
++                                   {"run": "controlled", "manifest_hash": engine.stable_hash(manifest)})
++
++            with patch.object(engine, "ROOT", root):
++                manifest["config"].pop("external")
++                save()
++                self.assertEqual(engine.load_current(config)[1]["feature_columns"], ["x"])
++                manifest["config"]["external"] = settings("auto", True)
++                manifest["feature_columns"] = list(external().FEATURE_COLUMNS)
++                save()
++                with self.assertRaisesRegex(ValueError, "동결"):
++                    engine.load_current(config)
++                manifest["config"]["external"]["enabled"] = True
++                save()
++                self.assertIs(engine.load_current(config)[1]["config"]["external"]["enabled"], True)
++                manifest["feature_columns"].pop()
++                save()
++                with self.assertRaisesRegex(ValueError, "스키마"):
++                    engine.load_current(config)
++
++    def test_training_manifest_freezes_auto_once_and_keeps_promotion_guard(self):
++        from test_engine import candles
++        from test_market_universe import isolated_config
++        from test_gpu_throughput import fake_xgb
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            config = isolated_config(root)
++            config["external"] = settings("auto", True)
++            raw = candles(10000, start="2026-09-20")
++            price = 100000 * (1 + .025 * np.sin(np.arange(len(raw)) / 10))
++            raw["open"] = raw["close"] = price
++            raw["high"], raw["low"] = price + 100, price - 100
++            features = engine.build_features({5: raw})
++            for column in external().FEATURE_COLUMNS:
++                features[column] = np.float32(.01)
++            fake, matrices, fits = fake_xgb()
++            resolved = settings(True, True)
++            actual_utc = engine.utc
++
++            def clock(value=None):
++                return actual_utc("2026-10-24T00:00:00Z" if value is None else value)
++
++            def policy(frame, probabilities, paper, market, minimum, horizon):
++                return {"confidence": 1.01, "edge": 1.01, "eligible": False,
++                        "horizon_minutes": horizon, "trials": []}
++
++            # 준비 판정과 GPU만 대역이며 bool 동결·시간 분할·manifest·승격 보류는 실제 경로입니다.
++            with patch.dict("sys.modules", {"xgboost": fake}), patch.object(engine, "ROOT", root), \
++                 patch.object(engine, "utc", side_effect=clock), patch.object(engine, "CandleStore"), \
++                 patch.object(external(), "resolve_for_training", return_value=(resolved, {"training_ready": True})) as resolve, \
++                 patch.object(engine, "load_market_features", return_value=features), \
++                 patch.object(engine, "predict_booster", side_effect=lambda model, frame, columns, best: np.tile([.05, .9, .05], (len(frame), 1))), \
++                 patch.object(engine, "tune_rule", side_effect=policy):
++                result = engine.train_cycle(config, live=True)
++            manifest = engine.read_json(Path(config["models_dir"]) / "versions" / result["run"] / "manifest.json")
++            self.assertEqual(resolve.call_count, 1)
++            self.assertIs(manifest["config"]["external"]["enabled"], True)
++            self.assertEqual(config["external"]["enabled"], "auto")
++            self.assertFalse(result["promotion"]["promote"])
++            self.assertFalse((Path(config["models_dir"]) / "current.json").exists())
++            self.assertEqual(len(matrices), 10)
++            self.assertTrue(set(external().FEATURE_COLUMNS).issubset(manifest["feature_columns"]))
++
++    @unittest.skipUnless(sys.platform == "linux", "외부 bars SQLite는 Linux 전용입니다")
++    def test_true_missing_empty_and_bad_schema_fail_instead_of_base_fallback(self):
++        for corruption in ("empty", "schema", "missing"):
++            with self.subTest(corruption=corruption), tempfile.TemporaryDirectory() as directory:
++                root = Path(directory)
++                path = make_db(root)
++                if corruption == "schema":
++                    with sqlite3.connect(path) as db:
++                        db.execute("ALTER TABLE bars RENAME TO old_bars")
++                elif corruption == "missing":
++                    path.unlink()
++                base = pd.DataFrame(index=pd.DatetimeIndex([NOW]))
++                with self.assertRaises((ValueError, OSError, sqlite3.Error)):
++                    external().load_and_join(base, "KRW-BTC", settings(), root, NOW)
++
++    @unittest.skipUnless(sys.platform == "linux", "외부 bars SQLite는 Linux 전용입니다")
++    def test_streaming_chunk_boundary_matches_single_frame_and_engine_wiring(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            path = make_db(root)
++            raw = bars(90)
++            with sqlite3.connect(path) as db:
++                db.executemany("INSERT INTO bars VALUES(?,?,?,?,?,?,?,?,?,?,?)", raw.itertuples(index=False, name=None))
++            upbit = raw[["open", "high", "low", "close", "volume"]].copy()
++            upbit.index = pd.to_datetime(raw.open_time.to_numpy(), unit="ms", utc=True)
++            config = copy.deepcopy(engine.DEFAULT_CONFIG)
++            config.update(timeframes=[1], base_timeframe=1, external=settings())
++            base = engine.build_features({1: upbit}, 1)
++            expected = external().join_features(base, external().ratio_features(raw, NOW))
++            with patch.object(external(), "READ_CHUNK_ROWS", 19), patch.object(engine, "ROOT", root), \
++                 patch.object(engine, "utc", return_value=NOW), patch.object(engine.CandleStore, "read", return_value=upbit):
++                actual = engine.load_market_features(engine.CandleStore.__new__(engine.CandleStore), "KRW-BTC", config, NOW, NOW)
++            pd.testing.assert_frame_equal(actual, expected)
++            self.assertGreater(len(actual.dropna(subset=engine.feature_columns(actual))), 0)
++
++
++class ExternalPaperTests(unittest.TestCase):
++    def test_base_feature_drop_cannot_reuse_stale_external_from_an_older_row(self):
++        config = copy.deepcopy(engine.DEFAULT_CONFIG)
++        config["external"] = settings()
++        manifest = {"run": "fixture", "schema_version": 2, "execution_policy": engine.EXECUTION_POLICY,
++                    "deployment": {"eligible": True}, "config": config,
++                    "feature_columns": ["ext_return_1", "internal"],
++                    "packages": {m: {"rule": {"confidence": .5, "edge": .1}} for m in engine.MARKETS}}
++        frame = pd.DataFrame({"ext_return_1": [.01, .02], "internal": [1., np.nan],
++                              "5_volatility": [.001, .001],
++                              "available_external": [NOW - pd.Timedelta(minutes=7), NOW]},
++                             index=pd.DatetimeIndex([NOW - pd.Timedelta(minutes=5), NOW]))
++        portfolio = engine.Portfolio(config["paper"])
++        with patch.object(engine, "load_current", return_value=(engine.ROOT, manifest)), \
++             patch.object(engine, "load_market_features", return_value=frame), \
++             patch.object(engine, "predict_package", return_value=np.array([[.01, .01, .98]])):
++            signals, *_ = engine.paper_signals(config, object(), portfolio, NOW)
++        self.assertEqual(signals["KRW-BTC"], 1)
++        self.assertEqual(portfolio.state["inference_diagnostics"]["KRW-BTC"]["reason"], "external_features_unavailable")
++
++    def test_missing_latest_external_does_not_fall_back_to_recent_buy_but_risk_exit_continues(self):
++        config = copy.deepcopy(engine.DEFAULT_CONFIG)
++        config["external"] = settings()
++        config["paper"]["start_time"] = "2026-10-01T00:00:00Z"
++        manifest = {"run": "fixture", "schema_version": 2, "execution_policy": engine.EXECUTION_POLICY,
++                    "deployment": {"eligible": True}, "config": config,
++                    "feature_columns": ["ext_return_1"],
++                    "packages": {m: {"rule": {"confidence": .5, "edge": .1}} for m in engine.MARKETS}}
++        frame = pd.DataFrame({"ext_return_1": [.01, np.nan], "5_volatility": [.001, .001],
++                              "available_external": [NOW - pd.Timedelta(minutes=5), pd.NaT]},
++                             index=pd.DatetimeIndex([NOW - pd.Timedelta(minutes=5), NOW]))
++        portfolio = engine.Portfolio(config["paper"])
++        portfolio.process(NOW - pd.Timedelta(minutes=10), {"KRW-BTC": 100.}, {"KRW-BTC": 2})
++        self.assertIn("KRW-BTC", portfolio.state["positions"])
++        with patch.object(engine, "load_current", return_value=(engine.ROOT, manifest)), \
++             patch.object(engine, "load_market_features", return_value=frame), \
++             patch.object(engine, "predict_package", return_value=np.array([[.01, .01, .98]])):
++            signals, stops, times, errors, run = engine.paper_signals(config, object(), portfolio, NOW)
++        self.assertEqual(signals["KRW-BTC"], 1)
++        self.assertEqual(portfolio.state["inference_diagnostics"]["KRW-BTC"]["reason"], "external_features_unavailable")
++        events = portfolio.process(NOW, {"KRW-BTC": 90.}, signals, stop_fractions=stops, allow_buys=not errors)
++        self.assertNotIn("KRW-BTC", portfolio.state["positions"])
++        self.assertTrue(any(e["reason"] == "stop_loss" for e in events))
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/web/app.js b/web/app.js
+index c73a7b7ed331324a4576d824c868081964a48c1d..b85dbb92916f2541980cd3086dee8733aea1e2e5 100644
+--- a/web/app.js
++++ b/web/app.js
+@@ -220,8 +220,10 @@ function render() {
+   const starts = trainSplits.map(split => split.period_start).filter(value => typeof value === 'string').sort();
+   const ends = trainSplits.map(split => split.period_end).filter(value => typeof value === 'string').sort();
+   const gpuFits = marketEntries.flatMap(([, report]) => report.gpu || []);
+-  const states = {running: '진행 중', complete: '완료', failed: '오류', error: '오류'};
+-  const stages = {features: '피처 구성', fit: '후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '완료'};
++  const states = {running: '진행 중', complete: '완료', failed: '오류', error: '오류', waiting_data: '50GB 자료 준비'};
++  const stages = {features: '피처 구성', fit: '후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '완료', download: '수집 · 검증 · 처리'};
++  const external = s.external_data || {};
++  const gb = value => numeric(value) ? `${number(value / 1e9, 2)} GB` : '미기록';
+   const stepIndex = t.state === 'running' ? ({features: 0, fit: 1, calibration: 2, locked_test: 2, complete: 3})[t.stage] : undefined;
+   const stepNames = ['데이터 준비', '모델 학습', '평가', '적용 검토'];
+   [...$('workflow-steps').children].forEach((item, index) => {
+@@ -233,11 +235,11 @@ function render() {
+   set('workflow-title', t.state === 'running' ? '가격의 흐름을 배우고 있어요' : t.state === 'complete' ? '이번 학습을 마쳤어요' : ['failed', 'error'].includes(t.state) ? '학습 상태를 확인하고 있어요' : '가격의 흐름을 배우는 과정');
+   details('learning-strip', [
+     ['현재 단계', stepIndex === undefined ? (states[t.state] || '기록 대기') : stepNames[stepIndex]],
+-    ['완료 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],
++    t.state === 'waiting_data' ? ['처리 완료 / 목표', `${gb(external.ingested_archive_bytes)} / ${gb(external.target_archive_bytes)}`] : ['완료 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],
+     ['학습 회차', number(s.services?.trainer?.iteration)],
+     ['GPU 모델 · 장치 전체', gpu.gpu_name || '미기록'],
+-    ['학습 자료 · 최근 집계', numeric(t.rows) ? `${number(t.rows)}개` : '미집계'],
+-    ['학습 항목 · 최근 집계', numeric(t.features) ? `${number(t.features)}개` : '미집계']
++    t.state === 'waiting_data' ? ['다운로드 검증', gb(external.verified_archive_bytes)] : ['학습 자료 · 최근 집계', numeric(t.rows) ? `${number(t.rows)}개` : '미집계'],
++    t.state === 'waiting_data' ? ['외부 고유 분봉', numeric(external.unique_minute_rows) ? (external.unique_minute_rows >= 10000 ? `${number(external.unique_minute_rows / 10000, 1)}만 개` : `${number(external.unique_minute_rows)}개`) : '미집계'] : ['학습 항목 · 최근 집계', numeric(t.features) ? `${number(t.features)}개` : '미집계']
+   ]);
+   const stripIcons = ['timer', 'check', 'refresh-cw', 'cpu', 'receipt-text', 'database'];
+   [...$('learning-strip').children].forEach((item, index) => {
+@@ -531,9 +533,13 @@ function renderOverview(s) {
+     if (active) item.setAttribute('aria-current', 'step');
+     else item.removeAttribute('aria-current');
+   }
+-  const state = ({running: '학습 중', complete: '학습 완료', failed: '학습 오류', error: '학습 오류'})[t.state] || '학습 기록 대기';
+-  set('learning-summary', `${state} · ${coinNames[t.market?.replace('KRW-', '')] || '시장 확인 중'}${numeric(t.candidate_index) && numeric(t.candidate_total) ? ` · 후보 ${number(t.candidate_index)} / ${number(t.candidate_total)}` : ''}`);
+-  if (numeric(t.progress)) $('home-progress').value = Math.max(0, Math.min(100, t.progress * 100));
++  const state = ({running: '학습 중', complete: '학습 완료', failed: '학습 오류', error: '학습 오류', waiting_data: '50GB 자료 준비'})[t.state] || '학습 기록 대기';
++  const external = s.external_data || {};
++  const waiting = t.state === 'waiting_data';
++  set('learning-summary', waiting ? `${state} · 처리 ${number((external.ingested_archive_bytes || 0) / 1e9, 2)} / ${number((external.target_archive_bytes || 50000000000) / 1e9)} GB` : `${state} · ${coinNames[t.market?.replace('KRW-', '')] || '시장 확인 중'}${numeric(t.candidate_index) && numeric(t.candidate_total) ? ` · 후보 ${number(t.candidate_index)} / ${number(t.candidate_total)}` : ''}`);
++  $('home-progress').setAttribute('aria-label', waiting ? '초기 외부 자료 처리 진행률' : '실제 전체 후보 학습 진행률');
++  if (waiting && numeric(external.ingested_archive_bytes) && numeric(external.target_archive_bytes) && external.target_archive_bytes > 0) $('home-progress').value = Math.max(0, Math.min(100, 100 * external.ingested_archive_bytes / external.target_archive_bytes));
++  else if (numeric(t.progress)) $('home-progress').value = Math.max(0, Math.min(100, t.progress * 100));
+   else $('home-progress').removeAttribute('value');
+ }
+ 

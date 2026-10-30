@@ -1,0 +1,52 @@
+[
+  {
+    "path": "docs/요구사항_및_데이터계약.md",
+    "bytes": 8169,
+    "sha256": "d1f46287aade733cd663046c69639b54c566b1f3934d9308a1ee1b47879c09d9"
+  },
+  {
+    "path": "engine-config.json",
+    "bytes": 1278,
+    "sha256": "39099ca5e2d6655f7af6c855da67da2e09b2a239911a78bcb96242f4631485ad"
+  },
+  {
+    "path": "external_data.py",
+    "bytes": 31276,
+    "sha256": "89f33fec5e8418d4f9ab8b2dd604afb01df3819ba65ed9260050f593356e4a37"
+  },
+  {
+    "path": "external_features.py",
+    "bytes": 17323,
+    "sha256": "1ea7e1d133938d354dfe853bf190033362631894d7c606788cf240140db31b7b"
+  },
+  {
+    "path": "manage.py",
+    "bytes": 3118,
+    "sha256": "25b98a04516847cd922b38c68f665a4fe12fe267dac13dc8013071300cdfa376"
+  },
+  {
+    "path": "README.md",
+    "bytes": 4627,
+    "sha256": "88372312421f212080d1afaf365844e46abf53001448594c9c395dc20925a0de"
+  },
+  {
+    "path": "검사/test_external_data.py",
+    "bytes": 4265,
+    "sha256": "55e9b1657af2c5d7aa842b9931d9873dd0a9a1812b4b9ce268b681220e3348a3"
+  },
+  {
+    "path": "검사/test_external_features.py",
+    "bytes": 14983,
+    "sha256": "8b11c5ad0baf115d6f3ca6bfee0bec4c2ec95a9174cae74c5b70345a12018d7f"
+  },
+  {
+    "path": "변경기록.md",
+    "bytes": 4943,
+    "sha256": "22a8877d35a66de5eaefd765c782880901661e65ce5043f6b7bed1ca04f033e4"
+  },
+  {
+    "path": "연결부/engine.py",
+    "bytes": 102911,
+    "sha256": "0413e50c1d081ce85bc060899dffb5f82d5fbf2245dc1793a2a88c6768df548a"
+  }
+]

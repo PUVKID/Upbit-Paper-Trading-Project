@@ -1,0 +1,2089 @@
+{
+  "baseline_commit": "efd88ce80887dc64fc1166415ac90944feed429f",
+  "scope": "현재공개payload. 자기JSON파일제외;원격3차동시변경통합후실제byteSHA",
+  "excluded_prefixes": [
+    "docs/revision-audit/_baseline-input/"
+  ],
+  "files": [
+    {
+      "path": "3차/검사/test_external_data.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "55e9b1657af2c5d7aa842b9931d9873dd0a9a1812b4b9ce268b681220e3348a3",
+      "bytes": 4265
+    },
+    {
+      "path": "3차/검사/test_external_features.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8b11c5ad0baf115d6f3ca6bfee0bec4c2ec95a9174cae74c5b70345a12018d7f",
+      "bytes": 14983
+    },
+    {
+      "path": "3차/연결부/engine.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0413e50c1d081ce85bc060899dffb5f82d5fbf2245dc1793a2a88c6768df548a",
+      "bytes": 102911
+    },
+    {
+      "path": "README.md",
+      "status": "수정",
+      "before_sha256": "9df7f5e6cf0284b7260d2f1ec85c1607bc876bdb851fcba275fe2d4a4b0ba701",
+      "after_sha256": "4bd51a052cef932923d93e324abbe9dbc665f7eba92f1dfd839799df81449ac5",
+      "bytes": 16431
+    },
+    {
+      "path": "docs/2026_실행환경_이전.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "37daea09e329890f035f11114b0e2ee4b9783dab249832605532012f72583d4d",
+      "bytes": 2682
+    },
+    {
+      "path": "docs/2차_중립원인_연속학습.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8e14acf017c2ef17267348f724d96bcdfb712af4be549aad0d9e0a9fd4b5ea3d",
+      "bytes": 2677
+    },
+    {
+      "path": "docs/ALL_ROUNDS_AUDIT.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b2fadd62fa18752a6e40c637fcfcfc0773baec3b3d5a9a0dfc7babfbfe4467b5",
+      "bytes": 488
+    },
+    {
+      "path": "docs/IMAGE_MATERIALS.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7a1ee12c1272e123bad4d57bc298260c0f68c0897f814039797faade61554e19",
+      "bytes": 647
+    },
+    {
+      "path": "docs/REVISION_AUDIT.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9bee072a150f8db3db0445435ade895e7679ccc1da61e9556312fdb434c99415",
+      "bytes": 2047
+    },
+    {
+      "path": "docs/REVISION_INDEX.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9329757dc522a445b333217679cd7ccf8580c5b05c5e01f502c52d0966b9d990",
+      "bytes": 550
+    },
+    {
+      "path": "docs/SOURCE_MATERIALS.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fbfa23ea4ef1f301c73e266f7ce02ee3e2073a22c1d049d421f44a2129d416e4",
+      "bytes": 2282
+    },
+    {
+      "path": "docs/VERSIONS.md",
+      "status": "수정",
+      "before_sha256": "b3e785cc73ed261e416291c39f9814a562f34e9adaf14a0a3a28f7df223e52e2",
+      "after_sha256": "ca2ee98dd4dc9eb1ea7ea61135bfd9da92e18a3adeddb0accc61f089c2c53c2e",
+      "bytes": 3909
+    },
+    {
+      "path": "docs/changes/2026-10-30-자료와차수정리.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e3e4c49e540c6bad77731515c5ce719b52cfebef1e5306dd207b1b71a814e1e5",
+      "bytes": 57464
+    },
+    {
+      "path": "docs/changes/2026-10-30_차수별_전체비교.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "2893d88e77df2a6c71ce70c0fdd8d6f746f8d3a223040dae4e790aa916d56147",
+      "bytes": 1161
+    },
+    {
+      "path": "docs/image-materials/files-001.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5e315c2f264c135d43ebae49d2e8563d481320b7b5060dc5f363d6e531b00410",
+      "bytes": 32490
+    },
+    {
+      "path": "docs/image-materials/files-002.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e41fd9158d8d1a81c86e4b94ac11cd648481bd235e264c9743694006bf31ab52",
+      "bytes": 14488
+    },
+    {
+      "path": "docs/image-materials/files.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d43a00f826f4f69cf63ba0e494d99d9a86f9692a04badad2021b9235ce421817",
+      "bytes": 52304
+    },
+    {
+      "path": "docs/revision-audit/3차-원격892-efd.changes.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9391c8b9784bb2c7cdafcc2e902dd6b7df03aab005d6372095aa4d3623e1940c",
+      "bytes": 4125
+    },
+    {
+      "path": "docs/revision-audit/3차-원격892-efd.patch",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "3fb333466070d9e0ed31f3e042b2c219642b06e3e3b5af0c296e284b082e9cf9",
+      "bytes": 141769
+    },
+    {
+      "path": "docs/revision-audit/3차-원격변경.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "6b404c8164d3ee369728456e64b534d93a5362f11839da7d3d7c9f46b3af0a7b",
+      "bytes": 2197
+    },
+    {
+      "path": "docs/revision-audit/3차.changes.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "47c95a5e000714155877eb60ee83b745d4c505f5518a94fc34cebc4d72dcfd8b",
+      "bytes": 5710
+    },
+    {
+      "path": "docs/revision-audit/3차.files.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9becee760354988e078670cb24732ee733bf35112ae2887b8d82f0b3cbd1ca21",
+      "bytes": 1464
+    },
+    {
+      "path": "docs/revision-audit/3차.folder.changes.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "47c95a5e000714155877eb60ee83b745d4c505f5518a94fc34cebc4d72dcfd8b",
+      "bytes": 5710
+    },
+    {
+      "path": "docs/revision-audit/3차.folder.files.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9becee760354988e078670cb24732ee733bf35112ae2887b8d82f0b3cbd1ca21",
+      "bytes": 1464
+    },
+    {
+      "path": "docs/revision-audit/3차.folder.patch",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ef665be2447f07d8411d6cd174e3ff321d1ebf566d352cdd67900d023dcc9520",
+      "bytes": 40738
+    },
+    {
+      "path": "docs/revision-audit/3차.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "06017094f94564555f205eab20e93c0da76c8e0697113b0a4fb3b99a8478f1fd",
+      "bytes": 1536
+    },
+    {
+      "path": "docs/revision-audit/3차.patch",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ef665be2447f07d8411d6cd174e3ff321d1ebf566d352cdd67900d023dcc9520",
+      "bytes": 40738
+    },
+    {
+      "path": "docs/revision-audit/GPU처리량.files.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8c2f98f26a683bb4a059ee1468e6350af36e69d223694cf567ddf181696c3d95",
+      "bytes": 15903
+    },
+    {
+      "path": "docs/revision-audit/GPU처리량.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0c75e39a85e3af9521898f77d2e3dfad2f6fcbaafcb9143dafca887d2257462e",
+      "bytes": 2334
+    },
+    {
+      "path": "docs/revision-audit/GPU처리량.patch",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "634a2b88b266202c3d594a6b936b09a31ac321fac28fde8b00ce0e33decfe4c8",
+      "bytes": 70817
+    },
+    {
+      "path": "docs/source-materials/001.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "542ffb20374caf830df1ffe1b0c59361bea6e859db83533b76df3d63155f9445",
+      "bytes": 42653
+    },
+    {
+      "path": "docs/source-materials/archive-members.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7187198646599cb0798d7677e5e7b89ca161e8cab375f610827657ed8b086908",
+      "bytes": 26026
+    },
+    {
+      "path": "docs/source-materials/files.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "6d5dde594c4885d5a4450bed7e24e17da05c3b09d414e8825c99bf0cbd10fc8a",
+      "bytes": 50541
+    },
+    {
+      "path": "docs/versions/3차-초기부분.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e099e5e543ec94836657015c82983e5bbae6b3af52c26beddbb4ac8f8d9ee705",
+      "bytes": 2488
+    },
+    {
+      "path": "docs/versions/3차.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f7233fff5cc9fbad6755bb6551d0cda90e32e2ad17175d9fb445a75614874226",
+      "bytes": 1627
+    },
+    {
+      "path": "docs/글래스_대시보드_요구사항.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ca69e2c0267f8315b8f92cfc73c0ff5abedb482799f16de23232db8140e02691",
+      "bytes": 2960
+    },
+    {
+      "path": "docs/설계_요구사항.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d8456fc2798d670bcbe122529c5aeb277bf0419daec61653c6080a0d116afa49",
+      "bytes": 5751
+    },
+    {
+      "path": "docs/초보자_대시보드_개편.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a6e17f47d1b3fd257bf013f4b6c222aafaf3b93fa77c32fbdfbdc0abf1aa6f63",
+      "bytes": 3994
+    },
+    {
+      "path": "tests/test_dashboard.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7ff2ef764f6835cf616b7c69df80ff326e272c3e74f2214dce78ec1be8db9bec",
+      "bytes": 34117
+    },
+    {
+      "path": "tools/build_ui.cjs",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "683809c568b508ba5362218b66892fe69cab98af4f07f04dd6d387cbad54cc4a",
+      "bytes": 1215
+    },
+    {
+      "path": "web/assets/btc.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8022fd53c251f18cb39cefede445f1c78a3b265989232f0bb46b9c4622e55a9e",
+      "bytes": 2589
+    },
+    {
+      "path": "web/assets/doge.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4a789f36f6ca12a6d1901ab8441a9cab7a4a9a5fd4ba87c887c4d45c729fffce",
+      "bytes": 1597
+    },
+    {
+      "path": "web/assets/eth.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "99bf2102cc13a51bb226f931b8d0fa4c5b3ca9dc4179167e89d7ee3f677c3fdb",
+      "bytes": 3437
+    },
+    {
+      "path": "web/assets/learning-glass.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "00b32184c1bced24747adb7d651d05ff61909d16c5691c106d81f19acc5bf77c",
+      "bytes": 1178531
+    },
+    {
+      "path": "web/assets/sol.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b9296ce1118a6d150e57049190aeb4c024199e0787e0c6198c244230b8d704f5",
+      "bytes": 4222
+    },
+    {
+      "path": "web/assets/xrp.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0875539d872ac02066c129360ade039e835bd7b9b2320f3a4d24ed4ef72c3051",
+      "bytes": 2393
+    },
+    {
+      "path": "web/fonts/NanumGothic-Bold.ttf",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f96298f9fb18e364d2370f4c3ce948ac67a2b61af992d7234bc15c42b033c674",
+      "bytes": 2073868
+    },
+    {
+      "path": "web/vendor.bundle.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9ca8a8c2d62edcc23100bb54b3ef7be64067431802d5a1db5b5667a622fbb804",
+      "bytes": 756412
+    },
+    {
+      "path": "보존자료/압축원본소스/GPU최적화전_20261030/engine.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "881286923229ef1ba4ada1f4e04e782bf3428ae3ae73918c3fc0ff53dd203eda",
+      "bytes": 95433
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_개편전_20261026/dashboard.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "52ba3b97470ddf48cfada85a898388c730648bc37798314d7758c9f485961e6f",
+      "bytes": 32021
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_개편전_20261026/web/app.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5b316838808411d2a8060ca7b8c3cbccf0dfb764d929d74bc4881b55a488c756",
+      "bytes": 28430
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_개편전_20261026/web/index.html",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "00f01ae5ec8a431a3bb6289390c0fee48e97e3d3b786ce6407ac00657aebd256",
+      "bytes": 9008
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_개편전_20261026/web/style.css",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7692cf4e52706a09e99ce692fecf14414ef3343b7c1a2ae4209f423c48ecd2b2",
+      "bytes": 6754
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/dashboard.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "13b263b8e7b5af8a2db5422eaa832a6429803befb3d62f17232a7a362e150a05",
+      "bytes": 32975
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/app.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "95aa15c2d9e8794e7469e4051e64a234467935b9bd61264a35c0d699619bc556",
+      "bytes": 38833
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/index.html",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "de9304d82a8a54097ea8f461db6fc8885d54a0ebc2b4073af178b52636385b2c",
+      "bytes": 12124
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/scene.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "cca630068c5f8e39f23afab6c105b2d9fec0587530b0b2f1d75c5cdc11d5cb28",
+      "bytes": 13288
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/style.css",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9ff8103002c81ee5810a8ec6038f001f2eff5c55e92b3c8bd7037c30fc4e0211",
+      "bytes": 21152
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor-entry.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b1554bd759c9746c7e460afbd25bd86c89f6aaf736c844a5a9614ede5f2e2eb9",
+      "bytes": 745
+    },
+    {
+      "path": "보존자료/압축원본소스/대시보드_단순화전_20261026/web/vendor.bundle.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5453c154076600113e83d3cfa13db991fccc9da8310046fd0f45f2914b74ff2b",
+      "bytes": 753352
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_시안재현전/web/app.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "099902346dc6fc9bf196caac5671172466e7fe67ddc9376cbfedc3bae64a6a77",
+      "bytes": 44995
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_시안재현전/web/index.html",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b0e678c43117b6d6c8e2036bd6b40bff4a1db66d0e9702f9a695a9eb16655bd6",
+      "bytes": 14648
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_시안재현전/web/scene.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "419d863f3c8eddbcc951afe2c1e8bead84b8b46f058d99cc06b7882eb2786b8b",
+      "bytes": 32911
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_시안재현전/web/style.css",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7b479ff8610d020dd5f83743516d91b7395a97b440d5fe8592054debbd7f2216",
+      "bytes": 18514
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_실제3D전/web/scene.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fcb70a5fb13b6a63f3a6809c263da3ecc66455d73b197f77bdf520fb624bd2bf",
+      "bytes": 31940
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_실제3D전/web/style.css",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c3c6308dda90c88151381c0c02214f3bb8ab52c0816e0ab3aa01a3516f1348de",
+      "bytes": 22998
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_실제3D전/web/vendor-entry.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8c55f115d70f2976c3fed64070cab910c5aa27b26510ecbac38ffdac3d8ac792",
+      "bytes": 1373
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_실제3D전/web/vendor.bundle.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "87de8bedb4c65f60d5f36c8b9a1766c5c8de631416e66368e4b70ed2f1e77c15",
+      "bytes": 2326155
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_유리시안재정리전/web/scene.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ee7b09c2f33db63cc050f4a55510c947ed63bdf7afd766e0a83fa53eaa6fb812",
+      "bytes": 43406
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_유리시안재정리전/web/style.css",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "bcdac5ca3fada32377974744f873f8e913b67d02394dbf9faaf1b7be444802ac",
+      "bytes": 23595
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_학습개편전/web/app.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0a06a1d17848d53a346a5c8cdeb3360ddcbd7e85dd5cacef160215b6f4b3f618",
+      "bytes": 41132
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_학습개편전/web/index.html",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "31485766cb10a4471572fafa58bcbce7eccb119c40b28ce0e8c0bc9104f90d1a",
+      "bytes": 12464
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_학습개편전/web/scene.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5d922de878de275ba701c76f1b4c5887371a73aa3c13733b13d45adc3ae7b74d",
+      "bytes": 25441
+    },
+    {
+      "path": "보존자료/압축원본소스/웹_20261028_학습개편전/web/style.css",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7c3a162f73aee7b6b957213ba0106f32bf714745929dc6ba3811ecacc8f0d409",
+      "bytes": 15254
+    },
+    {
+      "path": "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/bootstrap_doge.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "30b2418413ba0173efaa69ebae40108906ad1e5b5b858362049c8622c3480a1d",
+      "bytes": 2292
+    },
+    {
+      "path": "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/deploy_glass.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "dbd8bfcc671fcc7d9cd879930ca9e4f8bfe506847f8f46e4ca82753b66a7c3bd",
+      "bytes": 4650
+    },
+    {
+      "path": "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/migrate_project.ps1",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8dca603a29d6256267bd93c8205572f1714b55ab58d1a37685d9173bb6096c7d",
+      "bytes": 4073
+    },
+    {
+      "path": "보존자료/압축원본소스/이전_일회성_컨테이너_이전도구/prepare_2026.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "10c0ad73057a2bdabbe370f1d02c4bc7f86b07ceba6c20466adeec1e92c2869a",
+      "bytes": 2437
+    },
+    {
+      "path": "보존자료/압축원본소스/전용컨테이너_폐기설정/Dockerfile",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c11fa119583076b822e7f71eac005c09ad04fe72148fe3cdf46326d9af9b675d",
+      "bytes": 815
+    },
+    {
+      "path": "보존자료/이전_대응표.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "590b16ca3b2c6e345427b8a3c9223f952ec9d08be39b2e05aa2e19f6ce337321",
+      "bytes": 566937
+    },
+    {
+      "path": "보존자료/작업소스/work/archive/20261026-db-io-failure/data-recovery-20261026T154614/damaged-preservation.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "6805c8e50f763d17e8c0c04d674da5c2dac0cc11b693a3e412461815caf82a57",
+      "bytes": 683
+    },
+    {
+      "path": "보존자료/작업소스/work/archive/20261026-db-io-failure/data-recovery-20261026T154614/untouched-after.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8ae8313d3a6284d625327ae301e107d5f69abc1cefc97f856c9ab47609c9793f",
+      "bytes": 18507
+    },
+    {
+      "path": "보존자료/작업소스/work/paper/state.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "34cd768de2b6a429da3cf85898cc8b16db7081d710a7b70386f8080cd75d76f3",
+      "bytes": 544891
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/3차/변경기록.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "50e3ac3eb87b3567ae46b90f1c474f5ebc09f21c0384bb4fc4b9d59527440500",
+      "bytes": 322
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/CHANGELOG.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d03c7467829cef426e05635280d8d7a59eba045b6f0b1543c1a3d7f267537f2d",
+      "bytes": 6352
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/README.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "23f284c56ace061eca53639aa4e1a1418bbe89dd007c9e99b5d70c7abb041ed9",
+      "bytes": 12442
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/dashboard.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "01b628748ce57c6686770898d0b5be2afa36d7671409970c3edb00094edb0ec5",
+      "bytes": 33621
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/docs/2026-10-30_GPU처리량_개선.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "6f90e33b970b46fb0c25b84a7169d033aaadf7a7e32f35d07b86561563e738d1",
+      "bytes": 340
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/docs/VERSIONS.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a4bbb18cb4c0c588078719da8c6efc9fba13993f37aba9836dfdb033c5baf518",
+      "bytes": 2366
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/docs/versions/gpu-throughput-20261030-engine-diff.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "930c7c26933ed7a3b558e147c8989546efd94fa5ce033fbcea95cf57040d5d48",
+      "bytes": 327
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/docs/versions/gpu-throughput-20261030.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fc7cdc1251a9e7dd35b335be84943e047df8b318d1415be71f63797fd78aac71",
+      "bytes": 315
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/docs/versions/stage-1.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fc291d289663a96452636da2fba948739b9796b7c1a88908e0410b7447ca9375",
+      "bytes": 299
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/engine-config.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "39099ca5e2d6655f7af6c855da67da2e09b2a239911a78bcb96242f4631485ad",
+      "bytes": 1278
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/engine.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "bb132af274660fef567cc1bad5b7f4d7c1cf4427bbe9fcdb6c3701f8ac2896c5",
+      "bytes": 104789
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/execution_probe.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ce0e31f2dfd28b09e99500ca445344b015e364d42d9b00c7a5df41f078771ed3",
+      "bytes": 3593
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/healthcheck.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ef036fa93a8cf9d5eef3a10e655dd384a8876e4c6b0b62b87be55d865a540657",
+      "bytes": 14001
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/supervisor.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4a2635c42145c201a4e57399df94dfd90149b0361b307d5c9607ff6d1ebab1a3",
+      "bytes": 9599
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/tests/test_gpu_throughput.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "820879baf02215bab6c51f171597f01d6a0ee1d7a28c03e0b314bc26ae517270",
+      "bytes": 12153
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/web/app.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4b4225e7b7bef75285a2504938c258dfa8a2ef32d49c8d27bd780e17320bf8ae",
+      "bytes": 49154
+    },
+    {
+      "path": "보존자료/작업소스/work/publication/보존자료/원본/upbit_auto_trader_v4.ipynb",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a739c8d91435e8466983659acc5c9dbd35df78df3c935f3be6bf135d314da59d",
+      "bytes": 70377
+    },
+    {
+      "path": "자료/화면과검증/01177a02244f_selected-reference-independent-remaining-dark-data.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "01177a02244f775ae55364718901ba8a5f60e1372b927b1c3e039c461c98ba9d",
+      "bytes": 123241
+    },
+    {
+      "path": "자료/화면과검증/015a66710ebe_real3d-independent-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "015a66710ebe86a62ad93f34ef999ad047d0ee0128ffd49ca975f9767fa401c8",
+      "bytes": 67429
+    },
+    {
+      "path": "자료/화면과검증/02f6b2824f41_glass-art-independent-loaded-light-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "02f6b2824f41f6f86dd7932b1b78f17aaa6b2ab7fcf0f574b9ae79e65dd46bc9",
+      "bytes": 73542
+    },
+    {
+      "path": "자료/화면과검증/02f73169324f_reference-dark-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "02f73169324f46b784995889b6b71a0c9e1ebfb568884cc5924074498bb59588",
+      "bytes": 224053
+    },
+    {
+      "path": "자료/화면과검증/04f15a134d68_learning-live-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "04f15a134d68150358e521c4231df8e310876058f88e591c8f7aecc88f82e966",
+      "bytes": 134594
+    },
+    {
+      "path": "자료/화면과검증/0757622412cb_studio-independent-final-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0757622412cb33c0532ad1846122eedc67150eabab820578577fde9290acddb2",
+      "bytes": 67822
+    },
+    {
+      "path": "자료/화면과검증/077606ec7d84_studio-live-steady-1505.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "077606ec7d84983ff13b68f13dd66512595b519ffc7afeb5ecd33dc57b7fdb57",
+      "bytes": 86117
+    },
+    {
+      "path": "자료/화면과검증/0e6139dc9e80_learning-verifier-repaired-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0e6139dc9e80eae30db10069d7c285ad9a2fadfed58e664ca34764f8436cff24",
+      "bytes": 121575
+    },
+    {
+      "path": "자료/화면과검증/0f58edf23017_learning-final-home-1505.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0f58edf23017553a0f3cb6f68f811da411a13f89f8ea853f58cbdbfca70fad4e",
+      "bytes": 88472
+    },
+    {
+      "path": "자료/화면과검증/0ffd38ab8220_learning-verifier-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0ffd38ab8220ca8e55e732eb07f1b55ed3cd7dc3b0a4651d04ca7a2d59bbb420",
+      "bytes": 129784
+    },
+    {
+      "path": "자료/화면과검증/128144902cdc_통합_대시보드_1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "128144902cdcc501ae0d89d23c7b35b7cb085c70ecb0f87ef4a2b31359a71587",
+      "bytes": 251528
+    },
+    {
+      "path": "자료/화면과검증/166d6b69c9dd_studio-live-steady-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "166d6b69c9ddfa99b480403433486bdda3d811c11b6b22552659b1c413b4f188",
+      "bytes": 59206
+    },
+    {
+      "path": "자료/화면과검증/1705ba92c8b0_real3d-independent-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "1705ba92c8b007f1443b04ae43d52a996e9964562bdd972192d01e46e6a7178b",
+      "bytes": 72672
+    },
+    {
+      "path": "자료/화면과검증/1752ef241207_selected-reference-independent-dark-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "1752ef24120706260454bb71ac6a05614d8d759f777ae86730f852f235d28b4c",
+      "bytes": 420866
+    },
+    {
+      "path": "자료/화면과검증/1a429d35faf6_selected-reference-focused-dark-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "1a429d35faf6665885e2e66f50c02ce0705e6c5ed217e6e8b170c8fe5043a55b",
+      "bytes": 150979
+    },
+    {
+      "path": "자료/화면과검증/1a77abba362c_통합_학습_390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "1a77abba362c0b6b64eb8551ca2c8420be66717403c562ed59ce532ce18ab551",
+      "bytes": 4707003
+    },
+    {
+      "path": "자료/화면과검증/1dd6c6db0b7b_selected-reference-independent-remaining-light-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "1dd6c6db0b7b9bade5d438bf413cbc1fe7a5dad18a63df160a9d9f9a1d4c1338",
+      "bytes": 406859
+    },
+    {
+      "path": "자료/화면과검증/1e891602f0ff_studio-verifier-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "1e891602f0ff7fe4a639647b23890a51fcca3406ab3e14c6518823bc55ae122f",
+      "bytes": 52949
+    },
+    {
+      "path": "자료/화면과검증/1faa91f0cdbf_glass-art-r39-independent-light-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "1faa91f0cdbf7b8612b01e865943ca6fe7d6b4e980f3dc46a157054a1ce165e8",
+      "bytes": 70726
+    },
+    {
+      "path": "자료/화면과검증/225d5b0b18dc_ui-verifier-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "225d5b0b18dcd8faef445e5d4363cb736e99c61f693ec51947742aec925268f2",
+      "bytes": 139378
+    },
+    {
+      "path": "자료/화면과검증/22e7bed7f67e_real3d-stage-complete.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "22e7bed7f67e42a62fa8a1af55dfc3cd336c36036efcf6cf6f25aad97a706858",
+      "bytes": 113131
+    },
+    {
+      "path": "자료/화면과검증/265c2d84ce6c_studio-live-final-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "265c2d84ce6c6d36ffcbc139bfabeb33b43d16085840c598ec5c15c14d1029e6",
+      "bytes": 59128
+    },
+    {
+      "path": "자료/화면과검증/28b2cd73665a_ui-bounded-canvas-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "28b2cd73665a0c8d959cd20d52dfb8e1c7546216f7f87f5e543da3d25368a857",
+      "bytes": 6530
+    },
+    {
+      "path": "자료/화면과검증/29936b496f21_studio-independent-final-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "29936b496f21c4e438338b1ddd5956beaae26a9fc79630cd604e725aab42b419",
+      "bytes": 59551
+    },
+    {
+      "path": "자료/화면과검증/2b22d9073c4a_account-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "2b22d9073c4a7b8a9d39ceb5247c9dfcf816ecdade030dfe906dfea68b50d2de",
+      "bytes": 79719
+    },
+    {
+      "path": "자료/화면과검증/2d049e30487b_learning-final-home-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "2d049e30487b0a2edf0fdf3a09cae48a1c4e682a6aab2074ff2cb46b6ab563ad",
+      "bytes": 36117
+    },
+    {
+      "path": "자료/화면과검증/32dfae4c8c80_real3d-stage-features.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "32dfae4c8c803e72debac179ee78f2450f1f2d7b13b1e69ebfc36f164179d5bf",
+      "bytes": 112767
+    },
+    {
+      "path": "자료/화면과검증/347117874d45_selected-reference-independent-dark-data.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "347117874d45199a601b5ec084c8e9ddbeb181456d38f6cb77d27f7c239fd112",
+      "bytes": 123174
+    },
+    {
+      "path": "자료/화면과검증/37734d648efb_real3d-independent-1505.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "37734d648efb437c51431fb0fd4a8e4ff2834a1a26a3e1d6187f42d2dd4038a8",
+      "bytes": 92080
+    },
+    {
+      "path": "자료/화면과검증/3b49b1af5106_selected-reference-focused-dark-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "3b49b1af510647e8006bc1181ff6f8cadaa833ecd1a8372364e7aa92d21629eb",
+      "bytes": 211189
+    },
+    {
+      "path": "자료/화면과검증/3b9d6637bf9f_studio-build-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "3b9d6637bf9ff7d6d85e18671234cb99dd16ab59f07d4ef10ce2cd0a804f6e17",
+      "bytes": 82604
+    },
+    {
+      "path": "자료/화면과검증/3d43f028f041_repair21-after-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "3d43f028f0410258ef90fe5b6a7e5ec3cbf31c22a29d2b6bcacb740c6b38afad",
+      "bytes": 84756
+    },
+    {
+      "path": "자료/화면과검증/3e2920f815d9_selected-reference-home-1505.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "3e2920f815d99517130d36fe4ea23dfa8d93e9224e8c53c2259ebabec941b981",
+      "bytes": 91351
+    },
+    {
+      "path": "자료/화면과검증/4019dd392360_구현_압축_첫화면.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4019dd392360cfdf55b0bfb42089e16d8c610b89a6352f80fc77e4f47a16810b",
+      "bytes": 137227
+    },
+    {
+      "path": "자료/화면과검증/41d84e0bcdc1_learning-verifier-repaired-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "41d84e0bcdc1c4062eb116229c91d7b455265f2b53c90a4fdfd03a851111861c",
+      "bytes": 133305
+    },
+    {
+      "path": "자료/화면과검증/44c89f3d3d00_ui-verifier-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "44c89f3d3d00c004089bb19577ea87db38bccf1c5d08161e659a120be4ba80c5",
+      "bytes": 57734
+    },
+    {
+      "path": "자료/화면과검증/468a58dc08dd_selected-reference-independent-light-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "468a58dc08dd2903077045ff4638b27111897874451425f19c20eeec219283ad",
+      "bytes": 406941
+    },
+    {
+      "path": "자료/화면과검증/48a080d5009d_studio-preview-second-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "48a080d5009d46965412d81b509e3598ad97be67ee81fd1aadfef5655ce27657",
+      "bytes": 73347
+    },
+    {
+      "path": "자료/화면과검증/490ff7e3a489_studio-independent-final-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "490ff7e3a489ca9d448fe52308189749291fd370f275d74ae416e4fa624b6af2",
+      "bytes": 32684
+    },
+    {
+      "path": "자료/화면과검증/49468b1fdf08_ui-bounded-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "49468b1fdf0888b59b0cb0ff60435c85012a6457744d8d6e6b2cd9e5e31745ef",
+      "bytes": 144650
+    },
+    {
+      "path": "자료/화면과검증/49c3145adfb2_reference-dark-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "49c3145adfb21f12d27229449efce510041213860cb13ee8717969616259d64c",
+      "bytes": 74841
+    },
+    {
+      "path": "자료/화면과검증/4a215890615b_reference-dark-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4a215890615bcc4d00029db56b687d084703a502c24c4835b5ba881649b7bd15",
+      "bytes": 132955
+    },
+    {
+      "path": "자료/화면과검증/4e157ace8157_studio-build-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4e157ace8157f3b3d0b36902e246dad393d0befd718d4e2f4ed3cced90f9f7bc",
+      "bytes": 85510
+    },
+    {
+      "path": "자료/화면과검증/4e8958bf563e_account-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4e8958bf563efdbc51189d9855d189c758dfa65a4abdd2c3008c3872916448f7",
+      "bytes": 81667
+    },
+    {
+      "path": "자료/화면과검증/5138eb064609_selected-reference-home-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5138eb06460982157f646158f459a649f5e5ac6bf42f439059bbddbbc5c2fc13",
+      "bytes": 67447
+    },
+    {
+      "path": "자료/화면과검증/51b2cadbaac7_selected-reference-focused-light-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "51b2cadbaac7c68cfef5d51a24e8e5fd4083e26c51992acab417cf00aca58f20",
+      "bytes": 211548
+    },
+    {
+      "path": "자료/화면과검증/531d12e1be62_reference-dark-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "531d12e1be625712a5b437764b07d08027d5707bd07714e2f5e8af78a2aa7056",
+      "bytes": 164775
+    },
+    {
+      "path": "자료/화면과검증/55aa6ff81b04_ui-bounded-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "55aa6ff81b041f0cd940eeb2aa11668f8cf02d8bcc6eae8b4a9f0e7450917b21",
+      "bytes": 147678
+    },
+    {
+      "path": "자료/화면과검증/55ba00972e43_preview_390_첫화면.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "55ba00972e4399d7c6894e6d6c9cdf826dbeafac9801b00c2d5ea46573fb65c5",
+      "bytes": 59178
+    },
+    {
+      "path": "자료/화면과검증/5a756bb8246c_learning-verifier-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5a756bb8246ccffcfd3aa36dc11fa7d8100a054b7b3d78e3424aa2d8bc37cf0b",
+      "bytes": 118258
+    },
+    {
+      "path": "자료/화면과검증/5ae5b57df5f0_ui-verifier-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5ae5b57df5f0cc43bb839e8b4b0e9c8f951a033731c9d588b1664fb8f9a3606e",
+      "bytes": 117788
+    },
+    {
+      "path": "자료/화면과검증/5afe723934f7_실제_대시보드_1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5afe723934f7b334b7d6aa7f23ce6ceb9c6b047bccfd1bdee0a661baf93e264b",
+      "bytes": 740387
+    },
+    {
+      "path": "자료/화면과검증/5c843c0e4a76_glass-art-independent-light-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5c843c0e4a76fd7077fb5ee5f64f7c5d2fa90980f15f56ce246d4ae0cbfc2e7a",
+      "bytes": 200602
+    },
+    {
+      "path": "자료/화면과검증/5d14fd18a8e7_studio-verifier-fallback.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5d14fd18a8e79cf98409c0c5d0cc3b0f3cc211327d3233f1ee049d8799cc1227",
+      "bytes": 65338
+    },
+    {
+      "path": "자료/화면과검증/5f6bd14a3054_통합_대시보드_390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5f6bd14a30545d35ada9b8855e9f8e96a941bc834c5482c4d37f26e332f649d1",
+      "bytes": 197711
+    },
+    {
+      "path": "자료/화면과검증/60183bbd3163_live-learning-20261026.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "60183bbd31638ee5a2daad3f8ecbed3bd48007e8b97059d7144680947b00593d",
+      "bytes": 65412
+    },
+    {
+      "path": "자료/화면과검증/62b7bd6e73bc_studio-build-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "62b7bd6e73bcf0c958fa4dd36466d7920e432d5a78d92e3036a183e341555e72",
+      "bytes": 86923
+    },
+    {
+      "path": "자료/화면과검증/64d58f560329_selected-reference-independent-remaining-dark-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "64d58f560329547e707171a982bb905f164a77bef5cdfb2f7eb2b0b76eec95ba",
+      "bytes": 420808
+    },
+    {
+      "path": "자료/화면과검증/685b0858d2bd_ui-verifier-scene-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "685b0858d2bde5dc15e0056ed53d0fc8345a24ed72697897139043acfae14589",
+      "bytes": 152620
+    },
+    {
+      "path": "자료/화면과검증/68837f132fdd_reference-light-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "68837f132fdd15fa714255395adf38ebea9ad0704027524210eda90c3472abb1",
+      "bytes": 230534
+    },
+    {
+      "path": "자료/화면과검증/6c33d628754e_real3d-stage-calibration.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "6c33d628754e1ba05cd168a29184f47cd9c99b099a7f0be5aa2f387381c0fdac",
+      "bytes": 113333
+    },
+    {
+      "path": "자료/화면과검증/708d1ff4b1cd_실제_호가_체결진단.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "708d1ff4b1cd1d394683eb6dfcbb5cf546d95b2f60a9737da606fb2571992989",
+      "bytes": 60770
+    },
+    {
+      "path": "자료/화면과검증/72a5be16b6da_real3d-independent-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "72a5be16b6da201fcc0cc4c429b988956707ab6e816ff02b0ac359f1505c3794",
+      "bytes": 91485
+    },
+    {
+      "path": "자료/화면과검증/73b6464251bc_selected-reference-focused-light-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "73b6464251bc641144e46c74e8ae6d9df6f18a4002360d162e6a07d2d868f18d",
+      "bytes": 267622
+    },
+    {
+      "path": "자료/화면과검증/7738bad66bbb_selected-reference-home-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7738bad66bbb4f6723b4d5494c1e2cec871360bcbf75591463ef5469ac6cdac0",
+      "bytes": 34746
+    },
+    {
+      "path": "자료/화면과검증/77c5afc575f0_실제_대시보드_390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "77c5afc575f09aa59b1e8ed9ab299e2224876e337e64ed17135e349f03b63f80",
+      "bytes": 577297
+    },
+    {
+      "path": "자료/화면과검증/784b7374f7fc_account-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "784b7374f7fc99c5eea5358b043b42c2dd635bea658a5e78928866a2d58d4681",
+      "bytes": 60388
+    },
+    {
+      "path": "자료/화면과검증/792eefa6a1be_glass-art-r39-independent-dark-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "792eefa6a1be112dc33bece4467dd1962f70da617bca6c26dcd3e68950f8cb99",
+      "bytes": 72246
+    },
+    {
+      "path": "자료/화면과검증/7d2352ec532a_reference-light-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7d2352ec532aeb5c021705c1654f7d54063c1a53fdb4995dca4e6cba3f0682fa",
+      "bytes": 224182
+    },
+    {
+      "path": "자료/화면과검증/7d8daf53fe0b_training-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7d8daf53fe0bad8ed1fc9113a0cca2c6a338f2c2e7905f77208d7bf7e419cc97",
+      "bytes": 60331
+    },
+    {
+      "path": "자료/화면과검증/7e0b31e180e9_glass-art-independent-dark-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7e0b31e180e9442a7d3ced29af32c01af12537217c84f1fc0db5c477383998ac",
+      "bytes": 70227
+    },
+    {
+      "path": "자료/화면과검증/7f2c71d97433_studio-independent-final-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7f2c71d97433e08048796860001b311bb9257e5978bd1fd248193802f0dd005b",
+      "bytes": 78723
+    },
+    {
+      "path": "자료/화면과검증/7f77a981c936_studio-live-final-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7f77a981c93678c676ff0c05f615ae5c1e45e8701e64bb9d5b9ae0811a0dd7d9",
+      "bytes": 66788
+    },
+    {
+      "path": "자료/화면과검증/8206ad95533d_selected-reference-independent-remaining-dark-training.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8206ad95533dcdb693c53ce317d720c484038ae3a7f641219c52a9caf2c8c3b5",
+      "bytes": 398009
+    },
+    {
+      "path": "자료/화면과검증/8395b1ecb352_learning-verifier-repaired-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8395b1ecb352913b1a195cbf45d72a08d3545b1784bea82ee0b0be1a159b0c5b",
+      "bytes": 127360
+    },
+    {
+      "path": "자료/화면과검증/83ea431f23a0_glass-art-independent-loaded-dark-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "83ea431f23a0624cd562e67dc616b50b457bcb50d3ab370c8a015cc4bf33e05f",
+      "bytes": 230851
+    },
+    {
+      "path": "자료/화면과검증/850e1634842e_ui-verifier-scene-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "850e1634842ecd7f38590e571af4cc88e8527e9ea054563d7ccaf6b3416cd824",
+      "bytes": 128765
+    },
+    {
+      "path": "자료/화면과검증/85bb66c2ed40_real3d-stage-fit.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "85bb66c2ed40920a599f394fb5b1cade4a9c9f64c59144673c64fe49d4eb3abc",
+      "bytes": 113603
+    },
+    {
+      "path": "자료/화면과검증/8831ddb9f4e4_learning-verifier-repaired-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8831ddb9f4e4c509c0e93ca655fe98b9748e6ac1952edb8818b8e80a8c86ac85",
+      "bytes": 124355
+    },
+    {
+      "path": "자료/화면과검증/8857dfcd17f2_selected-reference-independent-fallback-dark-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8857dfcd17f29c1b23b4e9743cfa1bdaa86f8b968a743d44d1e2a801f728afe0",
+      "bytes": 159036
+    },
+    {
+      "path": "자료/화면과검증/893130614b0b_glass-art-independent-loaded-dark-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "893130614b0b7db19abd39321833a6954a6762dd023fb174d958a12fe820ef1b",
+      "bytes": 74831
+    },
+    {
+      "path": "자료/화면과검증/8b1eb9762714_live_1024_첫화면.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8b1eb97627142f9532cf98f3d8822d6ca4d0647528c2879a2a8ac98d1b283cce",
+      "bytes": 116684
+    },
+    {
+      "path": "자료/화면과검증/8ce3cfce86ee_ui-bounded-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8ce3cfce86ee2b0de744375484e13568afb9418e312292531e013a813f708241",
+      "bytes": 143119
+    },
+    {
+      "path": "자료/화면과검증/90802cce011b_통합_학습_1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "90802cce011b1432d74f17ebee471f3f64e1967749087015d5fa6b4df6cdc462",
+      "bytes": 6191120
+    },
+    {
+      "path": "자료/화면과검증/92108f340231_learning-home-regression-1505.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "92108f3402311649f2ebd415fc08563b5dd76f7a88f64ca88a33c95efaadb654",
+      "bytes": 88474
+    },
+    {
+      "path": "자료/화면과검증/99eb95b7610c_ui-bounded-canvas-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "99eb95b7610ce79da253ed8938d178dfb6579e13e4ef2ba4aecbeddf905b51b1",
+      "bytes": 7705
+    },
+    {
+      "path": "자료/화면과검증/9aa2a2c74f98_selected-reference-focused-dark-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9aa2a2c74f9845dce1f6439f8226c64172a2b03a2c46be2ddb324211b471f76b",
+      "bytes": 267411
+    },
+    {
+      "path": "자료/화면과검증/9f66e84c56db_real3d-independent-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "9f66e84c56dbf86ab5708721f045f3ea203a2064fbb75b748b2a8c0a03c84dd1",
+      "bytes": 34740
+    },
+    {
+      "path": "자료/화면과검증/a0c338e37b98_초보자_시안.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a0c338e37b981c45ef06b307ae5d3f7a07b10cd8d6d6e9489eee8c25114f0be7",
+      "bytes": 1276504
+    },
+    {
+      "path": "자료/화면과검증/a217a4651610_구현_압축_최종.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a217a4651610541069500ba6798358671e278acb61cf9e11aae26a9702e15f49",
+      "bytes": 139983
+    },
+    {
+      "path": "자료/화면과검증/a466bd3dcdc3_selected-reference-independent-remaining-dark-account.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a466bd3dcdc34b23dc7a99eaab9c65dcf0250c85680d79ccb3fbcf0a1d667287",
+      "bytes": 82456
+    },
+    {
+      "path": "자료/화면과검증/a5f286e9d3ab_glass-art-r39-independent-dark-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a5f286e9d3ab67b6fc1b807d9cc697c30b5876e8aaa2cb3115554e93f872781c",
+      "bytes": 225429
+    },
+    {
+      "path": "자료/화면과검증/a689f434f84f_studio-live-final-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a689f434f84feb81ec22940bc956643cc525960937e21f2effbdac2b9b42e0db",
+      "bytes": 78021
+    },
+    {
+      "path": "자료/화면과검증/a9718ce9ea8b_learning-live-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a9718ce9ea8bd421a7d64bee5f51372b69a428a90ee5c157f4cf57307f88e848",
+      "bytes": 130322
+    },
+    {
+      "path": "자료/화면과검증/abf96e7885e8_live_390_첫화면.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "abf96e7885e854693954c9b781bb070ab3d244669c96d346dffc099e933b1ad6",
+      "bytes": 58902
+    },
+    {
+      "path": "자료/화면과검증/ac9416d514cd_selected-reference-independent-dark-training.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ac9416d514cd5ba207e8e8b5f11f272355c3881356f81e2b2500f01546f632fe",
+      "bytes": 398108
+    },
+    {
+      "path": "자료/화면과검증/b316bbf5ef83_learning-home-regression-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b316bbf5ef83c1c69a3f43cc2a82c314515bcb2d7af7c16c93f9250bf595823e",
+      "bytes": 85842
+    },
+    {
+      "path": "자료/화면과검증/b8ef709940f4_selected-reference-independent-remaining-light-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b8ef709940f4188b1373628f7c1042115e4f745c2fb748c3080427d2f658e687",
+      "bytes": 393434
+    },
+    {
+      "path": "자료/화면과검증/b97d9b030bd1_ui-bounded-canvas-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b97d9b030bd1104caf5ebb61f7dad6b61e03e94e53157d61ba38b3768f809aae",
+      "bytes": 7086
+    },
+    {
+      "path": "자료/화면과검증/bb62953e0abf_learning-verifier-repaired-fallback-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "bb62953e0abf99ae72da24ed3ee270e690257aef2513a8588dc4c0066070deb6",
+      "bytes": 123983
+    },
+    {
+      "path": "자료/화면과검증/c3c19ea674aa_selected-reference-independent-remaining-dark-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c3c19ea674aa443ee18957569aee46d70d0acf9c96642c78e2a18b8d3aba392b",
+      "bytes": 390805
+    },
+    {
+      "path": "자료/화면과검증/c3f49c81d056_selected-reference-independent-fallback-light-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c3f49c81d05624e4fd17defb17585ec66d1b6f3c39c1a8cb30ec7708aea89813",
+      "bytes": 451488
+    },
+    {
+      "path": "자료/화면과검증/c40fa8e3c016_learning-live-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c40fa8e3c01656f34eac53403591659e5bdffb3964d522c9834169052ec56bdf",
+      "bytes": 127086
+    },
+    {
+      "path": "자료/화면과검증/c5cdfd432f14_ui-verifier-fallback.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c5cdfd432f1476a8f7189e04958680a002ddc63d7efa4171fe70367a947458ed",
+      "bytes": 46208
+    },
+    {
+      "path": "자료/화면과검증/c6b835f850ce_learning-final-home-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c6b835f850ce8379e28f06967dfced31e586046e8af4b953ac35420bd93ce70b",
+      "bytes": 62424
+    },
+    {
+      "path": "자료/화면과검증/c76095baa148_selected-reference-home-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c76095baa1489982594b84c301e495a9394cdebb96581dd60a99aeecbb5aae36",
+      "bytes": 90701
+    },
+    {
+      "path": "자료/화면과검증/c7d956d71c27_real3d-stage-locked_test.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c7d956d71c278c412877ca93fafd2bdf74da03d3b6a980238437d9d19d8ae5f9",
+      "bytes": 113142
+    },
+    {
+      "path": "자료/화면과검증/ca4689fb5108_glass-art-independent-dark-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ca4689fb510826f1323c09affd3d893b3187f01e1dc9eba7b862fbdd2dd1f458",
+      "bytes": 200804
+    },
+    {
+      "path": "자료/화면과검증/cbadba6883d0_selected-reference-focused-light-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "cbadba6883d0003e027c2f6b1159396e748f23985ce414af1d415f76203d80d7",
+      "bytes": 150318
+    },
+    {
+      "path": "자료/화면과검증/ce9389980655_selected-reference-home-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ce938998065575d710c7977fd23c419a890fd1ca84b96efc1e8f040e29078b68",
+      "bytes": 72511
+    },
+    {
+      "path": "자료/화면과검증/ce9fb754aafd_repair21-before-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ce9fb754aafdc30a26e765596a5be0867e3bd1de2e2ad1c4cb7aa16c36f571ae",
+      "bytes": 77108
+    },
+    {
+      "path": "자료/화면과검증/cee7d1bd3c55_selected-reference-independent-fallback-dark-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "cee7d1bd3c55e86cce3df4921613ad19ccd065801d37679ac8a77f80fdf3f377",
+      "bytes": 447340
+    },
+    {
+      "path": "자료/화면과검증/d05facaa4a96_구현_첫화면.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d05facaa4a96b0f18d66af1ca5f65cfef50c0320909645735dc1d2a0df559f7e",
+      "bytes": 107896
+    },
+    {
+      "path": "자료/화면과검증/d25d9a8448bb_ui-verifier-scene-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d25d9a8448bb433bc8170d9cfd695093167f5889dc556ae9b031c6470ba487cd",
+      "bytes": 44442
+    },
+    {
+      "path": "자료/화면과검증/d324335032fe_glass-art-independent-loaded-light-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d324335032fe9afa6b3dbf8a491aa5b160660610603fd62d37d3d397d4ef3843",
+      "bytes": 230454
+    },
+    {
+      "path": "자료/화면과검증/d3c364c309f4_reference-light-827.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d3c364c309f4d683a896580df96006ba2d943d64b22286f202889147a0982341",
+      "bytes": 132410
+    },
+    {
+      "path": "자료/화면과검증/d43c6830c331_studio-live-steady-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d43c6830c331d00de766354614fb2f8abe69ed476a7b185cb6b9b2b324fe347a",
+      "bytes": 77674
+    },
+    {
+      "path": "자료/화면과검증/d700de392797_studio-live-final-1505.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d700de3927971799676c90663ffe9165901191ecdd5053eb8a1de57736fac94d",
+      "bytes": 86454
+    },
+    {
+      "path": "자료/화면과검증/e00b98072223_learning-final-home-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e00b980722231bcc41fa16741cbedd6290098a650d70845d50e503daf97d5b08",
+      "bytes": 85834
+    },
+    {
+      "path": "자료/화면과검증/e183b337de20_learning-verifier-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e183b337de2088b8f2b52c139dda5cb535074be68db802cc5e405d0e88c22ab4",
+      "bytes": 126631
+    },
+    {
+      "path": "자료/화면과검증/e1f6a1195f0a_학습_워크스페이스_시안.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e1f6a1195f0aabaa43236b04c38124d228db64acccb65170944515f317ac74df",
+      "bytes": 1493774
+    },
+    {
+      "path": "자료/화면과검증/e3237bc07ce3_reference-comparison.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e3237bc07ce383115e91641335fef3791bfeb2c6d6b92e8c92ac17a1aab503b1",
+      "bytes": 1871177
+    },
+    {
+      "path": "자료/화면과검증/e72132eed17f_studio-live-steady-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e72132eed17f50e82548a8b10d2b0bd3148d6ae34a5c3956bcde5fe8ae4a59cd",
+      "bytes": 66988
+    },
+    {
+      "path": "자료/화면과검증/e87541faaa63_selected-reference-independent-fallback-light-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e87541faaa634d5a6cb47187937aa1773bfa24d89771a2d1700a31025501e3b2",
+      "bytes": 157533
+    },
+    {
+      "path": "자료/화면과검증/ea80a7a68051_preview_1440_첫화면.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ea80a7a680512af0969bd8b1e509277b5e8f344376faa6cfe5429751bbabf73f",
+      "bytes": 140572
+    },
+    {
+      "path": "자료/화면과검증/eb651fbe31f9_preview_1024_첫화면.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "eb651fbe31f99501105c452383850db47519f6d73526d6e2571b86fc7bd7a567",
+      "bytes": 119067
+    },
+    {
+      "path": "자료/화면과검증/ecaf0da9ec32_reference-light-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ecaf0da9ec32e44f98fd56f225cb6de379ce8680159c0fac59d07cafe2f3de23",
+      "bytes": 73264
+    },
+    {
+      "path": "자료/화면과검증/ecbba65057ed_selected-reference-independent-remaining-dark-trades.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ecbba65057edde93d07838e900fb8ddd8961581715fcc49e12146d86276ad7cc",
+      "bytes": 164023
+    },
+    {
+      "path": "자료/화면과검증/ee6256f4273a_learning-live-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ee6256f4273a3965e858b164ddeb68c98d1e4854014e538dc78c0cc64c6408b0",
+      "bytes": 143673
+    },
+    {
+      "path": "자료/화면과검증/eeb3f1464226_training-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "eeb3f1464226208ed0d4895633691afd0a4491d697bd91539718bbf6dacb2370",
+      "bytes": 110430
+    },
+    {
+      "path": "자료/화면과검증/ef4de097e75f_learning-home-regression-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ef4de097e75fc40374aff434fb10225f7c17a41ebc149b0a52d47e861dd60dcc",
+      "bytes": 70861
+    },
+    {
+      "path": "자료/화면과검증/f0daa34e71b7_reference-light-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f0daa34e71b7f9ea0a02e6352ffcd8194b74e7fd8a4677af955bff881d0c116c",
+      "bytes": 164256
+    },
+    {
+      "path": "자료/화면과검증/f268c51e82eb_selected-reference-independent-dark-trades.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f268c51e82ebb8042abe881dd1a206ea88f99bd71702d40e35ea669da61ea7a3",
+      "bytes": 164083
+    },
+    {
+      "path": "자료/화면과검증/f358e1a90432_account-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f358e1a90432d90c87464d44a8f0ed3d93f7d16e1ad63d7de79da5b79062e717",
+      "bytes": 61567
+    },
+    {
+      "path": "자료/화면과검증/f57d1d411cb5_studio-live-final-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f57d1d411cb586b2e18fe0d3feed6e4b6dc0bb52d7210efe4c8eb8d149869d4b",
+      "bytes": 32787
+    },
+    {
+      "path": "자료/화면과검증/f5831383fa16_glass-art-r39-independent-light-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f5831383fa1653f256c1ee55c2ed8fe8055d4a870ba09d2ccf2f6b9e360ecbca",
+      "bytes": 223229
+    },
+    {
+      "path": "자료/화면과검증/f6971170ec07_learning-final-home-1024.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f6971170ec078779046920246935c1a216a30f1b26fac478577ff6354e1c9535",
+      "bytes": 70925
+    },
+    {
+      "path": "자료/화면과검증/f83d3f5a6410_studio-independent-final-1505.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f83d3f5a6410b22da068709c52a9a8fe5f8cfe697d9b220198132b2f4c432412",
+      "bytes": 87039
+    },
+    {
+      "path": "자료/화면과검증/fa03b2edf769_glass-art-independent-light-390.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fa03b2edf769ff7997db1e2ad3c87d3d600b6b666634c26e373015872fd49249",
+      "bytes": 68885
+    },
+    {
+      "path": "자료/화면과검증/fa54435a39b3_글래스_시안.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fa54435a39b363209390af8d97896f6a8f32774c9d32ee18af5e14401692c6af",
+      "bytes": 1503668
+    },
+    {
+      "path": "자료/화면과검증/fb8958425b0e_reference-dark-1468.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fb8958425b0ebf9da6a4dc11fdc0448757a58405e912087518f293eb65208848",
+      "bytes": 230661
+    },
+    {
+      "path": "자료/화면과검증/fc18738215b5_studio-build-1440.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fc18738215b5df02340981ce60b1117fe781acf551a773c00033ddbc64c69b33",
+      "bytes": 90994
+    },
+    {
+      "path": "자료/화면과검증/fced88e6298d_실제_대시보드_상단.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fced88e6298db79e7f13b94d2d87919d915608c1b5fc833bf86aa292386716c3",
+      "bytes": 92470
+    },
+    {
+      "path": "자료/화면과검증/fddb873d748f_live_1440_첫화면.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fddb873d748fe96489a9e436eae8412ac942c7bf36b0685532dfb3f0a469793b",
+      "bytes": 138345
+    },
+    {
+      "path": "자료/화면과검증/ff3eab8ea568_selected-reference-independent-dark-account.png",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ff3eab8ea568c53314cad4a5659c6f90fbdc27914ee5b3846ca0b13f680b2dcd",
+      "bytes": 81856
+    },
+    {
+      "path": "후속보존/2026-10-30_133824_3차초기부분/README.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f3f8b8312d35b6b77485b400249c47a4387aec311ca4bcabbb1ae48bff93caf6",
+      "bytes": 1637
+    },
+    {
+      "path": "후속보존/2026-10-30_133824_3차초기부분/docs/요구사항_및_데이터계약.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d1f46287aade733cd663046c69639b54c566b1f3934d9308a1ee1b47879c09d9",
+      "bytes": 8169
+    },
+    {
+      "path": "후속보존/2026-10-30_133824_3차초기부분/external_data.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "5b6273402ce7b8abb295cf9d0008eebddbfe0d8a399321b6c77348d210a73ac0",
+      "bytes": 24279
+    },
+    {
+      "path": "후속보존/2026-10-30_133824_3차초기부분/external_features.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "6620ae9ae914661f4026f7663dd244de04d677047e40322bc852a7481eb46c50",
+      "bytes": 14561
+    },
+    {
+      "path": "후속보존/2026-10-30_133824_3차초기부분/검사/test_external_data.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "55e9b1657af2c5d7aa842b9931d9873dd0a9a1812b4b9ce268b681220e3348a3",
+      "bytes": 4265
+    },
+    {
+      "path": "후속보존/2026-10-30_133824_3차초기부분/검사/test_external_features.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8b11c5ad0baf115d6f3ca6bfee0bec4c2ec95a9174cae74c5b70345a12018d7f",
+      "bytes": 14983
+    },
+    {
+      "path": "후속보존/2026-10-30_133824_3차초기부분/연결부/engine.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0413e50c1d081ce85bc060899dffb5f82d5fbf2245dc1793a2a88c6768df548a",
+      "bytes": 102911
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/README.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "c47bb0d9c9ebaf3a071778591fd8fe8abf962acfa35b291e6fb5558739200f84",
+      "bytes": 2151
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/dashboard.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f6de70b70dbb71797fcaeb0ebdbcea7f31e4b225c59bdbfe18a940bc6bf7289b",
+      "bytes": 33047
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/docs/2026-10-30_GPU처리량_개선.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ef36464f60cb73699461e880443b7a847b53afe03582e56033a859e5bfd758c1",
+      "bytes": 5199
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/engine-config.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0cec34748049355178881834a46e100ab79236cee93fb21b1988cc1959c549cd",
+      "bytes": 1087
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/engine.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "52921c24eb4aa8ea02c7f829a483ad64877cb7c89bb40db42e3f9fde0eed1209",
+      "bytes": 100122
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/execution_probe.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ce0e31f2dfd28b09e99500ca445344b015e364d42d9b00c7a5df41f078771ed3",
+      "bytes": 3593
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/healthcheck.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ef036fa93a8cf9d5eef3a10e655dd384a8876e4c6b0b62b87be55d865a540657",
+      "bytes": 14001
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/package.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d624c76d8486af5cc84d7f6be63a16030163e76c92bed45e8cd30d0f62fe9268",
+      "bytes": 305
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/pnpm-lock.yaml",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "2a9251359e02ac7b77036013424d5117a530c5d9a711f4efd70fac865d981007",
+      "bytes": 9541
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/pnpm-workspace.yaml",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ac02d96368617c760f093cfe61fdec64b6244007ab3553e0d6621f706f54a353",
+      "bytes": 29
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/requirements.txt",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "2fe137119c74a3401d9ad10f85725df7884a08b3eb73f4b100ad00b26bb3663e",
+      "bytes": 49
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/service.json",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "fd88671a6ff4c96bee66693964b5fd7521abc2f648debcf12dd8464ea260cc11",
+      "bytes": 942
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/supervisor.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4a2635c42145c201a4e57399df94dfd90149b0361b307d5c9607ff6d1ebab1a3",
+      "bytes": 9599
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_artifact_scope.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "3d8a0b47e8b1fcbb38eb066eef5b99499866eb3c46f05239a5cdff274da57815",
+      "bytes": 1071
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_capital_contract.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "63da2e65ec6aedf8cfec809f7362f9998356d25705991b66fe8db4c8f4b29018",
+      "bytes": 3613
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_collection_recovery.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a24eb88d917e6b6e73e1a8d9f25f08a05dc6a005507df55f12e05c8648d835fe",
+      "bytes": 4089
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_dashboard.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "315f9675c9283fd8ee3566906142d7c21ffafc821726901e9129cd9c4cad2226",
+      "bytes": 28869
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_docker_control.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "6640052922ea812b992ce04adec8cbf932c5833676bc547ab2509d384883146e",
+      "bytes": 13273
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_engine.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a6d82c7b333dce8d8cfb5621fd343181f48f289dc257d5281aeb8dbe004f6562",
+      "bytes": 26461
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_execution_probe.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ad5139f2580621469dc6899b02267e1d21e336cd2d13728ff229b6316b916d28",
+      "bytes": 2537
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_gpu_throughput.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "820879baf02215bab6c51f171597f01d6a0ee1d7a28c03e0b314bc26ae517270",
+      "bytes": 12153
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_health_recovery.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "ca7944d81bcb6699fcaf2e3c731ae63fbd80294f7bc8769cb2a3016de9bb5050",
+      "bytes": 9003
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_healthcheck.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "d3e9c2d7564e804447a6d3ef69c23bc9f1519f64365815dcd011b2031a1afa21",
+      "bytes": 3389
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_loss_risk_regressions.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "f3a6390b490d30bd6b6f8b03fb6c28157a9ae432f729e49bf39815d83a225279",
+      "bytes": 15841
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_market_universe.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a9d46fc0714f09444dc5b357c1e5326da440ba5e08dd6ed5160ff0969bd19f46",
+      "bytes": 25427
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_research.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "55b3d8403df01ac95335f41e88c4f9ff1eea244b72eb80c29806ae3e4474e4d1",
+      "bytes": 19486
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_runtime_boundary.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0c3fd716179660f179126a993f1dc2aa4a3d686a59fef57afb7aa4be0a0127eb",
+      "bytes": 1443
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_supervisor.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "3ea9c39786e0f3d08ae6fdca4f47289052fe1fd6c874898ffaf496f011d9503c",
+      "bytes": 7991
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tests/test_ui_option_values.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "6ab5ea68d9e6e861b17b59140d8ffaf87264bc5ff72572e441e820bddd1d3537",
+      "bytes": 1332
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tools/consolidate_history.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a93304f39c0cb4036c21841e92d2ad22b7525010a00ab2b06ee65459e391f6a0",
+      "bytes": 2965
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tools/container_runtime.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b023d7bbf52596f5750ff0f7cb62d51b2d93bb3eb1a4d18c8c78dd34450d0345",
+      "bytes": 7763
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tools/docker_control.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "e6f2ae77f18db1a74b0455fc2e954458c6a737ff89d52b80d979adc7d63c7e04",
+      "bytes": 9137
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/tools/validate_artifacts.py",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "56b9b2b6de1dde7e58702a3ff7f9c5e3d9c91f5371898e1f7ecd08a636a7de3d",
+      "bytes": 5870
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/upbit_auto_trader_v5.ipynb",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "7979b65c63ad0b5f4b8696fd9c916e621ba9c8bb7e974f84fb26918bb6a61c5d",
+      "bytes": 7834
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/app.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "28b44177c7b07d11d8d9e9d1f4a3f464d1173764002a2a16e398acd831a52c52",
+      "bytes": 47768
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/fonts/OFL.txt",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+      "bytes": 4534
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/index.html",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8ccc26df2d2db9bd3b115eef4ddbe317aaed35e5b484227265f64d5cfc65bec0",
+      "bytes": 15527
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/licenses/cryptocurrency-icons.txt",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "bytes": 7048
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/licenses/lucide.txt",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+      "bytes": 3208
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/licenses/three.txt",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+      "bytes": 1081
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/scene.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "0d6edf79d4c98702101e9d983abb742a590998849dd358ac981bb5770c991d4c",
+      "bytes": 46127
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/style.css",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "4fb27c6d44f2aefeea08318f883e1a6bba17a115ff57b9b2f9736b759875460f",
+      "bytes": 24018
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/web/vendor-entry.js",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "408ced812668d956316c352d308321eb07d5164c6ab22c8bd70788cea54d0a74",
+      "bytes": 1389
+    },
+    {
+      "path": "후속보존/2026-10-30_GPU처리량/운영.ps1",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "1515e653ac9363814a056d47b574deeba90c3408c129a8d93c44b3e9878d263e",
+      "bytes": 725
+    },
+    {
+      "path": "후속보존/docs/revision-audit/3차.md",
+      "status": "추가",
+      "before_sha256": null,
+      "after_sha256": "a2bc6997cf5aafa49a8219700c6b001c9a603ae0fba156a8359e3a0bf05ca889",
+      "bytes": 244
+    }
+  ],
+  "deletions": []
+}

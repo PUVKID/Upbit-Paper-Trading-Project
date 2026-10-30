@@ -1,0 +1,222 @@
+[
+  {
+    "path": "README.md",
+    "status": "수정",
+    "before_bytes": 1637,
+    "after_bytes": 4627,
+    "before_sha256": "f3f8b8312d35b6b77485b400249c47a4387aec311ca4bcabbb1ae48bff93caf6",
+    "after_sha256": "88372312421f212080d1afaf365844e46abf53001448594c9c395dc20925a0de",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 12,
+      "lf_only": 0,
+      "last_newline": true,
+      "empty": false
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 43,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "docs/요구사항_및_데이터계약.md",
+    "status": "동일",
+    "before_bytes": 8169,
+    "after_bytes": 8169,
+    "before_sha256": "d1f46287aade733cd663046c69639b54c566b1f3934d9308a1ee1b47879c09d9",
+    "after_sha256": "d1f46287aade733cd663046c69639b54c566b1f3934d9308a1ee1b47879c09d9",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 51,
+      "last_newline": true,
+      "empty": false
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 51,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "engine-config.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1278,
+    "before_sha256": null,
+    "after_sha256": "39099ca5e2d6655f7af6c855da67da2e09b2a239911a78bcb96242f4631485ad",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 0,
+      "last_newline": false,
+      "empty": true
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 39,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "external_data.py",
+    "status": "수정",
+    "before_bytes": 24279,
+    "after_bytes": 31276,
+    "before_sha256": "5b6273402ce7b8abb295cf9d0008eebddbfe0d8a399321b6c77348d210a73ac0",
+    "after_sha256": "89f33fec5e8418d4f9ab8b2dd604afb01df3819ba65ed9260050f593356e4a37",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 495,
+      "last_newline": true,
+      "empty": false
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 616,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "external_features.py",
+    "status": "수정",
+    "before_bytes": 14561,
+    "after_bytes": 17323,
+    "before_sha256": "6620ae9ae914661f4026f7663dd244de04d677047e40322bc852a7481eb46c50",
+    "after_sha256": "1ea7e1d133938d354dfe853bf190033362631894d7c606788cf240140db31b7b",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 254,
+      "last_newline": true,
+      "empty": false
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 295,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "manage.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3118,
+    "before_sha256": null,
+    "after_sha256": "25b98a04516847cd922b38c68f665a4fe12fe267dac13dc8013071300cdfa376",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 0,
+      "last_newline": false,
+      "empty": true
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 85,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "검사/test_external_data.py",
+    "status": "동일",
+    "before_bytes": 4265,
+    "after_bytes": 4265,
+    "before_sha256": "55e9b1657af2c5d7aa842b9931d9873dd0a9a1812b4b9ce268b681220e3348a3",
+    "after_sha256": "55e9b1657af2c5d7aa842b9931d9873dd0a9a1812b4b9ce268b681220e3348a3",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 90,
+      "last_newline": true,
+      "empty": false
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 90,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "검사/test_external_features.py",
+    "status": "동일",
+    "before_bytes": 14983,
+    "after_bytes": 14983,
+    "before_sha256": "8b11c5ad0baf115d6f3ca6bfee0bec4c2ec95a9174cae74c5b70345a12018d7f",
+    "after_sha256": "8b11c5ad0baf115d6f3ca6bfee0bec4c2ec95a9174cae74c5b70345a12018d7f",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 258,
+      "last_newline": true,
+      "empty": false
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 258,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "변경기록.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4943,
+    "before_sha256": null,
+    "after_sha256": "22a8877d35a66de5eaefd765c782880901661e65ce5043f6b7bed1ca04f033e4",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 0,
+      "last_newline": false,
+      "empty": true
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 41,
+      "last_newline": true,
+      "empty": false
+    }
+  },
+  {
+    "path": "연결부/engine.py",
+    "status": "동일",
+    "before_bytes": 102911,
+    "after_bytes": 102911,
+    "before_sha256": "0413e50c1d081ce85bc060899dffb5f82d5fbf2245dc1793a2a88c6768df548a",
+    "after_sha256": "0413e50c1d081ce85bc060899dffb5f82d5fbf2245dc1793a2a88c6768df548a",
+    "before_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 1745,
+      "last_newline": true,
+      "empty": false
+    },
+    "after_text_bytes": {
+      "utf8_bom": false,
+      "crlf": 0,
+      "lf_only": 1745,
+      "last_newline": true,
+      "empty": false
+    }
+  }
+]

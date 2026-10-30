@@ -1,0 +1,16 @@
+{
+  "name": "yunseok-paper-dashboard",
+  "private": true,
+  "scripts": {
+    "build:ui": "node tools/build_ui.cjs"
+  },
+  "dependencies": {
+    "cryptocurrency-icons": "0.18.1",
+    "esbuild": "0.28.2",
+    "lucide": "1.61.0",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "pngjs": "7.0.0"
+  }
+}

@@ -1,0 +1,574 @@
+[
+  {
+    "path": "README.md",
+    "bytes": 2151,
+    "sha256": "c47bb0d9c9ebaf3a071778591fd8fe8abf962acfa35b291e6fb5558739200f84",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 17,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "dashboard.py",
+    "bytes": 33047,
+    "sha256": "f6de70b70dbb71797fcaeb0ebdbcea7f31e4b225c59bdbfe18a940bc6bf7289b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 566,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "docs/2026-10-30_GPU처리량_개선.md",
+    "bytes": 5199,
+    "sha256": "ef36464f60cb73699461e880443b7a847b53afe03582e56033a859e5bfd758c1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 39,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "engine-config.json",
+    "bytes": 1087,
+    "sha256": "0cec34748049355178881834a46e100ab79236cee93fb21b1988cc1959c549cd",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 37,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "engine.py",
+    "bytes": 100122,
+    "sha256": "52921c24eb4aa8ea02c7f829a483ad64877cb7c89bb40db42e3f9fde0eed1209",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1706,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "execution_probe.py",
+    "bytes": 3593,
+    "sha256": "ce0e31f2dfd28b09e99500ca445344b015e364d42d9b00c7a5df41f078771ed3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 73,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "healthcheck.py",
+    "bytes": 14001,
+    "sha256": "ef036fa93a8cf9d5eef3a10e655dd384a8876e4c6b0b62b87be55d865a540657",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 262,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "package.json",
+    "bytes": 305,
+    "sha256": "d624c76d8486af5cc84d7f6be63a16030163e76c92bed45e8cd30d0f62fe9268",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 16,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pnpm-lock.yaml",
+    "bytes": 9541,
+    "sha256": "2a9251359e02ac7b77036013424d5117a530c5d9a711f4efd70fac865d981007",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 319,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pnpm-workspace.yaml",
+    "bytes": 29,
+    "sha256": "ac02d96368617c760f093cfe61fdec64b6244007ab3553e0d6621f706f54a353",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "requirements.txt",
+    "bytes": 49,
+    "sha256": "2fe137119c74a3401d9ad10f85725df7884a08b3eb73f4b100ad00b26bb3663e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 3,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "service.json",
+    "bytes": 942,
+    "sha256": "fd88671a6ff4c96bee66693964b5fd7521abc2f648debcf12dd8464ea260cc11",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 12,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "supervisor.py",
+    "bytes": 9599,
+    "sha256": "4a2635c42145c201a4e57399df94dfd90149b0361b307d5c9607ff6d1ebab1a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 200,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_artifact_scope.py",
+    "bytes": 1071,
+    "sha256": "3d8a0b47e8b1fcbb38eb066eef5b99499866eb3c46f05239a5cdff274da57815",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 26,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_capital_contract.py",
+    "bytes": 3613,
+    "sha256": "63da2e65ec6aedf8cfec809f7362f9998356d25705991b66fe8db4c8f4b29018",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 66,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_collection_recovery.py",
+    "bytes": 4089,
+    "sha256": "a24eb88d917e6b6e73e1a8d9f25f08a05dc6a005507df55f12e05c8648d835fe",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 80,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_dashboard.py",
+    "bytes": 28869,
+    "sha256": "315f9675c9283fd8ee3566906142d7c21ffafc821726901e9129cd9c4cad2226",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 440,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_docker_control.py",
+    "bytes": 13273,
+    "sha256": "6640052922ea812b992ce04adec8cbf932c5833676bc547ab2509d384883146e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 259,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_engine.py",
+    "bytes": 26461,
+    "sha256": "a6d82c7b333dce8d8cfb5621fd343181f48f289dc257d5281aeb8dbe004f6562",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 466,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_execution_probe.py",
+    "bytes": 2537,
+    "sha256": "ad5139f2580621469dc6899b02267e1d21e336cd2d13728ff229b6316b916d28",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 54,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_gpu_throughput.py",
+    "bytes": 12153,
+    "sha256": "820879baf02215bab6c51f171597f01d6a0ee1d7a28c03e0b314bc26ae517270",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 239,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_health_recovery.py",
+    "bytes": 9003,
+    "sha256": "ca7944d81bcb6699fcaf2e3c731ae63fbd80294f7bc8769cb2a3016de9bb5050",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 170,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_healthcheck.py",
+    "bytes": 3389,
+    "sha256": "d3e9c2d7564e804447a6d3ef69c23bc9f1519f64365815dcd011b2031a1afa21",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 71,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_loss_risk_regressions.py",
+    "bytes": 15841,
+    "sha256": "f3a6390b490d30bd6b6f8b03fb6c28157a9ae432f729e49bf39815d83a225279",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 298,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_market_universe.py",
+    "bytes": 25427,
+    "sha256": "a9d46fc0714f09444dc5b357c1e5326da440ba5e08dd6ed5160ff0969bd19f46",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 445,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_research.py",
+    "bytes": 19486,
+    "sha256": "55b3d8403df01ac95335f41e88c4f9ff1eea244b72eb80c29806ae3e4474e4d1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 334,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_runtime_boundary.py",
+    "bytes": 1443,
+    "sha256": "0c3fd716179660f179126a993f1dc2aa4a3d686a59fef57afb7aa4be0a0127eb",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 29,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_supervisor.py",
+    "bytes": 7991,
+    "sha256": "3ea9c39786e0f3d08ae6fdca4f47289052fe1fd6c874898ffaf496f011d9503c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 150,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tests/test_ui_option_values.py",
+    "bytes": 1332,
+    "sha256": "6ab5ea68d9e6e861b17b59140d8ffaf87264bc5ff72572e441e820bddd1d3537",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 39,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tools/consolidate_history.py",
+    "bytes": 2965,
+    "sha256": "a93304f39c0cb4036c21841e92d2ad22b7525010a00ab2b06ee65459e391f6a0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 67,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tools/container_runtime.py",
+    "bytes": 7763,
+    "sha256": "b023d7bbf52596f5750ff0f7cb62d51b2d93bb3eb1a4d18c8c78dd34450d0345",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 194,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tools/docker_control.py",
+    "bytes": 9137,
+    "sha256": "e6f2ae77f18db1a74b0455fc2e954458c6a737ff89d52b80d979adc7d63c7e04",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 224,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "tools/validate_artifacts.py",
+    "bytes": 5870,
+    "sha256": "56b9b2b6de1dde7e58702a3ff7f9c5e3d9c91f5371898e1f7ecd08a636a7de3d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 109,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "upbit_auto_trader_v5.ipynb",
+    "bytes": 7834,
+    "sha256": "7979b65c63ad0b5f4b8696fd9c916e621ba9c8bb7e974f84fb26918bb6a61c5d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 204,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/app.js",
+    "bytes": 47768,
+    "sha256": "28b44177c7b07d11d8d9e9d1f4a3f464d1173764002a2a16e398acd831a52c52",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 659,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/fonts/OFL.txt",
+    "bytes": 4534,
+    "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 96,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/index.html",
+    "bytes": 15527,
+    "sha256": "8ccc26df2d2db9bd3b115eef4ddbe317aaed35e5b484227265f64d5cfc65bec0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 38,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/licenses/cryptocurrency-icons.txt",
+    "bytes": 7048,
+    "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 121,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/licenses/lucide.txt",
+    "bytes": 3208,
+    "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 43,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/licenses/three.txt",
+    "bytes": 1081,
+    "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 21,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/scene.js",
+    "bytes": 46127,
+    "sha256": "0d6edf79d4c98702101e9d983abb742a590998849dd358ac981bb5770c991d4c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 903,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/style.css",
+    "bytes": 24018,
+    "sha256": "4fb27c6d44f2aefeea08318f883e1a6bba17a115ff57b9b2f9736b759875460f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 49,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "web/vendor-entry.js",
+    "bytes": 1389,
+    "sha256": "408ced812668d956316c352d308321eb07d5164c6ab22c8bd70788cea54d0a74",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 25,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "운영.ps1",
+    "bytes": 725,
+    "sha256": "1515e653ac9363814a056d47b574deeba90c3408c129a8d93c44b3e9878d263e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 18,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  }
+]

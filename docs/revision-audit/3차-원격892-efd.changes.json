@@ -1,0 +1,121 @@
+[
+  {
+    "path": "3차/README.md",
+    "change": "추가",
+    "status": "양쪽변경겹침",
+    "before_sha256": null,
+    "after_sha256": "88372312421f212080d1afaf365844e46abf53001448594c9c395dc20925a0de"
+  },
+  {
+    "path": "3차/docs/요구사항_및_데이터계약.md",
+    "change": "추가",
+    "status": "양쪽동일변경",
+    "before_sha256": null,
+    "after_sha256": "d1f46287aade733cd663046c69639b54c566b1f3934d9308a1ee1b47879c09d9"
+  },
+  {
+    "path": "3차/engine-config.json",
+    "change": "추가",
+    "status": "원격만변경",
+    "before_sha256": null,
+    "after_sha256": "39099ca5e2d6655f7af6c855da67da2e09b2a239911a78bcb96242f4631485ad"
+  },
+  {
+    "path": "3차/external_data.py",
+    "change": "추가",
+    "status": "양쪽변경겹침",
+    "before_sha256": null,
+    "after_sha256": "89f33fec5e8418d4f9ab8b2dd604afb01df3819ba65ed9260050f593356e4a37"
+  },
+  {
+    "path": "3차/external_features.py",
+    "change": "추가",
+    "status": "양쪽변경겹침",
+    "before_sha256": null,
+    "after_sha256": "1ea7e1d133938d354dfe853bf190033362631894d7c606788cf240140db31b7b"
+  },
+  {
+    "path": "3차/manage.py",
+    "change": "추가",
+    "status": "원격만변경",
+    "before_sha256": null,
+    "after_sha256": "25b98a04516847cd922b38c68f665a4fe12fe267dac13dc8013071300cdfa376"
+  },
+  {
+    "path": "3차/변경기록.md",
+    "change": "추가",
+    "status": "원격만변경",
+    "before_sha256": null,
+    "after_sha256": "22a8877d35a66de5eaefd765c782880901661e65ce5043f6b7bed1ca04f033e4"
+  },
+  {
+    "path": "CHANGELOG.md",
+    "change": "수정",
+    "status": "원격만변경",
+    "before_sha256": "54810bf48d5bf1809eb5beb8d585f5c636016e87ed15ffaf74c3c153b4888c32",
+    "after_sha256": "d03c7467829cef426e05635280d8d7a59eba045b6f0b1543c1a3d7f267537f2d"
+  },
+  {
+    "path": "README.md",
+    "change": "수정",
+    "status": "양쪽변경겹침",
+    "before_sha256": "23f284c56ace061eca53639aa4e1a1418bbe89dd007c9e99b5d70c7abb041ed9",
+    "after_sha256": "9df7f5e6cf0284b7260d2f1ec85c1607bc876bdb851fcba275fe2d4a4b0ba701"
+  },
+  {
+    "path": "dashboard.py",
+    "change": "수정",
+    "status": "원격만변경",
+    "before_sha256": "f6de70b70dbb71797fcaeb0ebdbcea7f31e4b225c59bdbfe18a940bc6bf7289b",
+    "after_sha256": "01b628748ce57c6686770898d0b5be2afa36d7671409970c3edb00094edb0ec5"
+  },
+  {
+    "path": "docs/VERSIONS.md",
+    "change": "수정",
+    "status": "양쪽변경겹침",
+    "before_sha256": "a4bbb18cb4c0c588078719da8c6efc9fba13993f37aba9836dfdb033c5baf518",
+    "after_sha256": "b3e785cc73ed261e416291c39f9814a562f34e9adaf14a0a3a28f7df223e52e2"
+  },
+  {
+    "path": "engine-config.json",
+    "change": "수정",
+    "status": "원격만변경",
+    "before_sha256": "0cec34748049355178881834a46e100ab79236cee93fb21b1988cc1959c549cd",
+    "after_sha256": "39099ca5e2d6655f7af6c855da67da2e09b2a239911a78bcb96242f4631485ad"
+  },
+  {
+    "path": "engine.py",
+    "change": "수정",
+    "status": "원격만변경",
+    "before_sha256": "52921c24eb4aa8ea02c7f829a483ad64877cb7c89bb40db42e3f9fde0eed1209",
+    "after_sha256": "bb132af274660fef567cc1bad5b7f4d7c1cf4427bbe9fcdb6c3701f8ac2896c5"
+  },
+  {
+    "path": "tests/test_external_dashboard.py",
+    "change": "추가",
+    "status": "원격만변경",
+    "before_sha256": null,
+    "after_sha256": "a2f4d5e0b3a5d2799143f700552e56c68f2bcee05d77b0033aa8c0ada421e905"
+  },
+  {
+    "path": "tests/test_external_data.py",
+    "change": "추가",
+    "status": "원격만변경",
+    "before_sha256": null,
+    "after_sha256": "b8ebe565850f6edfa7d62762323ce122f223cc51d58a61b631e723c54454826b"
+  },
+  {
+    "path": "tests/test_external_features.py",
+    "change": "추가",
+    "status": "원격만변경",
+    "before_sha256": null,
+    "after_sha256": "271b8644968060ea03311cb0f73ddac7c87cdde9cbaeb3dd9d8ec753b7b7fcf1"
+  },
+  {
+    "path": "web/app.js",
+    "change": "수정",
+    "status": "원격만변경",
+    "before_sha256": "28b44177c7b07d11d8d9e9d1f4a3f464d1173764002a2a16e398acd831a52c52",
+    "after_sha256": "4b4225e7b7bef75285a2504938c258dfa8a2ef32d49c8d27bd780e17320bf8ae"
+  }
+]

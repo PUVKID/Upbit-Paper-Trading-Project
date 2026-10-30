@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "name": "candles.sqlite3",
+      "present": true,
+      "bytes": 913113088,
+      "sha256": "cba69316e9866c19662fb1102f9ede0c519fccb51c63c89ae09d5083f65dfb9e",
+      "copy": "/app/work/archive/20261026-db-io-failure/data-recovery-20261026T154614/damaged-candles.sqlite3"
+    },
+    {
+      "name": "candles.sqlite3-wal",
+      "present": false
+    },
+    {
+      "name": "candles.sqlite3-shm",
+      "present": false
+    },
+    {
+      "name": "candles.sqlite3-journal",
+      "present": false
+    }
+  ],
+  "parent_copy": {
+    "present": true,
+    "bytes": 913113088,
+    "sha256": "cba69316e9866c19662fb1102f9ede0c519fccb51c63c89ae09d5083f65dfb9e"
+  }
+}
