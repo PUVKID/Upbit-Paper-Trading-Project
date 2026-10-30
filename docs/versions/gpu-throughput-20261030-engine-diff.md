@@ -1,5 +1,7 @@
 # 전체 엔진 차이
 
+공개 문서의 줄끝을 LF로 통일하고 빈 문맥 줄의 표시용 후행 공백만 제거했습니다. 정확한 원본 공백 비교는 연결된 기준 커밋과 현재 `engine.py`의 Git 차이를 사용합니다. 실행 소스는 이 문서 서식 수정으로 바꾸지 않았습니다.
+
 직전 공개 기준과 보존 엔진은 논리적 텍스트가 같으며 개행 차이는 별도 해시로 구분합니다. 아래는 원본 엔진과 이번 엔진의 전체 텍스트 차이입니다. 추가 회귀 파일은 신규 파일 전체가 변경분입니다. 진단용 Git 경고도 출력에 포함될 수 있습니다.
 
 ```diff
@@ -10,7 +12,7 @@ index bf51070..cbf2ffe 100644
 --- before/evidence/engine-gpu-baseline.py
 +++ after/engine.py
 @@ -3,6 +3,8 @@ from __future__ import annotations
- 
+
  import argparse
  import contextlib
 +from concurrent.futures import ThreadPoolExecutor
@@ -43,12 +45,12 @@ index bf51070..cbf2ffe 100644
 +        if not close_times.eq(frame["open_time"] + pd.Timedelta(minutes=minutes(tf))).all():
 +            raise ValueError(f"{market}/{tf}: 캔들 종료 시각이 시간봉 간격과 다릅니다")
          return frame.set_index("open_time").sort_index()
- 
+
      def summary(self):
 @@ -888,6 +895,20 @@ def assert_cuda_config(config):
      return device
- 
- 
+
+
 +_gpu_matrices = ContextVar("gpu_matrices", default=None)
 +
 +
@@ -96,7 +98,7 @@ index bf51070..cbf2ffe 100644
      assert_cuda_config(preflight.save_config())
      del preflight
 +    preflight_seconds = time.monotonic() - preflight_started
- 
+
      class CudaOnly(xgb.callback.TrainingCallback):
          def before_training(self, model):
 @@ -926,9 +961,11 @@ def fit_gpu(train, tune, columns, depth, config, on_progress=None):
@@ -125,13 +127,13 @@ index bf51070..cbf2ffe 100644
 +                      "matrix_reused": reused,
 +                      "timings": {"matrix_prepare_seconds": matrix_seconds,
 +                                  "cuda_preflight_seconds": preflight_seconds, "fit_seconds": fit_seconds}}
- 
- 
+
+
  def predict_booster(booster, frame, columns, best_iteration):
 @@ -1153,6 +1194,50 @@ def assess_promotion(config, frames, probabilities, rules):
                  "comparison_error": {"type": type(exc).__name__, "message": str(exc)}, "comparison_periods": periods}
- 
- 
+
+
 +@contextlib.contextmanager
 +def market_feature_loader(store, config, start, end):
 +    # 완료 결과도 다음 시장 하나만 보존하며 DB 연결은 각 read 내부에서 닫습니다.
@@ -350,4 +352,3 @@ index bf51070..cbf2ffe 100644
      report["promotion"] = assess_promotion(config, validation_frames, validation_probs, rules)
 
 ```
-
