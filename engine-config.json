@@ -1,5 +1,7 @@
 {
   "collection": {"recent_pages": 2, "backfill_pages_per_cycle": 20, "poll_seconds": 30, "request_interval": 0.18, "retries": 4},
+  "external": {"enabled": "auto", "wait_for_dataset": true, "target_bytes": 50000000000,
+               "db_path": "3차/work/data/external.sqlite3", "status_path": "3차/work/status.json"},
   "training": {
     "train_days": 36500,
     "tune_days": 2,

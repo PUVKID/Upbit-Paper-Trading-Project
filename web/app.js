@@ -220,8 +220,10 @@ function render() {
   const starts = trainSplits.map(split => split.period_start).filter(value => typeof value === 'string').sort();
   const ends = trainSplits.map(split => split.period_end).filter(value => typeof value === 'string').sort();
   const gpuFits = marketEntries.flatMap(([, report]) => report.gpu || []);
-  const states = {running: '진행 중', complete: '완료', failed: '오류', error: '오류'};
-  const stages = {features: '피처 구성', fit: '후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '완료'};
+  const states = {running: '진행 중', complete: '완료', failed: '오류', error: '오류', waiting_data: '50GB 자료 준비'};
+  const stages = {features: '피처 구성', fit: '후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '완료', download: '수집 · 검증 · 처리'};
+  const external = s.external_data || {};
+  const gb = value => numeric(value) ? `${number(value / 1e9, 2)} GB` : '미기록';
   const stepIndex = t.state === 'running' ? ({features: 0, fit: 1, calibration: 2, locked_test: 2, complete: 3})[t.stage] : undefined;
   const stepNames = ['데이터 준비', '모델 학습', '평가', '적용 검토'];
   [...$('workflow-steps').children].forEach((item, index) => {
@@ -233,11 +235,11 @@ function render() {
   set('workflow-title', t.state === 'running' ? '가격의 흐름을 배우고 있어요' : t.state === 'complete' ? '이번 학습을 마쳤어요' : ['failed', 'error'].includes(t.state) ? '학습 상태를 확인하고 있어요' : '가격의 흐름을 배우는 과정');
   details('learning-strip', [
     ['현재 단계', stepIndex === undefined ? (states[t.state] || '기록 대기') : stepNames[stepIndex]],
-    ['완료 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],
+    t.state === 'waiting_data' ? ['처리 완료 / 목표', `${gb(external.ingested_archive_bytes)} / ${gb(external.target_archive_bytes)}`] : ['완료 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],
     ['학습 회차', number(s.services?.trainer?.iteration)],
     ['GPU 모델 · 장치 전체', gpu.gpu_name || '미기록'],
-    ['학습 자료 · 최근 집계', numeric(t.rows) ? `${number(t.rows)}개` : '미집계'],
-    ['학습 항목 · 최근 집계', numeric(t.features) ? `${number(t.features)}개` : '미집계']
+    t.state === 'waiting_data' ? ['다운로드 검증', gb(external.verified_archive_bytes)] : ['학습 자료 · 최근 집계', numeric(t.rows) ? `${number(t.rows)}개` : '미집계'],
+    t.state === 'waiting_data' ? ['외부 고유 분봉', numeric(external.unique_minute_rows) ? (external.unique_minute_rows >= 10000 ? `${number(external.unique_minute_rows / 10000, 1)}만 개` : `${number(external.unique_minute_rows)}개`) : '미집계'] : ['학습 항목 · 최근 집계', numeric(t.features) ? `${number(t.features)}개` : '미집계']
   ]);
   const stripIcons = ['timer', 'check', 'refresh-cw', 'cpu', 'receipt-text', 'database'];
   [...$('learning-strip').children].forEach((item, index) => {
@@ -531,9 +533,13 @@ function renderOverview(s) {
     if (active) item.setAttribute('aria-current', 'step');
     else item.removeAttribute('aria-current');
   }
-  const state = ({running: '학습 중', complete: '학습 완료', failed: '학습 오류', error: '학습 오류'})[t.state] || '학습 기록 대기';
-  set('learning-summary', `${state} · ${coinNames[t.market?.replace('KRW-', '')] || '시장 확인 중'}${numeric(t.candidate_index) && numeric(t.candidate_total) ? ` · 후보 ${number(t.candidate_index)} / ${number(t.candidate_total)}` : ''}`);
-  if (numeric(t.progress)) $('home-progress').value = Math.max(0, Math.min(100, t.progress * 100));
+  const state = ({running: '학습 중', complete: '학습 완료', failed: '학습 오류', error: '학습 오류', waiting_data: '50GB 자료 준비'})[t.state] || '학습 기록 대기';
+  const external = s.external_data || {};
+  const waiting = t.state === 'waiting_data';
+  set('learning-summary', waiting ? `${state} · 처리 ${number((external.ingested_archive_bytes || 0) / 1e9, 2)} / ${number((external.target_archive_bytes || 50000000000) / 1e9)} GB` : `${state} · ${coinNames[t.market?.replace('KRW-', '')] || '시장 확인 중'}${numeric(t.candidate_index) && numeric(t.candidate_total) ? ` · 후보 ${number(t.candidate_index)} / ${number(t.candidate_total)}` : ''}`);
+  $('home-progress').setAttribute('aria-label', waiting ? '초기 외부 자료 처리 진행률' : '실제 전체 후보 학습 진행률');
+  if (waiting && numeric(external.ingested_archive_bytes) && numeric(external.target_archive_bytes) && external.target_archive_bytes > 0) $('home-progress').value = Math.max(0, Math.min(100, 100 * external.ingested_archive_bytes / external.target_archive_bytes));
+  else if (numeric(t.progress)) $('home-progress').value = Math.max(0, Math.min(100, t.progress * 100));
   else $('home-progress').removeAttribute('value');
 }
 

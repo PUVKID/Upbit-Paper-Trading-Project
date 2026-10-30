@@ -30,6 +30,7 @@ FIELDS = {
     "rounds": "run round candidate state accuracy macro_f1 balanced_accuracy baseline_accuracy samples duration_seconds started_utc finished_utc recorded_utc split locked_accuracy locked_samples",
     "service": "state start_utc started_utc checked_utc finished_utc failed_utc stopped_utc iteration consecutive_failures exit_code previous_finished_utc success_gap_seconds successful_cycles next_iteration interval_seconds duration_seconds",
     "gpu": "state checked_utc gpu_name gpu_memory_total_mb gpu_memory_used_mb gpu_utilization_pct",
+    "external_data": "schema_version state updated_at training_ready verified_archive_bytes ingested_archive_bytes target_archive_bytes verified_archives unique_minute_rows has_error",
     "split": "rows period_start period_end",
     "gpu_fit": "actual_device requested_device best_iteration depth xgboost_version boosted_rounds duration_seconds validation_logloss last_validation_logloss validation_scope train_rows tune_rows features eta",
     "test_state": "status used_for_selection",
@@ -333,9 +334,12 @@ class SnapshotAdapter:
         data = sections["data"]
         markets = market_report(training)
         progress = mapping(self.read("work/service/training_progress.json"))
+        external_source = mapping(self.read("3차/work/status.json"))
         current = mapping(training.get("training"))
         completed = progress.get("completed_candidates", current.get("completed_candidates"))
         total = progress.get("total_candidates", current.get("total_candidates"))
+        if progress.get("status") == "waiting_data":
+            completed = total = None
         training_view = {**training, "state": progress.get("status", current.get("status", training.get("state"))),
                          "stage": progress.get("stage"), "market": progress.get("market"),
                          "candidate": progress.get("candidate", training.get("candidate")),
@@ -354,6 +358,8 @@ class SnapshotAdapter:
                          "learning_rate": progress.get("learning_rate", progress.get("eta"))}
         if finite(completed) and finite(total) and total > 0:
             training_view["progress"] = completed / total
+        if progress.get("status") == "waiting_data":
+            training_view["progress"] = None
         # 보고서 설정 전체가 아닌 실제 사용 시간봉 한 항목만 표시합니다.
         training_view["timeframe"] = mapping(training.get("config")).get("base_timeframe")
         locked = mapping(training.get("locked_test"))
@@ -449,6 +455,7 @@ class SnapshotAdapter:
             "class_distribution": aggregate_distribution(markets) if markets else distribution(training.get("class_distribution")),
             "rounds": self.experiments() or rows(training.get("rounds", combined.get("rounds")), "rounds"),
             "data": project(data, "data"),
+            "external_data": project({**external_source, "has_error": external_source.get("error") is not None}, "external_data"),
             "datasets": rows(dataset_values, "datasets"),
             "services": {name: project(self.read(f"work/service/{name}.json"), "service")
                          for name in ("collector", "backfill", "trainer", "paper", "health")},

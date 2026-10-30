@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from contextvars import ContextVar
 import copy
 import hashlib
+from importlib import import_module
 import itertools
 import json
 import math
@@ -14,6 +15,7 @@ import os
 from pathlib import Path
 import sqlite3
 import sys
+import threading
 import time
 import traceback
 import urllib.error
@@ -36,6 +38,9 @@ DEFAULT_CONFIG = {
     "data_dir": "work/data", "models_dir": "work/models",
     "reports_dir": "work/reports", "markets": list(MARKETS),
     "timeframes": list(TIMEFRAMES), "base_timeframe": 5,
+    "external": {"enabled": False, "db_path": "3차/work/data/external.sqlite3",
+                 "status_path": "3차/work/status.json", "wait_for_dataset": False,
+                 "target_bytes": 50000000000},
     "collection": {"recent_pages": 10, "backfill_pages_per_cycle": 5,
                    "poll_seconds": 30, "request_interval": 0.16, "retries": 4},
     "training": {"horizon": 12, "label_threshold": 0.006,
@@ -95,6 +100,8 @@ def load_config(path=None):
             if key not in config:
                 raise ValueError(f"지원하지 않는 설정: {key}")
             if isinstance(config[key], dict):
+                if key == "external" and not isinstance(value, dict):
+                    raise ValueError("external 설정은 객체여야 합니다")
                 unknown = set(value) - set(config[key])
                 if unknown:
                     raise ValueError(f"지원하지 않는 설정: {key}.{sorted(unknown)}")
@@ -155,6 +162,7 @@ def load_config(path=None):
     if min(collection["recent_pages"], collection["backfill_pages_per_cycle"], collection["poll_seconds"], paper["poll_seconds"]) <= 0:
         raise ValueError("수집 페이지와 대기 시간은 양수여야 합니다")
     utc(paper["start_time"])
+    config["external"] = import_module("3차.external_features").validate_config(config["external"], ROOT)
     return config
 
 
@@ -1103,7 +1111,15 @@ def load_market_features(store, market, config, start, end):
         if raw.empty:
             raise ValueError(f"수집된 {market}/{tf} 봉이 없습니다")
         frames[str(tf)] = raw
-    return build_features(frames, config["base_timeframe"]).tail(tr["max_rows_per_market"])
+    result = build_features(frames, config["base_timeframe"]).tail(tr["max_rows_per_market"])
+    if "external" in config:
+        external = import_module("3차.external_features")
+        settings = external.validate_config(config["external"], ROOT)
+        if type(settings["enabled"]) is not bool:
+            raise ValueError("외부 특징 사용 여부는 회차 시작에 bool로 동결되어야 합니다")
+        if settings["enabled"]:
+            result = external.load_and_join(result, market, settings, ROOT, utc(None))
+    return result
 
 
 def stable_hash(value):
@@ -1243,6 +1259,11 @@ def train_cycle(config, final=False, live=False):
     started_at = iso(None)
     if final and live:
         raise ValueError("실시간 학습은 잠금 시험을 평가할 수 없습니다")
+    config = copy.deepcopy(config)
+    external_resolution = None
+    if "external" in config:
+        config["external"], external_resolution = import_module("3차.external_features").resolve_for_training(
+            config["external"], ROOT, utc(started_at))
     audit = ExperimentAudit(Path(config["data_dir"]) / "experiment_audit.sqlite3")
     consumed = audit.consumed_periods()
     research = {"scope": "명시 설정 단일 연구", "candidate_id": "explicit", "sequence": None}
@@ -1268,7 +1289,7 @@ def train_cycle(config, final=False, live=False):
     report_plan = {k: [iso(a), iso(b)] for k, (a, b) in plan.items()}
     report = {"run": run, "updated_at": iso(None), "paper_only": True,
               "source_hash": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-              "config": config, "periods": report_plan,
+              "config": config, "periods": report_plan, "external_resolution": external_resolution,
               "locked_test": {"status": "미평가", "used_for_selection": False},
               "research": {"schema_version": 2, **research, "status": "running",
                            "protected_periods": [[iso(a), iso(b)] for a, b in protected_periods(config, consumed)],
@@ -1371,7 +1392,7 @@ def train_cycle(config, final=False, live=False):
                 "deployment": report["promotion"]["eligibility"],
                 "run": run, "feature_columns": columns, "packages": packages, "config": config,
                 "source_hash": report["source_hash"], "paper_only": True,
-                "plan": report["periods"], "created_at": iso(None)}
+                "plan": report["periods"], "created_at": iso(None), "external_resolution": external_resolution}
     atomic_json(directory / "manifest.json", manifest)
     manifest_hash = stable_hash(manifest)
     if final:
@@ -1417,6 +1438,30 @@ def train_cycle(config, final=False, live=False):
     return report
 
 
+def wait_for_training_data(config, stop=None, initial=None):
+    stop = threading.Event() if stop is None else stop
+    external = import_module("3차.external_features")
+    pending = initial
+    while not stop.is_set():
+        if pending is None:
+            try:
+                external.resolve_for_training(config["external"], ROOT, utc(None))
+                return
+            except external.DatasetNotReady as exc:
+                pending = exc
+        evidence = pending.evidence
+        progress(status="waiting_data", stage="download", error=None, reason=evidence["reason"],
+                 verified_archive_bytes=evidence.get("verified_archive_bytes", 0),
+                 ingested_archive_bytes=evidence.get("ingested_archive_bytes", 0),
+                 target_archive_bytes=evidence.get("target_archive_bytes", 50000000000),
+                 checked_at=evidence["checked_at"], rows=None, features=None,
+                 run=None, started_at=None, elapsed_seconds=None)
+        if stop.wait(12):
+            break
+        pending = None
+    raise KeyboardInterrupt("외부 자료 대기 중 중단 요청")
+
+
 def predict_package(directory, manifest, market, frame):
     import xgboost as xgb
     package = manifest["packages"][market]
@@ -1459,6 +1504,16 @@ def load_current(config):
     columns = manifest.get("feature_columns")
     if not isinstance(columns, list) or not columns or len(set(columns)) != len(columns):
         raise ValueError("완성 모델의 피처 목록이 유효하지 않습니다")
+    external_columns = [c for c in columns if c.startswith("ext_")]
+    if isinstance(model_config, dict) and "external" in model_config:
+        external = import_module("3차.external_features")
+        settings = external.validate_config(model_config["external"], ROOT)
+        if type(settings["enabled"]) is not bool:
+            raise ValueError("완성 모델의 외부 설정이 bool로 동결되지 않았습니다")
+        if external_columns != (external.FEATURE_COLUMNS if settings["enabled"] else []):
+            raise ValueError("완성 모델의 외부 특징 스키마가 설정과 다릅니다")
+    elif external_columns:
+        raise ValueError("외부 특징 모델에 동결된 외부 설정이 없습니다")
     for market, package in manifest["packages"].items():
         if market not in MARKETS:
             raise ValueError("지원하지 않는 모델 시장")
@@ -1510,6 +1565,16 @@ def paper_signals(config, store, portfolio, now):
             frame = load_market_features(store, market, model_config, start, now)
             latest_raw = iso(frame.index[-1]) if not frame.empty else None
             missing = [c for c in manifest["feature_columns"] if not frame.empty and pd.isna(frame[c].iloc[-1])]
+            if model_config.get("external", {}).get("enabled") is True and not frame.empty:
+                available = frame.get("available_external")
+                external_time = available.iloc[-1] if available is not None else pd.NaT
+                age = now - utc(external_time) if not pd.isna(external_time) else None
+                if (any(c.startswith("ext_") for c in missing) or age is None
+                        or age < pd.Timedelta(0) or age > pd.Timedelta(minutes=5)):
+                    diagnostics[market] = {"checked_at": iso(now), "model_run": manifest["run"],
+                                           "latest_raw_bar": latest_raw, "missing_latest_features": missing,
+                                           "reason": "external_features_unavailable"}
+                    continue
             frame = frame.dropna(subset=manifest["feature_columns"])
             diagnostics[market] = {"checked_at": iso(now), "model_run": manifest["run"],
                                    "latest_raw_bar": latest_raw, "missing_latest_features": missing,
@@ -1517,6 +1582,12 @@ def paper_signals(config, store, portfolio, now):
             if frame.empty:
                 diagnostics[market]["reason"] = "no_complete_features"
                 continue
+            if model_config.get("external", {}).get("enabled") is True:
+                selected_time = frame["available_external"].iloc[-1]
+                selected_age = now - utc(selected_time) if not pd.isna(selected_time) else None
+                if selected_age is None or not pd.Timedelta(0) <= selected_age <= pd.Timedelta(minutes=5):
+                    diagnostics[market]["reason"] = "external_features_unavailable"
+                    continue
             age = (now - frame.index[-1]).total_seconds()
             diagnostics[market].update(signal_time=iso(frame.index[-1]), feature_age_seconds=age)
             if age < 0 or age > minutes(model_config["base_timeframe"]) * 120:
@@ -1676,7 +1747,11 @@ def main(argv=None):
                 interval = config["collection"]["poll_seconds"]
                 summary = {"datasets": len(result), "rows": sum(r["rows"] for r in result)}
             elif args.command == "trainer":
-                result = train_cycle(config, live=True)
+                try:
+                    result = train_cycle(config, live=True)
+                except import_module("3차.external_features").DatasetNotReady as exc:
+                    wait_for_training_data(config, initial=exc)
+                    continue
                 interval, summary = config["training"]["retrain_seconds"], {"run": result["run"]}
             else:
                 result = paper_cycle(config)
