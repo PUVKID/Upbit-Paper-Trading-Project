@@ -14,6 +14,7 @@ import math
 import os
 from pathlib import Path
 import sqlite3
+import stat
 import sys
 import threading
 import time
@@ -1960,6 +1961,32 @@ def process_lock(path):
                 fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
 
 
+def _training_pause_requested():
+    paths = (ROOT, ROOT / "work", ROOT / "work/service", ROOT / "work/service/TRAINING_PAUSED")
+    for index, path in enumerate(paths):
+        try:
+            info = path.lstat()
+        except FileNotFoundError:
+            return False
+        except OSError:
+            raise SystemExit("학습 중지 표식 경로를 안전하게 확인할 수 없습니다") from None
+        # 링크나 재분석 지점을 따라 운영 기록을 쓰지 않고 학습을 차단합니다.
+        unsafe = stat.S_ISLNK(info.st_mode) or bool(getattr(info, "st_file_attributes", 0) & 0x400)
+        expected = stat.S_ISREG(info.st_mode) if index == len(paths) - 1 else stat.S_ISDIR(info.st_mode)
+        if unsafe or not expected:
+            raise SystemExit("학습 중지 표식 경로가 안전한 일반 파일·디렉터리가 아닙니다")
+    return True
+
+
+def wait_for_training_pause(stop=None):
+    stop = threading.Event() if stop is None else stop
+    while _training_pause_requested():
+        progress(status="waiting_request", stage="idle", reason="사용자 요청으로 학습 중지",
+                 research_active=True, pid=os.getpid(), training_paused=True)
+        if stop.wait(12):
+            raise KeyboardInterrupt("학습 중지 대기 중 중단 요청")
+
+
 def build_parser():
     parser = argparse.ArgumentParser(description="공개 시세·GPU 학습·현물 모의 전용")
     parser.add_argument("--config", type=Path, default=None)
@@ -1982,6 +2009,8 @@ def build_parser():
 
 def main(argv=None):
     args = build_parser().parse_args(argv)
+    if args.command in {"trainer", "experiment"}:
+        wait_for_training_pause()
     config = load_config(args.config)
     if args.command == "check-gpu":
         print(json.dumps(check_gpu(), ensure_ascii=False))
@@ -1991,6 +2020,7 @@ def main(argv=None):
         return 0
     if args.command == "experiment":
         with process_lock(ROOT / "work/service/trainer.lock"):
+            wait_for_training_pause()
             result = train_cycle(config, final=args.final)
         print(json.dumps({"run": result["run"], "locked_test": result["locked_test"]}, ensure_ascii=False))
         return 0
@@ -1999,6 +2029,8 @@ def main(argv=None):
     lock_name = "backfill" if args.command == "collector" and args.backfill else args.command
     with process_lock(ROOT / "work/service" / (lock_name + ".lock")):
         while True:
+            if args.command == "trainer":
+                wait_for_training_pause()
             if args.command == "collector":
                 result = collect_cycle(config, args.backfill, args.pages)
                 interval = config["collection"]["poll_seconds"]

@@ -306,7 +306,7 @@ class ResearchControlTests(unittest.TestCase):
         self.assertEqual(engine.build_parser().parse_args(["research-request"]).command, "research-request")
         config = engine.load_config()
         config["research"] = self.settings
-        with patch.object(engine, "load_config", return_value=config), patch.object(engine, "request_research_increment", return_value={"id": "x"}) as request, \
+        with patch.object(engine, "ROOT", self.root), patch.object(engine, "load_config", return_value=config), patch.object(engine, "request_research_increment", return_value={"id": "x"}) as request, \
              patch.object(engine, "process_lock"), patch.object(engine, "train_cycle", return_value={"run": "x", "locked_test": {}}) as train, \
              patch("builtins.print"):
             self.assertEqual(engine.main(["research-request"]), 0)
