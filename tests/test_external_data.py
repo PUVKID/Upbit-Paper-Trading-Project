@@ -2,6 +2,10 @@
 import importlib
 import hashlib
 import io
+import json
+import os
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -168,6 +172,347 @@ class ExternalDownloadTests(unittest.TestCase):
                 thread.return_value.is_alive.return_value = False
                 collector.run()
             archive.assert_called_once_with(spec)
+
+
+@unittest.skipUnless(sys.platform == 'linux', '격리와 부분 저장은 Linux 임시 DB에서 검사합니다')
+class ExternalQuarantineTests(unittest.TestCase):
+    def zip_bytes(self, spec, rows, member=None):
+        data = io.BytesIO()
+        with zipfile.ZipFile(data, 'w') as archive:
+            archive.writestr(member or spec['name'][:-4] + '.csv',
+                             pd.DataFrame(rows).to_csv(index=False, header=False))
+        return data.getvalue()
+
+    def fixtures(self, collector):
+        start = 1769904000000
+        bad = external.archive_spec('BTCUSDT', 'aggTrades', '2026-02')
+        good = external.archive_spec('BTCUSDT', 'aggTrades', '2026-03')
+        rows = [[1, 100., 2., 1, 1, start, False, True],
+                [2, 101., 1., 2, 2, start + 60000, True, True],
+                [1, 100., 2., 1, 1, start, False, True],
+                [3, 102., 1., 3, 3, start + 120000, False, True]]
+        contents = {bad['name']: self.zip_bytes(bad, rows),
+                    good['name']: self.zip_bytes(good, [
+                        [10, 110., 3., 10, 10, 1772323200000, False, True]])}
+        for name, content in contents.items():
+            (collector.archives / name).write_bytes(content)
+        return bad, good, contents
+
+    def network(self, contents):
+        def get(url, timeout=30):
+            name = url.rsplit('/', 1)[-1]
+            if name.endswith('.CHECKSUM'):
+                name = name[:-9]
+                digest = hashlib.sha256(contents[name]).hexdigest()
+                return ExternalDownloadTests().response((digest + '  ' + name).encode())
+            return ExternalDownloadTests().response(contents[name])
+        return get
+
+    def parse_two_rows(self):
+        reader = pd.read_csv
+        return patch.object(external.pd, 'read_csv',
+                            side_effect=lambda *a, **kw: reader(*a, **{**kw, 'chunksize': 2}))
+
+    def reject_without_aborting(self, collector, spec):
+        try:
+            collector.archive(spec)
+        except ValueError as error:
+            self.fail('내용 오류는 명시적 미적재 격리 후 다음 파일 진행이 필요합니다: ' + str(error))
+
+    def test_rejection_preserves_prefix_excludes_bad_bytes_and_next_archive_succeeds(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector = external.Collector(Path(temp))
+            bad, good, contents = self.fixtures(collector)
+            with patch.object(external, 'open_public', side_effect=self.network(contents)), self.parse_two_rows():
+                self.reject_without_aborting(collector, bad)
+                rejected = collector.manifest[bad['name']]
+                digest = hashlib.sha256(contents[bad['name']]).hexdigest()
+                self.assertFalse(rejected['ingested'])
+                self.assertEqual(rejected['content_rejections'][digest]['sha256'], digest)
+                self.assertIn('역행', rejected['content_rejections'][digest]['reason'])
+                self.assertEqual(collector.status()['ingested_archive_bytes'], 0)
+                self.assertEqual(collector.status()['archive_warning_count'], 1)
+                self.assertEqual((collector.archives / bad['name']).read_bytes(), contents[bad['name']])
+                collector.archive(good)
+            state = collector.status()
+            self.assertEqual(state['ingested_archive_bytes'], len(contents[good['name']]))
+            self.assertEqual(state['verified_archive_bytes'], sum(map(len, contents.values())))
+            self.assertEqual(state['archive_warning_count'], 1)
+            self.assertIsNone(state['error'])
+            self.assertFalse(state['training_ready'])
+            self.assertEqual(state['target_archive_bytes'], 50_000_000_000)
+            with collector.store.connect() as db:
+                prefix = db.execute('SELECT open_time,volume,quote_volume,trade_count,source FROM bars '
+                                    'WHERE open_time<1772323200000').fetchall()
+            self.assertEqual(prefix, [(1769904000000, 2., 200., 1, bad['name'])])
+
+    def test_same_hash_restart_does_not_reparse_or_change_prefix(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector = external.Collector(Path(temp))
+            bad, _, contents = self.fixtures(collector)
+            with patch.object(external, 'open_public', side_effect=self.network(contents)), self.parse_two_rows():
+                self.reject_without_aborting(collector, bad)
+            before = collector.manifest[bad['name']]
+            restarted = external.Collector(Path(temp))
+            with patch.object(external, 'open_public', side_effect=self.network(contents)), \
+                 patch.object(restarted, 'ingest', side_effect=AssertionError('같은 격리 해시를 재파싱했습니다')):
+                restarted.archive(bad)
+            self.assertEqual(restarted.manifest[bad['name']], before)
+            self.assertEqual(restarted.status()['ingested_archive_bytes'], 0)
+            with restarted.store.connect() as db:
+                self.assertEqual(db.execute('SELECT COUNT(*),SUM(volume) FROM bars').fetchone(), (1, 2.))
+
+    def test_new_official_hash_can_ingest_while_old_file_and_rejection_are_preserved(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector = external.Collector(Path(temp))
+            bad, _, contents = self.fixtures(collector)
+            original = contents[bad['name']]
+            with patch.object(external, 'open_public', side_effect=self.network(contents)), self.parse_two_rows():
+                self.reject_without_aborting(collector, bad)
+            old_digest = hashlib.sha256(original).hexdigest()
+            contents[bad['name']] = self.zip_bytes(bad, [
+                [1, 100., 2., 1, 1, 1769904000000, False, True],
+                [2, 101., 1., 2, 2, 1769904060000, True, True]])
+            with patch.object(external, 'open_public', side_effect=self.network(contents)):
+                collector.archive(bad)
+            state = collector.status()
+            self.assertTrue(collector.manifest[bad['name']]['ingested'])
+            self.assertNotEqual(collector.manifest[bad['name']]['sha256'], old_digest)
+            self.assertIn(old_digest, collector.manifest[bad['name']]['content_rejections'])
+            self.assertEqual(state['ingested_archive_bytes'], len(contents[bad['name']]))
+            self.assertEqual(state['archive_warning_count'], 1)
+            preserved = list(collector.archives.glob(bad['name'] + '.rejected-*'))
+            self.assertTrue(any(p.read_bytes() == original for p in preserved if p.suffix != '.json'))
+            with collector.store.connect() as db:
+                self.assertEqual(db.execute('SELECT COUNT(*),SUM(volume) FROM bars').fetchone(), (2, 3.))
+            contents[bad['name']] = original
+            with patch.object(external, 'open_public', side_effect=self.network(contents)), \
+                 patch.object(collector, 'ingest', side_effect=AssertionError('격리 해시를 재적재했습니다')):
+                collector.archive(bad)
+            self.assertFalse(collector.manifest[bad['name']]['ingested'])
+            self.assertEqual(collector.status()['ingested_archive_bytes'], 0)
+
+    def test_run_continues_after_content_rejection(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector = external.Collector(Path(temp))
+            bad, good, contents = self.fixtures(collector)
+            stop = external.threading.Event()
+            with patch.object(external, 'STOP', stop), patch.object(external.threading, 'Thread') as thread, \
+                 patch.object(external, 'bootstrap_plan', return_value=[]), \
+                 patch.object(external, 'bulk_plan', return_value=[bad, good]), \
+                 patch.object(external, 'open_public', side_effect=self.network(contents)), \
+                 self.parse_two_rows(), patch.object(stop, 'wait', side_effect=lambda _: stop.set()):
+                thread.return_value.is_alive.return_value = False
+                collector.run()
+            self.assertIn(good['name'], collector.manifest)
+            self.assertTrue(collector.manifest[good['name']]['ingested'])
+            self.assertFalse(collector.manifest[bad['name']]['ingested'])
+            self.assertIsNone(collector.status()['error'])
+
+    def test_path_and_database_failures_are_not_quarantined_as_content(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector = external.Collector(Path(temp))
+            spec = external.archive_spec('BTCUSDT', 'aggTrades', '2026-02')
+            rows = [[1, 100., 1., 1, 1, 1769904000000, False, True]]
+            for invalid_path in (True, False):
+                content = self.zip_bytes(spec, rows, '../escape.csv' if invalid_path else None)
+                (collector.archives / spec['name']).write_bytes(content)
+                with self.subTest(invalid_path=invalid_path), \
+                     patch.object(external, 'open_public', side_effect=self.network({spec['name']: content})), \
+                     patch.object(collector.store, 'save', side_effect=ValueError('DB저장 실패')):
+                    with self.assertRaisesRegex(ValueError, '경계' if invalid_path else 'DB저장'):
+                        collector.archive(spec)
+                self.assertFalse(collector.manifest[spec['name']].get('content_rejections'))
+
+    def test_official_404_does_not_erase_existing_content_rejection(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector = external.Collector(Path(temp))
+            bad, _, contents = self.fixtures(collector)
+            with patch.object(external, 'open_public', side_effect=self.network(contents)), self.parse_two_rows():
+                self.reject_without_aborting(collector, bad)
+            digest = hashlib.sha256(contents[bad['name']]).hexdigest()
+            rejection = collector.manifest[bad['name']]['content_rejections'][digest].copy()
+            with patch.object(external, 'open_public', side_effect=external.urllib.error.HTTPError(
+                    bad['url'], 404, '미제공', {}, None)):
+                collector.archive(bad)
+            self.assertEqual(collector.status()['archive_warning_count'], 1)
+            self.assertEqual(collector.manifest[bad['name']]['content_rejections'][digest], rejection)
+            self.assertFalse(collector.manifest[bad['name']]['ingested'])
+
+    def test_mismatched_or_malformed_rejection_binding_is_not_silently_accepted(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector = external.Collector(Path(temp))
+            bad, _, contents = self.fixtures(collector)
+            with patch.object(external, 'open_public', side_effect=self.network(contents)), self.parse_two_rows():
+                self.reject_without_aborting(collector, bad)
+            digest = hashlib.sha256(contents[bad['name']]).hexdigest()
+            records = collector.manifest[bad['name']]['content_rejections']
+            original = records[digest].copy()
+            for record in (None, {**original, 'name': 'other.zip'}, {**original, 'sha256': '0' * 64}):
+                records[digest] = record
+                with self.subTest(record=record), self.assertRaises(ValueError):
+                    collector.status()
+
+
+class ExternalResearchTargetTests(unittest.TestCase):
+    def collector(self, folder):
+        control, store = Mock(), Mock()
+        control.collection_target.return_value = 50_000_000_000
+        store.summary.return_value = {}
+        store.ready.return_value = False
+        module = Mock()
+        module.ResearchControl.return_value = control
+        settings = {'active': True, 'state_path': '4차/work/research_control.json'}
+        with patch.object(external, 'ExternalStore', return_value=store), \
+             patch('importlib.import_module', return_value=module):
+            try:
+                collector = external.Collector(folder, research_settings=settings)
+            except TypeError as error:
+                self.fail('임시 연구 제어의 명시적 주입이 필요합니다: ' + str(error))
+        return collector, control, store
+
+    def run_once(self, collector):
+        stop = external.threading.Event()
+        with patch.object(external, 'STOP', stop), patch.object(external.threading, 'Thread') as thread, \
+             patch.object(stop, 'wait', side_effect=lambda _: stop.set()):
+            thread.return_value.is_alive.return_value = False
+            collector.run()
+
+    def test_temporary_work_default_does_not_load_actual_research_control(self):
+        with tempfile.TemporaryDirectory() as temp, \
+             patch('importlib.import_module', side_effect=AssertionError('실제 연구 상태에 접근했습니다')):
+            collector = ExternalDownloadTests().collector(Path(temp))
+            self.assertIsNone(getattr(collector, 'research_control', None))
+
+    def test_integer_target_and_last_target_on_none_are_written_consistently(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector, control, store = self.collector(Path(temp))
+            self.assertEqual(collector.collection_target(), 50_000_000_000)
+            control.collection_target.return_value = 52_000_000_000
+            self.assertEqual(collector.collection_target(), 52_000_000_000)
+            state = collector.status()
+            self.assertEqual(state['target_archive_bytes'], 52_000_000_000)
+            self.assertEqual(store.archive_evidence.call_args.args, (52_000_000_000, 0, 0))
+            control.collection_target.return_value = None
+            self.assertIsNone(collector.collection_target())
+            self.assertEqual(collector.status()['target_archive_bytes'], 52_000_000_000)
+            self.assertEqual(store.archive_evidence.call_args.args, (52_000_000_000, 0, 0))
+
+    def test_completed_restart_preserves_last_persisted_integer_target(self):
+        with tempfile.TemporaryDirectory() as temp:
+            folder = Path(temp)
+            (folder / 'status.json').write_text(json.dumps({'target_archive_bytes': 52_000_000_000}), encoding='utf-8')
+            collector, control, store = self.collector(folder)
+            control.collection_target.return_value = None
+            self.assertIsNone(collector.collection_target())
+            self.assertEqual(collector.status()['target_archive_bytes'], 52_000_000_000)
+            self.assertEqual(store.archive_evidence.call_args.args, (52_000_000_000, 0, 0))
+
+    def test_none_prevents_bootstrap_and_bulk_but_keeps_status(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector, control, _ = self.collector(Path(temp))
+            control.collection_target.return_value = None
+            spec = external.archive_spec('BTCUSDT', 'klines', '2026-02')
+            with patch.object(external, 'bootstrap_plan', return_value=[spec]), \
+                 patch.object(external, 'bulk_plan', return_value=[spec]), \
+                 patch.object(external, 'open_public', side_effect=AssertionError('대기 중 원본을 요청했습니다')):
+                self.run_once(collector)
+            self.assertEqual(collector.manifest, {})
+            state = json.loads((Path(temp) / 'status.json').read_text(encoding='utf-8'))
+            self.assertIsNone(state['error'])
+            self.assertEqual(state['target_archive_bytes'], 50_000_000_000)
+
+    def test_post_ingest_none_stops_remaining_bootstrap_and_bulk(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector, control, store = self.collector(Path(temp))
+            first = external.archive_spec('BTCUSDT', 'klines', '2026-02')
+            second = external.archive_spec('ETHUSDT', 'klines', '2026-02')
+            content = ExternalQuarantineTests().zip_bytes(first, ExternalParserTests().kline().values.tolist())
+            (collector.archives / first['name']).write_bytes(content)
+            def saved(*_):
+                control.collection_target.return_value = None
+                return 1
+            store.save.side_effect = saved
+            with patch.object(external, 'bootstrap_plan', return_value=[first, second]), \
+                 patch.object(external, 'bulk_plan', return_value=[second]), \
+                 patch.object(external, 'open_public', side_effect=ExternalQuarantineTests().network({first['name']: content})):
+                self.run_once(collector)
+            self.assertEqual(set(collector.manifest), {first['name']})
+            self.assertTrue(collector.manifest[first['name']]['ingested'])
+            self.assertIsNone(collector.status()['error'])
+
+    def test_reached_bytes_with_missing_coverage_does_not_skip_bootstrap(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector, control, _ = self.collector(Path(temp))
+            spec = external.archive_spec('BTCUSDT', 'klines', '2026-02')
+            visited = []
+            def archive(value):
+                visited.append(value['name'])
+                control.collection_target.return_value = None
+            with patch.object(external, 'bootstrap_plan', return_value=[spec]), \
+                 patch.object(external, 'bulk_plan', return_value=[]), \
+                 patch.object(collector, 'status', return_value={
+                     'ingested_archive_bytes': 50_000_000_000, 'training_ready': False}), \
+                 patch.object(collector, 'archive', side_effect=archive):
+                self.run_once(collector)
+            self.assertEqual(visited, [spec['name']])
+
+    def test_plan_exhaustion_refreshes_new_integer_target(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector, control, store = self.collector(Path(temp))
+            control.collection_target.return_value = 52_000_000_000
+            with patch.object(external, 'bootstrap_plan', return_value=[]), \
+                 patch.object(external, 'bulk_plan', return_value=[]):
+                self.run_once(collector)
+            self.assertEqual(collector.status()['target_archive_bytes'], 52_000_000_000)
+            self.assertEqual(store.archive_evidence.call_args.args, (52_000_000_000, 0, 0))
+
+    def test_control_error_is_not_hidden_as_none_or_collection_success(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector, control, _ = self.collector(Path(temp))
+            control.collection_target.side_effect = RuntimeError('연구 상태 읽기 실패')
+            with patch.object(external, 'bootstrap_plan', return_value=[]), \
+                 patch.object(external, 'bulk_plan', return_value=[]):
+                self.run_once(collector)
+            self.assertIn('연구 상태 읽기 실패', collector.status()['error'])
+            self.assertFalse(collector.status()['training_ready'])
+
+    def test_invalid_control_targets_are_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            collector, control, _ = self.collector(Path(temp))
+            for target in (True, 0, -1, '50000000000', 50.5):
+                control.collection_target.return_value = target
+                with self.subTest(target=target), self.assertRaises(ValueError):
+                    collector.collection_target()
+
+
+@unittest.skipUnless(sys.platform == 'linux', '실제 파일 진입점은 Linux 임시 프로젝트에서 검사합니다')
+class ExternalEntrypointTests(unittest.TestCase):
+    def test_absolute_script_entrypoint_loads_real_sibling_control_without_pythonpath(self):
+        with tempfile.TemporaryDirectory() as temp:
+            folder = Path(temp)
+            project, outside = folder / 'project', folder / 'outside'
+            (project / '3차').mkdir(parents=True)
+            (project / '4차').mkdir()
+            outside.mkdir()
+            script = project / '3차/external_data.py'
+            shutil.copyfile(external.ROOT / 'external_data.py', script)
+            shutil.copyfile(external.ROOT.parent / '4차/research_control.py', project / '4차/research_control.py')
+            (project / 'engine-config.json').write_text(json.dumps({
+                'research': {'active': True, 'state_path': '4차/work/research_control.json'}}), encoding='utf-8')
+            env = os.environ.copy()
+            env.pop('PYTHONPATH', None)
+            env['PYTHONNOUSERSITE'] = '1'
+            argv = [sys.executable, '-B', '-X', 'utf8', str(script), 'status']
+            # 운영 경로 대신 동일 소스의 격리 사본으로 실제 CLI 초기화를 검사합니다.
+            result = subprocess.run(argv, cwd=outside, env=env, capture_output=True, timeout=15, check=False)
+            self.assertEqual(result.returncode, 0,
+                             f'argv={argv!r}; cwd={outside}; stderr={result.stderr.decode("utf-8")}')
+            state = json.loads(result.stdout.decode('utf-8'))
+            self.assertEqual(state['target_archive_bytes'], 50_000_000_000)
+            self.assertFalse(state['training_ready'])
+            self.assertIsNone(state['error'])
+            self.assertTrue((project / '3차/work/data/external.sqlite3').is_file())
 
 
 class ExternalProcessBoundaryTests(unittest.TestCase):

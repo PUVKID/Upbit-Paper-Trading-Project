@@ -77,6 +77,42 @@ def logger_for(name: str, work: Path) -> logging.Logger:
     return logger
 
 
+def training_heartbeat(name, work):
+    if name != "trainer":
+        return {}
+    try:
+        value = json.loads((work / "service/training_progress.json").read_text(encoding="utf-8"))
+        return value if isinstance(value, dict) else {}
+    except (OSError, ValueError, UnicodeError):
+        return {}
+
+
+class TrainingBudget:
+    def __init__(self, limit, started_tick, started_utc, pid):
+        self.limit = limit
+        self.previous_tick = started_tick
+        self.started_utc = started_utc
+        self.pid = pid
+        self.active_seconds = 0.0
+
+    def expired(self, tick, now, heartbeat):
+        waiting = False
+        if isinstance(heartbeat, dict):
+            try:
+                stamp = dt.datetime.fromisoformat(heartbeat["updated_at"])
+                waiting = (heartbeat.get("research_active") is True and heartbeat.get("pid") == self.pid
+                           and self.started_utc <= stamp <= now
+                           and (now - stamp).total_seconds() <= 36
+                           and (heartbeat.get("status"), heartbeat.get("stage"))
+                           in {("waiting_request", "idle"), ("waiting_data", "download")})
+            except (KeyError, ValueError, TypeError):
+                waiting = False
+        if not waiting:
+            self.active_seconds += max(0, tick - self.previous_tick)
+        self.previous_tick = tick
+        return self.active_seconds >= self.limit
+
+
 def worker(name: str, settings: dict, work: Path, start_at: dt.datetime) -> None:
     logger = logger_for(name, work)
     status_path = work / "service" / f"{name}.json"
@@ -106,7 +142,9 @@ def worker(name: str, settings: dict, work: Path, start_at: dt.datetime) -> None
             process = subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                        text=True, encoding="utf-8", errors="strict", bufsize=1, start_new_session=os.name != "nt")
             limit = settings.get("timeout_seconds", 7200)
-            deadline = time.monotonic() + limit if limit is not None else float("inf")
+            started_tick = time.monotonic()
+            deadline = started_tick + limit if limit is not None else float("inf")
+            budget = TrainingBudget(limit, started_tick, started, process.pid) if name == "trainer" and limit is not None else None
             # 출력 배출은 별도 스레드가 맡아 중단과 시간 제한 감시를 막지 않습니다.
             def drain() -> None:
                 try:
@@ -117,8 +155,14 @@ def worker(name: str, settings: dict, work: Path, start_at: dt.datetime) -> None
 
             reader = threading.Thread(target=drain, daemon=True)
             reader.start()
+
+            def timed_out():
+                tick = time.monotonic()
+                return (budget.expired(tick, utcnow(), training_heartbeat(name, work))
+                        if budget is not None else tick >= deadline)
+
             while process.poll() is None:
-                if STOP.wait(0.5) or time.monotonic() >= deadline:
+                if STOP.wait(0.5) or timed_out():
                     process.terminate()
                     try:
                         process.wait(timeout=20)

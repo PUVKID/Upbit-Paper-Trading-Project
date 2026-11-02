@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import hashlib
+import importlib
 import json
 import logging
 from logging.handlers import RotatingFileHandler
@@ -40,6 +41,10 @@ STOP = threading.Event()
 
 class ArchiveIntegrityError(ValueError):
     """안전한 일반 파일의 크기·해시 불일치만 복구 대상으로 구분합니다."""
+
+
+class ArchiveContentError(ValueError):
+    """파싱 실패만 격리하며 저장·권한·경로 오류와 구분합니다."""
 
 
 def file_sha256(path):
@@ -326,7 +331,7 @@ def open_public(url, timeout=30):
 
 
 class Collector:
-    def __init__(self, work=WORK, target=TARGET_BYTES):
+    def __init__(self, work=WORK, target=TARGET_BYTES, research_settings=None):
         self.work = Path(work)
         self.work.mkdir(parents=True, exist_ok=True)
         self.archives = self.work / 'archives'
@@ -341,6 +346,40 @@ class Collector:
         self.integrity_cache = {}
         self.integrity_errors = {}
         self.runtime = {'state': '시작', 'bulk_error': None, 'live_error': None, 'archive_current': None}
+        # 임시 수집기 검사는 실제 연구 상태를 자동으로 열지 않습니다.
+        if research_settings is None:
+            research_settings = {}
+            if self.work.resolve() == WORK.resolve():
+                config = json.loads((ROOT.parent / 'engine-config.json').read_text(encoding='utf-8'))
+                research_settings = config.get('research', {})
+        if not isinstance(research_settings, dict) or type(research_settings.get('active', False)) is not bool:
+            raise ValueError('연구 제어 설정 형식이 잘못됐습니다')
+        self.research_control = None
+        if research_settings.get('active', False):
+            status_path = self.work / 'status.json'
+            if status_path.is_symlink():
+                raise ValueError('이전 수집 상태의 심볼릭 링크는 허용하지 않습니다')
+            if status_path.exists():
+                previous = json.loads(status_path.read_text(encoding='utf-8')).get('target_archive_bytes', target)
+                if type(previous) is not int or previous <= 0:
+                    raise ValueError('이전 수집 목표가 양의 정수가 아닙니다')
+                self.target = previous
+            project_path = str(ROOT.parent)
+            if project_path not in sys.path:
+                sys.path.insert(0, project_path)
+            module = importlib.import_module('4차.research_control')
+            self.research_control = module.ResearchControl(ROOT.parent, research_settings)
+
+    def collection_target(self):
+        with self.lock:
+            if self.research_control is None:
+                return self.target
+            target = self.research_control.collection_target()
+            if target is not None:
+                if type(target) is not int or target <= 0:
+                    raise ValueError('연구 수집 목표는 양의 정수 또는 명시적 대기여야 합니다')
+                self.target = target
+            return target
 
     def verified_file(self, name, item):
         if (not isinstance(item, dict) or name != item.get('name') or item.get('symbol') not in SYMBOLS
@@ -382,13 +421,33 @@ class Collector:
                 verified.append(item)
         return verified
 
+    def content_rejection(self, item, digest=None):
+        records = item.get('content_rejections', {})
+        if not isinstance(records, dict):
+            raise ValueError('내용 격리 기록의 형식이 잘못됐습니다')
+        digest = item.get('sha256') if digest is None else digest
+        if digest not in records:
+            return None
+        record = records[digest]
+        if (not isinstance(digest, str) or not re.fullmatch('[a-f0-9]{64}', digest)
+                or not isinstance(record, dict) or record.get('sha256') != digest
+                or record.get('name') != item.get('name') or not isinstance(record.get('reason'), str)):
+            raise ValueError('내용 격리 기록의 원본·해시 결합이 잘못됐습니다')
+        return record
+
     def status(self, **fields):
         with self.lock:
             self.runtime.update(fields)
             stats = self.store.summary()
             verified = self.verified_items()
             total = sum(item['bytes'] for item in verified)
-            ingested = sum(item['bytes'] for item in verified if item.get('ingested'))
+            ingested = sum(item['bytes'] for item in verified
+                           if item.get('ingested') is True and self.content_rejection(item) is None)
+            warnings = []
+            for item in self.manifest.values():
+                if isinstance(item, dict):
+                    self.content_rejection(item)
+                    warnings.extend(self.content_rejection(item, digest) for digest in item.get('content_rejections', {}))
             self.store.archive_evidence(self.target, ingested, total)
             result = {'schema_version': 1, 'updated_at': dt.datetime.now(dt.timezone.utc).isoformat(),
                       'training_ready': not self.integrity_errors and ingested >= self.target and self.store.ready(utc_ms()),
@@ -397,6 +456,8 @@ class Collector:
                       'unique_minute_rows': sum(v['rows'] for v in stats.values()), 'markets': stats,
                       'db_schema': 'binance_spot_v1', 'paper_only': True, **self.runtime}
             result['integrity_errors'] = dict(self.integrity_errors)
+            result['archive_warnings'] = warnings
+            result['archive_warning_count'] = len(warnings)
             result['error'] = result['bulk_error'] or result['live_error'] or ('원본 파일 무결성 확인 실패' if self.integrity_errors else None)
             atomic_json(self.work / 'status.json', result)
             return result
@@ -474,15 +535,23 @@ class Collector:
 
     def ingest(self, spec, path):
         count = 0
+
+        def frames(stream):
+            try:
+                chunks = pd.read_csv(stream, header=None, chunksize=200000)
+                if spec['kind'] == 'klines':
+                    yield from (parse_klines(chunk, utc_ms()) for chunk in chunks)
+                else:
+                    yield from aggregate_trade_chunks(chunks, utc_ms())
+            except ValueError as error:
+                failure = ArchiveContentError(f'{type(error).__name__}: {error}')
+                failure.partial_inserted_rows = count
+                raise failure from error
+
         with zipfile.ZipFile(path) as archive:
             member = archive_member(archive, spec['name'][:-4] + '.csv')
             with archive.open(member) as stream:
-                chunks = pd.read_csv(stream, header=None, chunksize=200000)
-                if spec['kind'] == 'klines':
-                    parsed = (parse_klines(chunk, utc_ms()) for chunk in chunks)
-                else:
-                    parsed = aggregate_trade_chunks(chunks, utc_ms())
-                for frame in parsed:
+                for frame in frames(stream):
                     if STOP.is_set():
                         raise InterruptedError('사용자 중단')
                     disk_budget(self.work, len(frame) * 1024)
@@ -490,6 +559,9 @@ class Collector:
         return count
 
     def archive(self, spec):
+        if self.collection_target() is None:
+            self.status(state='수집 요청 대기', archive_current=None)
+            return
         existing = self.manifest.get(spec['name'], {})
         path = self.archives / spec['name']
         self.status(state='외부 자료 수집', archive_current=spec['name'], download_bytes=0)
@@ -498,25 +570,52 @@ class Collector:
                 raise InterruptedError('사용자 중단')
             try:
                 path, digest = self.download(spec)
+                pending = {**spec, 'bytes': path.stat().st_size, 'sha256': digest,
+                           'sha256_verified': True, 'ingested': False,
+                           'content_rejections': existing.get('content_rejections', {})}
+                if self.content_rejection(existing, digest) is not None:
+                    with self.lock:
+                        if pending != existing:
+                            self.manifest[spec['name']] = pending
+                            atomic_json(self.manifest_path, self.manifest)
+                    logging.warning('동일 해시의 내용 검증 실패 원본은 미적재 유지 %s SHA256=%s', spec['name'], digest)
+                    self.status(state='내용 검증 실패 원본 격리 유지', archive_current=None)
+                    return
                 if existing.get('ingested') is True and existing.get('sha256') == digest:
                     self.integrity_errors.pop(spec['name'], None)
                     self.status(bulk_error=None, archive_current=None)
                     return
                 with self.lock:
-                    self.manifest[spec['name']] = {**spec, 'bytes': path.stat().st_size,
-                                                   'sha256': digest, 'sha256_verified': True, 'ingested': False}
+                    self.manifest[spec['name']] = pending
                     atomic_json(self.manifest_path, self.manifest)
-                inserted = self.ingest(spec, path)
+                try:
+                    inserted = self.ingest(spec, path)
+                except ArchiveContentError as error:
+                    # 정상 prefix는 그대로 두고 원본 해시의 실패를 영속적으로 보존합니다.
+                    with self.lock:
+                        self.manifest[spec['name']]['content_rejections'][digest] = {
+                            'name': spec['name'], 'sha256': digest, 'reason': str(error),
+                            'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(),
+                            'partial_inserted_rows_this_attempt': error.partial_inserted_rows}
+                        atomic_json(self.manifest_path, self.manifest)
+                    logging.warning('내용 검증 실패 원본 미적재 격리 %s SHA256=%s', spec['name'], digest, exc_info=True)
+                    self.status(state='내용 검증 실패 원본 격리', archive_current=None,
+                                bulk_error=f'{type(error).__name__}: {error}')
+                    return
                 with self.lock:
                     self.manifest[spec['name']].update(ingested=True, inserted_rows=inserted)
                     atomic_json(self.manifest_path, self.manifest)
                 self.status(bulk_error=None, archive_current=None)
+                if self.research_control is not None:
+                    self.collection_target()
+                    self.status()
                 return
             except urllib.error.HTTPError as error:
                 if error.code == 404:
                     logging.warning('공식 미제공 파일 %s', spec['name'])
                     with self.lock:
-                        self.manifest[spec['name']] = {**spec, 'available': False, 'http_status': 404}
+                        self.manifest[spec['name']] = {**existing, **spec, 'available': False,
+                                                       'http_status': 404, 'ingested': False}
                         atomic_json(self.manifest_path, self.manifest)
                     return
                 if error.code not in (429, 500, 502, 503, 504) or attempt == 2:
@@ -564,17 +663,20 @@ class Collector:
                 try:
                     now = pd.Timestamp.now(tz='UTC')
                     for spec in bootstrap_plan(now):
-                        if STOP.is_set():
+                        if STOP.is_set() or self.collection_target() is None:
                             break
                         self.archive(spec)
                     for spec in bulk_plan(now):
-                        if STOP.is_set() or self.status()['ingested_archive_bytes'] >= self.target:
+                        if (STOP.is_set() or self.collection_target() is None
+                                or self.status()['ingested_archive_bytes'] >= self.target):
                             break
                         self.archive(spec)
                     if not STOP.is_set():
-                        self.status(state='목표 자료 확보 후 실시간 갱신' if self.status()['ingested_archive_bytes'] >= self.target
+                        target = self.collection_target()
+                        self.status(state='수집 요청 대기' if target is None else
+                                    '목표 자료 확보 후 실시간 갱신' if self.status()['ingested_archive_bytes'] >= self.target
                                     else '공식 자료 범위 탐색 완료; 다음 갱신 대기')
-                        STOP.wait(3600)
+                        STOP.wait(15 if self.research_control is not None else 3600)
                 except InterruptedError:
                     break
                 except Exception as error:

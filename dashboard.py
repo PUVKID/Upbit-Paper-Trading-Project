@@ -338,7 +338,7 @@ class SnapshotAdapter:
         current = mapping(training.get("training"))
         completed = progress.get("completed_candidates", current.get("completed_candidates"))
         total = progress.get("total_candidates", current.get("total_candidates"))
-        if progress.get("status") == "waiting_data":
+        if progress.get("status") in ("waiting_data", "waiting_request"):
             completed = total = None
         training_view = {**training, "state": progress.get("status", current.get("status", training.get("state"))),
                          "stage": progress.get("stage"), "market": progress.get("market"),
@@ -358,7 +358,7 @@ class SnapshotAdapter:
                          "learning_rate": progress.get("learning_rate", progress.get("eta"))}
         if finite(completed) and finite(total) and total > 0:
             training_view["progress"] = completed / total
-        if progress.get("status") == "waiting_data":
+        if progress.get("status") in ("waiting_data", "waiting_request"):
             training_view["progress"] = None
         # 보고서 설정 전체가 아닌 실제 사용 시간봉 한 항목만 표시합니다.
         training_view["timeframe"] = mapping(training.get("config")).get("base_timeframe")

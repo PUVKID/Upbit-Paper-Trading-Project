@@ -41,6 +41,7 @@ DEFAULT_CONFIG = {
     "external": {"enabled": False, "db_path": "3차/work/data/external.sqlite3",
                  "status_path": "3차/work/status.json", "wait_for_dataset": False,
                  "target_bytes": 50000000000},
+    "research": {"active": False, "state_path": "4차/work/research_control.json"},
     "collection": {"recent_pages": 10, "backfill_pages_per_cycle": 5,
                    "poll_seconds": 30, "request_interval": 0.16, "retries": 4},
     "training": {"horizon": 12, "label_threshold": 0.006,
@@ -100,8 +101,8 @@ def load_config(path=None):
             if key not in config:
                 raise ValueError(f"지원하지 않는 설정: {key}")
             if isinstance(config[key], dict):
-                if key == "external" and not isinstance(value, dict):
-                    raise ValueError("external 설정은 객체여야 합니다")
+                if key in {"external", "research"} and not isinstance(value, dict):
+                    raise ValueError(f"{key} 설정은 객체여야 합니다")
                 unknown = set(value) - set(config[key])
                 if unknown:
                     raise ValueError(f"지원하지 않는 설정: {key}.{sorted(unknown)}")
@@ -163,6 +164,10 @@ def load_config(path=None):
         raise ValueError("수집 페이지와 대기 시간은 양수여야 합니다")
     utc(paper["start_time"])
     config["external"] = import_module("3차.external_features").validate_config(config["external"], ROOT)
+    config["research"] = import_module("4차.research_control").validate_config(config["research"], ROOT)
+    if config["research"]["active"] and (config["external"]["enabled"] is False
+                                         or not config["external"]["wait_for_dataset"]):
+        raise ValueError("명시 요청 연구에는 외부 자료 사용과 준비 대기 검사가 필요합니다")
     return config
 
 
@@ -249,7 +254,11 @@ class CandleStore:
 
     def summary(self):
         with connect(self.path) as db:
-            rows = db.execute("SELECT market,tf,COUNT(*),MIN(open_time),MAX(close_time) FROM candles GROUP BY market,tf").fetchall()
+            # 전체 행의 테이블 재접근을 피하고 같은 읽기 스냅샷에서 경계만 따로 조회합니다.
+            db.execute("BEGIN")
+            grouped = db.execute("SELECT market,tf,COUNT(*),MAX(close_time) FROM candles GROUP BY market,tf").fetchall()
+            rows = [(m, tf, n, db.execute("SELECT MIN(open_time) FROM candles WHERE market=? AND tf=?",
+                                         (m, tf)).fetchone()[0], end) for m, tf, n, end in grouped]
             cursors = {(r[0], r[1]): bool(r[2]) for r in db.execute("SELECT market,tf,done FROM cursors")}
         return [{"market": m, "timeframe": tf, "rows": n, "start": a, "end": b,
                  "backfill_exhausted": cursors.get((m, tf), False)} for m, tf, n, a, b in rows]
@@ -1047,8 +1056,13 @@ class ExperimentAudit:
             db.execute("UPDATE final_tests SET status='complete' WHERE id=?", (run,))
 
 
+_research_progress = ContextVar("research_progress", default=None)
+_research_attempt = ContextVar("research_attempt", default=None)
+
+
 def progress(**fields):
-    atomic_json(ROOT / "work/service/training_progress.json", {"updated_at": iso(None), **fields})
+    atomic_json(ROOT / "work/service/training_progress.json",
+                {"updated_at": iso(None), **fields, **(_research_progress.get() or {})})
 
 
 def protected_periods(config, consumed=()):
@@ -1254,7 +1268,210 @@ def market_feature_loader(store, config, start, end):
                     active_error.add_note("선행 특징 준비 실패:\n" + traceback.format_exc())
 
 
+def _research_file_hash(path):
+    path = Path(path)
+    if path.is_symlink():
+        raise ValueError("연구 산출물의 심볼릭 링크는 허용하지 않습니다")
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _research_json(path):
+    return json.loads(Path(path).read_text(encoding="utf-8"),
+                      object_pairs_hook=import_module("4차.research_control")._pairs)
+
+
+def _research_model_hashes(models_dir, run, manifest):
+    directory = Path(models_dir) / "versions" / run
+    if not directory.resolve().is_relative_to(Path(models_dir).resolve()):
+        raise ValueError("연구 모델 경계가 잘못됐습니다")
+    if set(manifest["packages"]) != set(MARKETS):
+        raise ValueError("완료 모델의 다섯 시장이 다릅니다")
+    hashes = {}
+    for package in manifest["packages"].values():
+        for name in package["models"]:
+            if (not isinstance(name, str) or Path(name).name != name or "\\" in name
+                    or not name.endswith(".ubj") or name in hashes):
+                raise ValueError("완료 모델 파일 경로·중복 오류")
+            hashes[name] = _research_file_hash(directory / name)
+            if hashes[name] is None:
+                raise ValueError("완료 모델 파일이 없습니다")
+    return hashes
+
+
+def validate_research_result(control, batch, record):
+    control._validate_attempt(record, batch)
+    if record["phase"] != "complete":
+        raise ValueError("내구성 있는 연구 완료 결과가 없습니다")
+    report = record["report"]
+    models = ROOT / record["models_dir"]
+    reports = ROOT / record["reports_dir"]
+    manifest = _research_json(models / "versions" / record["run"] / "manifest.json")
+    binding = import_module("4차.research_control").attempt_binding(record)
+    if (stable_hash(manifest) != record["manifest_sha256"] or manifest.get("research_batch") != binding
+            or manifest.get("run") != record["run"] or manifest.get("paper_only") is not True
+            or manifest.get("source_hash") != report.get("source_hash")
+            or manifest.get("config") != report["config"]
+            or manifest.get("schema_version") != 2 or manifest.get("execution_policy") != EXECUTION_POLICY
+            or _research_model_hashes(models, record["run"], manifest) != record["model_sha256"]
+            or len(record["model_sha256"]) != report["training"]["total_candidates"]):
+        raise ValueError("완료 보고서·manifest·모델 파일의 결합 또는 내용이 다릅니다")
+    result_path = reports / "experiments" / (record["run"] + ".json")
+    if result_path.exists() and stable_hash(_research_json(result_path)) != record["report_sha256"]:
+        raise ValueError("완료 보고서가 변경됐거나 다른 요청의 결과입니다")
+    latest = reports / "training.json"
+    if _research_file_hash(latest) != record["previous_training_sha256"]:
+        if not latest.is_file() or stable_hash(_research_json(latest)) != record["report_sha256"]:
+            raise ValueError("최신 학습 보고서가 복구 대상 또는 이전 보고서와 다릅니다")
+    pointer = models / "current.json"
+    if _research_file_hash(pointer) != record["previous_pointer_sha256"]:
+        expected = {"run": record["run"], "manifest_hash": record["manifest_sha256"]}
+        if (not report["promotion"]["promote"] or not pointer.is_file()
+                or _research_json(pointer) != expected):
+            raise ValueError("현재 모델 포인터가 복구 대상 또는 이전 포인터와 다릅니다")
+    return report
+
+
+def _durable_research_json(path, value):
+    atomic_json(path, value)
+    if os.name != "nt":
+        fd = os.open(Path(path).parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+        try:
+            os.fsync(fd)
+        finally:
+            os.close(fd)
+
+
+def finish_research_outputs(record, report):
+    reports, models = ROOT / record["reports_dir"], ROOT / record["models_dir"]
+    _durable_research_json(reports / "experiments" / (record["run"] + ".json"), report)
+    _durable_research_json(reports / "training.json", report)
+    if report["promotion"]["promote"]:
+        _durable_research_json(models / "current.json",
+                               {"run": record["run"], "manifest_hash": record["manifest_sha256"]})
+    training = report["training"]
+    progress(status="complete", stage="complete", run=record["run"],
+             started_at=training.get("started_at"), elapsed_seconds=training.get("duration_seconds"),
+             market=None, candidate=None, completed_candidates=training["completed_candidates"],
+             total_candidates=training["total_candidates"], error=None,
+             rows=training.get("rows"), features=training.get("features"), promoted=report["promotion"]["promote"])
+
+
+def recover_research_result(control, batch):
+    record = control.read_attempt(batch)
+    if record["phase"] == "model_failed":
+        report_path = ROOT / record["reports_dir"] / "experiments" / (record["run"] + ".json")
+        if report_path.exists():
+            raise ValueError("모델 실패 기록과 완료 보고서가 충돌합니다")
+        if batch["status"] == "training":
+            control.fail_training(batch["id"], batch["claim"], record["error"])
+        return None
+    if record["phase"] != "complete":
+        raise ValueError("이전 시도의 완료 여부가 미확인입니다. claim을 보존하고 재적합을 차단합니다")
+    report = validate_research_result(control, batch, record)
+    if batch["status"] == "collecting":
+        control.restore_claim(batch, record)
+    finish_research_outputs(record, report)
+    control.complete_training(batch["id"], record["claim"], report)
+    return report
+
+
 def train_cycle(config, final=False, live=False):
+    settings = config.get("research", {})
+    if not settings.get("active", False):
+        return _train_cycle(config, final=final, live=live)
+    external = import_module("3차.external_features")
+    resolved = external.validate_config(config["external"], ROOT)
+    if resolved["enabled"] is False or not resolved["wait_for_dataset"]:
+        raise ValueError("명시 요청 연구의 외부 자료 준비 검사를 생략할 수 없습니다")
+    control = import_module("4차.research_control").ResearchControl(ROOT, settings)
+    token = _research_progress.set({"research_active": True, "pid": os.getpid()})
+    try:
+        with control.training_lock():
+            batch = wait_for_research_batch(control)
+            _research_progress.set({"research_active": True, "pid": os.getpid(), "research_batch_id": batch["id"]})
+            if batch["attempts"]:
+                recovered = recover_research_result(control, batch)
+                if recovered is not None:
+                    return recovered
+                batch = control.pending_batch()
+            batch_config = copy.deepcopy(config)
+            batch_config["external"] = {**resolved, "target_bytes": batch["target_bytes"]}
+            _research_progress.set({"research_active": True, "pid": os.getpid(), "research_batch_id": batch["id"]})
+            wait_for_training_data(batch_config)
+            claim = control.claim_training(batch["id"])
+            models, reports = Path(config["models_dir"]), Path(config["reports_dir"])
+            record = control.start_attempt(claim, utc(None).strftime("%Y%m%dT%H%M%S") + "-" + uuid.uuid4().hex[:8],
+                                           reports.relative_to(ROOT).as_posix(), models.relative_to(ROOT).as_posix(),
+                                           _research_file_hash(models / "current.json"),
+                                           _research_file_hash(reports / "training.json"))
+            attempt_token = _research_attempt.set({**record, "control": control, "result_started": False})
+            try:
+                report = _train_cycle(batch_config, final=final, live=live)
+                validate_research_result(control, claim, control.read_attempt(claim))
+                control.complete_training(batch["id"], claim["claim"], report)
+                return report
+            except BaseException as error:
+                try:
+                    saved = control.read_attempt(claim)
+                    if saved["phase"] == "complete" or _research_attempt.get()["result_started"]:
+                        control.note_training_error(batch["id"], claim["claim"], repr(error))
+                    else:
+                        control.record_model_failure(batch["id"], claim["claim"], repr(error))
+                except Exception as record_error:
+                    error.add_note(f"연구 실패 상태 저장 오류: {record_error!r}")
+                raise
+            finally:
+                _research_attempt.reset(attempt_token)
+    finally:
+        _research_progress.reset(token)
+
+
+def wait_for_research_batch(control, stop=None):
+    stop = threading.Event() if stop is None else stop
+    while not stop.is_set():
+        batch = control.pending_batch()
+        if batch is not None:
+            return batch
+        progress(status="waiting_request", stage="idle", reason="명시적인 다음 연구 요청 대기", error=None,
+                 run=None, started_at=None, elapsed_seconds=None, progress=None,
+                 completed_candidates=None, total_candidates=None, candidate=None, market=None,
+                 current_round=None, target_rounds=None, rows=None, features=None,
+                 research_batch_id=None)
+        if stop.wait(12):
+            break
+    raise KeyboardInterrupt("연구 요청 대기 중 중단 요청")
+
+
+def request_research_increment(config):
+    control = import_module("4차.research_control").ResearchControl(ROOT, config.get("research", {}))
+
+    def actual_ingested():
+        external = import_module("3차.external_features")
+        settings = external.validate_config(config["external"], ROOT)
+        # 과거 완료 목표나 캐시된 status 용량이 아니라 현재 Linux DB의 적재 근거를 읽습니다.
+        external.resolve_for_training(settings, ROOT, utc(None))
+        with external._database(settings, ROOT) as db:
+            values = dict(db.execute("SELECT key,value FROM metadata WHERE key IN "
+                                     "('ingested_archive_bytes','verified_archive_bytes')"))
+            for key in ("ingested_archive_bytes", "verified_archive_bytes"):
+                value = values.get(key)
+                if not isinstance(value, str) or not value.isascii() or not value.isdecimal():
+                    raise ValueError("현재 외부 DB의 고유 적재량 근거가 유효하지 않습니다")
+            ingested, verified = int(values["ingested_archive_bytes"]), int(values["verified_archive_bytes"])
+            if verified < ingested:
+                raise ValueError("현재 외부 DB의 검증·적재량이 일치하지 않습니다")
+            return ingested
+
+    return control.request_increment(actual_ingested)
+
+
+def _train_cycle(config, final=False, live=False):
     started = time.monotonic()
     started_at = iso(None)
     if final and live:
@@ -1274,7 +1491,8 @@ def train_cycle(config, final=False, live=False):
         raise ValueError("잠금 시험 기간이 끝나지 않았습니다")
     if final:
         audit.assert_final_available(*plan["holdout"])
-    run = utc(None).strftime("%Y%m%dT%H%M%S") + "-" + uuid.uuid4().hex[:8]
+    attempt = _research_attempt.get()
+    run = attempt["run"] if attempt is not None else utc(None).strftime("%Y%m%dT%H%M%S") + "-" + uuid.uuid4().hex[:8]
 
     def update_progress(**fields):
         progress(run=run, started_at=started_at, elapsed_seconds=time.monotonic() - started, **fields)
@@ -1298,6 +1516,8 @@ def train_cycle(config, final=False, live=False):
                            "fold_id": stable_hash(report_plan),
                            "periods": report_plan},
               "markets": {}, "training": {"status": "학습 중", "gpu_required": True, "started_at": started_at}, "rounds": []}
+    if attempt is not None:
+        report["research_batch"] = import_module("4차.research_control").attempt_binding(attempt)
     with market_feature_loader(store, config, plan["train"][0], plan["validation"][1]) as read_market:
         for market in config["markets"]:
             update_progress(status="running", stage="features", market=market, candidate=None,
@@ -1393,6 +1613,8 @@ def train_cycle(config, final=False, live=False):
                 "run": run, "feature_columns": columns, "packages": packages, "config": config,
                 "source_hash": report["source_hash"], "paper_only": True,
                 "plan": report["periods"], "created_at": iso(None), "external_resolution": external_resolution}
+    if attempt is not None:
+        manifest["research_batch"] = report["research_batch"]
     atomic_json(directory / "manifest.json", manifest)
     manifest_hash = stable_hash(manifest)
     if final:
@@ -1426,6 +1648,15 @@ def train_cycle(config, final=False, live=False):
                               rows=sum(r["splits"]["train"]["rows"] for r in report["markets"].values()),
                               features=len(columns))
     report["class_distribution"] = {m: r["validation"]["class_distribution"] for m, r in report["markets"].items()}
+    if attempt is not None:
+        attempt["result_started"] = True
+        control = attempt["control"]
+        control.store_result(attempt["batch_id"], attempt["claim"], report, manifest_hash,
+                             _research_model_hashes(config["models_dir"], run, manifest))
+        saved = control.read_attempt(control.pending_batch())
+        validate_research_result(control, control.pending_batch(), saved)
+        finish_research_outputs(saved, report)
+        return report
     atomic_json(Path(config["reports_dir"]) / "experiments" / (run + ".json"), report)
     atomic_json(Path(config["reports_dir"]) / "training.json", report)
     # 다섯 코인의 모델과 보고서가 모두 완성된 뒤 포인터 하나만 바꿉니다. 이전 버전은 삭제하지 않습니다.
@@ -1455,7 +1686,9 @@ def wait_for_training_data(config, stop=None, initial=None):
                  ingested_archive_bytes=evidence.get("ingested_archive_bytes", 0),
                  target_archive_bytes=evidence.get("target_archive_bytes", 50000000000),
                  checked_at=evidence["checked_at"], rows=None, features=None,
-                 run=None, started_at=None, elapsed_seconds=None)
+                 run=None, started_at=None, elapsed_seconds=None, progress=None,
+                 completed_candidates=None, total_candidates=None, candidate=None, market=None,
+                 current_round=None, target_rounds=None)
         if stop.wait(12):
             break
         pending = None
@@ -1723,6 +1956,7 @@ def build_parser():
     experiment = sub.add_parser("experiment")
     experiment.add_argument("--final", action="store_true")
     sub.add_parser("check-gpu")
+    sub.add_parser("research-request", help="현재 실제 적재량에 새 고유 2GB를 더하는 연구 요청")
     return parser
 
 
@@ -1731,6 +1965,9 @@ def main(argv=None):
     config = load_config(args.config)
     if args.command == "check-gpu":
         print(json.dumps(check_gpu(), ensure_ascii=False))
+        return 0
+    if args.command == "research-request":
+        print(json.dumps(request_research_increment(config), ensure_ascii=False))
         return 0
     if args.command == "experiment":
         with process_lock(ROOT / "work/service/trainer.lock"):

@@ -220,8 +220,8 @@ function render() {
   const starts = trainSplits.map(split => split.period_start).filter(value => typeof value === 'string').sort();
   const ends = trainSplits.map(split => split.period_end).filter(value => typeof value === 'string').sort();
   const gpuFits = marketEntries.flatMap(([, report]) => report.gpu || []);
-  const states = {running: '진행 중', complete: '완료', failed: '오류', error: '오류', waiting_data: '50GB 자료 준비'};
-  const stages = {features: '피처 구성', fit: '후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '완료', download: '수집 · 검증 · 처리'};
+  const states = {running: '진행 중', complete: '완료', failed: '오류', error: '오류', waiting_data: '자료 준비', waiting_request: '추가 요청 대기'};
+  const stages = {features: '피처 구성', fit: '후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '완료', download: '수집 · 검증 · 처리', idle: '연구 대기'};
   const external = s.external_data || {};
   const gb = value => numeric(value) ? `${number(value / 1e9, 2)} GB` : '미기록';
   const stepIndex = t.state === 'running' ? ({features: 0, fit: 1, calibration: 2, locked_test: 2, complete: 3})[t.stage] : undefined;
@@ -232,7 +232,7 @@ function render() {
     else item.removeAttribute('aria-current');
   });
   set('workflow-status', stepIndex === undefined ? `현재 단계: ${states[t.state] || '기록 대기'}` : `현재 단계: ${stepNames[stepIndex]} · ${stages[t.stage]}`);
-  set('workflow-title', t.state === 'running' ? '가격의 흐름을 배우고 있어요' : t.state === 'complete' ? '이번 학습을 마쳤어요' : ['failed', 'error'].includes(t.state) ? '학습 상태를 확인하고 있어요' : '가격의 흐름을 배우는 과정');
+  set('workflow-title', t.state === 'running' ? '가격의 흐름을 배우고 있어요' : t.state === 'complete' ? '이번 학습을 마쳤어요' : t.state === 'waiting_request' ? '다음 연구 요청을 기다려요' : ['failed', 'error'].includes(t.state) ? '학습 상태를 확인하고 있어요' : '가격의 흐름을 배우는 과정');
   details('learning-strip', [
     ['현재 단계', stepIndex === undefined ? (states[t.state] || '기록 대기') : stepNames[stepIndex]],
     t.state === 'waiting_data' ? ['처리 완료 / 목표', `${gb(external.ingested_archive_bytes)} / ${gb(external.target_archive_bytes)}`] : ['완료 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],

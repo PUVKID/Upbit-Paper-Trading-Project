@@ -8,6 +8,22 @@ import dashboard
 
 
 class ExternalDashboardTests(unittest.TestCase):
+    def test_waiting_request_does_not_reuse_completed_report_progress(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            values = {'work/reports/training.json': {'progress': 1.0, 'training': {'completed_candidates': 15, 'total_candidates': 15}},
+                      'work/service/training_progress.json': {'status': 'waiting_request', 'stage': 'idle'}}
+            for name, value in values.items():
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps(value), encoding='utf-8')
+            training = dashboard.SnapshotAdapter(root).status()['training']
+            self.assertEqual(training['state'], 'waiting_request')
+            self.assertEqual(training['stage'], 'idle')
+            self.assertIsNone(training['progress'])
+            self.assertIsNone(training['candidate_index'])
+            self.assertIsNone(training['candidate_total'])
+
     def test_waiting_data_exposes_volume_but_not_private_error_or_old_progress(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
