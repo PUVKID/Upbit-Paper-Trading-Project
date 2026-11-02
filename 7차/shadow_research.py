@@ -127,7 +127,17 @@ def atomic_json(path, value):
         stream.write(payload)
         stream.flush()
         os.fsync(stream.fileno())
-    os.replace(temporary, path)
+    for attempt in range(5):
+        if path.is_symlink():
+            raise ValueError('JSON 대상이 연결 파일입니다')
+        try:
+            os.replace(temporary, path)
+            break
+        except OSError as error:
+            if (sys.platform != 'win32' or getattr(error, 'winerror', None) not in (5, 32, 33)
+                    or attempt == 4):
+                raise
+            time.sleep((attempt+1)*0.01)
     if sys.platform == 'linux':
         fd = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
         try:
