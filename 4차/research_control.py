@@ -14,7 +14,7 @@ import uuid
 
 INITIAL_BYTES = 50_000_000_000
 INCREMENT_BYTES = 2_000_000_000
-DEFAULT_SETTINGS = {"active": False, "state_path": "4차/work/research_control.json"}
+DEFAULT_SETTINGS = {"active": False, "continuous": False, "state_path": "4차/work/research_control.json"}
 MARKETS = {"KRW-BTC", "KRW-SOL", "KRW-ETH", "KRW-XRP", "KRW-DOGE"}
 BATCH_KEYS = {"id", "kind", "baseline_bytes", "target_bytes", "status", "requested_at",
               "attempts", "claim", "last_error", "run", "completed_at", "promoted"}
@@ -39,6 +39,10 @@ def validate_config(settings, root):
     result = {**DEFAULT_SETTINGS, **settings}
     if type(result["active"]) is not bool:
         raise ValueError("research.active는 bool이어야 합니다")
+    if type(result["continuous"]) is not bool:
+        raise ValueError("research.continuous는 bool이어야 합니다")
+    if result["continuous"] and not result["active"]:
+        raise ValueError("연속 연구는 active 설정이 필요합니다")
     value = result["state_path"]
     if (not isinstance(value, str) or not value.strip() or "\x00" in value
             or value.startswith("file:") or (os.name != "nt" and (PureWindowsPath(value).drive or "\\" in value))):
@@ -247,6 +251,35 @@ class ResearchControl:
             state["batches"].append(batch)
             self._write(state)
             return batch
+
+    def ensure_continuous_batch(self, read_actual_ingested, stop=None):
+        """완료 뒤 새 요청 하나만 생성하고 진행 중인 요청은 그대로 반환합니다."""
+        self._require_active()
+        if not self.settings["continuous"]:
+            return self.pending_batch()
+        # 느린 원본 재검증은 trainer가 읽는 상태 잠금을 점유하지 않습니다.
+        with _file_lock(self.path.with_suffix(".collection.lock")):
+            with _file_lock(self.path.with_suffix(".lock")):
+                if stop is not None and stop.is_set():
+                    return None
+                state = self._read()
+                previous = state["batches"][-1]
+                if previous["status"] != "completed":
+                    return previous
+            baseline = read_actual_ingested()
+            with _file_lock(self.path.with_suffix(".lock")):
+                if stop is not None and stop.is_set():
+                    return None
+                state = self._read()
+                previous = state["batches"][-1]
+                if previous["status"] != "completed":
+                    return previous
+                if type(baseline) is not int or baseline < previous["target_bytes"]:
+                    raise ValueError("현재 실제 고유 적재량이 유효하지 않습니다")
+                batch = self._new_batch("increment", baseline, baseline + INCREMENT_BYTES)
+                state["batches"].append(batch)
+                self._write(state)
+                return batch
 
     @staticmethod
     def _owned(state, batch_id, claim):

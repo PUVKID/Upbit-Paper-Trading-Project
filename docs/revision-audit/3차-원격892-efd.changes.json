@@ -112,14 +112,6 @@
     "after_sha256": "bb132af274660fef567cc1bad5b7f4d7c1cf4427bbe9fcdb6c3701f8ac2896c5"
   },
   {
-    "path": "tests/test_dashboard.py",
-    "status": "수정",
-    "before_bytes": 28869,
-    "after_bytes": 34030,
-    "before_sha256": "315f9675c9283fd8ee3566906142d7c21ffafc821726901e9129cd9c4cad2226",
-    "after_sha256": "5038c4a9768f409bd928d7f07b00bbd5191f038ebe7cf51978767e853f8d367e"
-  },
-  {
     "path": "tests/test_external_dashboard.py",
     "status": "추가",
     "before_bytes": null,

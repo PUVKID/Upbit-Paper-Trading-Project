@@ -41,7 +41,7 @@ DEFAULT_CONFIG = {
     "external": {"enabled": False, "db_path": "3차/work/data/external.sqlite3",
                  "status_path": "3차/work/status.json", "wait_for_dataset": False,
                  "target_bytes": 50000000000},
-    "research": {"active": False, "state_path": "4차/work/research_control.json"},
+    "research": {"active": False, "continuous": False, "state_path": "4차/work/research_control.json"},
     "collection": {"recent_pages": 10, "backfill_pages_per_cycle": 5,
                    "poll_seconds": 30, "request_interval": 0.16, "retries": 4},
     "training": {"horizon": 12, "label_threshold": 0.006,
@@ -468,8 +468,11 @@ def training_weights(train, settings):
         factors = np.clip(np.sqrt(counts.max() / np.maximum(counts, 1)), 1, settings["class_weight_cap"])
     weights = recency_weights(train.index, settings["half_life_days"]) * factors[labels]
     weights = (weights / weights.mean()).astype(np.float32)
+    class_weight_sums = np.bincount(labels, weights=weights, minlength=3)
     return weights, {"scope": "train_only", "mode": settings["class_weight_mode"],
                      "class_counts": counts.tolist(), "class_factors": factors.tolist(),
+                     "class_weight_sums": class_weight_sums.tolist(),
+                     "effective_class_distribution": (class_weight_sums / class_weight_sums.sum()).tolist(),
                      "cap": settings["class_weight_cap"], "half_life_days": settings["half_life_days"]}
 
 
@@ -1588,9 +1591,26 @@ def _train_cycle(config, final=False, live=False):
             majority = int(split["train"].label.astype(int).value_counts().idxmax())
             metrics = classification_metrics(validation.label, evaluated, majority)
             metrics.update(start=iso(validation.index.min()), end=iso(validation.index.max()))
+            # 학습 재대입은 최근 일부만 진단하며 보정·정책·승격 선정에는 사용하지 않습니다.
+            train_sample = split["train"].tail(2048)
+            train_sample_probs = sum(w * predict_booster(m, train_sample, cols, e["best_iteration"])
+                                     for w, m, e in zip(weights, models, gpu_evidence))
+            probability_stages = {
+                name: {**probability_diagnostics(p, rule),
+                       "class_distribution": np.bincount(frame.label.astype(int), minlength=3).tolist(),
+                       "logloss": logloss(frame.label, p), "selection_scope": "diagnostic_only",
+                       "sample_scope": "recent_training_tail" if name == "train" else "full_split",
+                       "split_rows": len(split["train"]) if name == "train" else len(frame),
+                       "start": iso(frame.index.min()), "end": iso(frame.index.max())}
+                for name, frame, p in (
+                    ("train", train_sample, train_sample_probs),
+                    ("tune", split["tune"], sum(w * p for w, p in zip(weights, tune_probs))),
+                    ("calibration_before", calibration, mixed),
+                    ("calibration_after", calibration, calibrated))}
             diagnostics = {**probability_diagnostics(evaluated, rule), "scope": "validation_after_policy_selection",
                            "rule_trials": trials, "weighting": training_weights(split["train"], tr)[1],
                            "calibration": classification_metrics(calibration.label, calibrated, majority),
+                           "probability_stages": probability_stages,
                            "policy_selection": probability_diagnostics(policy_probs, rule),
                            "feature_rows_dropped": dropped_features, "policy_eligible": rule["eligible"]}
             stage_times["calibration_policy_validation_seconds"] = time.monotonic() - evaluation_started

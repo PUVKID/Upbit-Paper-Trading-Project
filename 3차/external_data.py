@@ -377,9 +377,28 @@ class Collector:
 
     def collection_target(self):
         with self.lock:
+            if STOP.is_set():
+                return None
             if self.research_control is None:
                 return self.target
-            target = self.research_control.collection_target()
+            if self.research_control.settings.get('continuous') is True:
+                def actual_ingested():
+                    state = self.status()
+                    if state['integrity_errors']:
+                        raise ValueError('원본 무결성 오류가 있어 다음 연구를 생성하지 않습니다')
+                    return state['ingested_archive_bytes']
+
+                batch = self.research_control.ensure_continuous_batch(actual_ingested, stop=STOP)
+                if batch is None:
+                    return None
+                self.target = batch['target_bytes']
+                target = batch['target_bytes']
+                # 학습 목표는 고정하고 수집만 다음 고유 자료를 유한 선행합니다.
+                if batch['status'] == 'training':
+                    target += 2_000_000_000
+                return target
+            else:
+                target = self.research_control.collection_target()
             if target is not None:
                 if type(target) is not int or target <= 0:
                     raise ValueError('연구 수집 목표는 양의 정수 또는 명시적 대기여야 합니다')
@@ -668,18 +687,24 @@ class Collector:
                 try:
                     now = pd.Timestamp.now(tz='UTC')
                     for spec in bootstrap_plan(now):
-                        if STOP.is_set() or self.collection_target() is None:
+                        target = self.collection_target()
+                        if STOP.is_set() or target is None:
+                            break
+                        ready = self.status()
+                        # 준비된 자료는 선행 한도를 지키고 부족한 최신 분봉만 제한된 계획으로 복구합니다.
+                        if ready['ingested_archive_bytes'] >= target and ready['training_ready']:
                             break
                         self.archive(spec)
                     for spec in bulk_plan(now):
-                        if (STOP.is_set() or self.collection_target() is None
-                                or self.status()['ingested_archive_bytes'] >= self.target):
+                        target = self.collection_target()
+                        if (STOP.is_set() or target is None
+                                or self.status()['ingested_archive_bytes'] >= target):
                             break
                         self.archive(spec)
                     if not STOP.is_set():
                         target = self.collection_target()
                         self.status(state='수집 요청 대기' if target is None else
-                                    '목표 자료 확보 후 실시간 갱신' if self.status()['ingested_archive_bytes'] >= self.target
+                                    '목표 자료 확보 후 실시간 갱신' if self.status()['ingested_archive_bytes'] >= target
                                     else '공식 자료 범위 탐색 완료; 다음 갱신 대기')
                         STOP.wait(15 if self.research_control is not None else 3600)
                 except InterruptedError:
