@@ -57,7 +57,7 @@ DEFAULT_CONFIG = {
                   "class_weight_candidates": ["recency", "bounded_inverse_sqrt"]},
     "paper": {"initial_cash": 10000000, "fee": 0.0005, "slippage": 0.0005,
               "max_allocation": 0.125, "max_total_allocation": 0.5,
-              "daily_loss_limit": 0.015, "stop_loss": 0.02, "take_profit": 0.04,
+              "daily_loss_limit": 0.015, "max_drawdown": 0.1, "stop_loss": 0.02, "take_profit": 0.04,
               "min_order": 5000, "poll_seconds": 30,
               "start_time": None, "max_quote_age_seconds": 10},
 }
@@ -142,6 +142,7 @@ def load_config(path=None):
         raise ValueError("초기 자본과 최소 주문금액을 확인하세요")
     if paper["max_allocation"] > paper["max_total_allocation"]:
         raise ValueError("코인별 배분이 전체 한도를 초과합니다")
+    drawdown_limit(paper)
     if (not math.isfinite(tr["half_life_days"]) or tr["half_life_days"] <= 0 or
             isinstance(tr["retrain_seconds"], bool) or not isinstance(tr["retrain_seconds"], (int, float)) or
             not math.isfinite(tr["retrain_seconds"]) or tr["retrain_seconds"] < 0):
@@ -554,7 +555,8 @@ def probability_diagnostics(probs, rule):
                 "neutral_signal": int((signals == 1).sum())}}
 
 
-def trading_eligibility(result, min_closed_trades):
+def trading_eligibility(result, min_closed_trades, max_drawdown=0.1):
+    limit = drawdown_limit({"max_drawdown": max_drawdown})
     reasons = []
     objective = result["net_return"] - 0.5 * result["MDD"]
     if not math.isfinite(objective) or result["net_return"] <= 0:
@@ -563,8 +565,10 @@ def trading_eligibility(result, min_closed_trades):
         reasons.append("non_positive_risk_adjusted_return")
     if result["trades"] < min_closed_trades:
         reasons.append("insufficient_closed_trades")
+    if not math.isfinite(result["MDD"]) or not 0 <= result["MDD"] <= limit:
+        reasons.append("max_drawdown_exceeded")
     return {"eligible": not reasons, "rejection_reasons": reasons, "objective": objective,
-            "min_closed_trades": min_closed_trades,
+            "min_closed_trades": min_closed_trades, "max_drawdown": limit,
             "scope": "운용 보류를 위한 증거 하한; 최소 거래 강제나 통계적 수익 보장이 아님"}
 
 
@@ -640,9 +644,17 @@ def roundtrip_cost_factor(settings):
             ((1 + settings["slippage"]) * (1 + settings["fee"])))
 
 
+def drawdown_limit(settings):
+    value = settings.get("max_drawdown", 0.1)
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 < value < 1:
+        raise ValueError("paper.max_drawdown는 0 초과 1 미만의 유한 비율이어야 합니다")
+    return value
+
+
 class Portfolio:
     def __init__(self, settings=None, state=None):
         self.settings = copy.deepcopy(DEFAULT_CONFIG["paper"] if settings is None else settings)
+        self.settings["max_drawdown"] = drawdown_limit(self.settings)
         initial = self.settings["initial_cash"]
         if state is not None and (not isinstance(state, dict) or
                                   state.get("initial_cash") != initial or state.get("paper_only") is not True):
@@ -655,9 +667,28 @@ class Portfolio:
         }
         if self.state["cash"] < 0 or any(v["qty"] < 0 for v in self.state["positions"].values()):
             raise ValueError("현물 계좌에 음수 잔액/공매도가 있습니다")
+        peak, mdd = self.state.get("peak_equity", initial), self.state.get("MDD", 0.0)
+        if (isinstance(peak, bool) or not isinstance(peak, (int, float)) or not math.isfinite(peak) or peak <= 0
+                or isinstance(mdd, bool) or not isinstance(mdd, (int, float)) or not math.isfinite(mdd) or not 0 <= mdd <= 1
+                or type(self.state.get("drawdown_halt", False)) is not bool):
+            raise ValueError("복원 계좌의 고점·낙폭·중지 기록이 유효하지 않습니다")
+        self.state.update(peak_equity=peak, MDD=mdd,
+                          drawdown_halt=self.state.get("drawdown_halt", False) or mdd >= self.settings["max_drawdown"],
+                          drawdown_limit=self.settings["max_drawdown"])
         # 기존 장부와 모델 정책을 유지하는 신규진입 리스크 보강입니다.
         self.state.setdefault("stop_reentry_until", {})
-        self.state["risk_overlay"] = "stop_horizon_quote_cost_v1"
+        self.state["risk_overlay"] = "stop_horizon_quote_drawdown_v2"
+
+    def observe_drawdown(self, equity, observed_at):
+        peak = self.state["peak_equity"]
+        if not math.isfinite(equity) or equity < 0 or not math.isfinite(peak) or peak <= 0:
+            raise ValueError("낙폭 측정을 위한 평가액·고점이 유효하지 않습니다")
+        peak = max(peak, equity)
+        current = max(0.0, 1 - equity / peak)
+        self.state.update(peak_equity=peak, current_drawdown=current, MDD=max(self.state["MDD"], current))
+        if equity <= peak * (1 - self.settings["max_drawdown"]):
+            self.state["drawdown_halt"] = True
+            self.state.setdefault("drawdown_halt_at", iso(observed_at))
 
     def equity(self, prices):
         total = self.state["cash"]
@@ -668,14 +699,17 @@ class Portfolio:
         return float(total)
 
     def process(self, bar, prices, signals, books=None, mark_prices=None, stop_fractions=None, allow_buys=True,
-                entry_expiries=None, expiry_prices=None, execution_at=None):
+                entry_expiries=None, expiry_prices=None, execution_at=None, risk_prices=None, quote_timestamps=None):
         stamp = iso(bar)
         execution_at = utc(bar if execution_at is None else execution_at)
         if self.state["last_bar"] is not None and utc(stamp) <= utc(self.state["last_bar"]):
             return []
         if any(m not in MARKETS for m in prices) or any(v not in (0, 1, 2) for v in signals.values()):
             raise ValueError("지원하지 않는 현물 시장/신호입니다")
-        before = self.equity(prices)
+        # 과거 재현에서는 시가, 실시간에서는 같은 호가의 매수호가만 사전 위험 측정에 씁니다.
+        observed_prices = prices if risk_prices is None else risk_prices
+        before = self.equity(observed_prices)
+        self.observe_drawdown(before, execution_at)
         day = utc(bar).date().isoformat()
         if self.state["day"] != day:
             self.state.update(day=day, daily_start_equity=before, new_buys_blocked=False)
@@ -684,6 +718,65 @@ class Portfolio:
         events, sold = [], set()
         decisions = {}
         self.state["decision_diagnostics"] = decisions
+
+        def finite_context_number(item):
+            if not isinstance(item, (int, float)) or isinstance(item, bool):
+                return False
+            try:
+                return math.isfinite(item)
+            except OverflowError:
+                return False
+
+        def clean_context(diagnostic):
+            if not isinstance(diagnostic, dict):
+                return {"record_status": "invalid"}
+            keys = ("model_run", "signal_time", "signal", "probabilities", "confidence", "edge", "reason",
+                    "feature_age_seconds", "base_timeframe")
+            previous_status = diagnostic.get("record_status")
+            value, invalid = {}, previous_status in ("invalid", "partial_invalid")
+            for key in keys:
+                if key not in diagnostic:
+                    continue
+                item = diagnostic[key]
+                if key == "probabilities":
+                    valid = (isinstance(item, list) and len(item) == 3
+                             and all(finite_context_number(x) and 0 <= x <= 1 for x in item))
+                elif key == "signal":
+                    valid = type(item) is int and item in (0, 1, 2)
+                elif key in {"confidence", "edge", "feature_age_seconds"}:
+                    valid = finite_context_number(item)
+                elif key == "base_timeframe":
+                    valid = isinstance(item, (int, str)) and str(item) in set(map(str, TIMEFRAMES))
+                else:
+                    valid = isinstance(item, str) and len(item) <= 160
+                if valid:
+                    value[key] = copy.deepcopy(item)
+                else:
+                    invalid = True
+            value["record_status"] = (previous_status if previous_status in ("invalid", "partial_invalid")
+                                      else "partial_invalid" if invalid else "recorded" if value else "missing")
+            return value
+
+        def context(market):
+            diagnostics = self.state.get("inference_diagnostics")
+            return clean_context(diagnostics.get(market, {}) if isinstance(diagnostics, dict) else diagnostics)
+
+        def quote_context(market):
+            result = {"fee_rate": self.settings["fee"], "slippage_rate": self.settings["slippage"],
+                      "scope": "public_orderbook_at_execution" if books is not None else "synthetic_candle",
+                      "quote_utc": None, "quote_age_seconds": None,
+                      "observed_utc": iso(execution_at) if books is not None else None,
+                      "risk_price_source": "observed_bid" if books is not None and risk_prices is not None else "current_prices"}
+            if books is not None:
+                result.update(best_ask=min(float(u["ask_price"]) for u in books[market]),
+                              best_bid=max(float(u["bid_price"]) for u in books[market]))
+                quoted = (quote_timestamps or {}).get(market)
+                if quoted is not None:
+                    age = (execution_at - utc(quoted)).total_seconds()
+                    if not math.isfinite(age):
+                        raise ValueError("거래 기록의 원호가 시각이 유효하지 않습니다")
+                    result.update(quote_utc=iso(quoted), quote_age_seconds=age)
+            return result
 
         def execute(market, side, amount, at_price=None):
             if books is None:
@@ -716,8 +809,17 @@ class Portfolio:
                 del self.state["positions"][market]
                 self.state["completed_trades"] += 1
             sold.add(market)
+            decision_context = context(market)
+            original_entry = position.get("entry_context")
+            entry_context = clean_context(original_entry) if isinstance(original_entry, dict) else None
+            entry_invalid = original_entry is not None and (entry_context is None or entry_context["record_status"] in ("invalid", "partial_invalid"))
             events.append({"market": market, "side": "sell", "reason": reason,
                            "realized_pnl": fill["cash"] - basis,
+                           "model_run": decision_context.get("model_run"),
+                           "entry_model_run": entry_context.get("model_run") if entry_context is not None and not entry_invalid else None,
+                           "entry_context": entry_context, "decision_context": decision_context,
+                           "entry_context_invalid": entry_invalid,
+                           "execution_context": quote_context(market),
                            "timestamp": iso(execution_at if at_time is None else at_time), **fill})
 
         # 손실 한도는 매수에만 적용합니다. 청산과 손절은 계속 허용합니다.
@@ -735,8 +837,12 @@ class Portfolio:
                 continue
             sell(market, position, reason)
         for market in sorted(prices):
+            self.observe_drawdown(self.equity(observed_prices), execution_at)
             decision = {"signal": signals.get(market, 1), "reason": "ready"}
             decisions[market] = decision
+            if self.state["drawdown_halt"]:
+                decision["reason"] = "max_drawdown_limit"
+                continue
             if not allow_buys:
                 decision["reason"] = "buys_disabled"
                 continue
@@ -807,18 +913,22 @@ class Portfolio:
             decision.update(reason="buy_filled", partial=fill["partial"])
             self.state["cash"] = max(0.0, self.state["cash"] - fill["cash"])
             self.state["positions"][market] = {"qty": fill["qty"], "cost": fill["cash"], "entry_price": fill["vwap"]}
+            decision_context = context(market)
+            self.state["positions"][market]["entry_context"] = copy.deepcopy(decision_context)
             self.state["positions"][market]["entry_time"] = iso(execution_at)
             if expiry is not None:
                 self.state["positions"][market]["expires_at"] = iso(expiry)
-            events.append({"market": market, "side": "buy", "reason": "signal", "timestamp": iso(execution_at), **fill})
+            events.append({"market": market, "side": "buy", "reason": "signal", "timestamp": iso(execution_at),
+                           "model_run": decision_context.get("model_run"), "entry_model_run": decision_context.get("model_run"),
+                           "decision_context": decision_context, "execution_context": quote_context(market),
+                           "entry_filter": copy.deepcopy(decision), **fill})
         # 시가 매수에 미래 종가 청산 대금을 쓰지 않도록 지평 종가 청산은 매수 처리 뒤에 합니다.
         if expiry_prices is not None:
             for market, position in list(self.state["positions"].items()):
                 if position.get("expires_at") and utc(bar) >= utc(position["expires_at"]):
                     sell(market, position, "time_exit", expiry_prices[market], bar)
         final = self.equity(prices if mark_prices is None else mark_prices)
-        self.state["peak_equity"] = max(self.state["peak_equity"], final)
-        self.state["MDD"] = max(self.state["MDD"], 1 - final / self.state["peak_equity"])
+        self.observe_drawdown(final, bar)
         if final <= self.state["daily_start_equity"] * (1 - self.settings["daily_loss_limit"]):
             self.state["new_buys_blocked"] = True
         for i, event in enumerate(events):
@@ -898,12 +1008,12 @@ def tune_rule(frame, probabilities, settings, market, min_closed_trades=3, horiz
             rule["horizon_minutes"] = horizon_minutes
         result = backtest_portfolio({market: frame}, {market: probabilities}, {market: rule}, settings)
         score = result["net_return"] - result["MDD"] * 0.5
-        eligibility = trading_eligibility(result, min_closed_trades)
+        eligibility = trading_eligibility(result, min_closed_trades, settings.get("max_drawdown", 0.1))
         trials.append({"rule": rule, "trading": result, **eligibility,
                        "diagnostics": probability_diagnostics(probabilities, rule)})
         if best is None or eligibility["eligible"] and score > best_score:
             best, best_score, best_result = rule, score, result
-    eligible = trading_eligibility(best_result, min_closed_trades)
+    eligible = trading_eligibility(best_result, min_closed_trades, settings.get("max_drawdown", 0.1))
     return {**best, "validation_objective": best_score, "validation_trading": best_result,
             **eligible, "trials": trials, "selection_scope": "rule_only"}
 
@@ -1167,7 +1277,7 @@ def assess_promotion(config, frames, probabilities, rules):
     candidate = {"logloss": sum(len(frames[m]) * logloss(frames[m].label, probabilities[m]) for m in frames) / total}
     candidate_portfolio = backtest_portfolio(frames, probabilities, rules, config["paper"])
     candidate.update({k: candidate_portfolio[k] for k in ("net_return", "MDD")})
-    eligibility = trading_eligibility(candidate_portfolio, config["training"]["min_closed_trades"])
+    eligibility = trading_eligibility(candidate_portfolio, config["training"]["min_closed_trades"], config["paper"].get("max_drawdown", 0.1))
     periods = {m: {"start": iso(v.index.min()), "end": iso(v.index.max()), "rows": len(v)} for m, v in frames.items()}
     pointer = Path(config["models_dir"]) / "current.json"
     if not pointer.exists():
@@ -1896,12 +2006,13 @@ def paper_cycle(config, now=None):
         quotes = {q["market"]: q for q in payload}
         if set(quotes) != set(config["markets"]):
             raise ValueError("다섯 코인의 공개 호가가 모두 필요합니다")
-        prices, books, bids = {}, {}, {}
+        prices, books, bids, quote_times = {}, {}, {}, {}
         for market, quote in quotes.items():
             quote_time = pd.Timestamp(quote["timestamp"], unit="ms", tz="UTC")
             age = (observed_at - quote_time).total_seconds()
             if age > settings["max_quote_age_seconds"] or age < -5:
                 raise ValueError(f"호가 시각이 유효하지 않습니다: {market}, age={age}")
+            quote_times[market] = quote_time
             books[market] = quote["orderbook_units"]
             if not books[market]:
                 raise ValueError(f"호가 잔량이 없습니다: {market}")
@@ -1910,14 +2021,16 @@ def paper_cycle(config, now=None):
         # 호가 관측 시점의 시장가 모의체결입니다. 과거 다음 봉 시가로 소급 체결하지 않습니다.
         events = portfolio.process(observed_at, prices, signals, books=books, mark_prices=bids,
                                    stop_fractions=stops, allow_buys=not errors and not portfolio.state.get("deployment_guard"),
-                                   entry_expiries=portfolio.state.get("entry_expiries"))
+                                   entry_expiries=portfolio.state.get("entry_expiries"), risk_prices=bids, quote_timestamps=quote_times)
         for market, diagnostic in portfolio.state.get("inference_diagnostics", {}).items():
             diagnostic["entry_filter"] = portfolio.state.get("decision_diagnostics", {}).get(market)
         portfolio.state.setdefault("signal_times", {}).update(signal_times)
         model_error = "; ".join(f"{m}: {e['type']}: {e['message']}" for m, e in errors.items()) or None
         portfolio.state.update(updated_at=iso(observed_at), status="실시간 공개 호가 모의투자", model_error=model_error,
                                inference_errors=errors, stop_fractions=stops,
-                                entry_guard="추론 오류로 신규 진입 차단" if errors else portfolio.state.get("deployment_guard"),
+                                entry_guard="추론 오류로 신규 진입 차단" if errors else
+                                    "최대 낙폭 한도 도달로 신규 매수 중지" if portfolio.state["drawdown_halt"] else
+                                    portfolio.state.get("deployment_guard"),
                                model_run=model_run, prices=prices,
                                start_time=iso(settings["start_time"]), execution_mode="현재 공개 호가 잔량 소진·부분체결, 추가 슬리피지/양방향 수수료")
         for event in events:

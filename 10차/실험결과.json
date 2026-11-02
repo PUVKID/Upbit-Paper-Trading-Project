@@ -1,0 +1,653 @@
+{
+  "schema_version": 1,
+  "scope": "retrospective_research_not_independent_final_test",
+  "run": "return-research-10-first",
+  "complete": true,
+  "fit_calls": 30,
+  "completed_fits": 30,
+  "actual_device": "cuda:0",
+  "all_model_reloads_verified": true,
+  "boosted_rounds_min": 21,
+  "boosted_rounds_max": 150,
+  "source_sha256": "98ebdda509536f288211acf474cb0c4d16ec96b127e5d1a7b7b2ee741dd01298",
+  "engine_sha256": "f0623823da873f3eca4f1932cbab1af42c7f89cce3dd2c66e29bb335eb1f4f6a",
+  "artifact_files_verified": 85,
+  "settings": {
+    "anchor": "2026-10-31T08:00:00Z",
+    "depth": 3,
+    "early_stopping_rounds": 20,
+    "folds": 2,
+    "horizon": 12,
+    "learning_rate": 0.05,
+    "max_drawdown": 0.1,
+    "max_raw_rows": 300000,
+    "max_seconds": 7200,
+    "max_train_rows": 100000,
+    "min_fold_trades": 3,
+    "min_free_bytes": 20000000000,
+    "min_split_rows": 100,
+    "min_total_trades": 20,
+    "policy_days": 2,
+    "rounds": 150,
+    "train_days": 90,
+    "tune_days": 2,
+    "validation_days": 2
+  },
+  "periods": [
+    {
+      "rule": [
+        "2026-10-25T08:00:00+00:00",
+        "2026-10-27T08:00:00+00:00"
+      ],
+      "train": [
+        "2026-07-25T08:00:00+00:00",
+        "2026-10-23T08:00:00+00:00"
+      ],
+      "tune": [
+        "2026-10-23T08:00:00+00:00",
+        "2026-10-25T08:00:00+00:00"
+      ],
+      "validation": [
+        "2026-10-27T08:00:00+00:00",
+        "2026-10-29T08:00:00+00:00"
+      ]
+    },
+    {
+      "rule": [
+        "2026-10-27T08:00:00+00:00",
+        "2026-10-29T08:00:00+00:00"
+      ],
+      "train": [
+        "2026-07-27T08:00:00+00:00",
+        "2026-10-25T08:00:00+00:00"
+      ],
+      "tune": [
+        "2026-10-25T08:00:00+00:00",
+        "2026-10-27T08:00:00+00:00"
+      ],
+      "validation": [
+        "2026-10-29T08:00:00+00:00",
+        "2026-10-31T08:00:00+00:00"
+      ]
+    }
+  ],
+  "external_data_used_for_training": false,
+  "folds_overlap_in_training": true,
+  "folds": [
+    {
+      "fold": 1,
+      "part_rows": {
+        "KRW-BTC": {
+          "rule": 563,
+          "train": 25237,
+          "tune": 563,
+          "validation": 563
+        },
+        "KRW-DOGE": {
+          "rule": 539,
+          "train": 24780,
+          "tune": 553,
+          "validation": 530
+        },
+        "KRW-ETH": {
+          "rule": 563,
+          "train": 25236,
+          "tune": 563,
+          "validation": 563
+        },
+        "KRW-SOL": {
+          "rule": 563,
+          "train": 25207,
+          "tune": 563,
+          "validation": 560
+        },
+        "KRW-XRP": {
+          "rule": 563,
+          "train": 25237,
+          "tune": 563,
+          "validation": 563
+        }
+      },
+      "selected_policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "policy_trials": [
+        {
+          "family": "plain",
+          "minimum": 0.0,
+          "penalty": 0.0,
+          "trades": 12,
+          "net_return": -0.002914104479213031,
+          "MDD": 0.004858961676411755,
+          "risk_adjusted_score": -0.0053435853174189085,
+          "eligible": false
+        },
+        {
+          "family": "plain",
+          "minimum": 0.0005,
+          "penalty": 0.0,
+          "trades": 7,
+          "net_return": -0.0016772277332585128,
+          "MDD": 0.0041517194764192356,
+          "risk_adjusted_score": -0.0037530874714681306,
+          "eligible": false
+        },
+        {
+          "family": "plain",
+          "minimum": 0.001,
+          "penalty": 0.0,
+          "trades": 1,
+          "net_return": -0.002648793453002507,
+          "MDD": 0.002648793453002507,
+          "risk_adjusted_score": -0.0039731901795037605,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0,
+          "penalty": 0.25,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0005,
+          "penalty": 0.25,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.001,
+          "penalty": 0.25,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0,
+          "penalty": 0.5,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0005,
+          "penalty": 0.5,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.001,
+          "penalty": 0.5,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0,
+          "penalty": 1.0,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0005,
+          "penalty": 1.0,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.001,
+          "penalty": 1.0,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        }
+      ],
+      "common_entry_rows": {
+        "KRW-BTC": 539,
+        "KRW-DOGE": 529,
+        "KRW-ETH": 539,
+        "KRW-SOL": 538,
+        "KRW-XRP": 539
+      }
+    },
+    {
+      "fold": 2,
+      "part_rows": {
+        "KRW-BTC": {
+          "rule": 563,
+          "train": 25237,
+          "tune": 563,
+          "validation": 516
+        },
+        "KRW-DOGE": {
+          "rule": 530,
+          "train": 24780,
+          "tune": 539,
+          "validation": 499
+        },
+        "KRW-ETH": {
+          "rule": 563,
+          "train": 25237,
+          "tune": 563,
+          "validation": 516
+        },
+        "KRW-SOL": {
+          "rule": 560,
+          "train": 25208,
+          "tune": 563,
+          "validation": 516
+        },
+        "KRW-XRP": {
+          "rule": 563,
+          "train": 25237,
+          "tune": 563,
+          "validation": 516
+        }
+      },
+      "selected_policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "policy_trials": [
+        {
+          "family": "plain",
+          "minimum": 0.0,
+          "penalty": 0.0,
+          "trades": 11,
+          "net_return": 0.0013266337944870532,
+          "MDD": 0.0028992335735867902,
+          "risk_adjusted_score": -0.0001229829923063419,
+          "eligible": true
+        },
+        {
+          "family": "plain",
+          "minimum": 0.0005,
+          "penalty": 0.0,
+          "trades": 5,
+          "net_return": -0.0005989249694861032,
+          "MDD": 0.0031293241259365834,
+          "risk_adjusted_score": -0.002163587032454395,
+          "eligible": false
+        },
+        {
+          "family": "plain",
+          "minimum": 0.001,
+          "penalty": 0.0,
+          "trades": 1,
+          "net_return": -6.327746717682547e-05,
+          "MDD": 0.0008391021023220757,
+          "risk_adjusted_score": -0.00048282851833786333,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0,
+          "penalty": 0.25,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0005,
+          "penalty": 0.25,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.001,
+          "penalty": 0.25,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0,
+          "penalty": 0.5,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0005,
+          "penalty": 0.5,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.001,
+          "penalty": 0.5,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0,
+          "penalty": 1.0,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.0005,
+          "penalty": 1.0,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        },
+        {
+          "family": "uncertainty",
+          "minimum": 0.001,
+          "penalty": 1.0,
+          "trades": 0,
+          "net_return": 0.0,
+          "MDD": 0.0,
+          "risk_adjusted_score": 0.0,
+          "eligible": false
+        }
+      ],
+      "common_entry_rows": {
+        "KRW-BTC": 501,
+        "KRW-DOGE": 499,
+        "KRW-ETH": 501,
+        "KRW-SOL": 501,
+        "KRW-XRP": 501
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "MDD": 0.0,
+      "candidate": "plain",
+      "cost_multiplier": 1,
+      "fold": 1,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "uncertainty",
+      "cost_multiplier": 1,
+      "fold": 1,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "selected",
+      "cost_multiplier": 1,
+      "fold": 1,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "cash",
+      "cost_multiplier": 1,
+      "fold": 1,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.037563222417595465,
+      "candidate": "trend",
+      "cost_multiplier": 1,
+      "fold": 1,
+      "net_return": -0.037563222417595465,
+      "scope": "research_validation",
+      "trades": 144
+    },
+    {
+      "MDD": 0.001419319039470568,
+      "candidate": "incumbent",
+      "cost_multiplier": 1,
+      "fold": 1,
+      "net_return": 0.006818613291517561,
+      "scope": "retrospective_diagnostic",
+      "trades": 6
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "plain",
+      "cost_multiplier": 2,
+      "fold": 1,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "uncertainty",
+      "cost_multiplier": 2,
+      "fold": 1,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "selected",
+      "cost_multiplier": 2,
+      "fold": 1,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "cash",
+      "cost_multiplier": 2,
+      "fold": 1,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.03812469891338388,
+      "candidate": "trend",
+      "cost_multiplier": 2,
+      "fold": 1,
+      "net_return": -0.03812469891338388,
+      "scope": "research_validation",
+      "trades": 96
+    },
+    {
+      "MDD": 0.001666211129428552,
+      "candidate": "incumbent",
+      "cost_multiplier": 2,
+      "fold": 1,
+      "net_return": 0.005306487812382299,
+      "scope": "retrospective_diagnostic",
+      "trades": 6
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "plain",
+      "cost_multiplier": 1,
+      "fold": 2,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "uncertainty",
+      "cost_multiplier": 1,
+      "fold": 2,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "selected",
+      "cost_multiplier": 1,
+      "fold": 2,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "cash",
+      "cost_multiplier": 1,
+      "fold": 2,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.034376925718012874,
+      "candidate": "trend",
+      "cost_multiplier": 1,
+      "fold": 2,
+      "net_return": -0.03382668605101391,
+      "scope": "research_validation",
+      "trades": 115
+    },
+    {
+      "MDD": 0.004884082894223929,
+      "candidate": "incumbent",
+      "cost_multiplier": 1,
+      "fold": 2,
+      "net_return": 0.003710079999458493,
+      "scope": "retrospective_diagnostic",
+      "trades": 20
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "plain",
+      "cost_multiplier": 2,
+      "fold": 2,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "uncertainty",
+      "cost_multiplier": 2,
+      "fold": 2,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "selected",
+      "cost_multiplier": 2,
+      "fold": 2,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.0,
+      "candidate": "cash",
+      "cost_multiplier": 2,
+      "fold": 2,
+      "net_return": 0.0,
+      "scope": "research_validation",
+      "trades": 0
+    },
+    {
+      "MDD": 0.04020245592620264,
+      "candidate": "trend",
+      "cost_multiplier": 2,
+      "fold": 2,
+      "net_return": -0.03983379409245735,
+      "scope": "research_validation",
+      "trades": 88
+    },
+    {
+      "MDD": 0.006396125656099483,
+      "candidate": "incumbent",
+      "cost_multiplier": 2,
+      "fold": 2,
+      "net_return": -0.0012923389921546402,
+      "scope": "retrospective_diagnostic",
+      "trades": 20
+    }
+  ],
+  "review": {
+    "eligible": false,
+    "max_drawdown": 0.1,
+    "min_total_closed_trades": 20,
+    "rejection_reasons": [
+      "insufficient_fold_trades",
+      "insufficient_total_closed_trades",
+      "non_positive_fold_return"
+    ],
+    "scope": "research_review_only_not_promotion_or_statistical_guarantee"
+  },
+  "promotion": false,
+  "candidate_ready": false,
+  "limitations": [
+    "독립 미사용 최종 시험이 아닙니다.",
+    "기존 모델은 평가 기간 학습 노출에 따라 후향 진단입니다.",
+    "과거 실제 호가가 없어 정확한 스프레드 비용은 미검증입니다.",
+    "최강·수익·정확도100%·낙폭10% 이내를 보장하지 않습니다."
+  ]
+}

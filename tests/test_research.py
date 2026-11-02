@@ -209,8 +209,9 @@ class HorizonTests(unittest.TestCase):
         portfolio.process("2026-01-01", {"KRW-BTC": 100000}, {"KRW-BTC": 2}, allow_buys=False)
         self.assertIn("decision_diagnostics", portfolio.state)
         self.assertEqual(portfolio.state["decision_diagnostics"]["KRW-BTC"]["reason"], "buys_disabled")
-        portfolio = engine.Portfolio(settings())
-        portfolio.state["cash"] = 1000
+        small_account = settings()
+        small_account["initial_cash"] = 1000
+        portfolio = engine.Portfolio(small_account)
         portfolio.process("2026-01-01T00:05:00Z", {"KRW-BTC": 100000}, {"KRW-BTC": 2})
         self.assertEqual(portfolio.state["decision_diagnostics"]["KRW-BTC"]["reason"], "below_min_order")
 

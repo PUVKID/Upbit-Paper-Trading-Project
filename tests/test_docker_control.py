@@ -65,7 +65,7 @@ class OwnershipTests(unittest.TestCase):
         self.assertEqual(call.call_count, 1)
 
     def test_dynamic_root_and_all_actions_use_exec(self):
-        with patch.object(control, "ROOT", Path(".")), \
+        with patch.object(control, "ROOT", Path("D:/2026/Upbit 5-Coin Project")), \
                 patch.object(control, "owned_container"), patch.object(control, "run", return_value="{}") as run:
             root = "/workspace/2026/Upbit 5-Coin Project"
             for action in ("start", "status", "stop", "gpu", "test"):
@@ -86,7 +86,7 @@ class GatewayTests(unittest.TestCase):
     @contextmanager
     def gateway(self):
         server = control.create_server(port=0)
-        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread = threading.Thread(target=server.serve_forever, kwargs={"poll_interval":0.01}, daemon=True)
         thread.start()
         try:
             self.assertEqual(server.server_address[0], "127.0.0.1")

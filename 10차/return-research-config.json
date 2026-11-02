@@ -1,0 +1,21 @@
+{
+  "anchor": "2026-10-31T08:00:00Z",
+  "folds": 2,
+  "train_days": 90,
+  "tune_days": 2,
+  "policy_days": 2,
+  "validation_days": 2,
+  "horizon": 12,
+  "rounds": 150,
+  "early_stopping_rounds": 20,
+  "depth": 3,
+  "learning_rate": 0.05,
+  "max_train_rows": 100000,
+  "max_raw_rows": 300000,
+  "min_split_rows": 100,
+  "min_fold_trades": 3,
+  "min_total_trades": 20,
+  "max_drawdown": 0.1,
+  "max_seconds": 7200,
+  "min_free_bytes": 20000000000
+}

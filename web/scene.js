@@ -17,6 +17,24 @@ window.UpbitWorkflow = {
   resolve(snapshot) {
     const training = snapshot.training || {};
     const foundation = snapshot.foundation_research;
+    const profit = snapshot.return_research;
+    const integer = (item,min,max) => Number.isInteger(item) && item >= min && item <= max;
+    const validProfit = profit && typeof profit === 'object' && !Array.isArray(profit) && profit.schema_version === 1 &&
+      ['running','preparing','training','validating','complete','waiting','failed','error','stopped'].includes(profit.state) &&
+      ['preflight','prepare','extract','features','fit','training','policy','validation','evaluation','verify','complete','failed'].includes(profit.stage) &&
+      typeof profit.run === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(profit.run) && profit.promotion === false &&
+      profit.objective === 'net_forward_return' && integer(profit.max_fits,1,30) && integer(profit.fit_calls,0,profit.max_fits) &&
+      integer(profit.completed_fits,0,profit.fit_calls) && integer(profit.fold_total,1,2) && integer(profit.fold_index,0,profit.fold_total) &&
+      (profit.state !== 'complete' || profit.completed_fits === profit.max_fits && profit.evaluation_performed === true);
+    if (validProfit) {
+      const failed = ['failed','error'].includes(profit.state) || profit.has_error === true;
+      const active = ['running','preparing','training','validating'].includes(profit.state) && !failed;
+      const stages = {preflight:1,prepare:1,extract:1,features:1,fit:2,training:2,policy:3,validation:3,evaluation:3,verify:3,complete:3,failed:3};
+      return {stage:stages[profit.stage],active,failed,status:failed ? '오류' : profit.state === 'stopped' ? '중단' : active ? '진행 중' : profit.state === 'complete' ? profit.candidate_ready === false ? '연구 완료 · 채택 보류' : '연구 완료 · 적용 전' : '대기',
+        value:profit.completed_fits/profit.max_fits,progressLabel:'완료한 GPU 적합',source:profit,returnResearch:profit,
+        repetition:null,researchTrack:true,completedStages:profit.state === 'complete' ? [0,1,2,3] : [],
+        track:'수익 예측 연구',applied:false,foundation:foundation && Object.keys(foundation).length ? foundation : null};
+    }
     const repetition = this.repetition(snapshot.training_repetition);
     const useFoundation = !repetition && foundation && typeof foundation.state === 'string' && !['not_started', 'idle', 'unavailable'].includes(foundation.state);
     const researchTrack = Boolean(repetition || useFoundation);

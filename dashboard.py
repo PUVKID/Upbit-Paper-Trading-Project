@@ -19,7 +19,7 @@ MAX_JSON_BYTES = 4 * 1024 * 1024
 COINS = ("BTC", "SOL", "ETH", "XRP", "DOGE")
 # 알 수 없는 필드와 실행 인자·오류 원문은 전달하지 않습니다.
 FIELDS = {
-    "account": "initial_capital cash equity realized_pnl unrealized_pnl total_pnl return_pct mdd_pct updated_utc quote_utc started_utc entry_guard model_run",
+    "account": "initial_capital cash equity realized_pnl unrealized_pnl total_pnl return_pct mdd_pct updated_utc quote_utc started_utc entry_guard model_run drawdown_limit_pct drawdown_halted",
     "assets": "symbol quantity average_price price market_value unrealized_pnl quote_utc",
     "quote": "symbol price quote_utc source",
     "training": "state stage market round candidate candidate_index candidate_total progress gpu_name gpu_memory_used_mb gpu_memory_total_mb gpu_utilization_pct gpu_verified started_utc finished_utc updated_utc recorded_utc progress_started_utc duration_seconds elapsed_seconds rows tune_rows features current_round target_rounds validation_logloss period_start period_end samples timeframe model_id run learning_rate",
@@ -200,6 +200,57 @@ def training_repetition(value):
     result.update({key:None for key in ("validation_mae", "baseline_mae", "direction_accuracy", "net_return", "trades")})
     result.update({key:False for key in ("evaluation_performed", "candidate_ready", "promote")})
     result["has_error"] = state == "error" or value.get("has_error") is True or value.get("error") is not None
+    return result
+
+
+def return_research(value):
+    """수익 예측 연구의 유한 진행과 집계값만 전달하고 경로·오류 원문은 제외합니다."""
+    if not isinstance(value, dict):
+        return {}
+    states = {"running", "preparing", "training", "validating", "complete", "waiting", "failed", "error", "stopped"}
+    stages = {"preflight", "prepare", "extract", "features", "fit", "training", "policy", "validation", "evaluation", "verify", "complete", "failed"}
+    integer = lambda item, low, high: type(item) is int and low <= item <= high
+    run = value.get("run")
+    if (type(value.get("schema_version")) is not int or value["schema_version"] != 1
+            or not isinstance(value.get("state"), str) or value["state"] not in states
+            or not isinstance(value.get("stage"), str) or value["stage"] not in stages
+            or not isinstance(run, str) or not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", run)
+            or value.get("objective") != "net_forward_return" or value.get("promotion") is not False
+            or not integer(value.get("max_fits"), 1, 30) or not integer(value.get("fit_calls"), 0, value["max_fits"])
+            or not integer(value.get("completed_fits"), 0, value["fit_calls"])
+            or not integer(value.get("fold_total"), 1, 2) or not integer(value.get("fold_index"), 0, value["fold_total"])):
+        return {}
+    if value["state"] == "complete" and (value["completed_fits"] != value["max_fits"] or value.get("evaluation_performed") is not True):
+        return {}
+    result = {key:value[key] for key in ("schema_version", "state", "stage", "run", "objective", "fit_calls",
+              "completed_fits", "max_fits", "fold_index", "fold_total", "promotion")}
+    result["market"] = value.get("market") if isinstance(value.get("market"), str) and value["market"] in {"KRW-"+coin for coin in COINS} else None
+    result["candidate_ready"] = value.get("candidate_ready") is True
+    result["evaluation_performed"] = value.get("evaluation_performed") is True
+    result["has_error"] = value["state"] in {"error", "failed"} or value.get("error") is not None
+    result["updated_utc"] = None
+    stamp = value.get("updated_utc")
+    if isinstance(stamp, str) and len(stamp) <= 40:
+        try:
+            parsed = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+            if parsed.tzinfo is not None and parsed.utcoffset() == timezone.utc.utcoffset(parsed):
+                result["updated_utc"] = stamp
+        except ValueError:
+            pass
+    result["rows"] = value.get("rows") if integer(value.get("rows"), 0, 2**53-1) else None
+    result["device"] = "cuda:0" if value.get("device") == "cuda:0" and value.get("gpu_verified") is True else None
+    candidates = {"cash", "trend", "incumbent", "mean", "plain", "selected", "uncertainty", "mean_return", "uncertainty_adjusted"}
+    comparisons = []
+    for row in value.get("comparisons", [])[:60] if isinstance(value.get("comparisons"), list) else []:
+        if (not isinstance(row, dict) or not isinstance(row.get("candidate"), str) or row["candidate"] not in candidates
+                or not integer(row.get("fold"), 1, 2) or row.get("cost_multiplier") not in (1, 2)
+                or type(row.get("cost_multiplier")) is bool or not finite(row.get("net_return"))
+                or not finite(row.get("MDD")) or not 0 <= row["MDD"] <= 1
+                or not integer(row.get("trades"), 0, 2**53-1)):
+            continue
+        comparisons.append({key:row[key] for key in ("fold", "candidate", "cost_multiplier", "net_return", "MDD", "trades")} |
+                           {"scope":"retrospective_research"})
+    result["comparisons"] = comparisons
     return result
 
 
@@ -470,6 +521,11 @@ class SnapshotAdapter:
                 promotion[name] = diagnostic(promotion_source[name], DIAGNOSTIC_KEYS | {"KRW-" + coin for coin in COINS})
         config = mapping(self.read("engine-config.json"))
         account_view, assets = adapt_account(account, mapping(config.get("paper")))
+        if account_view is not None:
+            limit = account.get("drawdown_limit")
+            account_view["drawdown_limit_pct"] = limit * 100 if finite(limit) and 0 < limit < 1 else None
+            halted = account.get("drawdown_halt")
+            account_view["drawdown_halted"] = halted if type(halted) is bool else None
         health_source = self.read("work/service/health_result.json")
         health = project(health_source, "health")
         if health is not None:
@@ -525,6 +581,7 @@ class SnapshotAdapter:
                 {**foundation, "has_error": foundation.get("error") is not None},
                 "foundation_research") if (foundation := self.foundation_status()) else {},
             "training_repetition": training_repetition(self.read("8차/work/status.json")),
+            "return_research": return_research(self.read("10차/work/status.json")),
             "promotion": promotion,
             "health": health,
             "gpu": project(self.read("work/service/gpu.json"), "gpu"),
