@@ -1,4 +1,43 @@
 'use strict';
+// 화면과 입체 장면이 동일한 실제 상태를 사용합니다. 시간으로 단계를 전환하지 않습니다.
+window.UpbitWorkflow = {
+  names: ['클라우드 수집', '데이터 정리', 'GPU 학습', '검증', '모델 적용'],
+  resolve(snapshot) {
+    const training = snapshot.training || {};
+    const foundation = snapshot.foundation_research;
+    const useFoundation = foundation && typeof foundation.state === 'string' && !['not_started', 'idle', 'unavailable'].includes(foundation.state);
+    const source = useFoundation ? foundation : training;
+    const mapping = {download: 0, collection: 0, collecting: 0, prepare: 1, preparation: 1, features: 1, preflight: 1, extract: 1, load: 1,
+      fit: 2, training: 2, finetune: 2, calibration: 3, validation: 3, evaluation: 3, locked_test: 3,
+      verify: 3, apply: 4, promotion: 4, complete: useFoundation ? 3 : 4};
+    const running = ['running', 'collecting', 'training', 'retrying'].includes(source.state);
+    const failed = ['error', 'failed'].includes(source.state) || source.has_error === true;
+    const waitingData = !useFoundation && training.state === 'waiting_data';
+    const stage = waitingData ? 0 : mapping[source.stage] ?? null;
+    const active = running || waitingData;
+    const external = snapshot.external_data || {};
+    let value = null;
+    let progressLabel = '진행률 미기록';
+    if (useFoundation && Number.isFinite(source.step) && Number.isFinite(source.total_steps) && source.total_steps > 0) {
+      value = source.step / source.total_steps;
+      progressLabel = '현재 모델 학습 스텝';
+    } else if (waitingData && Number.isFinite(external.ingested_archive_bytes) && external.target_archive_bytes > 0) {
+      value = external.ingested_archive_bytes / external.target_archive_bytes;
+      progressLabel = '외부 원본 적재량';
+    } else if (!useFoundation && Number.isFinite(training.progress)) {
+      value = training.progress;
+      progressLabel = '전체 후보 진행률';
+    }
+    const status = failed ? '오류' : source.state === 'stopped' ? '중단' : useFoundation && source.state === 'waiting' ? '새 미사용 자료 대기' : source.state === 'retrying' ? '재시도 중' : active ? '진행 중' :
+      source.state === 'complete' ? '완료' : source.state === 'waiting_request' ? '추가 요청 대기' : '대기';
+    return {stage, active: active && !failed, failed, status, value, progressLabel, source,
+      completedStages: useFoundation && source.state === 'complete' && source.checkpoint_verified === true ? [0,1,2,3] : [],
+      track: useFoundation ? '사전학습 모델 연구' : '기존 모델 연구',
+      applied: !useFoundation && typeof training.run === 'string' && training.run.length > 0 &&
+        snapshot.research?.run === training.run && snapshot.research?.promoted === true,
+      foundation: foundation && Object.keys(foundation).length ? foundation : null};
+  }
+};
 (() => {
   const host = document.getElementById('scene-stage');
   const canvas = document.getElementById('prediction-scene');
@@ -343,383 +382,221 @@
   };
   function createTrainingScene() {
     const stage = document.getElementById('training-stage');
-    const element = document.getElementById('training-scene');
-    const fallbackText = document.getElementById('training-scene-fallback');
-    const state = {ready:false, renderframes:0, visible:false, stage:null, meshes:0, pixelRatio:null, geometryMode:true, artDirection:'layered-glass'};
+    const canvas = document.getElementById('training-scene');
+    const fallback = document.getElementById('training-scene-fallback');
     const T = window.UpbitVendors?.THREE;
     const RoundedBox = window.UpbitVendors?.RoundedBoxGeometry;
-    const geometries = [], materials = [], textures = [], modules = [], packets = [];
-    const accents = [0x08b6a7, 0x388ee8, 0xf17f70, 0xe8b346];
-    const centers = [-1.98, 1.26, 4.5, 7.38];
-    const lights = [], accentMaterials = [], levels = [0, 0, 0, 0];
-    const phases = {lens:0, review:0};
-    const glassLayers = [], labelRedraws = [];
-    let renderer3, scene3, camera3, environment3, gear, fan, lens, reviewScan;
-    let timer3 = null, stopped = false, cleaned = false, lastFrame = 0;
-    const canAnimate = () => state.ready && state.visible && !document.hidden && motion && !reduced.matches && state.stage !== null && !stopped;
-    const transitionsAllowed = () => motion && !reduced.matches;
-    function stop3() {
-      if (timer3 !== null) clearTimeout(timer3);
-      timer3 = null;
-    }
-    function cleanup3() {
-      if (cleaned) return;
-      cleaned = true;
-      stop3();
-      geometries.forEach(value => value.dispose());
-      materials.forEach(value => value.dispose());
-      textures.forEach(value => value.dispose());
-      environment3?.dispose();
-      renderer3?.dispose();
-    }
-    function showFallback(message) {
-      state.ready = false;
-      element.hidden = true;
-      stage.classList.add('workflow-fallback');
-      fallbackText.hidden = false;
-      fallbackText.textContent = message;
-      cleanup3();
-    }
-    function material(options, physical = false) {
-      const result = physical ? new T.MeshPhysicalMaterial(options) : new T.MeshStandardMaterial(options);
-      materials.push(result);
-      return result;
-    }
-    function mesh(parent, geometry, surface, x = 0, y = 0, z = 0) {
-      geometries.push(geometry);
-      const result = new T.Mesh(geometry, surface);
-      result.position.set(x, y, z);
-      result.castShadow = !surface.transparent && !surface.transmission;
-      parent.add(result);
+    const state = {ready:false, stage:null, renderframes:0, meshes:0, geometryMode:true, artDirection:'mint-research-line'};
+    const modules = [], accents = [], packets = [], resources = [];
+    const centers = [-6.4,-3.2,0,3.2,6.4];
+    let renderer, scene, camera, environment, timer = null, visible = false, last = 0, phase = 0;
+    let flow = window.UpbitWorkflow.resolve({}), fan, lens, scan, sheets, cloud;
+    const surface = (color, options = {}) => {
+      const value = new T.MeshStandardMaterial({color, roughness:.3, metalness:.12, ...options});
+      resources.push(value);
+      return value;
+    };
+    function mesh(parent, geometry, material, x=0, y=0, z=0) {
+      resources.push(geometry);
+      const value = new T.Mesh(geometry,material);
+      value.position.set(x,y,z);
+      value.castShadow = true;
+      value.receiveShadow = true;
+      parent.add(value);
       state.meshes++;
-      return result;
+      return value;
     }
-    function box(parent, w, h, d, surface, x = 0, y = 0, z = 0, radius = .06) {
-      return mesh(parent, new RoundedBox(w, h, d, 2, Math.min(radius, w / 3, h / 3, d / 3)), surface, x, y, z);
-    }
-    function ring(parent, radius, tube, surface, x = 0, y = 0, z = 0) {
-      return mesh(parent, new T.TorusGeometry(radius, tube, 8, 36), surface, x, y, z);
-    }
-    function glazed(parent, w, h, d, surface, outline, x, y, z) {
-      const pane = box(parent,w,h,d,surface,x,y,z,.06);
-      if (outline) {
-        const frame = new T.BoxGeometry(w-.015,h-.01,d-.015);
-        const edge = new T.EdgesGeometry(frame);
-        frame.dispose();
-        geometries.push(edge);
-        pane.add(new T.LineSegments(edge,outline));
-      }
-      return pane;
-    }
-    function projectAnchors() {
-      if (!camera3 || !stage.clientWidth) return;
-      scene3.updateMatrixWorld(true);
-      camera3.updateMatrixWorld(true);
-      state.anchors = modules.map((module, index) => {
-        const point = module.localToWorld(new T.Vector3(0, -.35, .8)).project(camera3);
-        return {index, x:(point.x + 1) * stage.clientWidth / 2, y:(1 - point.y) * stage.clientHeight / 2,
-          projected:{x:point.x,y:point.y,z:point.z}, normalizedX:(point.x + 1) / 2, normalizedY:(1 - point.y) / 2};
-      });
-    }
-    function updateLights(smooth, delta) {
-      let changing = false;
-      for (let index = 0; index < 4; index++) {
-        const target = state.stage === index ? 1 : 0;
-        levels[index] += (target - levels[index]) * (smooth ? 1 - Math.exp(-delta * 9) : 1);
-        if (Math.abs(target - levels[index]) < .002) levels[index] = target;
-        else changing = true;
-        const level = levels[index];
-        lights[index].intensity = .04 + level * 1.4;
-        accentMaterials[index].emissiveIntensity = .01 + level * .08;
-        accentMaterials[index].color.setHex(0x738b91).lerp(new T.Color(accents[index]), .25 + level * .75);
-      }
-      return changing;
-    }
-    function draw() {
-      timer3 = null;
-      if (!state.ready || !state.visible || document.hidden || stopped) return;
-      const now = performance.now();
-      const delta = Math.min(.08, Math.max(0, (now - lastFrame) / 1000));
-      lastFrame = now;
-      const animate = canAnimate();
-      const changing = updateLights(transitionsAllowed(), delta);
-      // 실제 단계의 부품 시간만 전진시키며 단계 번호를 시간으로 만들지 않습니다.
-      if (animate) {
-        if (state.stage === 0) gear.rotation.z -= delta * .4;
-        if (state.stage === 1) fan.rotation.z += delta * .8;
-        if (state.stage === 2) {
-          phases.lens += delta * 1.8;
-          lens.position.x = Math.sin(phases.lens) * .1;
-          lens.position.y = 1.1 + Math.cos(phases.lens) * .045;
-          lens.rotation.y = Math.sin(phases.lens) * .08;
-        }
-        if (state.stage === 3) {
-          phases.review += delta * 2;
-          reviewScan.position.y = 1.05 + Math.sin(phases.review) * .32;
-        }
-        glassLayers.forEach((pane,index) => {
-          pane.userData.phase += delta;
-          pane.position.y = pane.userData.restY + (pane.userData.stage === state.stage ? Math.sin(pane.userData.phase + index * .6) * .018 : 0);
-        });
+    const box = (p,w,h,d,m,x=0,y=0,z=0,r=.08) => mesh(p,new RoundedBox(w,h,d,3,Math.min(r,w/3,h/3,d/3)),m,x,y,z);
+    const ring = (p,r,t,m,x=0,y=0,z=0) => mesh(p,new T.TorusGeometry(r,t,12,48),m,x,y,z);
+    const canAnimate = () => state.ready && visible && !document.hidden && motion && !reduced.matches && flow.active;
+    function stop() { if (timer !== null) clearTimeout(timer); timer = null; }
+    function paint() {
+      timer = null;
+      if (!state.ready || !visible || document.hidden) return;
+      const now = performance.now(), delta = Math.min(.08,Math.max(0,(now-last)/1000));
+      last = now;
+      const moving = canAnimate();
+      if (moving) {
+        phase += delta;
+        if (state.stage === 0) cloud.position.y = Math.sin(phase*1.4)*.06;
+        if (state.stage === 1) sheets.children.forEach((sheet,i) => { sheet.position.y = 1.05+Math.sin(phase*1.8+i*.5)*.05; });
+        if (state.stage === 2) fan.rotation.z -= delta*1.6;
+        if (state.stage === 3) { lens.position.x = Math.sin(phase*1.4)*.13; lens.rotation.z = Math.sin(phase)*.04; }
+        if (state.stage === 4) scan.position.y = .85+Math.sin(phase*2)*.45;
         packets.forEach(packet => {
           if (packet.userData.stage !== state.stage) return;
-          packet.userData.phase = (packet.userData.phase + delta * .3) % 1;
-          packet.position.x = packet.userData.start + packet.userData.phase * packet.userData.length;
-          packet.rotation.x += delta * 2;
+          packet.userData.phase = (packet.userData.phase+delta*.45)%1;
+          if (packet.userData.falling) packet.position.y = 1.35-packet.userData.phase*1.15;
+          else packet.position.x = packet.userData.start+packet.userData.phase*packet.userData.length;
+          packet.rotation.y += delta;
         });
       }
-      packets.forEach(packet => { packet.visible = state.stage === packet.userData.stage; });
-      renderer3.render(scene3, camera3);
+      const dark = document.documentElement.dataset.theme === 'dark';
+      accents.forEach((material,i) => {
+        const current = state.stage === i;
+        const completed = flow.completedStages.includes(i) || i === 4 && flow.applied;
+        const color = flow.failed && current ? 0xd65b65 : flow.status === '재시도 중' && current ? 0xd19b35 :
+          current && flow.active ? 0x15cb82 : completed ? 0x14865e : dark ? 0x647d76 : 0xa7c3b8;
+        material.color.setHex(color);
+        material.emissive.setHex(color);
+        material.emissiveIntensity = current && flow.active ? .25 : completed ? .1 : .015;
+      });
+      packets.forEach(packet => { packet.visible = flow.active && packet.userData.stage === state.stage; });
+      renderer.render(scene,camera);
       state.renderframes++;
-      if (animate || (changing && transitionsAllowed())) timer3 = setTimeout(draw, Math.ceil(1000 / 24));
+      if (moving) timer = setTimeout(paint,Math.ceil(1000/24));
     }
     function refresh() {
-      stop3();
-      const theme = document.documentElement.dataset.theme;
-      if (state.ready && state.labelTheme !== theme) {
-        state.labelTheme = theme;
-        labelRedraws.forEach(redraw => redraw());
-      }
-      state.visible = inViewport(stage);
-      if (state.visible && state.ready && !document.hidden && !stopped) {
-        // 외부 갱신도 같은 프레임 상한을 지키며 정지 중에는 상태 변경 때만 그립니다.
-        timer3 = setTimeout(draw, Math.max(0, Math.ceil(1000 / 24 - (performance.now() - lastFrame))));
-      }
+      stop();
+      visible = inViewport(stage);
+      if (visible && state.ready && !document.hidden) timer = setTimeout(paint,Math.max(0,Math.ceil(1000/24-(performance.now()-last))));
     }
-    function resize3() {
-      if (!state.ready || stopped || !stage.clientWidth || !stage.clientHeight) return;
-      const width = stage.clientWidth, height = stage.clientHeight, aspect = width / height;
-      renderer3.setPixelRatio(Math.min(devicePixelRatio || 1, 1.25));
-      state.pixelRatio = renderer3.getPixelRatio();
-      renderer3.setSize(width, height, false);
-      const view = Math.max(4.4, 18 / aspect);
-      camera3.left = -view * aspect / 2; camera3.right = view * aspect / 2;
-      camera3.top = view / 2; camera3.bottom = -view / 2;
-      camera3.updateProjectionMatrix();
-      projectAnchors();
+    function resizeScene() {
+      if (!state.ready || !stage.clientWidth || !stage.clientHeight) return;
+      const aspect = stage.clientWidth/stage.clientHeight;
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25));
+      state.pixelRatio = renderer.getPixelRatio();
+      renderer.setSize(stage.clientWidth,stage.clientHeight,false);
+      const height = Math.max(6.6,18/aspect);
+      camera.left = -height*aspect/2; camera.right = height*aspect/2;
+      camera.top = height/2; camera.bottom = -height/2;
+      camera.updateProjectionMatrix();
+      scene.updateMatrixWorld(true); camera.updateMatrixWorld(true);
+      state.anchors = modules.map((module,index) => {
+        const point = module.localToWorld(new T.Vector3(0,-.5,.7)).project(camera);
+        return {index,normalizedX:(point.x+1)/2,normalizedY:(1-point.y)/2};
+      });
       refresh();
     }
     try {
-      if (!T || !RoundedBox || !window.UpbitVendors.RoomEnvironment) throw new Error('입체 모델 라이브러리 미연결');
-      renderer3 = new T.WebGLRenderer({canvas:element,alpha:true,antialias:true,powerPreference:'low-power'});
-      renderer3.setClearColor(0xffffff,0);
-      renderer3.outputColorSpace = T.SRGBColorSpace;
-      renderer3.toneMapping = T.ACESFilmicToneMapping;
-      renderer3.toneMappingExposure = 1;
-      renderer3.shadowMap.enabled = true;
-      renderer3.shadowMap.type = T.PCFSoftShadowMap;
-      scene3 = new T.Scene();
-      const pmrem = new T.PMREMGenerator(renderer3);
+      if (!T || !RoundedBox) throw new Error('입체 라이브러리 미연결');
+      renderer = new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'low-power'});
+      renderer.setClearColor(0xffffff,0);
+      renderer.outputColorSpace = T.SRGBColorSpace;
+      renderer.toneMapping = T.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.12;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = T.PCFSoftShadowMap;
+      scene = new T.Scene();
+      const generator = new T.PMREMGenerator(renderer);
       const room = new window.UpbitVendors.RoomEnvironment();
-      try { environment3 = pmrem.fromScene(room, .04); scene3.environment = environment3.texture; }
-      finally { room.dispose(); pmrem.dispose(); }
-      camera3 = new T.OrthographicCamera(-9,9,2.2,-2.2,.1,60);
-      camera3.position.set(0,7.8,15);
-      camera3.lookAt(0,0,0);
-      scene3.add(new T.HemisphereLight(0xffffff,0x7d9a9f,1.5));
-      const keyLight = new T.DirectionalLight(0xffffff,2.5);
-      keyLight.position.set(-4,8,6);
-      keyLight.castShadow = true;
-      keyLight.shadow.mapSize.set(1024,1024);
-      Object.assign(keyLight.shadow.camera,{left:-10,right:10,top:5,bottom:-5,near:1,far:30});
-      keyLight.shadow.bias = -.001;
-      keyLight.shadow.normalBias = .025;
-      scene3.add(keyLight);
-      const white = material({color:0xf0f5fa,metalness:.15,roughness:.2});
-      const dark = material({color:0x425461,metalness:.5,roughness:.24});
-      const metal = material({color:0xc6d4e0,metalness:.6,roughness:.24});
-      const glass = material({color:0xd0e7f3,roughness:.07,metalness:.12,transparent:true,opacity:.17,depthWrite:false,clearcoat:1,envMapIntensity:1.8,side:T.FrontSide},true);
-      const outline = new T.LineBasicMaterial({color:0x93b6d0,transparent:true,opacity:.15});
-      materials.push(outline);
-      const tealGlass = material({color:0x3ed5cd,roughness:.13,transmission:.65,thickness:.25,opacity:1,clearcoat:1},true);
-      const aquaSheet = material({color:0x19c5d0,roughness:.12,metalness:.03,transparent:true,opacity:.38,depthWrite:false,clearcoat:.5,side:T.DoubleSide},true);
-      const coral = material({color:0xf17f70,metalness:.3,roughness:.25});
-      const shadowSurface = new T.ShadowMaterial({transparent:true,opacity:.065,depthWrite:false});
-      materials.push(shadowSurface);
-      const ground = box(scene3,18,.015,4,shadowSurface,0,-.47,0,.004);
-      ground.castShadow = false;
-      ground.receiveShadow = true;
-      for (let i = 0; i < 4; i++) {
-        const module = new T.Group();
-        module.position.x = centers[i];
-        module.rotation.y = -.37;
-        scene3.add(module);
-        modules.push(module);
-        const accent = material({color:accents[i],emissive:accents[i],emissiveIntensity:.01,metalness:0,roughness:.3,clearcoat:.35,envMapIntensity:.35},true);
-        accentMaterials.push(accent);
-        const light = new T.PointLight(accents[i],.04,4,2);
-        light.position.set(centers[i],1.4,1.6);
-        scene3.add(light);
-        lights.push(light);
-        box(module,2.42,.19,1.88,accent,0,-.29,0,.08);
-        box(module,2.35,.14,1.81,white,0,-.12,0,.07);
-        box(module,2.14,.045,1.6,accent,0,-.015,0,.02);
-        // 원본 시안처럼 세 겹의 얇은 유리 공간이 작은 상징물을 감쌉니다.
-        for (let layer = 0; layer < 3; layer++) {
-          const pane = glazed(module,2.08,.48,1.6,glass,null,0,.28+layer*.5,0);
-          pane.userData = {stage:i,phase:0,restY:pane.position.y};
-          glassLayers.push(pane);
+      try { environment = generator.fromScene(room,.04); scene.environment = environment.texture; }
+      finally { room.dispose(); generator.dispose(); }
+      camera = new T.OrthographicCamera(-9,9,4,-4,.1,80);
+      camera.position.set(0,8.8,18);
+      camera.lookAt(0,.9,0);
+      scene.add(new T.HemisphereLight(0xffffff,0x92b5a4,2));
+      const light = new T.DirectionalLight(0xffffff,3);
+      light.position.set(-5,10,8); light.castShadow = true;
+      light.shadow.mapSize.set(1024,1024);
+      Object.assign(light.shadow.camera,{left:-11,right:11,top:6,bottom:-5,near:1,far:40});
+      light.shadow.normalBias = .03;
+      scene.add(light);
+      const white = surface(0xf4f8f5), silver = surface(0xb8c9c2,{metalness:.55}), charcoal = surface(0x344640);
+      const mint = surface(0xb9e2d2), green = surface(0x12d978);
+      const floor = mesh(scene,new T.PlaneGeometry(22,9),new T.ShadowMaterial({opacity:.12}));
+      resources.push(floor.material); floor.rotation.x = -Math.PI/2; floor.position.y = -.6; floor.castShadow = false;
+      box(scene,16.7,.32,2.9,white,0,-.35,0,.14);
+      for (let i=0;i<5;i++) {
+        const group = new T.Group(); group.position.x = centers[i]; scene.add(group); modules.push(group);
+        const accent = surface(0xa7c3b8,{emissive:0xa7c3b8}); accents.push(accent);
+        box(group,2.7,.25,2.35,silver,0,-.08,0,.15);
+        box(group,2.62,.18,2.27,white,0,.1,0,.14);
+        box(group,2.35,.045,2,accent,0,.215,0);
+        if (i<4) {
+          box(scene,.62,.19,.38,silver,centers[i]+1.6,.03,0);
+          for (let j=0;j<3;j++) {
+            const packet = box(scene,.13,.13,.13,accent,centers[i]+1.36,.2,0,.03);
+            packet.userData = {stage:i,start:centers[i]+1.36,length:.5,phase:j/3};
+            packets.push(packet);
+          }
         }
       }
-      const input = new T.Group();
-      input.position.set(-6.45,0,.8);
-      scene3.add(input);
-      box(input,4.6,.22,1.9,white,0,-.25,0);
-      box(input,4.45,.07,1.75,tealGlass,0,-.09,0);
-      const coinColors = [0xe8b346,0x29cbb1,0x748cdb,0x83acbb,0xe3ba63];
-      coins.forEach((coin,index) => {
-        const panel = new T.Group();
-        panel.position.set((index-2)*.86,1.25,(index%2)*-.18);
-        panel.rotation.y = -.15;
-        panel.userData.coin = coin;
-        input.add(panel);
-        glazed(panel,.81,2.5,.075,glass,outline,0,0,0);
-        const ink = material({color:coinColors[index],metalness:.35,roughness:.25});
-        for (let stripe = 0; stripe < 5; stripe++) {
-          box(panel,.055,.16+stripe*.055,.045,ink,(stripe-2)*.085,-.35+stripe*.06,.09,.012);
-        }
-        // 글자만 그리는 명판이며 전체 그림이나 실제 가격 텍스처를 사용하지 않습니다.
-        const labelCanvas = document.createElement('canvas');
-        labelCanvas.width = 256; labelCanvas.height = 128;
-        const context = labelCanvas.getContext('2d');
-        const paintLabel = () => {
-          context.clearRect(0,0,256,128);
-          context.fillStyle = document.documentElement.dataset.theme === 'dark' ? '#f1f9ff' : '#263e50';
-          context.font = '700 84px Nanum, sans-serif';
-          context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(coin,128,42);
-          context.font = '700 42px Nanum, sans-serif'; context.fillText('자료',128,106);
-        };
-        paintLabel();
-        const label = new T.CanvasTexture(labelCanvas);
-        label.colorSpace = T.SRGBColorSpace;
-        textures.push(label);
-        labelRedraws.push(() => { paintLabel(); label.needsUpdate = true; });
-        const labelMaterial = material({map:label,color:0xffffff,roughness:.55,transparent:true,depthWrite:false});
-        box(panel,.7,.46,.012,labelMaterial,0,.85,.06,.004);
+      cloud = new T.Group(); modules[0].add(cloud);
+      const cloudMat = surface(0xf8fffb,{roughness:.23});
+      [[-.55,1.95,.49],[0,2.22,.65],[.6,1.92,.47]].forEach(([x,y,r]) => {
+        const puff = mesh(cloud,new T.SphereGeometry(r,32,24),cloudMat,x,y,-.08);
+        puff.scale.z = .5;
       });
-      document.fonts.load('700 58px Nanum').then(fonts => {
-        if (stopped || cleaned) return;
-        state.labelFontLoaded = fonts.length > 0;
-        labelRedraws.forEach(redraw => redraw());
-        refresh();
-      }, () => {
-        if (!stopped && !cleaned) state.labelFontLoaded = false;
-      });
-      const prep = modules[0];
-      for (let i = 0; i < 4; i++) {
-        glazed(prep,1.02,1.2,.07,aquaSheet,outline,-.2+i*.16,1.02,-.12-i*.19);
+      box(cloud,1.65,.65,.53,cloudMat,0,1.73,-.08,.2);
+      box(cloud,.22,.75,.22,green,0,1.25,.39,.025);
+      const arrow = mesh(cloud,new T.ConeGeometry(.35,.42,4),green,0,.83,.39); arrow.rotation.z = Math.PI;
+      for (let i=0;i<9;i++) {
+        const packet = box(modules[0],.14,.14,.14,accents[0],(i%3-1)*.28,.4+i*.1,.25+(i%2)*.2,.03);
+        packet.userData = {stage:0,falling:true,phase:i/9}; packets.push(packet);
       }
-      gear = new T.Group(); gear.position.set(.02,.95,.55); gear.scale.setScalar(.65); prep.add(gear);
-      ring(gear,.34,.1,accentMaterials[0]);
-      for (let i = 0; i < 10; i++) {
-        const tooth = box(gear,.16,.2,.16,accentMaterials[0],Math.sin(i*Math.PI/5)*.43,Math.cos(i*Math.PI/5)*.43,0,.025);
-        tooth.rotation.z = -i*Math.PI/5;
+      sheets = new T.Group(); modules[1].add(sheets);
+      for (let i=0;i<4;i++) {
+        const sheet = box(sheets,1.3,1.5,.13,white,-.2+i*.13,1.05,-.4+i*.22);
+        box(sheet,1.08,.72,.035,mint,0,-.12,.08);
+        box(sheet,.65,.055,.04,silver,-.15,.5,.08);
       }
-      mesh(gear,new T.CylinderGeometry(.14,.14,.16,24),metal).rotation.x = Math.PI/2;
-      const gpu = modules[1];
-      box(gpu,1.23,.2,.95,dark,0,.89,0,.09);
-      box(gpu,1.08,.035,.8,metal,0,1.01,0,.06);
-      const chipLabel = document.createElement('canvas'); chipLabel.width = 256; chipLabel.height = 128;
-      const chipContext = chipLabel.getContext('2d');
-      const paintChip = () => {
-        chipContext.fillStyle = '#3a5365'; chipContext.fillRect(0,0,256,128);
-        chipContext.fillStyle = '#f3fbff'; chipContext.font = '700 68px Nanum, sans-serif';
-        chipContext.textAlign = 'center'; chipContext.textBaseline = 'middle'; chipContext.fillText('GPU',128,64);
+      const gpu = modules[2];
+      box(gpu,2.05,1.15,.5,charcoal,0,1.05,0);
+      box(gpu,2.17,1.28,.14,silver,0,1.05,-.3);
+      for (let i=0;i<10;i++) box(gpu,.06,.16,.6,silver,-.9+i*.2,1.77,-.08,.01);
+      fan = new T.Group(); fan.position.set(.48,1.05,.3); gpu.add(fan);
+      ring(fan,.4,.065,silver);
+      mesh(fan,new T.CylinderGeometry(.11,.11,.12,24),silver).rotation.x = Math.PI/2;
+      for (let i=0;i<6;i++) {
+        const blade = box(fan,.16,.3,.055,silver,Math.sin(i*Math.PI/3)*.21,Math.cos(i*Math.PI/3)*.21,0,.04);
+        blade.rotation.z = -i*Math.PI/3+.35;
+      }
+      const labelCanvas = document.createElement('canvas'); labelCanvas.width=256; labelCanvas.height=128;
+      const context = labelCanvas.getContext('2d');
+      const paintLabel = () => {
+        context.fillStyle='#344640'; context.fillRect(0,0,256,128);
+        context.font='700 72px Nanum, sans-serif'; context.fillStyle='#ffffff';
+        context.textAlign='center'; context.textBaseline='middle'; context.fillText('GPU',128,64);
       };
-      paintChip();
-      const chipTexture = new T.CanvasTexture(chipLabel); chipTexture.colorSpace = T.SRGBColorSpace; textures.push(chipTexture);
-      labelRedraws.push(() => { paintChip(); chipTexture.needsUpdate = true; });
-      const chipFace = material({map:chipTexture,roughness:.3});
-      box(gpu,.91,.015,.59,chipFace,0,1.04,0,.006);
-      // 팬 대신 칩 아래 빛이 천천히 흐르므로 기계 부품의 인상을 줄입니다.
-      fan = new T.Group(); fan.position.set(0,.73,0); fan.rotation.x = -Math.PI/2; gpu.add(fan);
-      ring(fan,.58,.018,accentMaterials[1]);
-      box(fan,.15,.035,.025,accentMaterials[1],.57,0,0,.01);
-      const evaluation = modules[2];
-      glazed(evaluation,1.12,.83,.055,glass,outline,0,.85,-.25);
-      for (let row = 0; row < 3; row++) {
-        for (let col = 0; col < 4; col++) box(evaluation,.13,.08,.02,(row+col)%3 === 0 ? coral : metal,-.32+col*.21,.62+row*.18,-.2,.015);
-      }
-      lens = new T.Group(); lens.position.set(0,1.1,.4); lens.scale.setScalar(.72); evaluation.add(lens);
-      ring(lens,.47,.095,dark);
-      ring(lens,.38,.027,accentMaterials[2],0,0,.025);
-      const lensGlass = material({color:0xa4e7ec,transmission:.95,thickness:.18,roughness:.06,opacity:1,ior:1.5,clearcoat:1},true);
-      mesh(lens,new T.CylinderGeometry(.38,.38,.1,40),lensGlass).rotation.x = Math.PI/2;
-      const handle = box(lens,.14,.57,.14,metal,-.42,-.48,0,.045); handle.rotation.z = -.65;
-      const review = modules[3];
-      box(review,.7,1.13,.47,dark,-.1,.83,0,.1);
-      box(review,.61,1.02,.025,metal,-.1,.83,.25,.06);
-      for (let i = 0; i < 4; i++) {
-        box(review,.4,.045,.025,white,-.12,1.18-i*.2,.28,.018);
-      }
-      reviewScan = box(review,.5,.025,.025,accentMaterials[3],-.1,1.05,.3,.01);
-      // 검토 단계는 적용 성공을 단정하는 체크 표시 대신 서버의 스캔으로 표현합니다.
-      const paths = [[-4.1,centers[0]-.95],[centers[0]+1.05,centers[1]-.95],[centers[1]+1.05,centers[2]-.95],[centers[2]+1.05,centers[3]-.95]];
-      paths.forEach(([start,end],index) => {
-        const curve = new T.CatmullRomCurve3([new T.Vector3(start,-.03,.25),new T.Vector3((start+end)/2,.03,.25),new T.Vector3(end,-.03,.25)]);
-        mesh(scene3,new T.TubeGeometry(curve,16,.055,8,false),tealGlass);
-        for (let i = 0; i < 3; i++) {
-          const packet = box(scene3,.1,.1,.1,accentMaterials[index],start+(end-start)*i/3,.06,.25,.025);
-          packet.userData = {stage:index,start,length:end-start,phase:i/3};
-          packet.visible = false;
-          packets.push(packet);
-        }
-      });
+      paintLabel();
+      const texture = new T.CanvasTexture(labelCanvas); texture.colorSpace=T.SRGBColorSpace; resources.push(texture);
+      const label = surface(0xffffff,{map:texture});
+      box(gpu,.75,.4,.025,label,-.58,1.05,.27,.005);
+      document.fonts.load('700 72px Nanum').then(() => { paintLabel(); texture.needsUpdate=true; refresh(); });
+      box(modules[3],1.4,1.5,.18,white,0,1.1,-.3);
+      box(modules[3],1.12,.95,.035,mint,0,1.04,-.18);
+      lens = new T.Group(); lens.position.set(.12,1.4,.33); modules[3].add(lens);
+      ring(lens,.61,.1,silver);
+      const lensMat = new T.MeshPhysicalMaterial({color:0xd7f5e9,transmission:.75,thickness:.2,roughness:.12,transparent:true,opacity:.7});
+      resources.push(lensMat);
+      mesh(lens,new T.CircleGeometry(.51,48),lensMat,0,0,.01);
+      const handle = box(lens,.18,.72,.18,charcoal,.5,-.64,0); handle.rotation.z=.6;
+      const review = modules[4];
+      box(review,1.42,2,.19,white,-.15,1.35,-.1);
+      for (let i=0;i<4;i++) box(review,.85-i*.1,.08,.045,silver,-.2,1.95-i*.3,.03,.02);
+      scan = box(review,1.13,.045,.045,accents[4],-.15,.85,.08,.01);
+      ring(review,.42,.07,accents[4],.65,.8,.23);
+      // 적용 결과는 서버 상태로만 표시하며 문서 모형은 승인 성공을 뜻하지 않습니다.
+      box(review,.11,.49,.08,silver,.65,.8,.25).rotation.z = -.5;
       state.ready = true;
-      fallbackText.hidden = true;
-      element.hidden = false;
-      stage.classList.remove('workflow-fallback');
-      element.setAttribute('aria-label','BTC·SOL·ETH·XRP·DOGE 자료 패널과 데이터 준비 기어·GPU 팬·평가 렌즈·서버 검토의 실제 입체 모델. 실제 학습 단계만 점등되며 패널 무늬는 실측 가격이 아닙니다.');
-      resize3();
+      fallback.hidden = true;
+      resizeScene();
     } catch (error) {
-      showFallback('3D를 표시할 수 없습니다. 아래 데이터 준비·모델 학습·결과 평가·적용 검토의 실제 단계를 확인해 주세요.');
+      fallback.hidden = false;
+      canvas.hidden = true;
+      fallback.textContent = '3D를 사용할 수 없습니다. 아래 실제 단계를 확인해 주세요.';
+      resources.forEach(value => value.dispose()); environment?.dispose(); renderer?.dispose();
     }
-    const sizeObserver = new ResizeObserver(resize3);
-    sizeObserver.observe(stage);
-    const onVisibility = () => {
-      const wasVisible = state.visible;
-      state.visible = inViewport(stage);
-      if (!state.visible || document.hidden) stop3();
-      else if (!wasVisible || canAnimate()) refresh();
-    };
-    const visibilityObserver = new IntersectionObserver(onVisibility);
-    visibilityObserver.observe(stage);
-    const onDocumentVisibility = () => { if (document.hidden) stop3(); else refresh(); };
-    document.addEventListener('visibilitychange',onDocumentVisibility);
+    const sizeObserver = new ResizeObserver(resizeScene); sizeObserver.observe(stage);
+    const observer = new IntersectionObserver(refresh); observer.observe(stage);
+    document.addEventListener('visibilitychange',refresh);
     reduced.addEventListener('change',refresh);
-    window.addEventListener('scroll',onVisibility,{passive:true});
-    const onContextLost = event => {
-      event.preventDefault();
-      showFallback('3D 연결이 중단되었습니다. 아래 실제 단계와 진행 수치를 확인해 주세요.');
-    };
-    element.addEventListener('webglcontextlost',onContextLost);
+    canvas.addEventListener('webglcontextlost',event => {
+      event.preventDefault(); stop(); state.ready=false; canvas.hidden=true; fallback.hidden=false;
+      fallback.textContent='입체 장면 연결 중단 · 아래 실제 단계는 계속 표시합니다.';
+    });
     window.addEventListener('pagehide',() => {
-      stopped = true;
-      state.ready = false;
-      sizeObserver.disconnect(); visibilityObserver.disconnect();
-      document.removeEventListener('visibilitychange',onDocumentVisibility);
-      reduced.removeEventListener('change',refresh);
-      window.removeEventListener('scroll',onVisibility);
-      element.removeEventListener('webglcontextlost',onContextLost);
-      cleanup3();
+      stop(); state.ready=false; sizeObserver.disconnect(); observer.disconnect();
+      document.removeEventListener('visibilitychange',refresh); reduced.removeEventListener('change',refresh);
+      resources.forEach(value => value.dispose()); environment?.dispose(); renderer?.dispose();
     },{once:true});
     return {
       refresh,
-      update(snapshot) {
-        const t = snapshot?.training || {};
-        const next = t.state === 'running' ? ({features:0,fit:1,calibration:2,locked_test:2,complete:3})[t.stage] ?? null : null;
-        const changed = state.stage !== next;
-        state.stage = next;
-        if (state.ready && !transitionsAllowed()) updateLights(false,0);
-        if (changed || (canAnimate() && timer3 === null)) refresh();
-      },
-      stats() {
-        const position = object => ({x:object.position.x,y:object.position.y,z:object.position.z});
-        return {...state, paused:!canAnimate(), activeLights:lights.map((light,index) => ({index,intensity:light.intensity,color:'#'+accentMaterials[index].color.getHexString(),lightColor:'#'+light.color.getHexString()})),
-          movingParts:state.ready ? {gear:{rotation:gear.rotation.z,position:position(gear)},fan:{rotation:fan.rotation.z,position:position(fan)},
-            lens:{rotation:phases.lens,position:position(lens)},review:{rotation:phases.review,position:position(reviewScan)},
-            packets:packets.map(packet => ({stage:packet.userData.stage,rotation:packet.rotation.x,position:position(packet),visible:packet.visible}))} : {}};
-      }
+      update(snapshot) { flow=window.UpbitWorkflow.resolve(snapshot); state.stage=flow.stage; state.status=flow.status; refresh(); },
+      stats() { return {...state,paused:!canAnimate(),phase,activeLights:accents.map((m,index)=>({index,color:'#'+m.color.getHexString()})),
+        movingParts:{fan:fan?.rotation.z,lens:lens?.position.x,cloud:cloud?.position.y,review:scan?.position.y},
+        packets:packets.map(p=>({stage:p.userData.stage,x:p.position.x,y:p.position.y,visible:p.visible}))}; }
     };
   }
   function createAllocation() {

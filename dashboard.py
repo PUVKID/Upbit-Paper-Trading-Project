@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 from datetime import datetime, timezone
 from functools import partial
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import math
 import heapq
+import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -36,6 +38,7 @@ FIELDS = {
     "test_state": "status used_for_selection",
     "portfolio": "net_return MDD trades equity start end common_rows fees_paid",
     "model": "run",
+    "foundation_research": "state model_id stage step total_steps loss updated_utc started_utc finished_utc candidate_ready has_error has_status_warning run parent_run device rows context_length horizon_minutes batch_size learning_rate validation_mae baseline_mae direction_accuracy net_return trades checkpoint_verified",
     "promotion": "promote reason incumbent_run comparison_baseline excluded_incumbent_run excluded_incumbent_reason probability_comparable",
     "promotion_metrics": "logloss net_return MDD",
     "health": "state checked_utc checked_datasets total_rows errors_count pending_count",
@@ -294,7 +297,7 @@ class SnapshotAdapter:
         self.root = root.resolve()
         self.sources = {}
 
-    def read(self, relative: str):
+    def read(self, relative: str, *, hashes=None):
         path = self.root / relative
         try:
             resolved = path.resolve()
@@ -310,11 +313,46 @@ class SnapshotAdapter:
                 self.sources[relative] = "too_large"
                 return None
             value = json.loads(raw.decode("utf-8-sig"))
+            if hashes is not None:
+                hashes[relative] = hashlib.sha256(raw).hexdigest()
             self.sources[relative] = "ok"
             return value
         except (OSError, ValueError, UnicodeError):
             self.sources[relative] = "unavailable"
             return None
+
+    def foundation_status(self):
+        source = mapping(self.read("7차/work/status.json"))
+        if not source:
+            return {}
+        pointer = mapping(self.read("7차/work/knowledge.json"))
+        run = pointer.get("run")
+        if "completion_sha256" not in pointer or run != source.get("run"):
+            return source
+        # 원자적 완료 포인터의 작은 JSON 결합만 검사하며 모델 전체를 매번 읽지 않습니다.
+        hashes = {}
+        valid_run = isinstance(run, str) and re.fullmatch(r"[A-Za-z0-9_-]{1,100}", run)
+        if valid_run:
+            prefix = f"7차/work/runs/{run}/"
+            manifest = mapping(self.read(prefix + "manifest.json", hashes=hashes))
+            completion = mapping(self.read(prefix + "completion.json", hashes=hashes))
+            valid = (pointer.get("manifest_sha256") == hashes.get(prefix + "manifest.json")
+                     and pointer.get("completion_sha256") == hashes.get(prefix + "completion.json")
+                     and pointer.get("completion_sha256") == manifest.get("completion_sha256")
+                     and manifest.get("run") == completion.get("run") == run
+                     and manifest.get("model_id") == completion.get("model_id") == "amazon/chronos-2"
+                     and manifest.get("complete") is True and manifest.get("checkpoint_verified") is True
+                     and completion.get("state") == "complete" and completion.get("checkpoint_verified") is True
+                     and completion.get("candidate_ready") is True)
+        else:
+            valid = False
+        if not valid:
+            return {**source, "state":"error", "candidate_ready":False,
+                    "checkpoint_verified":False, "error":"완료 기록 결합 확인 실패"}
+        warning = (source.get("has_status_warning") is True or source.get("error") is not None
+                   or source.get("state") != "complete" or source.get("checkpoint_verified") is not True
+                   or source.get("candidate_ready") is not True)
+        return {**completion, "has_status_warning":warning, "error":None}
 
     def status(self):
         self.sources = {}
@@ -435,6 +473,9 @@ class SnapshotAdapter:
             "trades": rows(trades, "trades"),
             "training": project(training_view, "training"),
             "current_model": project(self.read("work/models/current.json"), "model"),
+            "foundation_research": project(
+                {**foundation, "has_error": foundation.get("error") is not None},
+                "foundation_research") if (foundation := self.foundation_status()) else {},
             "promotion": promotion,
             "health": health,
             "gpu": project(self.read("work/service/gpu.json"), "gpu"),
