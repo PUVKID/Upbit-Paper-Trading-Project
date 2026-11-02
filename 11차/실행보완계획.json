@@ -1,0 +1,21 @@
+{
+  "date_kst": "2026-11-03",
+  "original_suite": "timesfm11-verified-ten",
+  "completed_before_amendment": 7,
+  "failed_slot": 8,
+  "failed_anchor": "2025-01-03T08:00:00Z",
+  "failure_reason": "후속 평가에 필요한 5시장 공통 연속 문맥100개 미만. GPU 추론0회",
+  "replacement_anchor": "2024-11-08T08:00:00Z",
+  "replacement_basis": "가격·수익 결과와 무관한 입력 자료 부족. 미래 채움·기준 완화 없음",
+  "remaining_original_anchors": ["2025-01-10T08:00:00Z", "2025-01-17T08:00:00Z"],
+  "supplement_runs": ["timesfm11-supplement-08a", "timesfm11-supplement-09", "timesfm11-supplement-10"],
+  "maximum_additional_completed_experiments": 3,
+  "maximum_total_completed_experiments": 10,
+  "original_started_utc": "2026-11-02T19:44:07.043373+00:00",
+  "original_wall_clock_deadline_utc": "2026-11-03T01:44:07.043373+00:00",
+  "automatic_retry": false,
+  "completed_runs_repeated": false,
+  "fit_calls": 0,
+  "promotion": false,
+  "evaluation_scope": "후향 비교이며 자료 부족 후 사전 고정된 보완 계획. 독립 최종 시험이나 수익 향상 보장 아님"
+}

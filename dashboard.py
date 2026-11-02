@@ -254,6 +254,53 @@ def return_research(value):
     return result
 
 
+def pretrained_benchmark(value):
+    """추가 학습 없는 사전학습 모델 비교의 실제 집계만 공개합니다."""
+    if not isinstance(value, dict):
+        return {}
+    integer = lambda item, low, high: type(item) is int and low <= item <= high
+    if (type(value.get('schema_version')) is not int or value['schema_version'] != 1
+            or value.get('study') != 'pretrained_forecast'
+            or value.get('model_id') != 'google/timesfm-2.5-200m-pytorch'
+            or not isinstance(value.get('run'), str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,100}', value['run'])
+            or value.get('state') not in ('running','complete','error','stopped')
+            or value.get('stage') not in ('prepare','predict','policy','validation','verify','complete','failed')
+            or not integer(value.get('fit_calls'),0,0) or value.get('promotion') is not False
+            or value.get('candidate_ready') is not False
+            or not integer(value.get('total_windows'),0,6000)
+            or not integer(value.get('windows_completed'),0,value['total_windows'])):
+        return {}
+    if value['state'] == 'complete' and (value['total_windows'] == 0
+            or value['windows_completed'] != value['total_windows'] or value.get('evaluation_performed') is not True):
+        return {}
+    result = {key:value[key] for key in ('schema_version','study','model_id','run','state','stage',
+        'fit_calls','promotion','candidate_ready','total_windows','windows_completed')}
+    result['evaluation_performed'] = value.get('evaluation_performed') is True
+    result['has_error'] = value['state'] == 'error' or value.get('error') is not None
+    result['device'] = 'cuda:0' if value.get('gpu_verified') is True and value.get('device') == 'cuda:0' else None
+    result['rows'] = value.get('rows') if integer(value.get('rows'),0,2**53-1) else None
+    result['updated_utc'] = None
+    stamp = value.get('updated_utc')
+    if isinstance(stamp,str) and len(stamp) <= 40:
+        try:
+            parsed = datetime.fromisoformat(stamp.replace('Z','+00:00'))
+            if parsed.tzinfo is not None:
+                result['updated_utc'] = parsed.astimezone(timezone.utc).isoformat()
+        except ValueError:
+            pass
+    result['comparisons'] = []
+    bounded = lambda item: type(item) in (int,float) and -1e12 <= item <= 1e12 and math.isfinite(item)
+    for row in value.get('comparisons',[])[:60] if isinstance(value.get('comparisons'),list) else []:
+        if (not isinstance(row,dict) or row.get('candidate') not in ('foundation','plain','uncertainty','selected','cash','trend','incumbent')
+                or type(row.get('cost_multiplier')) is not int or row['cost_multiplier'] not in (1,2)
+                or not bounded(row.get('net_return')) or not bounded(row.get('MDD')) or not 0 <= row['MDD'] <= 1
+                or not integer(row.get('trades'),0,2**53-1)):
+            continue
+        result['comparisons'].append({key:row[key] for key in ('candidate','cost_multiplier','net_return','MDD','trades')}
+                                     | {'scope':'retrospective_research'})
+    return result
+
+
 def distribution(value):
     if isinstance(value, list) and len(value) == 3:
         return {key: item if finite(item) and item >= 0 else None
@@ -582,6 +629,7 @@ class SnapshotAdapter:
                 "foundation_research") if (foundation := self.foundation_status()) else {},
             "training_repetition": training_repetition(self.read("8차/work/status.json")),
             "return_research": return_research(self.read("10차/work/status.json")),
+            "pretrained_benchmark": pretrained_benchmark(self.read("11차/work/status.json")),
             "promotion": promotion,
             "health": health,
             "gpu": project(self.read("work/service/gpu.json"), "gpu"),

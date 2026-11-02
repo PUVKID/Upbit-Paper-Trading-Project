@@ -1,0 +1,1009 @@
+{
+  "after_suite": "paused_until_explicit_user_request",
+  "amendment": "실행보완계획.json",
+  "candidate_ready": false,
+  "completion_mode": "original_7_plus_original_remaining_2_plus_data_gap_replacement_1",
+  "direction_samples": 28150,
+  "experiments_completed": 10,
+  "finished_utc": "2026-11-02T20:00:50.836938+00:00",
+  "fit_calls": 0,
+  "gpu_verified": true,
+  "historical_quote_extra_cost": null,
+  "model_id": "google/timesfm-2.5-200m-pytorch",
+  "original_slot8_preparation_failed": true,
+  "original_suite_completed": 7,
+  "pretraining_overlap_unknown": true,
+  "promotion": false,
+  "results": [
+    {
+      "anchor": "2024-11-15T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.049464993907777255,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.0347375156330183,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 118
+        },
+        {
+          "MDD": 0.007955439311056689,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.003619972169011665,
+          "scope": "retrospective_diagnostic",
+          "trades": 16
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.05936167120830127,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.05333576670279516,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 79
+        },
+        {
+          "MDD": 0.009357334178503374,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.0069327209283085445,
+          "scope": "retrospective_diagnostic",
+          "trades": 16
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.4905861456483126,
+        "naive_relative_mae": 0.007132608171577076,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.007360053175701458,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "ee5d4dfa6b5a197c2d2b63cec40a67ad0aa003e152dbab863875c9b7ffe67649",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-verified-ten-01",
+      "seconds": 87.01901963201817,
+      "windows": 5632
+    },
+    {
+      "anchor": "2024-11-22T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.027449883083145,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.012869541062426215,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 171
+        },
+        {
+          "MDD": 0.005006561753189476,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.001114915460225907,
+          "scope": "retrospective_diagnostic",
+          "trades": 9
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.03395255581597523,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.028767274662529152,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 99
+        },
+        {
+          "MDD": 0.0059956366677969,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.0009246407299561277,
+          "scope": "retrospective_diagnostic",
+          "trades": 9
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.4788632326820604,
+        "naive_relative_mae": 0.005090580548968443,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.005574649441526008,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "bf520bb4833bda43a582103cf68037d227b45985b2e02c8246beb8a509e5f986",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-verified-ten-02",
+      "seconds": 84.51144834401202,
+      "windows": 5632
+    },
+    {
+      "anchor": "2024-11-29T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.02931336984148003,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.02856278824051417,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 131
+        },
+        {
+          "MDD": 0.002663053615222899,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.0011375718002226698,
+          "scope": "retrospective_diagnostic",
+          "trades": 5
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.03877365993108883,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.0380334206395565,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 90
+        },
+        {
+          "MDD": 0.003884281786370125,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.002729678459372331,
+          "scope": "retrospective_diagnostic",
+          "trades": 5
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.49733570159857904,
+        "naive_relative_mae": 0.0038491855176340413,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.003947952509215044,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "fe9e90c632a4d6fc989a50d11989b58114a6c25862d0276507f9b53d3db8bb0d",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-verified-ten-03",
+      "seconds": 82.84022157199797,
+      "windows": 5632
+    },
+    {
+      "anchor": "2024-12-06T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.03786853112800026,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.03781570677579249,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 155
+        },
+        {
+          "MDD": 0.008174873860589238,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.003492408571627359,
+          "scope": "retrospective_diagnostic",
+          "trades": 7
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.04523238565471732,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.04523238565471732,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 103
+        },
+        {
+          "MDD": 0.0091297722417365,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.00489258428942585,
+          "scope": "retrospective_diagnostic",
+          "trades": 7
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.5101243339253997,
+        "naive_relative_mae": 0.0064853363286803585,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.0067130612237591295,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "fc4c137c87034965dfeef74cb7a25480a0d16ec7ddd99954288fe037e5cff903",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-verified-ten-04",
+      "seconds": 81.97066803101916,
+      "windows": 5632
+    },
+    {
+      "anchor": "2024-12-13T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.033119651931261984,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.027025300069885683,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 133
+        },
+        {
+          "MDD": 0.0030865360524764407,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.002681264523670901,
+          "scope": "retrospective_diagnostic",
+          "trades": 8
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.04456045834622013,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.04100648787737826,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 108
+        },
+        {
+          "MDD": 0.004328092942421424,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0006779048534537591,
+          "scope": "retrospective_diagnostic",
+          "trades": 8
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.5119005328596803,
+        "naive_relative_mae": 0.003880400373207405,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.0039706793209749,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "1e973ab6513324f6976958be035b5a1fe04bef79e7ffa31095df703c83511ab7",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-verified-ten-05",
+      "seconds": 84.16004057999817,
+      "windows": 5632
+    },
+    {
+      "anchor": "2024-12-20T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.04155594381953909,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.03940095805539379,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 63
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0410516307903932,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.04026308948067259,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 111
+        },
+        {
+          "MDD": 0.018105542385712603,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.014395263940433445,
+          "scope": "retrospective_diagnostic",
+          "trades": 19
+        },
+        {
+          "MDD": 0.03688072980596124,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.03202751719672792,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 45
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.04068406580226325,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.04068406580226325,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 93
+        },
+        {
+          "MDD": 0.020947437989412565,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.017491795859273518,
+          "scope": "retrospective_diagnostic",
+          "trades": 19
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.4841918294849023,
+        "naive_relative_mae": 0.006603342308079626,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.007063518113037906,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "2c57f187bd5323b3b39f3441a87fd416c787d63418d864dfbb2e63eacd9dbbdb",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "plain",
+        "minimum": 0.003,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-verified-ten-06",
+      "seconds": 86.76847920397995,
+      "windows": 5632
+    },
+    {
+      "anchor": "2024-12-27T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.045632053109192494,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.038090938250522455,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 102
+        },
+        {
+          "MDD": 0.0009432828440298913,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.002027261298362504,
+          "scope": "retrospective_diagnostic",
+          "trades": 3
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.047360753362620356,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.04275130326400156,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 67
+        },
+        {
+          "MDD": 0.0012133494987489613,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0012739598888500403,
+          "scope": "retrospective_diagnostic",
+          "trades": 3
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.5101243339253997,
+        "naive_relative_mae": 0.003316489289759571,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.0033886511669487486,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "c247a74842f523c37157c39272ab445a07a0f6d8d727b80510a0c3dbadf76b98",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-verified-ten-07",
+      "seconds": 86.04632932299864,
+      "windows": 5632
+    },
+    {
+      "anchor": "2024-11-08T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.007666514529484525,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.003910696403860325,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 18
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.028368816643354444,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.018720947791174836,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 128
+        },
+        {
+          "MDD": 0.018360205417704223,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.015332274258485268,
+          "scope": "retrospective_diagnostic",
+          "trades": 12
+        },
+        {
+          "MDD": 0.005980175741080007,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.0056959268860526935,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 5
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.040909432854216665,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.03688376135506122,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 101
+        },
+        {
+          "MDD": 0.020647449221172898,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.0178753181880964,
+          "scope": "retrospective_diagnostic",
+          "trades": 12
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.461101243339254,
+        "naive_relative_mae": 0.004529618375194676,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.004825742550119439,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "c38a6bd221063653c9e68881a8cd75d75b4167089df4f373568c50a29925e325",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "plain",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-supplement-08a",
+      "seconds": 80.11514297500253,
+      "windows": 5632
+    },
+    {
+      "anchor": "2025-01-10T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.038676129351534194,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.03062021075425292,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 94
+        },
+        {
+          "MDD": 0.013389729511071202,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.011901381122103483,
+          "scope": "retrospective_diagnostic",
+          "trades": 19
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.044432576365565524,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.03771380101630595,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 82
+        },
+        {
+          "MDD": 0.017683825769252648,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.016259032819271435,
+          "scope": "retrospective_diagnostic",
+          "trades": 19
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.5012433392539964,
+        "naive_relative_mae": 0.004194655585438701,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.004271179365825875,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "63c525636ec59fe79d99cc845adb01876c74390d0301cfce0b428778097ea50d",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "cash",
+        "minimum": 0.0,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-supplement-09",
+      "seconds": 80.04810621001525,
+      "windows": 5632
+    },
+    {
+      "anchor": "2025-01-17T08:00:00Z",
+      "comparisons": [
+        {
+          "MDD": 0.0011466809070631578,
+          "candidate": "foundation",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.0011466809070631578,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 1
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.017627265427874628,
+          "candidate": "trend",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": 0.006815542953373166,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 126
+        },
+        {
+          "MDD": 0.0024792574237371134,
+          "candidate": "incumbent",
+          "cost_multiplier": 1,
+          "fold": 1,
+          "net_return": -0.0020852596226901277,
+          "scope": "retrospective_diagnostic",
+          "trades": 4
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "foundation",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.0,
+          "candidate": "cash",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": 0.0,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 0
+        },
+        {
+          "MDD": 0.017633018052794602,
+          "candidate": "trend",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.006891769688152527,
+          "scope": "retrospective_not_independent_final_test",
+          "trades": 97
+        },
+        {
+          "MDD": 0.003080094517258547,
+          "candidate": "incumbent",
+          "cost_multiplier": 2,
+          "fold": 1,
+          "net_return": -0.003080094517258547,
+          "scope": "retrospective_diagnostic",
+          "trades": 4
+        }
+      ],
+      "fit_calls": 0,
+      "forecast_metrics": {
+        "direction_accuracy": 0.46820603907637653,
+        "naive_relative_mae": 0.00485111493651231,
+        "price_prediction_not_trading_return": true,
+        "relative_mae": 0.005227677751050539,
+        "samples": 2815,
+        "scope": "retrospective_not_independent_final_test"
+      },
+      "gpu_verified": true,
+      "inference_calls": 354,
+      "manifest_sha256": "72834e0e4aa79c3f2ae62fb0f7d5bf2e7691e1c8ed87feafa3d14c1d3cfb61b0",
+      "padded_windows": 5664,
+      "policy": {
+        "family": "plain",
+        "minimum": 0.003,
+        "penalty": 0.0
+      },
+      "run": "timesfm11-supplement-10",
+      "seconds": 79.56252098400728,
+      "windows": 5632
+    }
+  ],
+  "return_aggregation": "회차별 수익률이며 이어진 계좌의 누적 수익으로 합산하지 않음",
+  "revision": "1d952420fba87f3c6dee4f240de0f1a0fbc790e3",
+  "schema_version": 1,
+  "scope": "retrospective_not_independent_final_test",
+  "study": "zero_shot_retrospective",
+  "sum_completed_experiment_seconds": 833.0419768550491,
+  "supplement_completed": 3,
+  "wall_clock_seconds": 1003.807609,
+  "weighted_direction_accuracy": 0.4913676731793961,
+  "windows": 56320
+}

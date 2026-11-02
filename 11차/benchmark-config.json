@@ -1,0 +1,18 @@
+{
+  "model_id": "google/timesfm-2.5-200m-pytorch",
+  "revision": "1d952420fba87f3c6dee4f240de0f1a0fbc790e3",
+  "anchor": "2026-10-31T08:00:00Z",
+  "context_length": 512,
+  "horizon": 12,
+  "policy_days": 2,
+  "validation_days": 2,
+  "batch_size": 16,
+  "max_forecast_windows": 6000,
+  "max_raw_rows": 100000,
+  "max_seconds": 7200,
+  "min_free_bytes": 20000000000,
+  "torch_compile": false,
+  "package_version": "2.0.2",
+  "dependencies_dir": "11차/work/python-packages",
+  "pretrained_dir": "11차/work/pretrained/timesfm-2.5-200m"
+}

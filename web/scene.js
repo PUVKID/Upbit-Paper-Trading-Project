@@ -19,6 +19,26 @@ window.UpbitWorkflow = {
     const foundation = snapshot.foundation_research;
     const profit = snapshot.return_research;
     const integer = (item,min,max) => Number.isInteger(item) && item >= min && item <= max;
+    const benchmark = snapshot.pretrained_benchmark;
+    const validBenchmark = benchmark && typeof benchmark === 'object' && !Array.isArray(benchmark) &&
+      benchmark.schema_version === 1 && benchmark.study === 'pretrained_forecast' &&
+      benchmark.model_id === 'google/timesfm-2.5-200m-pytorch' &&
+      typeof benchmark.run === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(benchmark.run) &&
+      ['running','complete','error','stopped'].includes(benchmark.state) &&
+      ['prepare','predict','policy','validation','verify','complete','failed'].includes(benchmark.stage) &&
+      benchmark.fit_calls === 0 && benchmark.promotion === false && benchmark.candidate_ready === false &&
+      integer(benchmark.total_windows,0,6000) && integer(benchmark.windows_completed,0,benchmark.total_windows) &&
+      (benchmark.state !== 'complete' || benchmark.total_windows > 0 && benchmark.windows_completed === benchmark.total_windows && benchmark.evaluation_performed === true);
+    if (validBenchmark) {
+      const failed = benchmark.state === 'error' || benchmark.has_error === true;
+      const stage = {prepare:1,predict:2,policy:3,validation:3,verify:3,complete:3,failed:3}[benchmark.stage];
+      return {stage,active:benchmark.state === 'running' && !failed,failed,
+        status:failed ? '오류' : benchmark.state === 'stopped' ? '중단' : benchmark.state === 'complete' ? '평가 완료 · 미적용' : '진행 중',
+        value:benchmark.total_windows ? benchmark.windows_completed/benchmark.total_windows : null,
+        progressLabel:'처리한 예측 창',source:benchmark,benchmark,returnResearch:null,repetition:null,
+        researchTrack:true,completedStages:benchmark.state === 'complete' ? [0,1,2,3] : [],
+        track:'사전학습 모델 비교',applied:false,foundation:foundation || null};
+    }
     const validProfit = profit && typeof profit === 'object' && !Array.isArray(profit) && profit.schema_version === 1 &&
       ['running','preparing','training','validating','complete','waiting','failed','error','stopped'].includes(profit.state) &&
       ['preflight','prepare','extract','features','fit','training','policy','validation','evaluation','verify','complete','failed'].includes(profit.stage) &&

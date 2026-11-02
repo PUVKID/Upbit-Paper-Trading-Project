@@ -227,7 +227,10 @@ function render() {
   const flow = renderResearch(s);
   const stepIndex = flow.stage ?? undefined;
   const stepNames = window.UpbitWorkflow.names;
-  details('learning-strip', flow.returnResearch ? [
+  details('learning-strip', flow.benchmark ? [
+    ['모델','TimesFM 2.5'],['처리한 예측 창',`${number(flow.source.windows_completed)} / ${number(flow.source.total_windows)}`],
+    ['실험 방식','사전학습 가중치 예측'],['추가 학습','없음'],['장치',flow.source.device || 'GPU 확인 전'],['적용','현재 모델 유지']
+  ] : flow.returnResearch ? [
     ['학습',`${number(flow.source.completed_fits)} / ${number(flow.source.max_fits)} 모델`],
     ['시간순 구간',`${number(flow.source.fold_index)} / ${number(flow.source.fold_total)}`],
     ['현재 시장',flow.source.market ? coinNames[flow.source.market.replace('KRW-','')] || flow.source.market : '준비 중'],
@@ -485,9 +488,16 @@ function renderResearch(s) {
     set('workflow-title','실험을 마쳤습니다 · 채택 보류');
     set('workflow-subtitle','새 연구 후보는 현재 가상투자에 적용하지 않았습니다');
   }
+  if (flow.benchmark) {
+    set('research-track','TimesFM 2.5 · 11차');
+    set('workflow-title',flow.failed ? '모델 평가 오류를 확인해 주세요' : flow.source.state === 'stopped' ? '모델 평가를 중단했습니다' : flow.source.state === 'complete' ? '사전학습 모델 평가를 마쳤습니다 · 미적용' : flow.stage === 2 ? '사전학습 모델로 GPU 예측을 진행하고 있습니다' : flow.stage === 3 ? '비용을 반영해 거래 결과를 평가하고 있습니다' : '사전학습 모델 평가 자료를 준비하고 있습니다');
+    set('workflow-subtitle','추가 학습 없는 비교 실험 · 기존 가상투자는 별도로 계속됩니다');
+  }
+  $('training-scene').setAttribute('aria-label',flow.benchmark ? '자료 준비, GPU 예측, 거래 평가와 적용 확인의 입체 흐름' : '클라우드 수집, 데이터 정리, GPU 학습, 검증, 모델 적용의 입체 흐름');
   [...$('workflow-steps').children].forEach((item,index) => {
+    item.querySelector('b').textContent = flow.benchmark && index === 2 ? 'GPU 예측' : names[index];
     const current = flow.stage === index;
-    const researchComplete = (flow.track === '사전학습 모델 연구' || flow.returnResearch) && flow.source.state === 'complete' && index === 3;
+    const researchComplete = (flow.track === '사전학습 모델 연구' || flow.returnResearch || flow.benchmark) && flow.source.state === 'complete' && index === 3;
     const priorComplete = flow.completedStages.includes(index) && index < 3;
     const done = index === 4 && flow.applied || researchComplete || priorComplete;
     item.classList.toggle('current',current);
@@ -504,7 +514,7 @@ function renderResearch(s) {
   set('research-progress-detail',flow.returnResearch ? `${number(flow.source.completed_fits)} / ${number(flow.source.max_fits)} 모델 · 구간 ${number(flow.source.fold_index)} / ${number(flow.source.fold_total)}` : repetition ? `${number(repetition.rep_index)} / 10회 · 완료 ${number(repetition.completed_repetitions)}회 · ${number(repetition.step)} / 500 스텝` : flow.track === '사전학습 모델 연구' ? `${number(flow.source.step)} / ${number(flow.source.total_steps)} 스텝` :
     s.training?.state === 'waiting_data' ? `${number(external.ingested_archive_bytes/1e9,2)} / ${number(external.target_archive_bytes/1e9,2)} GB` : `${number(s.training?.candidate_index)} / ${number(s.training?.candidate_total)} 후보`);
   set('research-next',flow.failed ? '오류 확인 후 재시도' : flow.source.state === 'stopped' ? '연구 중단' : flow.returnResearch ? flow.stage < 3 ? names[flow.stage+1] : '결과 검토 · 운용 미적용' : repetition ? flow.source.state === 'complete' ? '성능 평가 전 · 모델 적용 대기' : flow.source.state === 'waiting' ? '고정 학습 자료 준비' : '가중치 저장·확인 · 매매 적용 아님' : flow.source.state === 'waiting' ? '새 미사용 자료 확보' : flow.stage === null ? '단계 기록 대기' : flow.stage < 3 ? names[flow.stage+1] : flow.track === '사전학습 모델 연구' ? '별도 후보 검토 · 운용 미적용' : flow.stage === 3 ? names[4] : flow.applied ? '다음 연구' : '적용 여부 확인');
-  const f = repetition || flow.foundation;
+  const f = flow.benchmark || repetition || flow.foundation;
   const labels = {running:'진행 중',training:'진행 중',complete:'연구 완료 · 적용 아님',failed:'오류',error:'오류',retrying:'재시도 중',not_started:'미실행',idle:'미실행',unavailable:'미실행',waiting_data:'자료 준비 대기',waiting:'새 미사용 자료 대기',stopped:'중단'};
   const foundationStages = {preflight:'사전 점검',extract:'자료 추출',load:'모델 불러오기',finetune:'추가 학습',checkpoint_verify:'체크포인트 확인',verify:'체크포인트 확인',validation:'후속 평가',complete:repetition ? '추가 학습 완료 · 평가 전' : '연구 완료'};
   set('foundation-state',f ? f.has_error ? '오류' : repetition && f.state === 'complete' ? '추가 학습 10회 완료 · 성능 평가 전' : repetition && f.state === 'waiting' ? '고정 학습 자료 대기' : f.has_status_warning === true && f.state === 'complete' ? '연구 완료 · 상태 기록 확인 필요' : labels[f.state] || '상태 확인 필요' : '미실행');
@@ -527,11 +537,20 @@ function renderResearch(s) {
   const a = s.account || {};
   details('research-account',[['평가 자산',money(a.equity)],['총 손익',money(a.total_pnl)],['수익률',numeric(a.return_pct) ? `${number(a.return_pct,2)}%` : '미기록'],
     ['낙폭 제한',numeric(a.drawdown_limit_pct) ? `${number(a.drawdown_limit_pct,2)}% · ${a.drawdown_halted === true ? '신규 매수 중지' : a.drawdown_halted === false ? '미도달' : '상태 확인'}` : '미기록']]);
-  const profit = flow.returnResearch || s.return_research;
+  if (flow.benchmark) {
+    details('foundation-summary',[['모델','TimesFM 2.5 200M'],['방식','사전학습 가중치 예측'],['적용','기존 모델 유지']]);
+    details('foundation-details',[['문맥','완료된 5분봉 512개'],['예측 지평','12봉 · 60분'],['추가 학습','없음'],
+      ['예측 창',`${number(flow.source.windows_completed)} / ${number(flow.source.total_windows)}`],['갱신',date(flow.source.updated_utc)]]);
+    set('workflow-status',`${flow.track} · ${flow.stage === 2 ? 'GPU 예측' : names[flow.stage]} · ${flow.status}`);
+    set('research-progress-detail',`${number(flow.source.windows_completed)} / ${number(flow.source.total_windows)} 예측 창 · 추가 학습 없음`);
+    set('research-next',flow.failed ? '오류 확인' : flow.source.state === 'stopped' ? '평가 중단' : flow.stage < 3 ? '거래 평가' : '결과 검토 · 기존 모델 유지');
+  }
+  const profit = flow.benchmark || flow.returnResearch || s.return_research;
   const candidates = {cash:'현금',trend:'추세 기준선',incumbent:'기존 모델',mean:'수익 예측',plain:'평균 수익',selected:'정책 선택',mean_return:'수익 예측',uncertainty:'불확실성 반영',uncertainty_adjusted:'불확실성 반영'};
   if ($('return-results')) table('return-results',profit?.comparisons || [],row=>[
-    number(row.fold),candidates[row.candidate] || '미기록',`${number(row.cost_multiplier)}배`,percent(row.net_return),percent(row.MDD),number(row.trades)],6,'연구 결과 대기');
+    flow.benchmark ? '후속 평가' : number(row.fold),row.candidate === 'foundation' ? '사전학습 모델' : candidates[row.candidate] || '미기록',`${number(row.cost_multiplier)}배`,percent(row.net_return),percent(row.MDD),number(row.trades)],6,'연구 결과 대기');
   const activity = [];
+  if (flow.benchmark?.updated_utc) activity.push({time:flow.source.updated_utc,job:'11차 사전학습 모델 평가',state:flow.status});
   if (flow.returnResearch?.updated_utc) activity.push({time:flow.source.updated_utc,job:'10차 수익 예측 연구',state:flow.status});
   if (f?.updated_utc) activity.push({time:f.updated_utc,job:repetition ? '8차 Chronos 추가 학습' : '사전학습 후보 연구',state:repetition && f.state === 'complete' ? '10회 학습 완료 · 평가 전' : labels[f.state] || '상태 확인 필요'});
   if (repetition && flow.foundation?.updated_utc) activity.push({time:flow.foundation.updated_utc,job:'7차 사전학습 연구 · 보존',state:labels[flow.foundation.state] || '상태 확인 필요'});
