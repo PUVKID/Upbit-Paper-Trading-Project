@@ -302,12 +302,17 @@ def previous_month(year, month):
 
 def bootstrap_plan(now):
     now = pd.Timestamp(now)
+    if now.tzinfo is not None:
+        now = now.tz_convert('UTC')
     year, month = previous_month(now.year, now.month)
     for symbol in SYMBOLS:
         yield archive_spec(symbol, 'klines', f'{year:04d}-{month:02d}')
-    for day in range(1, now.day):
+    today = now.normalize()
+    # 월별 원본 공개 지연과 운용 중단 공백은 최근 완료 일별 원본으로 보충합니다.
+    first = min(today.replace(day=1), today - pd.Timedelta(days=14))
+    for day in reversed(pd.date_range(first, today, inclusive='left')):
         for symbol in SYMBOLS:
-            yield archive_spec(symbol, 'klines', f'{now.year:04d}-{now.month:02d}-{day:02d}', 'daily')
+            yield archive_spec(symbol, 'klines', day.strftime('%Y-%m-%d'), 'daily')
 
 
 def bulk_plan(now):
