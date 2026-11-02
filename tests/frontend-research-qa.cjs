@@ -47,7 +47,7 @@ function pixels(buffer) {
     await page.setViewportSize({width:1513,height:1040});
     await page.evaluate(()=>window.scrollTo(0,0));
     for (const [stage,index] of [['download',0],['features',1],['fit',2],['validation',3],['apply',4]]) {
-      await page.evaluate(({live,stage})=>{snapshot={...live,foundation_research:{state:'running',model_id:'controlled-candidate',stage,step:0,total_steps:20,loss:0,candidate_ready:false,has_error:false}};render();},{live,stage});
+      await page.evaluate(({live,stage})=>{snapshot={...live,training_repetition:null,foundation_research:{state:'running',model_id:'controlled-candidate',stage,step:0,total_steps:20,loss:0,candidate_ready:false,has_error:false}};render();},{live,stage});
       check(`통제 단계 ${stage}`,await page.evaluate(()=>window.UpbitScene.stats().training.stage)===index);
       await page.locator('#training-scene').scrollIntoViewIfNeeded();
       await page.waitForTimeout(180);
@@ -72,25 +72,25 @@ function pixels(buffer) {
     await page.waitForTimeout(250);
     check('모션 축소 정지',reduced.equals(await page.locator('#training-scene').screenshot()));
     await page.emulateMedia({reducedMotion:'no-preference'});
-    await page.evaluate(live=>{snapshot={...live,foundation_research:{state:'failed',stage:'fit',has_error:true,model_id:'<img src=x onerror=alert(1)>'}};render();},live);
+    await page.evaluate(live=>{snapshot={...live,training_repetition:null,foundation_research:{state:'failed',stage:'fit',has_error:true,model_id:'<img src=x onerror=alert(1)>'}};render();},live);
     check('오류 상태 표시',await page.locator('#research-state').innerText()==='오류');
     check('입력 HTML 비실행',await page.locator('#foundation-details img').count()===0);
-    await page.evaluate(live=>{snapshot={...live,foundation_research:{state:'complete',stage:'complete',candidate_ready:true}};render();},live);
+    await page.evaluate(live=>{snapshot={...live,training_repetition:null,foundation_research:{state:'complete',stage:'complete',candidate_ready:true}};render();},live);
     check('후보와 적용 구분',(await page.locator('#foundation-state').innerText()).includes('적용 아님'));
     check('후보 준비를 매매 적용으로 표시하지 않음',await page.locator('#workflow-steps li:last-child[data-state=complete]').count()===0);
     check('사전학습 완료는 검증 단계',await page.evaluate(()=>window.UpbitScene.stats().training.stage)===3);
     for (const [stage,index] of [['preflight',1],['extract',1],['load',1],['finetune',2],['verify',3],['validation',3]]) {
-      await page.evaluate(({live,stage})=>{snapshot={...live,foundation_research:{state:'running',stage}};render();},{live,stage});
+      await page.evaluate(({live,stage})=>{snapshot={...live,training_repetition:null,foundation_research:{state:'running',stage}};render();},{live,stage});
       check(`실제 계약 단계 ${stage}`,await page.evaluate(()=>window.UpbitScene.stats().training.stage)===index);
       const title = await page.locator('#workflow-title').innerText();
       check(`실제 계약 작업 제목 ${stage}`,index===1 ? title.includes('정리') : index===2 ? title.includes('학습') : title.includes('검증'));
     }
     for (const [state,label] of [['waiting','새 미사용 자료 대기'],['stopped','중단']]) {
-      await page.evaluate(({live,state})=>{snapshot={...live,foundation_research:{state}};render();},{live,state});
+      await page.evaluate(({live,state})=>{snapshot={...live,training_repetition:null,foundation_research:{state}};render();},{live,state});
       check(`실제 계약 상태 ${state}`,await page.locator('#foundation-state').innerText()===label);
       check(`실제 계약 비활성 모션 ${state}`,await page.evaluate(()=>window.UpbitScene.stats().training.paused));
     }
-    await page.evaluate(live=>{snapshot={...live,foundation_research:{state:'complete',stage:'complete',candidate_ready:true,checkpoint_verified:true,
+    await page.evaluate(live=>{snapshot={...live,training_repetition:null,foundation_research:{state:'complete',stage:'complete',candidate_ready:true,checkpoint_verified:true,
       validation_mae:.02,baseline_mae:.03,direction_accuracy:.625,net_return:null,trades:null}};render();},live);
     await page.locator('#foundation-record').evaluate(node=>{node.open=true});
     const metrics = await page.locator('#foundation-details').evaluate(node=>Object.fromEntries([...node.children].map(row=>[row.querySelector('dt').textContent,row.querySelector('dd').textContent])));
@@ -101,7 +101,7 @@ function pixels(buffer) {
     check('연구 입력·예측 구분',metrics['입력·예측'].includes('5분봉 종가') && metrics['입력·예측'].includes('12스텝'));
     check('기존 모델 설명 구분',(await page.locator('.learning-now h2').innerText()).includes('XGBoost'));
     check('후보와 체크포인트 상태 표시',(await page.locator('#foundation-summary').innerText()).includes('검증됨') && (await page.locator('#foundation-summary').innerText()).includes('매매 적용 아님'));
-    await page.evaluate(live=>{snapshot={...live,training:{...live.training,rows:999999,features:888},foundation_research:{state:'training',stage:'finetune',step:7,total_steps:50,
+    await page.evaluate(live=>{snapshot={...live,training_repetition:null,training:{...live.training,rows:999999,features:888},foundation_research:{state:'training',stage:'finetune',step:7,total_steps:50,
       rows:1234,device:'cuda:0',context_length:512,batch_size:8,learning_rate:.00001}};render();},live);
     const strip = await page.locator('#learning-strip').evaluate(node=>Object.fromEntries([...node.children].map(row=>[row.querySelector('dt').textContent,row.querySelector('dd').textContent])));
     check('현재 사전학습 50스텝 표시',strip['현재 스텝']==='7 / 50');
@@ -111,7 +111,7 @@ function pixels(buffer) {
     check('사전학습 실제 학습률 상세',(await page.locator('#foundation-details').innerText()).includes('0.00001'));
     const unevaluated = await page.locator('#foundation-details').evaluate(node=>Object.fromEntries([...node.children].map(row=>[row.querySelector('dt').textContent,row.querySelector('dd').textContent])));
     check('상대 MAE 미평가 유지',unevaluated['상대 MAE']==='미평가' && unevaluated['종가유지 상대 MAE']==='미평가');
-    await page.evaluate(live=>{snapshot={...live,foundation_research:{state:'complete',stage:'complete',
+    await page.evaluate(live=>{snapshot={...live,training_repetition:null,foundation_research:{state:'complete',stage:'complete',
       checkpoint_verified:true,candidate_ready:true,has_status_warning:true}};render();},live);
     check('완료 상태 저장 경고는 학습 실패와 구분',
       (await page.locator('#foundation-state').innerText()).includes('상태 기록 확인 필요') &&

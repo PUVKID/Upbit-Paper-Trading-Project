@@ -155,6 +155,54 @@ def finite(value):
         return False
 
 
+def training_repetition(value):
+    """추가 학습 전용 상태만 엄격히 투영하고 평가·경로 원문은 제외합니다."""
+    if not isinstance(value, dict):
+        return {}
+    states = {"running", "training", "complete", "waiting", "error", "stopped"}
+    stages = {"extract", "finetune", "verify", "complete"}
+    def integer(item, low, high):
+        return type(item) is int and low <= item <= high
+    state, stage, run = value.get("state"), value.get("stage"), value.get("run")
+    if (not isinstance(state, str) or state not in states
+            or not isinstance(stage, str) or stage not in stages
+            or value.get("model_id") != "amazon/chronos-2"
+            or not isinstance(run, str) or not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", run)
+            or not integer(value.get("rep_index"), 1, 10)
+            or not integer(value.get("completed_repetitions"), 0, 10)
+            or not integer(value.get("total_repetitions"), 10, 10)
+            or not integer(value.get("step"), 0, 500)
+            or not integer(value.get("total_steps"), 500, 500)
+            or any(value.get(key) is not False for key in ("evaluation_performed", "candidate_ready", "promote"))):
+        return {}
+    if state == "complete" and (value["rep_index"], value["completed_repetitions"], value["step"]) != (10, 10, 500):
+        return {}
+    result = {key:value[key] for key in ("state", "stage", "run", "model_id", "rep_index", "total_repetitions",
+              "completed_repetitions", "step", "total_steps")}
+    result["loss"] = value.get("loss") if finite(value.get("loss")) and value["loss"] >= 0 else None
+    rate = value.get("learning_rate", value.get("lr"))
+    result["lr"] = rate if finite(rate) and 0 < rate <= 1 else None
+    for key in ("rows", "context_length", "batch_size"):
+        result[key] = value.get(key) if integer(value.get(key), 0 if key == "rows" else 1, 2**53-1) else None
+    device = value.get("device")
+    result["device"] = device if isinstance(device, str) and re.fullmatch(r"cuda(?::[0-9]{1,2})?", device) else None
+    result["checkpoint_verified"] = value.get("checkpoint_verified") if type(value.get("checkpoint_verified")) is bool else None
+    for key in ("updated_utc", "started_utc", "finished_utc"):
+        item = value.get(key)
+        result[key] = None
+        if isinstance(item, str) and len(item) <= 40:
+            try:
+                parsed = datetime.fromisoformat(item.replace("Z", "+00:00"))
+                if parsed.tzinfo is not None and parsed.utcoffset() == timezone.utc.utcoffset(parsed):
+                    result[key] = item
+            except ValueError:
+                pass
+    result.update({key:None for key in ("validation_mae", "baseline_mae", "direction_accuracy", "net_return", "trades")})
+    result.update({key:False for key in ("evaluation_performed", "candidate_ready", "promote")})
+    result["has_error"] = state == "error" or value.get("has_error") is True or value.get("error") is not None
+    return result
+
+
 def distribution(value):
     if isinstance(value, list) and len(value) == 3:
         return {key: item if finite(item) and item >= 0 else None
@@ -476,6 +524,7 @@ class SnapshotAdapter:
             "foundation_research": project(
                 {**foundation, "has_error": foundation.get("error") is not None},
                 "foundation_research") if (foundation := self.foundation_status()) else {},
+            "training_repetition": training_repetition(self.read("8차/work/status.json")),
             "promotion": promotion,
             "health": health,
             "gpu": project(self.read("work/service/gpu.json"), "gpu"),

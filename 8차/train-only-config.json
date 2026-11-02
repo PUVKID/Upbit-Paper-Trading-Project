@@ -1,0 +1,12 @@
+{
+  "repetitions": 10,
+  "steps": 50,
+  "context_length": 192,
+  "batch_size": 8,
+  "learning_rate": 0.000001,
+  "prediction_length": 12,
+  "max_seconds": 18000,
+  "min_free_bytes": 20000000000,
+  "max_rows_per_market": 50000,
+  "seed": 42
+}

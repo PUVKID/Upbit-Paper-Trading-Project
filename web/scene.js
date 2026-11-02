@@ -2,38 +2,52 @@
 // 화면과 입체 장면이 동일한 실제 상태를 사용합니다. 시간으로 단계를 전환하지 않습니다.
 window.UpbitWorkflow = {
   names: ['클라우드 수집', '데이터 정리', 'GPU 학습', '검증', '모델 적용'],
+  repetition(value) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+    const integer = (item,min,max) => Number.isInteger(item) && item >= min && item <= max;
+    if (!['running','training','complete','waiting','error','stopped'].includes(value.state) ||
+        !['extract','finetune','verify','complete'].includes(value.stage) ||
+        value.model_id !== 'amazon/chronos-2' || typeof value.run !== 'string' || !/^[A-Za-z0-9_-]{1,100}$/.test(value.run) ||
+        value.total_repetitions !== 10 || value.total_steps !== 500 || !integer(value.rep_index,1,10) ||
+        !integer(value.completed_repetitions,0,10) || !integer(value.step,0,500) ||
+        ['evaluation_performed','candidate_ready','promote'].some(key=>value[key] !== false)) return null;
+    if (value.state === 'complete' && (value.step !== 500 || value.rep_index !== 10 || value.completed_repetitions !== 10)) return null;
+    return {...value,learning_rate:value.lr,validation_mae:null,baseline_mae:null,direction_accuracy:null,net_return:null,trades:null};
+  },
   resolve(snapshot) {
     const training = snapshot.training || {};
     const foundation = snapshot.foundation_research;
-    const useFoundation = foundation && typeof foundation.state === 'string' && !['not_started', 'idle', 'unavailable'].includes(foundation.state);
-    const source = useFoundation ? foundation : training;
+    const repetition = this.repetition(snapshot.training_repetition);
+    const useFoundation = !repetition && foundation && typeof foundation.state === 'string' && !['not_started', 'idle', 'unavailable'].includes(foundation.state);
+    const researchTrack = Boolean(repetition || useFoundation);
+    const source = repetition || (useFoundation ? foundation : training);
     const mapping = {download: 0, collection: 0, collecting: 0, prepare: 1, preparation: 1, features: 1, preflight: 1, extract: 1, load: 1,
       fit: 2, training: 2, finetune: 2, calibration: 3, validation: 3, evaluation: 3, locked_test: 3,
-      verify: 3, apply: 4, promotion: 4, complete: useFoundation ? 3 : 4};
+      checkpoint_verify: 3, verify: 3, apply: 4, promotion: 4, complete: repetition ? 2 : useFoundation ? 3 : 4};
     const running = ['running', 'collecting', 'training', 'retrying'].includes(source.state);
     const failed = ['error', 'failed'].includes(source.state) || source.has_error === true;
-    const waitingData = !useFoundation && training.state === 'waiting_data';
+    const waitingData = !researchTrack && training.state === 'waiting_data';
     const stage = waitingData ? 0 : mapping[source.stage] ?? null;
     const active = running || waitingData;
     const external = snapshot.external_data || {};
     let value = null;
     let progressLabel = '진행률 미기록';
-    if (useFoundation && Number.isFinite(source.step) && Number.isFinite(source.total_steps) && source.total_steps > 0) {
+    if (researchTrack && Number.isFinite(source.step) && Number.isFinite(source.total_steps) && source.total_steps > 0) {
       value = source.step / source.total_steps;
-      progressLabel = '현재 모델 학습 스텝';
+      progressLabel = repetition ? '전체 추가 학습 스텝' : '현재 모델 학습 스텝';
     } else if (waitingData && Number.isFinite(external.ingested_archive_bytes) && external.target_archive_bytes > 0) {
       value = external.ingested_archive_bytes / external.target_archive_bytes;
       progressLabel = '외부 원본 적재량';
-    } else if (!useFoundation && Number.isFinite(training.progress)) {
+    } else if (!researchTrack && Number.isFinite(training.progress)) {
       value = training.progress;
       progressLabel = '전체 후보 진행률';
     }
-    const status = failed ? '오류' : source.state === 'stopped' ? '중단' : useFoundation && source.state === 'waiting' ? '새 미사용 자료 대기' : source.state === 'retrying' ? '재시도 중' : active ? '진행 중' :
+    const status = failed ? '오류' : source.state === 'stopped' ? '중단' : repetition && source.state === 'waiting' ? '고정 학습 자료 대기' : useFoundation && source.state === 'waiting' ? '새 미사용 자료 대기' : source.state === 'retrying' ? '재시도 중' : active ? '진행 중' :
       source.state === 'complete' ? '완료' : source.state === 'waiting_request' ? '추가 요청 대기' : '대기';
-    return {stage, active: active && !failed, failed, status, value, progressLabel, source,
-      completedStages: useFoundation && source.state === 'complete' && source.checkpoint_verified === true ? [0,1,2,3] : [],
-      track: useFoundation ? '사전학습 모델 연구' : '기존 모델 연구',
-      applied: !useFoundation && typeof training.run === 'string' && training.run.length > 0 &&
+    return {stage, active: active && !failed, failed, status, value, progressLabel, source, repetition, researchTrack,
+      completedStages: repetition ? source.state === 'complete' && source.checkpoint_verified === true ? [1,2] : [] : useFoundation && source.state === 'complete' && source.checkpoint_verified === true ? [0,1,2,3] : [],
+      track: repetition ? 'Chronos 추가 학습' : useFoundation ? '사전학습 모델 연구' : '기존 모델 연구',
+      applied: !researchTrack && typeof training.run === 'string' && training.run.length > 0 &&
         snapshot.research?.run === training.run && snapshot.research?.promoted === true,
       foundation: foundation && Object.keys(foundation).length ? foundation : null};
   }

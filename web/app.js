@@ -227,7 +227,14 @@ function render() {
   const flow = renderResearch(s);
   const stepIndex = flow.stage ?? undefined;
   const stepNames = window.UpbitWorkflow.names;
-  details('learning-strip', flow.track === '사전학습 모델 연구' ? [
+  details('learning-strip', flow.repetition ? [
+    ['현재 회차',`${number(flow.source.rep_index)} / ${number(flow.source.total_repetitions)}`],
+    ['완료 회차',`${number(flow.source.completed_repetitions)} / ${number(flow.source.total_repetitions)}`],
+    ['전체 스텝',`${number(flow.source.step)} / ${number(flow.source.total_steps)}`],
+    ['장치',flow.source.device || '미기록'],
+    ['학습 자료',numeric(flow.source.rows) ? `${number(flow.source.rows)}행` : '미기록'],
+    ['학습률',numeric(flow.source.learning_rate) ? number(flow.source.learning_rate,8) : '미기록']
+  ] : flow.track === '사전학습 모델 연구' ? [
     ['현재 단계',stepIndex === undefined ? flow.status : stepNames[stepIndex]],
     ['현재 스텝',`${number(flow.source.step)} / ${number(flow.source.total_steps)}`],
     ['학습 자료',numeric(flow.source.rows) ? `${number(flow.source.rows)}행` : '미기록'],
@@ -461,12 +468,13 @@ function quoteAge(value) {
 }
 function renderResearch(s) {
   const flow = window.UpbitWorkflow.resolve(s), names = window.UpbitWorkflow.names;
+  const repetition = flow.repetition;
   const titles = ['시장 데이터를 수집하고 있습니다', '학습 데이터를 정리하고 있습니다', 'GPU에서 모델을 학습하고 있습니다', '모델의 예측을 검증하고 있습니다', '모델 적용 조건을 확인하고 있습니다'];
-  set('research-track',flow.track === '사전학습 모델 연구' ? '사전학습 모델 · 별도 연구 후보' : flow.track);
+  set('research-track',repetition ? 'Chronos 추가 학습 · 8차' : flow.track === '사전학습 모델 연구' ? '사전학습 모델 · 별도 연구 후보' : flow.track);
   set('research-state',flow.status);
   $('research-state').dataset.state = flow.failed ? 'error' : flow.status === '재시도 중' ? 'retry' : flow.active ? 'active' : 'waiting';
-  set('workflow-title',flow.failed ? '연구 오류를 확인해 주세요' : flow.source.state === 'stopped' ? '연구를 중단했습니다' : flow.source.state === 'waiting' ? '새 미사용 자료를 기다리고 있습니다' : flow.active && flow.stage !== null ? titles[flow.stage] : flow.source.state === 'complete' ? '이번 연구를 마쳤습니다' : '다음 연구를 기다리고 있습니다');
-  set('workflow-subtitle',flow.track === '사전학습 모델 연구' ? '별도 연구 후보 · 현재 가상투자 적용 모델과 다릅니다' : '기존 모델 연구 · 가상투자는 별도로 진행됩니다');
+  set('workflow-title',flow.failed ? '연구 오류를 확인해 주세요' : flow.source.state === 'stopped' ? '연구를 중단했습니다' : repetition && flow.source.state === 'complete' ? '추가 학습 10회 완료 · 성능 평가 전' : repetition && flow.source.state === 'waiting' ? '추가 학습 자료를 기다리고 있습니다' : repetition && flow.stage === 3 && flow.active ? '추가 학습 가중치를 확인하고 있습니다' : repetition && flow.active && flow.stage === 2 ? `추가 학습 ${number(repetition.rep_index)} / 10회를 진행하고 있습니다` : flow.source.state === 'waiting' ? '새 미사용 자료를 기다리고 있습니다' : flow.active && flow.stage !== null ? titles[flow.stage] : flow.source.state === 'complete' ? '이번 연구를 마쳤습니다' : '다음 연구를 기다리고 있습니다');
+  set('workflow-subtitle',repetition ? '추가 학습만 진행 · 성능 평가 전 · 현재 가상투자 모델은 유지됩니다' : flow.track === '사전학습 모델 연구' ? '별도 연구 후보 · 현재 가상투자 적용 모델과 다릅니다' : '기존 모델 연구 · 가상투자는 별도로 진행됩니다');
   [...$('workflow-steps').children].forEach((item,index) => {
     const current = flow.stage === index;
     const researchComplete = flow.track === '사전학습 모델 연구' && flow.source.state === 'complete' && index === 3;
@@ -474,37 +482,43 @@ function renderResearch(s) {
     const done = index === 4 && flow.applied || researchComplete || priorComplete;
     item.classList.toggle('current',current);
     item.dataset.state = flow.failed && current ? 'error' : current && flow.status === '재시도 중' ? 'retry' : current && flow.active ? 'active' : done ? 'complete' : 'waiting';
-    item.querySelector('span').textContent = flow.failed && current ? '오류' : current && flow.active ? flow.status : researchComplete ? '연구 완료' : priorComplete ? index === 0 ? '자료 확보' : '완료' : done ? '적용 확인' : current && flow.source.state === 'stopped' ? '중단' : '대기';
+    item.querySelector('span').textContent = flow.failed && current ? '오류' : repetition && current && index === 3 && flow.active ? '가중치 확인' : current && flow.active ? flow.status : researchComplete ? '연구 완료' : priorComplete ? index === 0 ? '자료 확보' : '완료' : done ? '적용 확인' : current && flow.source.state === 'stopped' ? '중단' : '대기';
     if (current) item.setAttribute('aria-current','step'); else item.removeAttribute('aria-current');
   });
-  set('workflow-status',`${flow.track} · ${names[flow.stage] || '단계 미기록'} · ${flow.status}`);
+  set('workflow-status',`${flow.track} · ${names[flow.stage] || '단계 미기록'} · ${flow.status}${repetition ? ' · 성능 평가 전' : ''}`);
   set('research-progress-label',flow.progressLabel);
   set('research-progress-value',numeric(flow.value) ? percent(Math.max(0,Math.min(1,flow.value))) : '미기록');
   if (numeric(flow.value)) $('research-progress').value = Math.max(0,Math.min(100,flow.value*100));
   else $('research-progress').removeAttribute('value');
   const external = s.external_data || {};
-  set('research-progress-detail',flow.track === '사전학습 모델 연구' ? `${number(flow.source.step)} / ${number(flow.source.total_steps)} 스텝` :
+  set('research-progress-detail',repetition ? `${number(repetition.rep_index)} / 10회 · 완료 ${number(repetition.completed_repetitions)}회 · ${number(repetition.step)} / 500 스텝` : flow.track === '사전학습 모델 연구' ? `${number(flow.source.step)} / ${number(flow.source.total_steps)} 스텝` :
     s.training?.state === 'waiting_data' ? `${number(external.ingested_archive_bytes/1e9,2)} / ${number(external.target_archive_bytes/1e9,2)} GB` : `${number(s.training?.candidate_index)} / ${number(s.training?.candidate_total)} 후보`);
-  set('research-next',flow.failed ? '오류 확인 후 재시도' : flow.source.state === 'stopped' ? '연구 중단' : flow.source.state === 'waiting' ? '새 미사용 자료 확보' : flow.stage === null ? '단계 기록 대기' : flow.stage < 3 ? names[flow.stage+1] : flow.track === '사전학습 모델 연구' ? '별도 후보 검토 · 운용 미적용' : flow.stage === 3 ? names[4] : flow.applied ? '다음 연구' : '적용 여부 확인');
-  const f = flow.foundation;
+  set('research-next',flow.failed ? '오류 확인 후 재시도' : flow.source.state === 'stopped' ? '연구 중단' : repetition ? flow.source.state === 'complete' ? '성능 평가 전 · 모델 적용 대기' : flow.source.state === 'waiting' ? '고정 학습 자료 준비' : '가중치 저장·확인 · 매매 적용 아님' : flow.source.state === 'waiting' ? '새 미사용 자료 확보' : flow.stage === null ? '단계 기록 대기' : flow.stage < 3 ? names[flow.stage+1] : flow.track === '사전학습 모델 연구' ? '별도 후보 검토 · 운용 미적용' : flow.stage === 3 ? names[4] : flow.applied ? '다음 연구' : '적용 여부 확인');
+  const f = repetition || flow.foundation;
   const labels = {running:'진행 중',training:'진행 중',complete:'연구 완료 · 적용 아님',failed:'오류',error:'오류',retrying:'재시도 중',not_started:'미실행',idle:'미실행',unavailable:'미실행',waiting_data:'자료 준비 대기',waiting:'새 미사용 자료 대기',stopped:'중단'};
-  const foundationStages = {preflight:'사전 점검',extract:'자료 추출',load:'모델 불러오기',finetune:'추가 학습',verify:'체크포인트 검증',validation:'후속 평가',complete:'연구 완료'};
-  set('foundation-state',f ? f.has_error ? '오류' : f.has_status_warning === true && f.state === 'complete' ? '연구 완료 · 상태 기록 확인 필요' : labels[f.state] || '상태 확인 필요' : '미실행');
+  const foundationStages = {preflight:'사전 점검',extract:'자료 추출',load:'모델 불러오기',finetune:'추가 학습',checkpoint_verify:'체크포인트 확인',verify:'체크포인트 확인',validation:'후속 평가',complete:repetition ? '추가 학습 완료 · 평가 전' : '연구 완료'};
+  set('foundation-state',f ? f.has_error ? '오류' : repetition && f.state === 'complete' ? '추가 학습 10회 완료 · 성능 평가 전' : repetition && f.state === 'waiting' ? '고정 학습 자료 대기' : f.has_status_warning === true && f.state === 'complete' ? '연구 완료 · 상태 기록 확인 필요' : labels[f.state] || '상태 확인 필요' : '미실행');
   $('foundation-state').dataset.warning = f?.has_status_warning === true ? 'true' : 'false';
   details('foundation-summary',f ? [['모델',f.model_id || '미기록'],['단계',foundationStages[f.stage] || f.stage || '미기록'],
     ['체크포인트',f.checkpoint_verified === true ? '검증됨' : f.checkpoint_verified === false ? '검증 전' : '미기록'],
-    ['별도 후보',f.candidate_ready === true ? '준비됨 · 매매 적용 아님' : f.candidate_ready === false ? '준비 전' : '미기록'],
+    ['별도 후보',repetition ? '성능 평가 전 · 운용 미적용' : f.candidate_ready === true ? '준비됨 · 매매 적용 아님' : f.candidate_ready === false ? '준비 전' : '미기록'],
     ...(f.has_status_warning === true ? [['상태 기록','모델 완료 · 화면 기록 재동기화 필요']] : [])] : [['모델','미기록'],['연구 기록','아직 수신되지 않음']]);
   details('foundation-details',f ? [['입력·예측','5분봉 종가 · 60분(12스텝) 분위수 예측'],['스텝',`${number(f.step)} / ${number(f.total_steps)}`],
     ['손실',numeric(f.loss) ? number(f.loss,6) : '미기록'],['학습률',numeric(f.learning_rate) ? number(f.learning_rate,8) : '미기록'],['갱신',f.updated_utc ? date(f.updated_utc) : '미기록'],
     ['상대 MAE',numeric(f.validation_mae) ? percent(f.validation_mae) : '미평가'],
     ['종가유지 상대 MAE',numeric(f.baseline_mae) ? percent(f.baseline_mae) : '미평가'],
     ['방향 정확도',numeric(f.direction_accuracy) ? percent(f.direction_accuracy) : '미평가'],
-    ['순수익률',numeric(f.net_return) ? percent(f.net_return) : '미평가'],['완료 거래',numeric(f.trades) ? `${number(f.trades)}건` : '미평가']] : [['연구 기록','아직 수신되지 않음']]);
+    ['순수익률',numeric(f.net_return) ? percent(f.net_return) : '미평가'],['완료 거래',numeric(f.trades) ? `${number(f.trades)}건` : '미평가'],
+    ...(repetition ? [['학습 모드','추가 학습만 · 성능 평가 없음'],['현재 회차',`${number(repetition.rep_index)} / 10`],['완료 회차',`${number(repetition.completed_repetitions)} / 10`],
+      ['문맥 길이',number(repetition.context_length)],['배치 크기',number(repetition.batch_size)],
+      ...(flow.foundation ? [['7차 연구 상태 · 보존',labels[flow.foundation.state] || '미기록'],['7차 실행 ID · 보존',flow.foundation.run || '미기록'],
+        ['7차 상대 MAE · 보존',numeric(flow.foundation.validation_mae) ? percent(flow.foundation.validation_mae) : '미평가'],
+        ['7차 체크포인트 · 보존',flow.foundation.checkpoint_verified === true ? '검증됨' : '미기록']] : [])] : [])] : [['연구 기록','아직 수신되지 않음']]);
   const a = s.account || {};
   details('research-account',[['평가 자산',money(a.equity)],['총 손익',money(a.total_pnl)],['수익률',numeric(a.return_pct) ? `${number(a.return_pct,2)}%` : '미기록']]);
   const activity = [];
-  if (f?.updated_utc) activity.push({time:f.updated_utc,job:'사전학습 후보 연구',state:labels[f.state] || '상태 확인 필요'});
+  if (f?.updated_utc) activity.push({time:f.updated_utc,job:repetition ? '8차 Chronos 추가 학습' : '사전학습 후보 연구',state:repetition && f.state === 'complete' ? '10회 학습 완료 · 평가 전' : labels[f.state] || '상태 확인 필요'});
+  if (repetition && flow.foundation?.updated_utc) activity.push({time:flow.foundation.updated_utc,job:'7차 사전학습 연구 · 보존',state:labels[flow.foundation.state] || '상태 확인 필요'});
   if (s.training?.updated_utc) activity.push({time:s.training.updated_utc,job:'기존 모델 연구',state:({running:'진행 중',complete:'완료',failed:'오류',error:'오류',waiting_data:'자료 준비'})[s.training.state] || '대기'});
   for (const row of (s.rounds || []).slice(-3)) if (row.finished_utc) activity.push({time:row.finished_utc,job:'모델 연구 회차',state:row.state || '미기록'});
   for (const row of (s.trades || []).slice(-3)) if (row.timestamp) activity.push({time:row.timestamp,job:`${row.symbol} 가상 ${row.side === 'buy' ? '매수' : row.side === 'sell' ? '매도' : '체결'}`,state:'체결 기록'});
