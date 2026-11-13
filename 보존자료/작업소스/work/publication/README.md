@@ -5,7 +5,7 @@
 
 ## 최신 변경
 
-| 확인된 차수·위치 · 내용 · 설명·비교 |
+| 내용 |
 | --- |
 | **확인된 차수·위치:** 기존 공개 기본<br>**내용:** 시세 수집·GPU 연구·현물 모의체결<br>**설명·비교:** [기존 기록](docs/versions/stage-1.md) · [보존 기준](https://github.com/PUVKID/Upbit-Paper-Trading-Project/tree/5d365eeff59b0d6d81607b336f14d238303c57a0) |
 | **확인된 차수·위치:** 2026-10-30 GPU 처리량 개선<br>**내용:** 인덱스 정렬·행렬 재사용·1시장 선행 준비·단계 시간<br>**설명·비교:** [설명](docs/versions/gpu-throughput-20261030.md) · [전체 코드 비교](docs/versions/gpu-throughput-20261030-engine-diff.md) · [회귀 검사](tests/test_gpu_throughput.py) |

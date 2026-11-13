@@ -5,7 +5,7 @@
 
 [프로젝트](../README.md) · [차수별 설명과 비교](REVISION_INDEX.md) · [코드·문서 자료](SOURCE_MATERIALS.md)
 
-| 자료 묶음 | 이미지 수 |
-|---|---:|
-| [자료 1](image-materials/files-001.md) | 100 |
-| [자료 2](image-materials/files-002.md) | 47 |
+| 내용 |
+| --- |
+| **자료 묶음:** [자료 1](image-materials/files-001.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 2](image-materials/files-002.md)<br>**이미지 수:** 47 |
