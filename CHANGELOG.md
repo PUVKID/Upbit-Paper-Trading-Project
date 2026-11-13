@@ -140,4 +140,4 @@
 
 <!-- privacy-public-copy-20261030 -->
 
-[🔒 공개 사본의 개인 표시·경로 정리와 보존 범위](docs/PRIVACY_PUBLIC_COPY.md) · [변경 기록](docs/changes/2026-10-30-%EA%B0%9C%EC%9D%B8%ED%91%9C%EC%8B%9C%EC%99%80%EA%B2%BD%EB%A1%9C%EC%A0%95%EB%A6%AC.md)
+[공개 사본의 개인 표시·경로 정리와 보존 범위](docs/PRIVACY_PUBLIC_COPY.md) · [변경 기록](docs/changes/2026-10-30-%EA%B0%9C%EC%9D%B8%ED%91%9C%EC%8B%9C%EC%99%80%EA%B2%BD%EB%A1%9C%EC%A0%95%EB%A6%AC.md)
