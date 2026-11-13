@@ -1,5 +1,9 @@
 # 모의 투자 스튜디오
 
+<!-- user-levels:start -->
+**수준별 전체 안내:** [LEVEL 1 - Beginner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- user-levels:end -->
+
 단일 실행 위치는 `.`이며 기존 `2026` 컨테이너의 `/workspace/2026/Upbit 5-Coin Project`에 그대로 연결됩니다. 별도 연구 컨테이너나 실행 폴더를 만들지 않습니다. 이전 위치의 고유 내용과 검증 이력은 `보존자료`에 있습니다.
 
 운영 중인 SQLite는 같은 도커 Linux 환경 안에서만 읽고 씁니다. Windows 호스트 Python과 도커가 동일 DB/WAL을 동시에 열지 않습니다. 호스트 점검은 JSON·HTTP만 사용합니다. 복구·일관성 백업·데이터 검사도 도커 내부에서 수행하며 활성 DB 파일의 단순 복사본을 정상 백업으로 간주하지 않습니다. 2026-10-26 혼합 접근 이후 입출력/손상 오류가 발생한 이력을 보존했습니다.

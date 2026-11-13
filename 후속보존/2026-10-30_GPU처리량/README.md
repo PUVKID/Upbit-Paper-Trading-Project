@@ -5,6 +5,10 @@
 
 # GPU 처리량 개선 · 2026-10-30
 
+<!-- user-levels:start -->
+**수준별 전체 안내:** [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- user-levels:end -->
+
 기존 루트 공개본을 보존하면서 현행 원본의 GPU 처리량 개선 코드를 따로 보관한 스냅샷입니다. 날짜는 변경 확인일이며 새 숫자 차수를 만든 것이 아닙니다.
 
 `engine.py`는 완료 시각 인덱스 조회와 캔들 종료 시각 검증, 시장 안에서의 읽기 전용 학습 행렬 재사용, 최대 한 시장의 특징 선행 준비, 단계별 시간과 실제 파라미터 기록을 포함합니다. 특징 선행 준비는 후보 학습·평가 구간을 합치는 기능이 아닙니다. 실패는 호출자에게 전파하며 CPU 대체 금지·승격·잠금 시험·모의계좌 경계를 유지하는 코드입니다.

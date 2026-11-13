@@ -1,5 +1,9 @@
 # 전체 엔진 차이
 
+<!-- user-levels:start -->
+**수준별 전체 안내:** [LEVEL 1 - Beginner](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- user-levels:end -->
+
 공개 문서의 줄끝을 LF로 통일하고 빈 문맥 줄의 표시용 후행 공백만 제거했습니다. 정확한 원본 공백 비교는 연결된 기준 커밋과 현재 `engine.py`의 Git 차이를 사용합니다. 실행 소스는 이 문서 서식 수정으로 바꾸지 않았습니다.
 
 직전 공개 기준과 보존 엔진은 논리적 텍스트가 같으며 개행 차이는 별도 해시로 구분합니다. 아래는 원본 엔진과 이번 엔진의 전체 텍스트 차이입니다. 추가 회귀 파일은 신규 파일 전체가 변경분입니다. 진단용 Git 경고도 출력에 포함될 수 있습니다.

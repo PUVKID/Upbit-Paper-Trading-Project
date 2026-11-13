@@ -5,6 +5,10 @@
 
 # 3차 · 외부 대용량 자료 연구 연결부 보존
 
+<!-- user-levels:start -->
+**수준별 전체 안내:** [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- user-levels:end -->
+
 보존 확인 시각: 2026-10-30T13:38:24.840480+09:00. 대상 6개 파일을 두 번 읽어 SHA-256 일치를 확인했습니다. 이 시점의 **부분 소스 보관본**이며 완성된 독립 실행 패키지나 검증 완료 제품이 아닙니다. 원본 프로젝트는 다른 작업에서 변경될 수 있어 이후 변경을 자동으로 포함하지 않습니다.
 
 - external_data.py: 공식 Binance 공개 시장 자료 수집, SHA-256·ZIP/청크·완료 분봉 검증, 별도 외부 SQLite 저장 코드입니다.
