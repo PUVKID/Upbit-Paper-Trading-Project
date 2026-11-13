@@ -104,9 +104,9 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 
 #### LEVEL 1 · 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [train_only_repeats.py](train_only_repeats.py) | `--once`, `--batch`, `--config`, `--recover-first` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [train_only_repeats.py](train_only_repeats.py)<br>**정의된 옵션 이름:** `--once`, `--batch`, `--config`, `--recover-first` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -328,11 +328,18 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 
 ### LEVEL 2 · 입력에서 출력으로
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 7차 완료 checkpoint와 동일한 고정 train/tune 자료 |
-| 처리 | 50스텝 full fine-tuning fit 10회 → 저장/재로드·가중치 계보 확인 |
-| 출력 | 10개 완료 checkpoint와 학습/튜닝 손실, 미평가 상태 |
+**단계:** 입력
+
+**내용:** 7차 완료 checkpoint와 동일한 고정 train/tune 자료
+
+**단계:** 처리
+
+**내용:** 50스텝 full fine-tuning fit 10회 → 저장/재로드·가중치 계보 확인
+
+**단계:** 출력
+
+**내용:** 10개 완료 checkpoint와 학습/튜닝 손실, 미평가 상태
+
 
 입력·처리·출력은 위의 같은 자료 흐름을 다른 단계에서 읽는 기준입니다. 처리 조건과 출력의 의미를 함께 확인합니다.
 
@@ -405,9 +412,9 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 
 #### LEVEL 2 · 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [train_only_repeats.py](train_only_repeats.py) | `--once`, `--batch`, `--config`, `--recover-first` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [train_only_repeats.py](train_only_repeats.py)<br>**정의된 옵션 이름:** `--once`, `--batch`, `--config`, `--recover-first` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -676,9 +683,9 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 
 #### LEVEL 3 · 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [train_only_repeats.py](train_only_repeats.py) | `--once`, `--batch`, `--config`, `--recover-first` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [train_only_repeats.py](train_only_repeats.py)<br>**정의된 옵션 이름:** `--once`, `--batch`, `--config`, `--recover-first` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -866,11 +873,18 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 3. 학습 손실과 고정 튜닝 손실을 나눠 확인합니다.
 4. candidate_ready/promote=false와 독립평가 미실시를 확인하고 현재 학습 중지는 9차에서 읽습니다.
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 7차 완료 checkpoint와 동일한 고정 train/tune 자료 |
-| 처리 | 50스텝 full fine-tuning fit 10회 → 저장/재로드·가중치 계보 확인 |
-| 출력 | 10개 완료 checkpoint와 학습/튜닝 손실, 미평가 상태 |
+**단계:** 입력
+
+**내용:** 7차 완료 checkpoint와 동일한 고정 train/tune 자료
+
+**단계:** 처리
+
+**내용:** 50스텝 full fine-tuning fit 10회 → 저장/재로드·가중치 계보 확인
+
+**단계:** 출력
+
+**내용:** 10개 완료 checkpoint와 학습/튜닝 손실, 미평가 상태
+
 
 ### LEVEL 3 · 결과와 실패를 확인하기
 
@@ -918,15 +932,22 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 
 ### LEVEL 4 · 이 차수 구현의 실제 근거
 
-| 파일 | 원문에 정의된 역할·구성 |
-|---|---|
-| [train_only_repeats.py](train_only_repeats.py) | 고정 train/tune으로 50-step fit을 10회 이어가는 미검증 연구 실행기입니다. |
+| 파일 · 원문에 정의된 역할·구성 |
+| --- |
+| **파일:** [train_only_repeats.py](train_only_repeats.py)<br>**원문에 정의된 역할·구성:** 고정 train/tune으로 50-step fit을 10회 이어가는 미검증 연구 실행기입니다. |
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 7차 완료 checkpoint와 동일한 고정 train/tune 자료 |
-| 처리 | 50스텝 full fine-tuning fit 10회 → 저장/재로드·가중치 계보 확인 |
-| 출력 | 10개 완료 checkpoint와 학습/튜닝 손실, 미평가 상태 |
+**단계:** 입력
+
+**내용:** 7차 완료 checkpoint와 동일한 고정 train/tune 자료
+
+**단계:** 처리
+
+**내용:** 50스텝 full fine-tuning fit 10회 → 저장/재로드·가중치 계보 확인
+
+**단계:** 출력
+
+**내용:** 10개 완료 checkpoint와 학습/튜닝 손실, 미평가 상태
+
 
 ### LEVEL 4 · 조건·변경·결과를 함께 검토하기
 
@@ -992,9 +1013,9 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 
 #### LEVEL 4 · 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [train_only_repeats.py](train_only_repeats.py) | `--once`, `--batch`, `--config`, `--recover-first` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [train_only_repeats.py](train_only_repeats.py)<br>**정의된 옵션 이름:** `--once`, `--batch`, `--config`, `--recover-first` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -1240,11 +1261,18 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 <a name="-입력처리출력"></a>
 ## 입력·처리·출력
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 7차 완료 checkpoint와 동일한 고정 train/tune 자료 |
-| 처리 | 50스텝 full fine-tuning fit 10회 → 저장/재로드·가중치 계보 확인 |
-| 출력 | 10개 완료 checkpoint와 학습/튜닝 손실, 미평가 상태 |
+**단계:** 입력
+
+**내용:** 7차 완료 checkpoint와 동일한 고정 train/tune 자료
+
+**단계:** 처리
+
+**내용:** 50스텝 full fine-tuning fit 10회 → 저장/재로드·가중치 계보 확인
+
+**단계:** 출력
+
+**내용:** 10개 완료 checkpoint와 학습/튜닝 손실, 미평가 상태
+
 
 <a name="usage"></a>
 
@@ -1261,21 +1289,21 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 <a name="-실제-자료-구성"></a>
 ## 실제 자료 구성
 
-| 경로 | 자료 종류 |
-|---|---|
-| [README.md](README.md) | MD 파일 |
-| [train-only-config.json](train-only-config.json) | JSON 파일 |
-| [train_only_repeats.py](train_only_repeats.py) | PY 파일 |
-| [변경기록.md](%EB%B3%80%EA%B2%BD%EA%B8%B0%EB%A1%9D.md) | MD 파일 |
-| [연구계약.md](%EC%97%B0%EA%B5%AC%EA%B3%84%EC%95%BD.md) | MD 파일 |
-| [전체비교.md](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) | MD 파일 |
+| 경로 · 자료 종류 |
+| --- |
+| **경로:** [README.md](README.md)<br>**자료 종류:** MD 파일 |
+| **경로:** [train-only-config.json](train-only-config.json)<br>**자료 종류:** JSON 파일 |
+| **경로:** [train_only_repeats.py](train_only_repeats.py)<br>**자료 종류:** PY 파일 |
+| **경로:** [변경기록.md](%EB%B3%80%EA%B2%BD%EA%B8%B0%EB%A1%9D.md)<br>**자료 종류:** MD 파일 |
+| **경로:** [연구계약.md](%EC%97%B0%EA%B5%AC%EA%B3%84%EC%95%BD.md)<br>**자료 종류:** MD 파일 |
+| **경로:** [전체비교.md](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md)<br>**자료 종류:** MD 파일 |
 
 <a name="-주요-모듈과-코드-읽기"></a>
 ## 주요 모듈과 코드 읽기
 
-| 파일 | 원문에 정의된 역할·구성 |
-|---|---|
-| [train_only_repeats.py](train_only_repeats.py) | 고정 train/tune으로 50-step fit을 10회 이어가는 미검증 연구 실행기입니다. |
+| 파일 · 원문에 정의된 역할·구성 |
+| --- |
+| **파일:** [train_only_repeats.py](train_only_repeats.py)<br>**원문에 정의된 역할·구성:** 고정 train/tune으로 50-step fit을 10회 이어가는 미검증 연구 실행기입니다. |
 
 <a name="setup"></a>
 
@@ -1346,9 +1374,9 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36항�
 <a name="️-소스에서-제공하는-cli-옵션"></a>
 ### 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [train_only_repeats.py](train_only_repeats.py) | `--once`, `--batch`, `--config`, `--recover-first` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [train_only_repeats.py](train_only_repeats.py)<br>**정의된 옵션 이름:** `--once`, `--batch`, `--config`, `--recover-first` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 

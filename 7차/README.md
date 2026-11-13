@@ -85,9 +85,9 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 #### LEVEL 1 · 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [shadow_research.py](shadow_research.py) | `--config`, `--once` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [shadow_research.py](shadow_research.py)<br>**정의된 옵션 이름:** `--config`, `--once` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -99,11 +99,11 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 #### LEVEL 1 · [shadow_research.py](shadow_research.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`NotReady`](shadow_research.py#L42) | 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
-| [`StopRequested`](shadow_research.py#L46) | 사용자의 중단 신호를 보존합니다. |
-| [`AlreadyRunning`](shadow_research.py#L50) | 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`NotReady`](shadow_research.py#L42)<br>**소스에 적힌 역할:** 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
+| **정의:** [`StopRequested`](shadow_research.py#L46)<br>**소스에 적힌 역할:** 사용자의 중단 신호를 보존합니다. |
+| **정의:** [`AlreadyRunning`](shadow_research.py#L50)<br>**소스에 적힌 역할:** 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
 
 **설정·옵션:** [`--config`](shadow_research.py#L898)
 
@@ -422,11 +422,18 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 ### LEVEL 2 · 입력에서 출력으로
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 5코인 완료 분봉과 공개 사전학습 시계열 모델 |
-| 처리 | 고정 자료 준비 → CUDA 추가 학습 50스텝 → 저장/재로드 확인 → 후속 20개 창 평가 |
-| 출력 | 추가 학습 checkpoint·예측 평가 지표·실제 상태 대시보드 |
+**단계:** 입력
+
+**내용:** 5코인 완료 분봉과 공개 사전학습 시계열 모델
+
+**단계:** 처리
+
+**내용:** 고정 자료 준비 → CUDA 추가 학습 50스텝 → 저장/재로드 확인 → 후속 20개 창 평가
+
+**단계:** 출력
+
+**내용:** 추가 학습 checkpoint·예측 평가 지표·실제 상태 대시보드
+
 
 입력·처리·출력은 위의 같은 자료 흐름을 다른 단계에서 읽는 기준입니다. 처리 조건과 출력의 의미를 함께 확인합니다.
 
@@ -480,9 +487,9 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 #### LEVEL 2 · 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [shadow_research.py](shadow_research.py) | `--config`, `--once` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [shadow_research.py](shadow_research.py)<br>**정의된 옵션 이름:** `--config`, `--once` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -494,11 +501,11 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 #### LEVEL 2 · [shadow_research.py](shadow_research.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`NotReady`](shadow_research.py#L42) | 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
-| [`StopRequested`](shadow_research.py#L46) | 사용자의 중단 신호를 보존합니다. |
-| [`AlreadyRunning`](shadow_research.py#L50) | 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`NotReady`](shadow_research.py#L42)<br>**소스에 적힌 역할:** 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
+| **정의:** [`StopRequested`](shadow_research.py#L46)<br>**소스에 적힌 역할:** 사용자의 중단 신호를 보존합니다. |
+| **정의:** [`AlreadyRunning`](shadow_research.py#L50)<br>**소스에 적힌 역할:** 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
 
 **설정·옵션:** [`--config`](shadow_research.py#L898)
 
@@ -845,9 +852,9 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 #### LEVEL 3 · 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [shadow_research.py](shadow_research.py) | `--config`, `--once` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [shadow_research.py](shadow_research.py)<br>**정의된 옵션 이름:** `--config`, `--once` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -859,11 +866,11 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 #### LEVEL 3 · [shadow_research.py](shadow_research.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`NotReady`](shadow_research.py#L42) | 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
-| [`StopRequested`](shadow_research.py#L46) | 사용자의 중단 신호를 보존합니다. |
-| [`AlreadyRunning`](shadow_research.py#L50) | 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`NotReady`](shadow_research.py#L42)<br>**소스에 적힌 역할:** 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
+| **정의:** [`StopRequested`](shadow_research.py#L46)<br>**소스에 적힌 역할:** 사용자의 중단 신호를 보존합니다. |
+| **정의:** [`AlreadyRunning`](shadow_research.py#L50)<br>**소스에 적힌 역할:** 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
 
 **설정·옵션:** [`--config`](shadow_research.py#L898)
 
@@ -1148,11 +1155,18 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 3. 20개 후속 평가 창에서 종가 유지 기준선과 오차·방향 지표를 비교합니다.
 4. 학습 완료와 매매 적용을 구분하고 현재 중지 상태는 9차를 확인합니다.
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 5코인 완료 분봉과 공개 사전학습 시계열 모델 |
-| 처리 | 고정 자료 준비 → CUDA 추가 학습 50스텝 → 저장/재로드 확인 → 후속 20개 창 평가 |
-| 출력 | 추가 학습 checkpoint·예측 평가 지표·실제 상태 대시보드 |
+**단계:** 입력
+
+**내용:** 5코인 완료 분봉과 공개 사전학습 시계열 모델
+
+**단계:** 처리
+
+**내용:** 고정 자료 준비 → CUDA 추가 학습 50스텝 → 저장/재로드 확인 → 후속 20개 창 평가
+
+**단계:** 출력
+
+**내용:** 추가 학습 checkpoint·예측 평가 지표·실제 상태 대시보드
+
 
 ### LEVEL 3 · 결과와 실패를 확인하기
 
@@ -1200,15 +1214,22 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 ### LEVEL 4 · 이 차수 구현의 실제 근거
 
-| 파일 | 원문에 정의된 역할·구성 |
-|---|---|
-| [shadow_research.py](shadow_research.py) | 고정 Chronos-2의 완료 가중치를 이어 학습하는 독립 연구 전용 실행기. |
+| 파일 · 원문에 정의된 역할·구성 |
+| --- |
+| **파일:** [shadow_research.py](shadow_research.py)<br>**원문에 정의된 역할·구성:** 고정 Chronos-2의 완료 가중치를 이어 학습하는 독립 연구 전용 실행기. |
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 5코인 완료 분봉과 공개 사전학습 시계열 모델 |
-| 처리 | 고정 자료 준비 → CUDA 추가 학습 50스텝 → 저장/재로드 확인 → 후속 20개 창 평가 |
-| 출력 | 추가 학습 checkpoint·예측 평가 지표·실제 상태 대시보드 |
+**단계:** 입력
+
+**내용:** 5코인 완료 분봉과 공개 사전학습 시계열 모델
+
+**단계:** 처리
+
+**내용:** 고정 자료 준비 → CUDA 추가 학습 50스텝 → 저장/재로드 확인 → 후속 20개 창 평가
+
+**단계:** 출력
+
+**내용:** 추가 학습 checkpoint·예측 평가 지표·실제 상태 대시보드
+
 
 ### LEVEL 4 · 조건·변경·결과를 함께 검토하기
 
@@ -1255,9 +1276,9 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 #### LEVEL 4 · 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [shadow_research.py](shadow_research.py) | `--config`, `--once` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [shadow_research.py](shadow_research.py)<br>**정의된 옵션 이름:** `--config`, `--once` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -1269,11 +1290,11 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 #### LEVEL 4 · [shadow_research.py](shadow_research.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`NotReady`](shadow_research.py#L42) | 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
-| [`StopRequested`](shadow_research.py#L46) | 사용자의 중단 신호를 보존합니다. |
-| [`AlreadyRunning`](shadow_research.py#L50) | 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`NotReady`](shadow_research.py#L42)<br>**소스에 적힌 역할:** 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
+| **정의:** [`StopRequested`](shadow_research.py#L46)<br>**소스에 적힌 역할:** 사용자의 중단 신호를 보존합니다. |
+| **정의:** [`AlreadyRunning`](shadow_research.py#L50)<br>**소스에 적힌 역할:** 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
 
 **설정·옵션:** [`--config`](shadow_research.py#L898)
 
@@ -1616,11 +1637,18 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 <a name="-입력처리출력"></a>
 ## 입력·처리·출력
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 5코인 완료 분봉과 공개 사전학습 시계열 모델 |
-| 처리 | 고정 자료 준비 → CUDA 추가 학습 50스텝 → 저장/재로드 확인 → 후속 20개 창 평가 |
-| 출력 | 추가 학습 checkpoint·예측 평가 지표·실제 상태 대시보드 |
+**단계:** 입력
+
+**내용:** 5코인 완료 분봉과 공개 사전학습 시계열 모델
+
+**단계:** 처리
+
+**내용:** 고정 자료 준비 → CUDA 추가 학습 50스텝 → 저장/재로드 확인 → 후속 20개 창 평가
+
+**단계:** 출력
+
+**내용:** 추가 학습 checkpoint·예측 평가 지표·실제 상태 대시보드
+
 
 <a name="usage"></a>
 
@@ -1637,23 +1665,23 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 <a name="-실제-자료-구성"></a>
 ## 실제 자료 구성
 
-| 경로 | 자료 종류 |
-|---|---|
-| [README.md](README.md) | MD 파일 |
-| [foundation-config.json](foundation-config.json) | JSON 파일 |
-| [research-requirements.txt](research-requirements.txt) | TXT 파일 |
-| [shadow_research.py](shadow_research.py) | PY 파일 |
-| [변경기록.md](%EB%B3%80%EA%B2%BD%EA%B8%B0%EB%A1%9D.md) | MD 파일 |
-| [연구계약.md](%EC%97%B0%EA%B5%AC%EA%B3%84%EC%95%BD.md) | MD 파일 |
-| [전체비교.md](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) | MD 파일 |
-| [프런트엔드_변경기록_초안.md](%ED%94%84%EB%9F%B0%ED%8A%B8%EC%97%94%EB%93%9C_%EB%B3%80%EA%B2%BD%EA%B8%B0%EB%A1%9D_%EC%B4%88%EC%95%88.md) | MD 파일 |
+| 경로 · 자료 종류 |
+| --- |
+| **경로:** [README.md](README.md)<br>**자료 종류:** MD 파일 |
+| **경로:** [foundation-config.json](foundation-config.json)<br>**자료 종류:** JSON 파일 |
+| **경로:** [research-requirements.txt](research-requirements.txt)<br>**자료 종류:** TXT 파일 |
+| **경로:** [shadow_research.py](shadow_research.py)<br>**자료 종류:** PY 파일 |
+| **경로:** [변경기록.md](%EB%B3%80%EA%B2%BD%EA%B8%B0%EB%A1%9D.md)<br>**자료 종류:** MD 파일 |
+| **경로:** [연구계약.md](%EC%97%B0%EA%B5%AC%EA%B3%84%EC%95%BD.md)<br>**자료 종류:** MD 파일 |
+| **경로:** [전체비교.md](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md)<br>**자료 종류:** MD 파일 |
+| **경로:** [프런트엔드_변경기록_초안.md](%ED%94%84%EB%9F%B0%ED%8A%B8%EC%97%94%EB%93%9C_%EB%B3%80%EA%B2%BD%EA%B8%B0%EB%A1%9D_%EC%B4%88%EC%95%88.md)<br>**자료 종류:** MD 파일 |
 
 <a name="-주요-모듈과-코드-읽기"></a>
 ## 주요 모듈과 코드 읽기
 
-| 파일 | 원문에 정의된 역할·구성 |
-|---|---|
-| [shadow_research.py](shadow_research.py) | 고정 Chronos-2의 완료 가중치를 이어 학습하는 독립 연구 전용 실행기. |
+| 파일 · 원문에 정의된 역할·구성 |
+| --- |
+| **파일:** [shadow_research.py](shadow_research.py)<br>**원문에 정의된 역할·구성:** 고정 Chronos-2의 완료 가중치를 이어 학습하는 독립 연구 전용 실행기. |
 
 <a name="setup"></a>
 
@@ -1705,9 +1733,9 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 <a name="️-소스에서-제공하는-cli-옵션"></a>
 ### 소스에서 제공하는 CLI 옵션
 
-| 진입 소스 | 정의된 옵션 이름 |
-|---|---|
-| [shadow_research.py](shadow_research.py) | `--config`, `--once` |
+| 진입 소스 · 정의된 옵션 이름 |
+| --- |
+| **진입 소스:** [shadow_research.py](shadow_research.py)<br>**정의된 옵션 이름:** `--config`, `--once` |
 
 각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
@@ -1719,11 +1747,11 @@ RTX 4090의 CUDA에서 5코인 학습 행 40,998개·문맥 192봉·배치 8·50
 
 ### [shadow_research.py](shadow_research.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`NotReady`](shadow_research.py#L42) | 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
-| [`StopRequested`](shadow_research.py#L46) | 사용자의 중단 신호를 보존합니다. |
-| [`AlreadyRunning`](shadow_research.py#L50) | 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`NotReady`](shadow_research.py#L42)<br>**소스에 적힌 역할:** 새로운 미사용 평가 자료가 아직 충분하지 않습니다. |
+| **정의:** [`StopRequested`](shadow_research.py#L46)<br>**소스에 적힌 역할:** 사용자의 중단 신호를 보존합니다. |
+| **정의:** [`AlreadyRunning`](shadow_research.py#L50)<br>**소스에 적힌 역할:** 기존 실행의 상태 파일을 덮어쓰지 않습니다. |
 
 **설정·옵션:** [`--config`](shadow_research.py#L898)
 

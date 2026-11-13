@@ -85,31 +85,31 @@ xgboost==3.0.5
 
 #### LEVEL 1 · [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73) | 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
-| [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105) | 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
-| [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123) | 허용한 필드의 단순 값만 추출합니다. |
-| [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289) | 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73)<br>**소스에 적힌 역할:** 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
+| **정의:** [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105)<br>**소스에 적힌 역할:** 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
+| **정의:** [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123)<br>**소스에 적힌 역할:** 허용한 필드의 단순 값만 추출합니다. |
+| **정의:** [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289)<br>**소스에 적힌 역할:** 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554) | `default="127.0.0.1"` |
-| [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555) | `type=int; default=8765` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15) | `정의=Path(__file__).resolve().parent` |
-| [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16) | `정의=4 * 1024 * 1024` |
-| [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17) | `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
-| [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67) | `정의=8` |
-| [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68) | `정의=100` |
-| [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69) | `정의=1500` |
-| [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70) | `정의=24000` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554)<br>**코드의 선언:** `default="127.0.0.1"` |
+| **설정·옵션:** [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555)<br>**코드의 선언:** `type=int; default=8765` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16)<br>**코드의 선언:** `정의=4 * 1024 * 1024` |
+| **설정·옵션:** [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17)<br>**코드의 선언:** `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67)<br>**코드의 선언:** `정의=8` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68)<br>**코드의 선언:** `정의=100` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69)<br>**코드의 선언:** `정의=1500` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70)<br>**코드의 선언:** `정의=24000` |
 
 #### LEVEL 1 · [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582) | 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
-| [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431) | 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582)<br>**소스에 적힌 역할:** 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
+| **정의:** [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431)<br>**소스에 적힌 역할:** 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
 
 **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1641)
 
@@ -416,10 +416,10 @@ xgboost==3.0.5
 #### LEVEL 1 · [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60) | `type=Path; default=engine.ROOT / 'engine-config.json'` |
-| [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13) | `정의='체결 경로 진단 · 전략 성과 아님'` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60)<br>**코드의 선언:** `type=Path; default=engine.ROOT / 'engine-config.json'` |
+| **설정·옵션:** [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13)<br>**코드의 선언:** `정의='체결 경로 진단 · 전략 성과 아님'` |
 
 **거부 조건:** [`account.state['positions']`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L48)
 
@@ -441,12 +441,12 @@ xgboost==3.0.5
 #### LEVEL 1 · [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18) | `정의=Path(__file__).resolve().parent` |
-| [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19) | `정의=1800` |
-| [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20) | `정의=21600` |
-| [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21) | `정의=900` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19)<br>**코드의 선언:** `정의=1800` |
+| **설정·옵션:** [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20)<br>**코드의 선언:** `정의=21600` |
+| **설정·옵션:** [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21)<br>**코드의 선언:** `정의=900` |
 
 **거부 조건:** [`database_identity(database) != identity`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L63)
 
@@ -464,11 +464,11 @@ xgboost==3.0.5
 #### LEVEL 1 · [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176) | `type=Path; default=ROOT / "service.json"` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19) | `정의=Path(__file__).resolve().parent` |
-| [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20) | `정의=threading.Event()` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176)<br>**코드의 선언:** `type=Path; default=ROOT / "service.json"` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20)<br>**코드의 선언:** `정의=threading.Event()` |
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
@@ -530,11 +530,18 @@ xgboost==3.0.5
 
 ### LEVEL 2 · 입력에서 출력으로
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 시세·호가·완료 분봉·외부 아카이브·연구 설정 |
-| 처리 | 검증·저장 → 특징 준비·연구 → 정책 평가 → 모의체결·화면 |
-| 출력 | 자료 준비 상태·연구 지표·모의계좌 장부·대시보드 |
+**단계:** 입력
+
+**내용:** 시세·호가·완료 분봉·외부 아카이브·연구 설정
+
+**단계:** 처리
+
+**내용:** 검증·저장 → 특징 준비·연구 → 정책 평가 → 모의체결·화면
+
+**단계:** 출력
+
+**내용:** 자료 준비 상태·연구 지표·모의계좌 장부·대시보드
+
 
 입력·처리·출력은 위의 같은 자료 흐름을 다른 단계에서 읽는 기준입니다. 처리 조건과 출력의 의미를 함께 확인합니다.
 
@@ -588,31 +595,31 @@ xgboost==3.0.5
 
 #### LEVEL 2 · [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73) | 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
-| [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105) | 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
-| [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123) | 허용한 필드의 단순 값만 추출합니다. |
-| [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289) | 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73)<br>**소스에 적힌 역할:** 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
+| **정의:** [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105)<br>**소스에 적힌 역할:** 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
+| **정의:** [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123)<br>**소스에 적힌 역할:** 허용한 필드의 단순 값만 추출합니다. |
+| **정의:** [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289)<br>**소스에 적힌 역할:** 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554) | `default="127.0.0.1"` |
-| [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555) | `type=int; default=8765` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15) | `정의=Path(__file__).resolve().parent` |
-| [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16) | `정의=4 * 1024 * 1024` |
-| [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17) | `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
-| [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67) | `정의=8` |
-| [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68) | `정의=100` |
-| [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69) | `정의=1500` |
-| [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70) | `정의=24000` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554)<br>**코드의 선언:** `default="127.0.0.1"` |
+| **설정·옵션:** [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555)<br>**코드의 선언:** `type=int; default=8765` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16)<br>**코드의 선언:** `정의=4 * 1024 * 1024` |
+| **설정·옵션:** [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17)<br>**코드의 선언:** `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67)<br>**코드의 선언:** `정의=8` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68)<br>**코드의 선언:** `정의=100` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69)<br>**코드의 선언:** `정의=1500` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70)<br>**코드의 선언:** `정의=24000` |
 
 #### LEVEL 2 · [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582) | 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
-| [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431) | 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582)<br>**소스에 적힌 역할:** 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
+| **정의:** [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431)<br>**소스에 적힌 역할:** 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
 
 **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1641)
 
@@ -919,10 +926,10 @@ xgboost==3.0.5
 #### LEVEL 2 · [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60) | `type=Path; default=engine.ROOT / 'engine-config.json'` |
-| [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13) | `정의='체결 경로 진단 · 전략 성과 아님'` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60)<br>**코드의 선언:** `type=Path; default=engine.ROOT / 'engine-config.json'` |
+| **설정·옵션:** [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13)<br>**코드의 선언:** `정의='체결 경로 진단 · 전략 성과 아님'` |
 
 **거부 조건:** [`account.state['positions']`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L48)
 
@@ -944,12 +951,12 @@ xgboost==3.0.5
 #### LEVEL 2 · [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18) | `정의=Path(__file__).resolve().parent` |
-| [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19) | `정의=1800` |
-| [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20) | `정의=21600` |
-| [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21) | `정의=900` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19)<br>**코드의 선언:** `정의=1800` |
+| **설정·옵션:** [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20)<br>**코드의 선언:** `정의=21600` |
+| **설정·옵션:** [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21)<br>**코드의 선언:** `정의=900` |
 
 **거부 조건:** [`database_identity(database) != identity`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L63)
 
@@ -967,11 +974,11 @@ xgboost==3.0.5
 #### LEVEL 2 · [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176) | `type=Path; default=ROOT / "service.json"` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19) | `정의=Path(__file__).resolve().parent` |
-| [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20) | `정의=threading.Event()` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176)<br>**코드의 선언:** `type=Path; default=ROOT / "service.json"` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20)<br>**코드의 선언:** `정의=threading.Event()` |
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
@@ -1061,31 +1068,31 @@ xgboost==3.0.5
 
 #### LEVEL 3 · [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73) | 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
-| [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105) | 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
-| [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123) | 허용한 필드의 단순 값만 추출합니다. |
-| [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289) | 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73)<br>**소스에 적힌 역할:** 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
+| **정의:** [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105)<br>**소스에 적힌 역할:** 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
+| **정의:** [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123)<br>**소스에 적힌 역할:** 허용한 필드의 단순 값만 추출합니다. |
+| **정의:** [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289)<br>**소스에 적힌 역할:** 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554) | `default="127.0.0.1"` |
-| [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555) | `type=int; default=8765` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15) | `정의=Path(__file__).resolve().parent` |
-| [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16) | `정의=4 * 1024 * 1024` |
-| [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17) | `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
-| [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67) | `정의=8` |
-| [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68) | `정의=100` |
-| [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69) | `정의=1500` |
-| [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70) | `정의=24000` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554)<br>**코드의 선언:** `default="127.0.0.1"` |
+| **설정·옵션:** [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555)<br>**코드의 선언:** `type=int; default=8765` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16)<br>**코드의 선언:** `정의=4 * 1024 * 1024` |
+| **설정·옵션:** [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17)<br>**코드의 선언:** `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67)<br>**코드의 선언:** `정의=8` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68)<br>**코드의 선언:** `정의=100` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69)<br>**코드의 선언:** `정의=1500` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70)<br>**코드의 선언:** `정의=24000` |
 
 #### LEVEL 3 · [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582) | 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
-| [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431) | 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582)<br>**소스에 적힌 역할:** 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
+| **정의:** [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431)<br>**소스에 적힌 역할:** 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
 
 **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1641)
 
@@ -1392,10 +1399,10 @@ xgboost==3.0.5
 #### LEVEL 3 · [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60) | `type=Path; default=engine.ROOT / 'engine-config.json'` |
-| [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13) | `정의='체결 경로 진단 · 전략 성과 아님'` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60)<br>**코드의 선언:** `type=Path; default=engine.ROOT / 'engine-config.json'` |
+| **설정·옵션:** [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13)<br>**코드의 선언:** `정의='체결 경로 진단 · 전략 성과 아님'` |
 
 **거부 조건:** [`account.state['positions']`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L48)
 
@@ -1417,12 +1424,12 @@ xgboost==3.0.5
 #### LEVEL 3 · [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18) | `정의=Path(__file__).resolve().parent` |
-| [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19) | `정의=1800` |
-| [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20) | `정의=21600` |
-| [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21) | `정의=900` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19)<br>**코드의 선언:** `정의=1800` |
+| **설정·옵션:** [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20)<br>**코드의 선언:** `정의=21600` |
+| **설정·옵션:** [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21)<br>**코드의 선언:** `정의=900` |
 
 **거부 조건:** [`database_identity(database) != identity`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L63)
 
@@ -1440,11 +1447,11 @@ xgboost==3.0.5
 #### LEVEL 3 · [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176) | `type=Path; default=ROOT / "service.json"` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19) | `정의=Path(__file__).resolve().parent` |
-| [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20) | `정의=threading.Event()` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176)<br>**코드의 선언:** `type=Path; default=ROOT / "service.json"` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20)<br>**코드의 선언:** `정의=threading.Event()` |
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
@@ -1472,11 +1479,18 @@ xgboost==3.0.5
 3. 해당 요청의 수집·연구 조건이 충족될 때만 지정된 한 회차를 수행합니다.
 4. 대시보드와 저장 지표에서 완료·대기·오류를 구분하고 기존 장부·모델을 보존합니다.
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 시세·호가·완료 분봉·외부 아카이브·연구 설정 |
-| 처리 | 검증·저장 → 특징 준비·연구 → 정책 평가 → 모의체결·화면 |
-| 출력 | 자료 준비 상태·연구 지표·모의계좌 장부·대시보드 |
+**단계:** 입력
+
+**내용:** 시세·호가·완료 분봉·외부 아카이브·연구 설정
+
+**단계:** 처리
+
+**내용:** 검증·저장 → 특징 준비·연구 → 정책 평가 → 모의체결·화면
+
+**단계:** 출력
+
+**내용:** 자료 준비 상태·연구 지표·모의계좌 장부·대시보드
+
 
 ### LEVEL 3 · 결과와 실패를 확인하기
 
@@ -1524,23 +1538,30 @@ xgboost==3.0.5
 
 ### LEVEL 4 · 이 차수 구현의 실제 근거
 
-| 파일 | 원문에 정의된 역할·구성 |
-|---|---|
-| [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py) | 공개 시세만 사용하는 GPU 학습 및 현물 모의투자 엔진. |
-| [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py) | 로컬 전용 읽기 전용 현물 모의거래 대시보드입니다. |
-| [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py) | 실제 공개 호가의 체결 경로를 전략 계좌와 별도로 검증합니다. |
-| [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py) | 실제 운용 파일과 시세·현물 계좌의 불변 조건을 주기적으로 검사합니다. |
-| [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py) | 수집·학습·현물 모의거래를 독립 실행하고 상태를 보존합니다. |
-| [upbit_auto_trader_v5.ipynb](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/upbit_auto_trader_v5.ipynb) | 노트북 16개 셀 |
-| [tests/test_artifact_scope.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_artifact_scope.py) | Linux 실행 의존성을 프로젝트 직접 구현 소스와 구분하는지 검사합니다. |
-| [tests/test_capital_contract.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_capital_contract.py) | 3차 원금·기존 장부 경계와 실제 대시보드 필드를 검사합니다. |
-| [tests/test_collection_recovery.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_collection_recovery.py) | 손상된 원본 행을 보존하면서 과거 수집을 계속하는지 검사합니다. |
+| 파일 · 원문에 정의된 역할·구성 |
+| --- |
+| **파일:** [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py)<br>**원문에 정의된 역할·구성:** 공개 시세만 사용하는 GPU 학습 및 현물 모의투자 엔진. |
+| **파일:** [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py)<br>**원문에 정의된 역할·구성:** 로컬 전용 읽기 전용 현물 모의거래 대시보드입니다. |
+| **파일:** [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py)<br>**원문에 정의된 역할·구성:** 실제 공개 호가의 체결 경로를 전략 계좌와 별도로 검증합니다. |
+| **파일:** [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py)<br>**원문에 정의된 역할·구성:** 실제 운용 파일과 시세·현물 계좌의 불변 조건을 주기적으로 검사합니다. |
+| **파일:** [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py)<br>**원문에 정의된 역할·구성:** 수집·학습·현물 모의거래를 독립 실행하고 상태를 보존합니다. |
+| **파일:** [upbit_auto_trader_v5.ipynb](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/upbit_auto_trader_v5.ipynb)<br>**원문에 정의된 역할·구성:** 노트북 16개 셀 |
+| **파일:** [tests/test_artifact_scope.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_artifact_scope.py)<br>**원문에 정의된 역할·구성:** Linux 실행 의존성을 프로젝트 직접 구현 소스와 구분하는지 검사합니다. |
+| **파일:** [tests/test_capital_contract.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_capital_contract.py)<br>**원문에 정의된 역할·구성:** 3차 원금·기존 장부 경계와 실제 대시보드 필드를 검사합니다. |
+| **파일:** [tests/test_collection_recovery.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_collection_recovery.py)<br>**원문에 정의된 역할·구성:** 손상된 원본 행을 보존하면서 과거 수집을 계속하는지 검사합니다. |
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 시세·호가·완료 분봉·외부 아카이브·연구 설정 |
-| 처리 | 검증·저장 → 특징 준비·연구 → 정책 평가 → 모의체결·화면 |
-| 출력 | 자료 준비 상태·연구 지표·모의계좌 장부·대시보드 |
+**단계:** 입력
+
+**내용:** 시세·호가·완료 분봉·외부 아카이브·연구 설정
+
+**단계:** 처리
+
+**내용:** 검증·저장 → 특징 준비·연구 → 정책 평가 → 모의체결·화면
+
+**단계:** 출력
+
+**내용:** 자료 준비 상태·연구 지표·모의계좌 장부·대시보드
+
 
 ### LEVEL 4 · 조건·변경·결과를 함께 검토하기
 
@@ -1587,31 +1608,31 @@ xgboost==3.0.5
 
 #### LEVEL 4 · [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73) | 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
-| [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105) | 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
-| [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123) | 허용한 필드의 단순 값만 추출합니다. |
-| [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289) | 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73)<br>**소스에 적힌 역할:** 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
+| **정의:** [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105)<br>**소스에 적힌 역할:** 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
+| **정의:** [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123)<br>**소스에 적힌 역할:** 허용한 필드의 단순 값만 추출합니다. |
+| **정의:** [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289)<br>**소스에 적힌 역할:** 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554) | `default="127.0.0.1"` |
-| [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555) | `type=int; default=8765` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15) | `정의=Path(__file__).resolve().parent` |
-| [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16) | `정의=4 * 1024 * 1024` |
-| [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17) | `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
-| [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67) | `정의=8` |
-| [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68) | `정의=100` |
-| [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69) | `정의=1500` |
-| [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70) | `정의=24000` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554)<br>**코드의 선언:** `default="127.0.0.1"` |
+| **설정·옵션:** [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555)<br>**코드의 선언:** `type=int; default=8765` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16)<br>**코드의 선언:** `정의=4 * 1024 * 1024` |
+| **설정·옵션:** [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17)<br>**코드의 선언:** `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67)<br>**코드의 선언:** `정의=8` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68)<br>**코드의 선언:** `정의=100` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69)<br>**코드의 선언:** `정의=1500` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70)<br>**코드의 선언:** `정의=24000` |
 
 #### LEVEL 4 · [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582) | 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
-| [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431) | 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582)<br>**소스에 적힌 역할:** 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
+| **정의:** [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431)<br>**소스에 적힌 역할:** 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
 
 **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1641)
 
@@ -1918,10 +1939,10 @@ xgboost==3.0.5
 #### LEVEL 4 · [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60) | `type=Path; default=engine.ROOT / 'engine-config.json'` |
-| [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13) | `정의='체결 경로 진단 · 전략 성과 아님'` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60)<br>**코드의 선언:** `type=Path; default=engine.ROOT / 'engine-config.json'` |
+| **설정·옵션:** [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13)<br>**코드의 선언:** `정의='체결 경로 진단 · 전략 성과 아님'` |
 
 **거부 조건:** [`account.state['positions']`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L48)
 
@@ -1943,12 +1964,12 @@ xgboost==3.0.5
 #### LEVEL 4 · [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18) | `정의=Path(__file__).resolve().parent` |
-| [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19) | `정의=1800` |
-| [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20) | `정의=21600` |
-| [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21) | `정의=900` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19)<br>**코드의 선언:** `정의=1800` |
+| **설정·옵션:** [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20)<br>**코드의 선언:** `정의=21600` |
+| **설정·옵션:** [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21)<br>**코드의 선언:** `정의=900` |
 
 **거부 조건:** [`database_identity(database) != identity`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L63)
 
@@ -1966,11 +1987,11 @@ xgboost==3.0.5
 #### LEVEL 4 · [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176) | `type=Path; default=ROOT / "service.json"` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19) | `정의=Path(__file__).resolve().parent` |
-| [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20) | `정의=threading.Event()` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176)<br>**코드의 선언:** `type=Path; default=ROOT / "service.json"` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20)<br>**코드의 선언:** `정의=threading.Event()` |
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
@@ -2056,11 +2077,18 @@ xgboost==3.0.5
 <a name="-입력처리출력"></a>
 ## 입력·처리·출력
 
-| 단계 | 내용 |
-|---|---|
-| 입력 | 시세·호가·완료 분봉·외부 아카이브·연구 설정 |
-| 처리 | 검증·저장 → 특징 준비·연구 → 정책 평가 → 모의체결·화면 |
-| 출력 | 자료 준비 상태·연구 지표·모의계좌 장부·대시보드 |
+**단계:** 입력
+
+**내용:** 시세·호가·완료 분봉·외부 아카이브·연구 설정
+
+**단계:** 처리
+
+**내용:** 검증·저장 → 특징 준비·연구 → 정책 평가 → 모의체결·화면
+
+**단계:** 출력
+
+**내용:** 자료 준비 상태·연구 지표·모의계좌 장부·대시보드
+
 
 <a name="usage"></a>
 
@@ -2077,41 +2105,41 @@ xgboost==3.0.5
 <a name="-실제-자료-구성"></a>
 ## 실제 자료 구성
 
-| 경로 | 자료 종류 |
-|---|---|
-| [docs/](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/docs) | 하위 자료 폴더 |
-| [tests/](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests) | 하위 자료 폴더 |
-| [tools/](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tools) | 하위 자료 폴더 |
-| [web/](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/web) | 하위 자료 폴더 |
-| [README.md](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/README.md) | MD 파일 |
-| [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py) | PY 파일 |
-| [engine-config.json](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine-config.json) | JSON 파일 |
-| [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py) | PY 파일 |
-| [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py) | PY 파일 |
-| [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py) | PY 파일 |
-| [package.json](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/package.json) | JSON 파일 |
-| [pnpm-lock.yaml](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/pnpm-lock.yaml) | YAML 파일 |
-| [pnpm-workspace.yaml](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/pnpm-workspace.yaml) | YAML 파일 |
-| [requirements.txt](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/requirements.txt) | TXT 파일 |
-| [service.json](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/service.json) | JSON 파일 |
-| [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py) | PY 파일 |
-| [upbit_auto_trader_v5.ipynb](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/upbit_auto_trader_v5.ipynb) | IPYNB 파일 |
-| [운영.ps1](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/%EC%9A%B4%EC%98%81.ps1) | PS1 파일 |
+| 경로 · 자료 종류 |
+| --- |
+| **경로:** [docs/](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/docs)<br>**자료 종류:** 하위 자료 폴더 |
+| **경로:** [tests/](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests)<br>**자료 종류:** 하위 자료 폴더 |
+| **경로:** [tools/](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tools)<br>**자료 종류:** 하위 자료 폴더 |
+| **경로:** [web/](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/web)<br>**자료 종류:** 하위 자료 폴더 |
+| **경로:** [README.md](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/README.md)<br>**자료 종류:** MD 파일 |
+| **경로:** [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py)<br>**자료 종류:** PY 파일 |
+| **경로:** [engine-config.json](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine-config.json)<br>**자료 종류:** JSON 파일 |
+| **경로:** [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py)<br>**자료 종류:** PY 파일 |
+| **경로:** [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py)<br>**자료 종류:** PY 파일 |
+| **경로:** [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py)<br>**자료 종류:** PY 파일 |
+| **경로:** [package.json](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/package.json)<br>**자료 종류:** JSON 파일 |
+| **경로:** [pnpm-lock.yaml](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/pnpm-lock.yaml)<br>**자료 종류:** YAML 파일 |
+| **경로:** [pnpm-workspace.yaml](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/pnpm-workspace.yaml)<br>**자료 종류:** YAML 파일 |
+| **경로:** [requirements.txt](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/requirements.txt)<br>**자료 종류:** TXT 파일 |
+| **경로:** [service.json](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/service.json)<br>**자료 종류:** JSON 파일 |
+| **경로:** [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py)<br>**자료 종류:** PY 파일 |
+| **경로:** [upbit_auto_trader_v5.ipynb](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/upbit_auto_trader_v5.ipynb)<br>**자료 종류:** IPYNB 파일 |
+| **경로:** [운영.ps1](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/%EC%9A%B4%EC%98%81.ps1)<br>**자료 종류:** PS1 파일 |
 
 <a name="-주요-모듈과-코드-읽기"></a>
 ## 주요 모듈과 코드 읽기
 
-| 파일 | 원문에 정의된 역할·구성 |
-|---|---|
-| [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py) | 공개 시세만 사용하는 GPU 학습 및 현물 모의투자 엔진. |
-| [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py) | 로컬 전용 읽기 전용 현물 모의거래 대시보드입니다. |
-| [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py) | 실제 공개 호가의 체결 경로를 전략 계좌와 별도로 검증합니다. |
-| [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py) | 실제 운용 파일과 시세·현물 계좌의 불변 조건을 주기적으로 검사합니다. |
-| [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py) | 수집·학습·현물 모의거래를 독립 실행하고 상태를 보존합니다. |
-| [upbit_auto_trader_v5.ipynb](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/upbit_auto_trader_v5.ipynb) | 노트북 16개 셀 |
-| [tests/test_artifact_scope.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_artifact_scope.py) | Linux 실행 의존성을 프로젝트 직접 구현 소스와 구분하는지 검사합니다. |
-| [tests/test_capital_contract.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_capital_contract.py) | 3차 원금·기존 장부 경계와 실제 대시보드 필드를 검사합니다. |
-| [tests/test_collection_recovery.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_collection_recovery.py) | 손상된 원본 행을 보존하면서 과거 수집을 계속하는지 검사합니다. |
+| 파일 · 원문에 정의된 역할·구성 |
+| --- |
+| **파일:** [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py)<br>**원문에 정의된 역할·구성:** 공개 시세만 사용하는 GPU 학습 및 현물 모의투자 엔진. |
+| **파일:** [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py)<br>**원문에 정의된 역할·구성:** 로컬 전용 읽기 전용 현물 모의거래 대시보드입니다. |
+| **파일:** [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py)<br>**원문에 정의된 역할·구성:** 실제 공개 호가의 체결 경로를 전략 계좌와 별도로 검증합니다. |
+| **파일:** [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py)<br>**원문에 정의된 역할·구성:** 실제 운용 파일과 시세·현물 계좌의 불변 조건을 주기적으로 검사합니다. |
+| **파일:** [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py)<br>**원문에 정의된 역할·구성:** 수집·학습·현물 모의거래를 독립 실행하고 상태를 보존합니다. |
+| **파일:** [upbit_auto_trader_v5.ipynb](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/upbit_auto_trader_v5.ipynb)<br>**원문에 정의된 역할·구성:** 노트북 16개 셀 |
+| **파일:** [tests/test_artifact_scope.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_artifact_scope.py)<br>**원문에 정의된 역할·구성:** Linux 실행 의존성을 프로젝트 직접 구현 소스와 구분하는지 검사합니다. |
+| **파일:** [tests/test_capital_contract.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_capital_contract.py)<br>**원문에 정의된 역할·구성:** 3차 원금·기존 장부 경계와 실제 대시보드 필드를 검사합니다. |
+| **파일:** [tests/test_collection_recovery.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/tests/test_collection_recovery.py)<br>**원문에 정의된 역할·구성:** 손상된 원본 행을 보존하면서 과거 수집을 계속하는지 검사합니다. |
 
 <a name="setup"></a>
 
@@ -2163,31 +2191,31 @@ xgboost==3.0.5
 
 ### [dashboard.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73) | 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
-| [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105) | 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
-| [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123) | 허용한 필드의 단순 값만 추출합니다. |
-| [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289) | 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`diagnostic`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L73)<br>**소스에 적힌 역할:** 허용 키·깊이·항목 수·총 문자수로 로컬 진단을 제한합니다. |
+| **정의:** [`execution_probe`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L105)<br>**소스에 적힌 역할:** 본 계좌와 합산하지 않는 공개호가 경로 검사만 투영합니다. |
+| **정의:** [`project`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L123)<br>**소스에 적힌 역할:** 허용한 필드의 단순 값만 추출합니다. |
+| **정의:** [`SnapshotAdapter`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L289)<br>**소스에 적힌 역할:** 경로를 외부 입력으로 받지 않는 제한된 스냅숏 어댑터입니다. |
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554) | `default="127.0.0.1"` |
-| [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555) | `type=int; default=8765` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15) | `정의=Path(__file__).resolve().parent` |
-| [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16) | `정의=4 * 1024 * 1024` |
-| [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17) | `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
-| [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67) | `정의=8` |
-| [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68) | `정의=100` |
-| [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69) | `정의=1500` |
-| [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70) | `정의=24000` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--host`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L554)<br>**코드의 선언:** `default="127.0.0.1"` |
+| **설정·옵션:** [`--port`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L555)<br>**코드의 선언:** `type=int; default=8765` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L15)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`MAX_JSON_BYTES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L16)<br>**코드의 선언:** `정의=4 * 1024 * 1024` |
+| **설정·옵션:** [`COINS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L17)<br>**코드의 선언:** `정의=("BTC", "SOL", "ETH", "XRP", "DOGE")` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_DEPTH`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L67)<br>**코드의 선언:** `정의=8` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_ITEMS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L68)<br>**코드의 선언:** `정의=100` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_NODES`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L69)<br>**코드의 선언:** `정의=1500` |
+| **설정·옵션:** [`MAX_DIAGNOSTIC_CHARS`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/dashboard.py#L70)<br>**코드의 선언:** `정의=24000` |
 
 ### [engine.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py)
 
-| 정의 | 소스에 적힌 역할 |
-|---|---|
-| [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582) | 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
-| [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431) | 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
+| 정의 · 소스에 적힌 역할 |
+| --- |
+| **정의:** [`sweep_book`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L582)<br>**소스에 적힌 역할:** 매수 amount는 수수료 포함 원화, 매도 amount는 현물 수량입니다. |
+| **정의:** [`MarketUniverseTransitionError`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1431)<br>**소스에 적힌 역할:** 검사를 통과한 기존 네 시장 모델도 다섯 시장의 운용에는 사용할 수 없습니다. |
 
 **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1641)
 
@@ -2494,10 +2522,10 @@ xgboost==3.0.5
 ### [execution_probe.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60) | `type=Path; default=engine.ROOT / 'engine-config.json'` |
-| [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13) | `정의='체결 경로 진단 · 전략 성과 아님'` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L60)<br>**코드의 선언:** `type=Path; default=engine.ROOT / 'engine-config.json'` |
+| **설정·옵션:** [`SCOPE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L13)<br>**코드의 선언:** `정의='체결 경로 진단 · 전략 성과 아님'` |
 
 **거부 조건:** [`account.state['positions']`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/execution_probe.py#L48)
 
@@ -2519,12 +2547,12 @@ xgboost==3.0.5
 ### [healthcheck.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18) | `정의=Path(__file__).resolve().parent` |
-| [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19) | `정의=1800` |
-| [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20) | `정의=21600` |
-| [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21) | `정의=900` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L18)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`INTEGRITY_TIMEOUT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L19)<br>**코드의 선언:** `정의=1800` |
+| **설정·옵션:** [`INTEGRITY_MAX_AGE`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L20)<br>**코드의 선언:** `정의=21600` |
+| **설정·옵션:** [`INTEGRITY_RETRY`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L21)<br>**코드의 선언:** `정의=900` |
 
 **거부 조건:** [`database_identity(database) != identity`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/healthcheck.py#L63)
 
@@ -2542,11 +2570,11 @@ xgboost==3.0.5
 ### [supervisor.py](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py)
 
 
-| 설정·옵션 | 코드의 선언 |
-|---|---|
-| [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176) | `type=Path; default=ROOT / "service.json"` |
-| [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19) | `정의=Path(__file__).resolve().parent` |
-| [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20) | `정의=threading.Event()` |
+| 설정·옵션 · 코드의 선언 |
+| --- |
+| **설정·옵션:** [`--config`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L176)<br>**코드의 선언:** `type=Path; default=ROOT / "service.json"` |
+| **설정·옵션:** [`ROOT`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L19)<br>**코드의 선언:** `정의=Path(__file__).resolve().parent` |
+| **설정·옵션:** [`STOP`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L20)<br>**코드의 선언:** `정의=threading.Event()` |
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
