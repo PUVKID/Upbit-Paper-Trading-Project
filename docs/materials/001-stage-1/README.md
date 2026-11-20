@@ -44,7 +44,7 @@ CLI는 명령어와 옵션을 입력해 프로그램을 실행하는 방식입�
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 #### LEVEL 1 · 소스에서 제공하는 CLI 옵션
 
@@ -53,7 +53,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 **정의된 옵션 이름:** `--config`, `--backfill`, `--once`, `--pages`, `--paper-start`, `--final`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 1. 모의매매와 GPU 연구·외부자료 수집의 독립 트랙을 확인합니다.
 2. 설정·시점 경계·PAPER_ONLY와 실제 자료 준비 상태를 읽습니다.
@@ -113,7 +113,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 #### LEVEL 2 · 소스에서 제공하는 CLI 옵션
 
@@ -122,7 +122,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 **정의된 옵션 이름:** `--config`, `--backfill`, `--once`, `--pages`, `--paper-start`, `--final`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 ### LEVEL 2 · 관측과 해석을 구분하기
 
@@ -152,7 +152,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 #### LEVEL 3 · 소스에서 제공하는 CLI 옵션
 
@@ -161,7 +161,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 **정의된 옵션 이름:** `--config`, `--backfill`, `--once`, `--pages`, `--paper-start`, `--final`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 ### LEVEL 3 · 실제 사용·실험 순서
 
@@ -236,7 +236,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 #### LEVEL 4 · 소스에서 제공하는 CLI 옵션
 
@@ -245,7 +245,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 **정의된 옵션 이름:** `--config`, `--backfill`, `--once`, `--pages`, `--paper-start`, `--final`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 자료 크기·고유 아카이브 크기·DB 크기를 구분하고 준비/학습/승격 상태를 함께 확인합니다. 모의 손익은 실제 주문 성과가 아닙니다. GPU 사용률·처리량 개선도 수익 개선과 별개입니다.
 
@@ -277,7 +277,6 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 
 기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](../../versions/stage-1.md) · [이 차수의 원래 전체 상세](#reading-level-5)
 <!-- reading-levels:end -->
-
 
 
 [프로젝트](../../../README.md) · [전체 차수](../../REVISION_INDEX.md) · [원본 자료](../../../engine.py)
@@ -351,7 +350,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 <a name="️-소스에서-제공하는-cli-옵션"></a>
 ### 소스에서 제공하는 CLI 옵션
@@ -361,7 +360,7 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 **정의된 옵션 이름:** `--config`, `--backfill`, `--once`, `--pages`, `--paper-start`, `--final`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 <a name="results"></a>
 

@@ -28,7 +28,13 @@
 
 `CandleStore.read`는 완료 시각 범위 인덱스와 같은 순서로 조회해 임시 정렬을 제거합니다. 반환 행의 완료 시각 간격이 시간봉과 다르면 거부합니다. 기존 요청 범위·제한 수·최종 시작 시각 오름차순은 유지합니다.
 
-`gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다. 범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다. 해당 범위의 입력은 읽기 전용이며 제자리 변경은 지원하지 않습니다. 기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
+`gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다.
+
+범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다.
+
+해당 범위의 입력은 읽기 전용이며 제 자리 변경은 지원하지 않습니다.
+
+기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
 
 `market_feature_loader`는 하나의 CPU 작업자로 다음 시장 특징만 선행 준비합니다. 누적 자료를 임의로 축소하지 않으며 학습·검증 범위는 같습니다. 준비 오류는 상위 호출로 전달하고, 본 작업 오류와 동시에 발생한 오류 원문도 예외에 남깁니다. 진행 중 SQL을 강제 종료하는 기능은 없습니다.
 
@@ -44,7 +50,7 @@ CLI는 명령어와 옵션을 입력해 프로그램을 실행하는 방식입�
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 #### LEVEL 1 · 이 보관본의 의존성 목록
 
@@ -75,7 +81,7 @@ xgboost==3.0.5
 **정의된 옵션 이름:** `--config`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 
 <details>
@@ -214,7 +220,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`not tr["horizon_candidates"] or any(isinstance(h, bool) or not isinstance(h, int) or not 1 &lt;= h &lt;= 288                                            for h in tr["horizon_candidates"])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L147)
 
-**오류 메시지:** 지평 후보는 1~288봉 정수입니다
+**오류 메시지:** 지평 후보는 1~288 봉 정수입니다
 
 **거부 조건:** [`not tr["threshold_candidates"] or any(isinstance(t, bool) or not math.isfinite(t) or not 0 &lt; t &lt; 1                                               for t in [tr["label_threshold"], *tr["threshold_candidates"]])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L150)
 
@@ -372,19 +378,27 @@ xgboost==3.0.5
 
 **오류 메시지:** 공개 시세 응답이 배열이 아닙니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
@@ -472,7 +486,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
-**오류 메시지:** 원금 1,000만원·현물 모의거래·알림 없음 설정을 확인하십시오.
+**오류 메시지:** 원금 1,000 만 원·현물 모의 거래·알림 없음 설정을 확인하십시오.
 
 **거부 조건:** [`start_at.tzinfo is None or engine_start.tzinfo is None or start_at != engine_start`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L167)
 
@@ -480,7 +494,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config["trainer"]["interval_seconds"] != 0`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L169)
 
-**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초여야 합니다.
+**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초 여야합니다.
 
 **거부 조건:** [`not STOP.is_set()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L128)
 
@@ -524,7 +538,13 @@ xgboost==3.0.5
 
 `CandleStore.read`는 완료 시각 범위 인덱스와 같은 순서로 조회해 임시 정렬을 제거합니다. 반환 행의 완료 시각 간격이 시간봉과 다르면 거부합니다. 기존 요청 범위·제한 수·최종 시작 시각 오름차순은 유지합니다.
 
-`gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다. 범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다. 해당 범위의 입력은 읽기 전용이며 제자리 변경은 지원하지 않습니다. 기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
+`gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다.
+
+범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다.
+
+해당 범위의 입력은 읽기 전용이며 제 자리 변경은 지원하지 않습니다.
+
+기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
 
 `market_feature_loader`는 하나의 CPU 작업자로 다음 시장 특징만 선행 준비합니다. 누적 자료를 임의로 축소하지 않으며 학습·검증 범위는 같습니다. 준비 오류는 상위 호출로 전달하고, 본 작업 오류와 동시에 발생한 오류 원문도 예외에 남깁니다. 진행 중 SQL을 강제 종료하는 기능은 없습니다.
 
@@ -547,7 +567,7 @@ xgboost==3.0.5
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 #### LEVEL 2 · 이 보관본의 의존성 목록
 
@@ -578,7 +598,7 @@ xgboost==3.0.5
 **정의된 옵션 이름:** `--config`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 
 <details>
@@ -717,7 +737,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`not tr["horizon_candidates"] or any(isinstance(h, bool) or not isinstance(h, int) or not 1 &lt;= h &lt;= 288                                            for h in tr["horizon_candidates"])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L147)
 
-**오류 메시지:** 지평 후보는 1~288봉 정수입니다
+**오류 메시지:** 지평 후보는 1~288 봉 정수입니다
 
 **거부 조건:** [`not tr["threshold_candidates"] or any(isinstance(t, bool) or not math.isfinite(t) or not 0 &lt; t &lt; 1                                               for t in [tr["label_threshold"], *tr["threshold_candidates"]])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L150)
 
@@ -875,19 +895,27 @@ xgboost==3.0.5
 
 **오류 메시지:** 공개 시세 응답이 배열이 아닙니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
@@ -975,7 +1003,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
-**오류 메시지:** 원금 1,000만원·현물 모의거래·알림 없음 설정을 확인하십시오.
+**오류 메시지:** 원금 1,000 만 원·현물 모의 거래·알림 없음 설정을 확인하십시오.
 
 **거부 조건:** [`start_at.tzinfo is None or engine_start.tzinfo is None or start_at != engine_start`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L167)
 
@@ -983,7 +1011,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config["trainer"]["interval_seconds"] != 0`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L169)
 
-**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초여야 합니다.
+**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초 여야합니다.
 
 **거부 조건:** [`not STOP.is_set()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L128)
 
@@ -1020,7 +1048,7 @@ xgboost==3.0.5
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 #### LEVEL 3 · 이 보관본의 의존성 목록
 
@@ -1051,7 +1079,7 @@ xgboost==3.0.5
 **정의된 옵션 이름:** `--config`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 
 <details>
@@ -1190,7 +1218,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`not tr["horizon_candidates"] or any(isinstance(h, bool) or not isinstance(h, int) or not 1 &lt;= h &lt;= 288                                            for h in tr["horizon_candidates"])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L147)
 
-**오류 메시지:** 지평 후보는 1~288봉 정수입니다
+**오류 메시지:** 지평 후보는 1~288 봉 정수입니다
 
 **거부 조건:** [`not tr["threshold_candidates"] or any(isinstance(t, bool) or not math.isfinite(t) or not 0 &lt; t &lt; 1                                               for t in [tr["label_threshold"], *tr["threshold_candidates"]])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L150)
 
@@ -1348,19 +1376,27 @@ xgboost==3.0.5
 
 **오류 메시지:** 공개 시세 응답이 배열이 아닙니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
@@ -1448,7 +1484,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
-**오류 메시지:** 원금 1,000만원·현물 모의거래·알림 없음 설정을 확인하십시오.
+**오류 메시지:** 원금 1,000 만 원·현물 모의 거래·알림 없음 설정을 확인하십시오.
 
 **거부 조건:** [`start_at.tzinfo is None or engine_start.tzinfo is None or start_at != engine_start`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L167)
 
@@ -1456,7 +1492,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config["trainer"]["interval_seconds"] != 0`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L169)
 
-**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초여야 합니다.
+**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초 여야합니다.
 
 **거부 조건:** [`not STOP.is_set()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L128)
 
@@ -1501,7 +1537,13 @@ xgboost==3.0.5
 
 `CandleStore.read`는 완료 시각 범위 인덱스와 같은 순서로 조회해 임시 정렬을 제거합니다. 반환 행의 완료 시각 간격이 시간봉과 다르면 거부합니다. 기존 요청 범위·제한 수·최종 시작 시각 오름차순은 유지합니다.
 
-`gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다. 범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다. 해당 범위의 입력은 읽기 전용이며 제자리 변경은 지원하지 않습니다. 기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
+`gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다.
+
+범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다.
+
+해당 범위의 입력은 읽기 전용이며 제 자리 변경은 지원하지 않습니다.
+
+기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
 
 `market_feature_loader`는 하나의 CPU 작업자로 다음 시장 특징만 선행 준비합니다. 누적 자료를 임의로 축소하지 않으며 학습·검증 범위는 같습니다. 준비 오류는 상위 호출로 전달하고, 본 작업 오류와 동시에 발생한 오류 원문도 예외에 남깁니다. 진행 중 SQL을 강제 종료하는 기능은 없습니다.
 
@@ -1518,7 +1560,13 @@ xgboost==3.0.5
 
 `CandleStore.read`는 완료 시각 범위 인덱스와 같은 순서로 조회해 임시 정렬을 제거합니다. 반환 행의 완료 시각 간격이 시간봉과 다르면 거부합니다. 기존 요청 범위·제한 수·최종 시작 시각 오름차순은 유지합니다.
 
-`gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다. 범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다. 해당 범위의 입력은 읽기 전용이며 제자리 변경은 지원하지 않습니다. 기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
+`gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다.
+
+범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다.
+
+해당 범위의 입력은 읽기 전용이며 제 자리 변경은 지원하지 않습니다.
+
+기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
 
 `market_feature_loader`는 하나의 CPU 작업자로 다음 시장 특징만 선행 준비합니다. 누적 자료를 임의로 축소하지 않으며 학습·검증 범위는 같습니다. 준비 오류는 상위 호출로 전달하고, 본 작업 오류와 동시에 발생한 오류 원문도 예외에 남깁니다. 진행 중 SQL을 강제 종료하는 기능은 없습니다.
 
@@ -1546,7 +1594,7 @@ xgboost==3.0.5
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 #### LEVEL 4 · 이 보관본의 의존성 목록
 
@@ -1577,7 +1625,7 @@ xgboost==3.0.5
 **정의된 옵션 이름:** `--config`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 
 <details>
@@ -1716,7 +1764,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`not tr["horizon_candidates"] or any(isinstance(h, bool) or not isinstance(h, int) or not 1 &lt;= h &lt;= 288                                            for h in tr["horizon_candidates"])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L147)
 
-**오류 메시지:** 지평 후보는 1~288봉 정수입니다
+**오류 메시지:** 지평 후보는 1~288 봉 정수입니다
 
 **거부 조건:** [`not tr["threshold_candidates"] or any(isinstance(t, bool) or not math.isfinite(t) or not 0 &lt; t &lt; 1                                               for t in [tr["label_threshold"], *tr["threshold_candidates"]])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L150)
 
@@ -1874,19 +1922,27 @@ xgboost==3.0.5
 
 **오류 메시지:** 공개 시세 응답이 배열이 아닙니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
@@ -1974,7 +2030,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
-**오류 메시지:** 원금 1,000만원·현물 모의거래·알림 없음 설정을 확인하십시오.
+**오류 메시지:** 원금 1,000 만 원·현물 모의 거래·알림 없음 설정을 확인하십시오.
 
 **거부 조건:** [`start_at.tzinfo is None or engine_start.tzinfo is None or start_at != engine_start`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L167)
 
@@ -1982,7 +2038,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config["trainer"]["interval_seconds"] != 0`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L169)
 
-**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초여야 합니다.
+**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초 여야합니다.
 
 **거부 조건:** [`not STOP.is_set()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L128)
 
@@ -2023,7 +2079,6 @@ xgboost==3.0.5
 <!-- reading-levels:end -->
 
 
-
 [프로젝트](../../README.md) · [전체 차수](../REVISION_INDEX.md) · [원본 자료](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89)
 
 <a name="-목적과-이-차수의-역할"></a>
@@ -2046,11 +2101,23 @@ xgboost==3.0.5
 
 **항목:** 3
 
-**이 차수에서 확인할 내용:** `gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다. 범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다. 해당 범위의 입력은 읽기 전용이며 제자리 변경은 지원하지 않습니다. 기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
+**이 차수에서 확인할 내용:** `gpu_matrix_scope`는 같은 시장·같은 입력 객체·같은 열·같은 가중치 설정의 후보 묶음에서만 두 DMatrix를 재사용합니다.
+
+범위 밖 호출과 다른 시장·가중치는 공유하지 않으며 종료 시 참조를 해제합니다.
+
+해당 범위의 입력은 읽기 전용이며 제 자리 변경은 지원하지 않습니다.
+
+기존 CUDA 사전 검사와 매 반복 검사도 그대로 수행합니다.
 
 **항목:** 4
 
-**이 차수에서 확인할 내용:** `market_feature_loader`는 하나의 CPU 작업자로 다음 시장 특징만 선행 준비합니다. 누적 자료를 임의로 축소하지 않으며 학습·검증 범위는 같습니다. 준비 오류는 상위 호출로 전달하고, 본 작업 오류와 동시에 발생한 오류 원문도 예외에 남깁니다. 진행 중 SQL을 강제 종료하는 기능은 없습니다.
+**이 차수에서 확인할 내용:** `market_feature_loader`는 하나의 CPU 작업자로 다음 시장 특징만 선행 준비합니다.
+
+누적 자료를 임의로 축소하지 않으며 학습·검증 범위는 같습니다.
+
+준비 오류는 상위 호출로 전달하고, 본 작업 오류와 동시에 발생한 오류 원문도 예외에 남깁니다.
+
+진행 중 SQL을 강제 종료하는 기능은 없습니다.
 
 
 <a name="-입력처리출력"></a>
@@ -2120,7 +2187,7 @@ xgboost==3.0.5
 
 requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 확인합니다. 실제 거래 계정·운영 DB·모델·개인 로그는 공개 코드와 별도입니다. 외부 수집에는 네트워크·디스크 여유·체크섬과 최신성 조건이 필요합니다.
 
-이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
+이 차수 폴더만이 독립 실행 환경인지 먼저 확인합니다. 3차 외부 자료 모듈과 4·5차 제어는 루트 engine.py·engine-config.json 및 tests와 연결됩니다. 실행 명령과 운영 경로는 해당 차수 README의 계약을 따릅니다.
 
 <a name="-이-보관본의-의존성-목록"></a>
 ### 이 보관본의 의존성 목록
@@ -2153,7 +2220,7 @@ xgboost==3.0.5
 **정의된 옵션 이름:** `--config`
 
 
-각 옵션의 기본값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
+각 옵션의 기본 값·필수값·부작용은 해당 main과 인자 정의를 함께 확인합니다.
 
 
 <details>
@@ -2292,7 +2359,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`not tr["horizon_candidates"] or any(isinstance(h, bool) or not isinstance(h, int) or not 1 &lt;= h &lt;= 288                                            for h in tr["horizon_candidates"])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L147)
 
-**오류 메시지:** 지평 후보는 1~288봉 정수입니다
+**오류 메시지:** 지평 후보는 1~288 봉 정수입니다
 
 **거부 조건:** [`not tr["threshold_candidates"] or any(isinstance(t, bool) or not math.isfinite(t) or not 0 &lt; t &lt; 1                                               for t in [tr["label_threshold"], *tr["threshold_candidates"]])`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L150)
 
@@ -2450,19 +2517,27 @@ xgboost==3.0.5
 
 **오류 메시지:** 공개 시세 응답이 배열이 아닙니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1020)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (end, start)).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1022)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
-**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
+**거부 조건:** [`db.execute("SELECT 1 FROM final_tests WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1028)
 
 **오류 메시지:** 이 시험 기간은 이미 소비 또는 평가 시도되었습니다. 반복 튜닝 금지
 
-**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;? AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
+**거부 조건:** [`db.execute("SELECT 1 FROM exposures WHERE start&lt;?
+
+AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/engine.py#L1030)
 
 **오류 메시지:** 시험 기간이 이전 학습/검증에 노출되어 미사용 시험으로 평가할 수 없습니다
 
@@ -2550,7 +2625,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config.get("initial_capital") != 10_000_000 or paper.get("initial_cash") != config.get("initial_capital")             or config.get("market_mode") != "spot-paper" or config.get("notifications") is not False`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L162)
 
-**오류 메시지:** 원금 1,000만원·현물 모의거래·알림 없음 설정을 확인하십시오.
+**오류 메시지:** 원금 1,000 만 원·현물 모의 거래·알림 없음 설정을 확인하십시오.
 
 **거부 조건:** [`start_at.tzinfo is None or engine_start.tzinfo is None or start_at != engine_start`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L167)
 
@@ -2558,7 +2633,7 @@ xgboost==3.0.5
 
 **거부 조건:** [`config["trainer"]["interval_seconds"] != 0`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L169)
 
-**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초여야 합니다.
+**오류 메시지:** 성공한 학습 회차의 고정 대기는 0초 여야합니다.
 
 **거부 조건:** [`not STOP.is_set()`](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89/supervisor.py#L128)
 
