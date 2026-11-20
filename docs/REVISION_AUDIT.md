@@ -13,9 +13,9 @@
 | 3차·현행 외부 자료 연결 | [원격 7개 파일·공통 루트 참조](../3차/) | [구성·실제 비교](../docs/versions/3차.md) | [초기 부분본 → 현행](../docs/revision-audit/3차.md) |
 | 3차·13:38초기 부분 보존 | [6개 원본·안내](../후속보존/2026-10-30_133824_3차초기부분/) | [시점·파일 해시](../docs/versions/3차-초기부분.md) | [현행과 전체 차이](../docs/revision-audit/3차.md) |
 | 현행 공통 엔진·3차 연결 | [루트 실행 입력](../.) | [3차 변경 기록](../3차/변경기록.md) | [원격 GPU 기준 → 3차 전체 차이](../docs/revision-audit/3차-원격변경.md) |
-| GPU 처리 량 | [44개](../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) | [자료 범위](../docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) | [파일·주석·공백·해시](../docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) |
+| GPU 처리량 | [44개](../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) | [자료 범위](../docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) | [파일·주석·공백·해시](../docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) |
 
-2차 문서는 학습 조건을 기록하고, GPU 개선은 날짜별 코드 스냅 샷으로 보관합니다. 루트 실행 본과 각 스냅샷을 비교합니다.
+2차 문서는 학습 조건을 기록하고, GPU 개선은 날짜별 코드 스냅샷으로 보관합니다. 루트 실행 본과 각 스냅샷을 비교합니다.
 
 
 <a name="️-차수별-화면과-검증-이미지"></a>

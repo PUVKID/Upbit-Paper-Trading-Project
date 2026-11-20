@@ -4,4 +4,4 @@
 
 | 차수·보관본 | 소스 비교 입력 | 전체 비교 |
 | --- | --- | --- |
-| GPU 처리 량 | 44 | [파일·공백·주석·해시](revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) |
+| GPU 처리량 | 44 | [파일·공백·주석·해시](revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) |

@@ -51,7 +51,7 @@ cash 7회와 plain 3회 중 기본 비용 거래 3회는 모두 손실이어서 
 
 두 fold의 후속 평가는 현금 정책으로 0 거래·0 수익이며, 기존 모델 비교는 학습 노출이 있는 후 향 진단입니다.
 
-업 비트 완료 OHLCV 9 시간 봉 연구이며 외부 50GB 전체 학습, 수익 개선, 자동 승격을 주장하지 않습니다. [10차 결과](10차/README.md) · [실험 집계](10차/실험결과.json) · [변경 기록](10차/변경기록.md) · [전체 비교](10차/전체비교.md).
+업 비트 완료 OHLCV 9 시간봉 연구이며 외부 50GB 전체 학습, 수익 개선, 자동 승격을 주장하지 않습니다. [10차 결과](10차/README.md) · [실험 집계](10차/실험결과.json) · [변경 기록](10차/변경기록.md) · [전체 비교](10차/전체비교.md).
 
 최종 검증과 원격 반영은 별도 영수증으로 관리하며 GPU 성과와 구분합니다.
 
@@ -112,7 +112,7 @@ cash 7회와 plain 3회 중 기본 비용 거래 3회는 모두 손실이어서 
 
 연구는 최초 50GB →GPU 학습 1회 →요청대기, 이후 명시 요청마다 새 자료 2GB →학습 1회이며 모의 매매와 추론용 최신 시세 갱신은 별도로 계속됩니다.
 
-이 전 자동 재학습 정책을 대체합니다. [4차 실행 설명](4차/README.md) · [파일별 변경](4차/변경기록.md) · [전체 차수](docs/REVISION_INDEX.md)
+이전 자동 재학습 정책을 대체합니다. [4차 실행 설명](4차/README.md) · [파일별 변경](4차/변경기록.md) · [전체 차수](docs/REVISION_INDEX.md)
 
 | 차수·자료 | 자료 폴더·원본 | 상세 설명 | 직전 비교·범위 |
 | --- | --- | --- | --- |
@@ -156,9 +156,9 @@ cash 7회와 plain 3회 중 기본 비용 거래 3회는 모두 손실이어서 
 | 확인된 차수·위치 | 내용 | 설명·비교 |
 | --- | --- | --- |
 | 기존 공개 기본 | 시세 수집·GPU 연구·현물 모의체결 | [기존 기록](docs/versions/stage-1.md) · [보존 기준](https://github.com/PUVKID/Upbit-Paper-Trading-Project/tree/5d365eeff59b0d6d81607b336f14d238303c57a0) |
-| 2026-10-30 GPU 처리 량 개선 | 인덱스 정렬·행렬 재사용·1 시장 선행 준비·단계 시간 | [설명](docs/versions/gpu-throughput-20261030.md) · [전체 코드 비교](docs/versions/gpu-throughput-20261030-engine-diff.md) · [회귀 검사](tests/test_gpu_throughput.py) |
+| 2026-10-30 GPU 처리량 개선 | 인덱스 정렬·행렬 재사용·1 시장 선행 준비·단계 시간 | [설명](docs/versions/gpu-throughput-20261030.md) · [전체 코드 비교](docs/versions/gpu-throughput-20261030-engine-diff.md) · [회귀 검사](tests/test_gpu_throughput.py) |
 
-기존 차수 번호가 확인되지 않아 임의 번호를 붙이지 않았습니다. 이번 변경은 학습 처리 량 개선이며 GPU100%상시 사용·정확도 95%·수익 향상을 달성했다는 뜻이 아닙니다. [실측과 제약](docs/2026-10-30_GPU처리량_개선.md)을 함께 확인하십시오.
+기존 차수 번호가 확인되지 않아 임의 번호를 붙이지 않았습니다. 이번 변경은 학습 처리량 개선이며 GPU100%상시 사용·정확도 95%·수익 향상을 달성했다는 뜻이 아닙니다. [실측과 제약](docs/2026-10-30_GPU처리량_개선.md)을 함께 확인하십시오.
 
 XGBoost 예측과 모의체결·대시보드를 연결한 가상자산 모의투자 도구입니다.
 
@@ -196,7 +196,7 @@ ResearchControl은 collecting →training →completed와 batch·claim·attempt�
 
 학습 완료와 promote 여부를 따로 기록합니다.
 
-5차의 대기는 단순 50GB 부족이 아니라 최근 14일 98% 커 버리지 미달이 원인이었습니다. bootstrap_plan은 직전 월별 자료와 이번 달·최근 14일 완료 UTC 날짜의 일별 원본을 중복 없이 최근 순으로 요청합니다. 2026-11-02 준비 표시가 참으로 바뀐 관측은 GPU 적합 완료·수익 향상과 다릅니다.
+5차의 대기는 단순 50GB 부족이 아니라 최근 14일 98% 커버리지 미달이 원인이었습니다. bootstrap_plan은 직전 월별 자료와 이번 달·최근 14일 완료 UTC 날짜의 일별 원본을 중복 없이 최근 순으로 요청합니다. 2026-11-02 준비 표시가 참으로 바뀐 관측은 GPU 적합 완료·수익 향상과 다릅니다.
 
 7차 Chronos-2는 RTX4090 CUDA에서 40,998 행·context192·batch8·50step의 추가 학습과 저장/재로드를 기록했습니다.
 
@@ -237,7 +237,7 @@ ResearchControl은 collecting →training →completed와 batch·claim·attempt�
 
 불완전 장부는 `incomplete`, 잘못된 체결 자료는 `rejected`로 분리합니다.
 
-기본 입력은 `work/paper/state.json`, 출력은 `10차/work/trade-diagnostics.json`이며 최대 32MiB의 안정된 스냅 샷을 읽고 원자 교체로 출력합니다.
+기본 입력은 `work/paper/state.json`, 출력은 `10차/work/trade-diagnostics.json`이며 최대 32MiB의 안정된 스냅샷을 읽고 원자 교체로 출력합니다.
 
 과거 누적 계좌 진단을 10차 신규 모델의 수익으로 합산하지 않습니다.
 
@@ -382,9 +382,9 @@ flowchart LR
 <a name="-보존한-v4-실험과-현재-엔진"></a>
 ### 보존한 v4 실험과 현재 엔진
 
-[이전 v4 노트북](보존자료/원본/upbit_auto_trader_v4.ipynb)은 4 코인·초기 100 만 원·5분 봉에 15분/1시간 피처를 결합하고, LightGBM·XGBoost·GRU·LSTM·Transformer를 비교하던 별도 실험입니다.
+[이전 v4 노트북](보존자료/원본/upbit_auto_trader_v4.ipynb)은 4 코인·초기 100 만 원·5분봉에 15분/1시간 피처를 결합하고, LightGBM·XGBoost·GRU·LSTM·Transformer를 비교하던 별도 실험입니다.
 
-첫 Markdown의 1시간 봉·1.5% 설명과 실제 설정인 5분 봉·0.6%가 다릅니다.
+첫 Markdown의 1시간봉·1.5% 설명과 실제 설정인 5분봉·0.6%가 다릅니다.
 
 현재 5 코인 엔진에서는 구간 분리·승격·모의 체결 조건을 별도로 구성했습니다.
 
@@ -430,7 +430,7 @@ python -m venv .venv
 | 항목 | 코드의 구성 |
 | --- | --- |
 | 종목 | KRW-BTC, KRW-SOL, KRW-ETH, KRW-XRP, KRW-DOGE |
-| 시간 봉 | 1·3·5·10·15·30·60·240 분과 일 봉 |
+| 시간봉 | 1·3·5·10·15·30·60·240 분과 일봉 |
 | 기본 봉 | 5분 |
 | 기본 의존성 | NumPy, pandas, XGBoost 3.0.5 |
 | 수집 자료 | 공개 캔들·호가 |
@@ -504,9 +504,9 @@ python -m venv .venv
 | 3차·외부 자료 연결 당시 | [원격 7개 파일·공통 루트 참조](3차/) | [구성·실제 비교](docs/versions/3차.md) | [초기 부분본 → 당시 3차](docs/revision-audit/3차.md) |
 | 3차·13:38초기 부분 보존 | [6개 원본·안내](후속보존/2026-10-30_133824_3차초기부분/) | [시점·파일 해시](docs/versions/3차-초기부분.md) | [당시 3차와 전체 차이](docs/revision-audit/3차.md) |
 | 공통 엔진·3차 연결 당시 | [루트 실행 입력](.) | [3차 변경 기록](3차/변경기록.md) | [원격 GPU 기준 → 3차 전체 차이](docs/revision-audit/3차-원격변경.md) |
-| GPU 처리 량 | [44개](%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) | [자료 범위](docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) | [파일·주석·공백·해시](docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) |
+| GPU 처리량 | [44개](%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) | [자료 범위](docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) | [파일·주석·공백·해시](docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) |
 
-2차 문서는 학습 조건을 기록하고, GPU 개선은 날짜별 코드 스냅 샷으로 보관합니다. 루트 실행 본과 각 스냅샷을 비교합니다.
+2차 문서는 학습 조건을 기록하고, GPU 개선은 날짜별 코드 스냅샷으로 보관합니다. 루트 실행 본과 각 스냅샷을 비교합니다.
 
 
 <a name="️-차수별-화면과-검증-이미지"></a>

@@ -4,7 +4,7 @@
 **수준별 전체 안내:** [LEVEL 1 - Beginner](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
 <!-- user-levels:end -->
 
-2026-10-30 구현자와 다른 검증 작업자가 GPU 처리 량 개선을 PASS로 판정했습니다.
+2026-10-30 구현자와 다른 검증 작업자가 GPU 처리량 개선을 PASS로 판정했습니다.
 
 - 공식 Windows 회귀: 종료 0,17.953초. 정의된 212 검사 중 Windows 선언 생략 5개.
 - 공식 정적 검사:81개, 종료 0,1.641초.

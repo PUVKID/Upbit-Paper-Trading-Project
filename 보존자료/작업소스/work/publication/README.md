@@ -8,9 +8,9 @@
 | 확인된 차수·위치 | 내용 | 설명·비교 |
 | --- | --- | --- |
 | 기존 공개 기본 | 시세 수집·GPU 연구·현물 모의체결 | [기존 기록](docs/versions/stage-1.md) · [보존 기준](https://github.com/PUVKID/Upbit-Paper-Trading-Project/tree/5d365eeff59b0d6d81607b336f14d238303c57a0) |
-| 2026-10-30 GPU 처리 량 개선 | 인덱스 정렬·행렬 재사용·1 시장 선행 준비·단계 시간 | [설명](docs/versions/gpu-throughput-20261030.md) · [전체 코드 비교](docs/versions/gpu-throughput-20261030-engine-diff.md) · [회귀 검사](tests/test_gpu_throughput.py) |
+| 2026-10-30 GPU 처리량 개선 | 인덱스 정렬·행렬 재사용·1 시장 선행 준비·단계 시간 | [설명](docs/versions/gpu-throughput-20261030.md) · [전체 코드 비교](docs/versions/gpu-throughput-20261030-engine-diff.md) · [회귀 검사](tests/test_gpu_throughput.py) |
 
-기존 차수 번호가 확인되지 않아 임의 번호를 붙이지 않았습니다. 이번 변경은 학습 처리 량 개선이며 GPU100%상시 사용·정확도 95%·수익 향상을 달성했다는 뜻이 아닙니다. [실측과 제약](docs/2026-10-30_GPU처리량_개선.md)을 함께 확인하십시오.
+기존 차수 번호가 확인되지 않아 임의 번호를 붙이지 않았습니다. 이번 변경은 학습 처리량 개선이며 GPU100%상시 사용·정확도 95%·수익 향상을 달성했다는 뜻이 아닙니다. [실측과 제약](docs/2026-10-30_GPU처리량_개선.md)을 함께 확인하십시오.
 
 XGBoost 예측과 모의체결·대시보드를 연결한 가상자산 모의투자 도구입니다.
 
@@ -155,9 +155,9 @@ flowchart LR
 <a name="-보존한-v4-실험과-현재-엔진"></a>
 ### 보존한 v4 실험과 현재 엔진
 
-[이전 v4 노트북](보존자료/원본/upbit_auto_trader_v4.ipynb)은 4 코인·초기 100 만 원·5분 봉에 15분/1시간 피처를 결합하고, LightGBM·XGBoost·GRU·LSTM·Transformer를 비교하던 별도 실험입니다.
+[이전 v4 노트북](보존자료/원본/upbit_auto_trader_v4.ipynb)은 4 코인·초기 100 만 원·5분봉에 15분/1시간 피처를 결합하고, LightGBM·XGBoost·GRU·LSTM·Transformer를 비교하던 별도 실험입니다.
 
-첫 Markdown의 1시간 봉·1.5% 설명과 실제 설정인 5분 봉·0.6%가 다릅니다.
+첫 Markdown의 1시간봉·1.5% 설명과 실제 설정인 5분봉·0.6%가 다릅니다.
 
 현재 5 코인 엔진에서는 구간 분리·승격·모의 체결 조건을 별도로 구성했습니다.
 
@@ -203,7 +203,7 @@ python -m venv .venv
 | 항목 | 코드의 구성 |
 | --- | --- |
 | 종목 | KRW-BTC, KRW-SOL, KRW-ETH, KRW-XRP, KRW-DOGE |
-| 시간 봉 | 1·3·5·10·15·30·60·240 분과 일 봉 |
+| 시간봉 | 1·3·5·10·15·30·60·240 분과 일봉 |
 | 기본 봉 | 5분 |
 | 기본 의존성 | NumPy, pandas, XGBoost 3.0.5 |
 | 수집 자료 | 공개 캔들·호가 |
