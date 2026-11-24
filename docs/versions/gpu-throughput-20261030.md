@@ -15,6 +15,9 @@
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
+<details open>
+<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+
 <a id="reading-level-1"></a>
 ## LEVEL 1 - Beginner
 
@@ -526,6 +529,12 @@ AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%
 
 
 [자료 폴더](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) · [직전 비교·자료 범위](../revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 ## LEVEL 2 - Explorer
@@ -1039,6 +1048,12 @@ AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%
 
 [자료 폴더](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) · [직전 비교·자료 범위](../revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) · [이 차수의 원래 전체 상세](#reading-level-5)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+
 <a id="reading-level-3"></a>
 ## LEVEL 3 - Practitioner
 
@@ -1548,6 +1563,12 @@ AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%
 `market_feature_loader`는 하나의 CPU 작업자로 다음 시장 특징만 선행 준비합니다. 누적 자료를 임의로 축소하지 않으며 학습·검증 범위는 같습니다. 준비 오류는 상위 호출로 전달하고, 본 작업 오류와 동시에 발생한 오류 원문도 예외에 남깁니다. 진행 중 SQL을 강제 종료하는 기능은 없습니다.
 
 [자료 폴더](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) · [직전 비교·자료 범위](../revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 ## LEVEL 4 - Advanced
@@ -2072,6 +2093,12 @@ AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%
 위 구성요소의 입력·출력과 실패 조건을 같은 차수 소스에 연결해 검토합니다. 전체 비교는 추가·수정·삭제와 원래 보관 범위를 구분하는 근거입니다.
 
 [자료 폴더](../../%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) · [직전 비교·자료 범위](../revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+
+</details>
+
+<details>
+<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
@@ -2675,3 +2702,6 @@ AND end&gt;?", (iso(end), iso(start))).fetchone()`](../../%ED%9B%84%EC%86%8D%EB%
 [전체 비교·자료 범위](../revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md)
 
 추가·수정·삭제, 주석·공백·개행과 바이너리 크기·해시는 연결된 원래 비교 자료에서 확인합니다.
+
+</details>
+

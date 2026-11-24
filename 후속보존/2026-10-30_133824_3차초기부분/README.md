@@ -6,7 +6,18 @@
 # 3차·외부 대용량 자료 연구 연결 부 보존
 
 <!-- user-levels:start -->
-**수준별 전체 안내:** [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<details>
+<summary><strong>읽기 수준 선택</strong></summary>
+
+| 레벨 | 읽는 목적 |
+| --- | --- |
+| [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 목적과 입력·출력을 쉬운 말로 이해하기 |
+| [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 주요 기능과 전체 처리 흐름 살펴보기 |
+| [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 설정·실행 순서와 결과 확인하기 |
+| [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 구현 선택과 조건·한계 비교하기 |
+| [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 세부 근거와 재현 조건 검토하기 |
+
+</details>
 <!-- user-levels:end -->
 
 보존 확인 시각: 2026-10-30T13:38:24.840480 +09:00.
@@ -19,9 +30,14 @@
 
 - external_data.py: 공식 Binance 공개 시장 자료 수집, SHA-256·ZIP/청크·완료 분봉 검증, 별도 외부 SQLite 저장 코드입니다.
 - external_features.py: 3차/work 경로 경계, Linux 읽기 전용 DB, 상태·스키마·최근 범위 검사와 과거 방향 특징 결합 코드입니다.
-- 연결 부/engine.py: 원본 부모 루트의 엔진을 보존한 사본입니다. 이 폴더에서 바로 실행하는 배치가 아닙니다. 원본 상 대 구조의 3차 모듈과 연동하도록 작성된 코드입니다.
-- 검사/: 수집·외부 특징 관련 검사 소스를 보존합니다. 이번 아카이브 검토에서는 구문만 확인했으며 실제 단위 검사·DB·다운로드·GPU 학습·모의계좌 실행은 수행하지 않았습니다.
+- 연결 부/engine.py: 원본 부모 루트의 엔진을 보존한 사본입니다.  
+  이 폴더에서 바로 실행하는 배치가 아닙니다.  
+  원본 상 대 구조의 3차 모듈과 연동하도록 작성된 코드입니다.
+- 검사/: 수집·외부 특징 관련 검사 소스를 보존합니다.  
+  이번 아카이브 검토에서는 구문만 확인했으며 실제 단위 검사·DB·다운로드·GPU 학습·모의계좌 실행은 수행하지 않았습니다.
 
 [요구·데이터 계약](docs/요구사항_및_데이터계약.md) · [공개 파일·전체 차이](../docs/revision-audit/3차.md)
 
-운영 work/·원 자료·DB/WAL·모델·계좌·로그·실제 키는 포함하지 않습니다. 30GB는 수집 목표이며 확보 완료·학습 성공·수익 보장이 아닙니다. 기존 GPU 개선 보존 본과 이전 루트 공개 본은 그대로 보존합니다.
+운영 work/·원 자료·DB/WAL·모델·계좌·로그·실제 키는 포함하지 않습니다.  
+30GB는 수집 목표이며 확보 완료·학습 성공·수익 보장이 아닙니다.  
+기존 GPU 개선 보존 본과 이전 루트 공개 본은 그대로 보존합니다.

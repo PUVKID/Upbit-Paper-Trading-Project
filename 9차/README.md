@@ -15,6 +15,9 @@
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
+<details open>
+<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+
 <a id="reading-level-1"></a>
 ## LEVEL 1 - Beginner
 
@@ -97,6 +100,12 @@
 | 학습 손실을 성능으로 해석 | train/tune 손실과 독립 시험·승격을 구분합니다. |
 
 [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 ## LEVEL 2 - Explorer
@@ -181,6 +190,12 @@
 
 [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+
 <a id="reading-level-3"></a>
 ## LEVEL 3 - Practitioner
 
@@ -261,6 +276,12 @@
 권장 작업 순서는 **손실 분해 → 검증 계약 동결 → 단순 기준선 비교 → 한 가지 변경씩 검증 → 실시간 모의 비교**입니다. 학습량·파일 크기·GPU 점유율은 거래 우위의 대리 지표로 사용하지 않습니다. 지금은 학습 중지 상태이며 이 계획은 새 적합을 승인하거나 실행하지 않습니다.
 
 [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 ## LEVEL 4 - Advanced
@@ -348,6 +369,12 @@
 위 구성요소의 입력·출력과 실패 조건을 같은 차수 소스에 연결해 검토합니다. 전체 비교는 추가·수정·삭제와 원래 보관 범위를 구분하는 근거입니다.
 
 [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+
+</details>
+
+<details>
+<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
@@ -489,3 +516,6 @@
 [전체 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md)
 
 추가·수정·삭제, 주석·공백·개행과 바이너리 크기·해시는 연결된 원래 비교 자료에서 확인합니다.
+
+</details>
+

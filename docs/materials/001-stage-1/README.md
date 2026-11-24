@@ -15,6 +15,9 @@
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](../../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](../../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
+<details open>
+<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+
 <a id="reading-level-1"></a>
 ## LEVEL 1 - Beginner
 
@@ -87,6 +90,12 @@
 
 [자료 폴더](.) · [직전 비교·자료 범위](../../versions/stage-1.md) · [이 차수의 원래 전체 상세](#reading-level-5)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+
 <a id="reading-level-2"></a>
 ## LEVEL 2 - Explorer
 
@@ -151,6 +160,12 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 
 [자료 폴더](.) · [직전 비교·자료 범위](../../versions/stage-1.md) · [이 차수의 원래 전체 상세](#reading-level-5)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+
 <a id="reading-level-3"></a>
 ## LEVEL 3 - Practitioner
 
@@ -212,6 +227,12 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 모의계좌를 이용한 거래 실험을 다룹니다.
 
 [자료 폴더](.) · [직전 비교·자료 범위](../../versions/stage-1.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 ## LEVEL 4 - Advanced
@@ -280,6 +301,12 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 위 구성요소의 입력·출력과 실패 조건을 같은 차수 소스에 연결해 검토합니다. 전체 비교는 추가·수정·삭제와 원래 보관 범위를 구분하는 근거입니다.
 
 [자료 폴더](.) · [직전 비교·자료 범위](../../versions/stage-1.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+
+</details>
+
+<details>
+<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
@@ -411,3 +438,6 @@ requirements와 engine-config.json, CUDA·GPU·DB 및 자료 저장 경로를 �
 이 폴더는 원본 파일을 읽는 독립 안내입니다. 실행 코드 폴더를 복제하거나 원본을 옮기지 않았습니다.
 
 [원본 파일 직접 열기](../../../engine.py) · [기존 설명 주소](../../versions/stage-1.md)
+
+</details>
+

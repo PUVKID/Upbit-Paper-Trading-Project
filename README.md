@@ -9,11 +9,11 @@
 
 | 수준 | 이 안내에서 읽을 내용 |
 | --- | --- |
-| [LEVEL 1 - Beginner](docs/읽기안내/레벨1.md) | 낯선 용어를 풀어 쓰며 실제 동작·예시·오해하기 쉬운 범위를 읽습니다. |
-| [LEVEL 2 - Explorer](docs/읽기안내/레벨2.md) | 입력·처리·출력과 기능 사이의 연결, 차수 변화를 따라갑니다. |
-| [LEVEL 3 - Practitioner](docs/읽기안내/레벨3.md) | 준비 조건·사용 순서·설정·결과 및 실패 확인 방법을 읽습니다. |
-| [LEVEL 4 - Advanced](docs/읽기안내/레벨4.md) | 모듈 설계·상태 전이·검증 경계와 구현 선택을 검토합니다. |
-| [LEVEL 5 - Expert](docs/읽기안내/레벨5.md) | 실제 코드·프로토콜·설정값·전체 비교와 측정 근거를 대조합니다. |
+| [**LEVEL 1 - Beginner**](docs/읽기안내/레벨1.md) | 낯선 용어를 풀어 쓰며 실제 동작·예시·오해하기 쉬운 범위를 읽습니다. |
+| [**LEVEL 2 - Explorer**](docs/읽기안내/레벨2.md) | 입력·처리·출력과 기능 사이의 연결, 차수 변화를 따라갑니다. |
+| [**LEVEL 3 - Practitioner**](docs/읽기안내/레벨3.md) | 준비 조건·사용 순서·설정·결과 및 실패 확인 방법을 읽습니다. |
+| [**LEVEL 4 - Advanced**](docs/읽기안내/레벨4.md) | 모듈 설계·상태 전이·검증 경계와 구현 선택을 검토합니다. |
+| [**LEVEL 5 - Expert**](docs/읽기안내/레벨5.md) | 실제 코드·프로토콜·설정값·전체 비교와 측정 근거를 대조합니다. |
 
 모든 안내는 같은 프로젝트와 전체 차수를 다룹니다. 기존 상세 본문은 아래에 계속 보존합니다.
 <!-- project-levels:end -->
@@ -45,6 +45,9 @@ cash 7회와 plain 3회 중 기본 비용 거래 3회는 모두 손실이어서 
 회차 경과 시간 합 833.041977초와 전체 벽시계 1,003.807609초를 구분합니다. 이번 안내 정리에서 모델·앱·실험을 다시 실행하지 않았습니다.
 
 <a name="-10차-비용-차감-수익-연구와-거래-장부-진단"></a>
+<details>
+<summary><strong>이전 3~10차의 연구 진행과 보존 기록</strong></summary>
+
 ## 10차 비용 차감 수익 연구와 거래 장부 진단
 
 실제 CUDA 적합 30회와 저장·재로드 검증을 완료했지만, 신규 후보는 거래 수와 순 수익 기준 미달로 채택하지 않았습니다.
@@ -57,7 +60,8 @@ cash 7회와 plain 3회 중 기본 비용 거래 3회는 모두 손실이어서 
 
 수익·정확도 100%·낙폭 10% 이내를 보장하지 않으며 기존 자동 학습 중지와 모의 계좌는 보존합니다.
 
-## ⏸️ 9차 학습 중지와 거래 모델 재정비
+<a id="9차-학습-중지와-거래-모델-재정비"></a>
+## 9차 학습 중지와 거래 모델 재정비
 
 자동 학습을 중지하고 기존 모의매매·시세 수집을 유지합니다.
 
@@ -114,22 +118,22 @@ cash 7회와 plain 3회 중 기본 비용 거래 3회는 모두 손실이어서 
 
 이전 자동 재학습 정책을 대체합니다. [4차 실행 설명](4차/README.md) · [파일별 변경](4차/변경기록.md) · [전체 차수](docs/REVISION_INDEX.md)
 
-| 차수·자료 | 자료 폴더·원본 | 상세 설명 | 직전 비교·범위 |
-| --- | --- | --- | --- |
-| 로컬 1차·2차 보존 | [확인 범위](docs/versions/) | [원본 보존과 공개 제외](docs/versions/local-history.md) | [세부 비교 미확인 근거](docs/versions/local-history.md) |
-| 기존 공개 기본 | [자료 폴더](docs/materials/001-stage-1) · [원본 파일](engine.py) | [상세 설명](docs/materials/001-stage-1/README.md) | [전체 비교·범위](docs/versions/stage-1.md) |
-| 2차 조건 문서 | [자료 폴더](docs) | [상세 설명](docs/2%EC%B0%A8_%EC%A4%91%EB%A6%BD%EC%9B%90%EC%9D%B8_%EC%97%B0%EC%86%8D%ED%95%99%EC%8A%B5.md) | [전체 비교·범위](docs/2%EC%B0%A8_%EC%A4%91%EB%A6%BD%EC%9B%90%EC%9D%B8_%EC%97%B0%EC%86%8D%ED%95%99%EC%8A%B5.md) |
-| GPU 처리량 개선 | [자료 폴더](%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) | [상세 설명](docs/versions/gpu-throughput-20261030.md) | [전체 비교·범위](docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) |
-| 3차 초기 부분 보존 | [자료 폴더](%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_133824_3%EC%B0%A8%EC%B4%88%EA%B8%B0%EB%B6%80%EB%B6%84) | [상세 설명](docs/versions/3%EC%B0%A8-%EC%B4%88%EA%B8%B0%EB%B6%80%EB%B6%84.md) | [전체 비교·범위](docs/revision-audit/3%EC%B0%A8.md) |
-| 3차 | [자료 폴더](3%EC%B0%A8) | [상세 설명](docs/versions/3%EC%B0%A8.md) | [전체 비교·범위](docs/revision-audit/3%EC%B0%A8-%EC%9B%90%EA%B2%A9%EB%B3%80%EA%B2%BD.md) |
-| 4차 | [자료 폴더](4%EC%B0%A8) | [상세 설명](docs/versions/4%EC%B0%A8.md) | [전체 비교·범위](docs/revision-audit/3-to-4.md) |
-| 5차 | [자료 폴더](5%EC%B0%A8) | [상세 설명](docs/versions/5%EC%B0%A8.md) | [전체 비교·범위](docs/revision-audit/4-to-5.md) |
-| 6차 | [자료 폴더](6%EC%B0%A8) | [상세 설명](6%EC%B0%A8/README.md) | [전체 비교·범위](6%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 7차 | [자료 폴더](7%EC%B0%A8) | [상세 설명](7%EC%B0%A8/README.md) | [전체 비교·범위](7%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 8차 | [자료 폴더](8%EC%B0%A8) | [상세 설명](8%EC%B0%A8/README.md) | [전체 비교·범위](8%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 9차 | [자료 폴더](9%EC%B0%A8) | [상세 설명](9%EC%B0%A8/README.md) | [전체 비교·범위](9%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 10차 | [자료 폴더](10%EC%B0%A8) | [상세 설명](10%EC%B0%A8/README.md) | [전체 비교·범위](10%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 11차 | [자료 폴더](11차/) | [GPU10회 완료·fit0·미채택](11차/README.md) | [전체 비교·범위](11차/전체비교.md) |
+| 차수·자료 | 자료 폴더·원본 | 상세 설명 · 직전 비교·범위 |
+| --- | --- | --- |
+| 로컬 1차·2차 보존 | [확인 범위](docs/versions/) | [원본 보존과 공개 제외](docs/versions/local-history.md)<br>[세부 비교 미확인 근거](docs/versions/local-history.md) |
+| 기존 공개 기본 | [자료 폴더](docs/materials/001-stage-1) · [원본 파일](engine.py) | [상세 설명](docs/materials/001-stage-1/README.md)<br>[전체 비교·범위](docs/versions/stage-1.md) |
+| 2차 조건 문서 | [자료 폴더](docs) | [상세 설명](docs/2%EC%B0%A8_%EC%A4%91%EB%A6%BD%EC%9B%90%EC%9D%B8_%EC%97%B0%EC%86%8D%ED%95%99%EC%8A%B5.md)<br>[전체 비교·범위](docs/2%EC%B0%A8_%EC%A4%91%EB%A6%BD%EC%9B%90%EC%9D%B8_%EC%97%B0%EC%86%8D%ED%95%99%EC%8A%B5.md) |
+| GPU 처리량 개선 | [자료 폴더](%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_GPU%EC%B2%98%EB%A6%AC%EB%9F%89) | [상세 설명](docs/versions/gpu-throughput-20261030.md)<br>[전체 비교·범위](docs/revision-audit/GPU%EC%B2%98%EB%A6%AC%EB%9F%89.md) |
+| 3차 초기 부분 보존 | [자료 폴더](%ED%9B%84%EC%86%8D%EB%B3%B4%EC%A1%B4/2026-10-30_133824_3%EC%B0%A8%EC%B4%88%EA%B8%B0%EB%B6%80%EB%B6%84) | [상세 설명](docs/versions/3%EC%B0%A8-%EC%B4%88%EA%B8%B0%EB%B6%80%EB%B6%84.md)<br>[전체 비교·범위](docs/revision-audit/3%EC%B0%A8.md) |
+| 3차 | [자료 폴더](3%EC%B0%A8) | [상세 설명](docs/versions/3%EC%B0%A8.md)<br>[전체 비교·범위](docs/revision-audit/3%EC%B0%A8-%EC%9B%90%EA%B2%A9%EB%B3%80%EA%B2%BD.md) |
+| 4차 | [자료 폴더](4%EC%B0%A8) | [상세 설명](docs/versions/4%EC%B0%A8.md)<br>[전체 비교·범위](docs/revision-audit/3-to-4.md) |
+| 5차 | [자료 폴더](5%EC%B0%A8) | [상세 설명](docs/versions/5%EC%B0%A8.md)<br>[전체 비교·범위](docs/revision-audit/4-to-5.md) |
+| 6차 | [자료 폴더](6%EC%B0%A8) | [상세 설명](6%EC%B0%A8/README.md)<br>[전체 비교·범위](6%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 7차 | [자료 폴더](7%EC%B0%A8) | [상세 설명](7%EC%B0%A8/README.md)<br>[전체 비교·범위](7%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 8차 | [자료 폴더](8%EC%B0%A8) | [상세 설명](8%EC%B0%A8/README.md)<br>[전체 비교·범위](8%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 9차 | [자료 폴더](9%EC%B0%A8) | [상세 설명](9%EC%B0%A8/README.md)<br>[전체 비교·범위](9%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 10차 | [자료 폴더](10%EC%B0%A8) | [상세 설명](10%EC%B0%A8/README.md)<br>[전체 비교·범위](10%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 11차 | [자료 폴더](11차/) | [GPU10회 완료·fit0·미채택](11차/README.md)<br>[전체 비교·범위](11차/전체비교.md) |
 
 최종 본으로 지정된 차수는 없습니다. 4차 복구 시점의 관측을 현재 수집 량·신규 모델 성적이나 수익 검증 완료로 해석하지 않습니다.
 
@@ -176,6 +180,9 @@ XGBoost 예측과 모의체결·대시보드를 연결한 가상자산 모의투
 <a name="implementation-details"></a>
 
 <a name="-독립-트랙과-연구-상태의-연결"></a>
+
+</details>
+
 ## 독립 트랙과 연구 상태의 연결
 
 루트 engine.py와 설정은 공개 시세 수집·연구·모의 매매를 연결하고,3차 external_data.py는 공식 외부 아카이브의 검증·고유 저장·최근 자료 준비를,4차 research_control.py는 요청별 연구 상태를 관리합니다. 5차는 월 경계 수집 계획 보완,6차는 후속 연구,7차는 Chronos-2 별도 연구,8차는 고정 자료 반복 적합,9차는 자동 학습 중지와 검증 계획입니다.
@@ -360,7 +367,8 @@ flowchart LR
 
 특성은 수익률, 변동성, 이동평균, 거래량, 봉의 몸통과 범위 등으로 구성합니다. 여러 시간봉은 과거 방향의 `merge_asof`로 결합합니다. 라벨은 다음 봉 시가에서 진입해 지정한 미래 시각의 종가로 계산하며, 결측봉이 있어도 단순 행 이동으로 다른 시각을 대신하지 않습니다.
 
-### ⏱️ 시간 구간과 모델 승격
+<a id="시간-구간과-모델-승격"></a>
+### 시간 구간과 모델 승격
 
 학습 → 가중치 조정 → 확률 보정 → 거래규칙 선택 → 후보 검증 → 최종 시험을 구분합니다. 학습과 평가 경계에는 예측 기간을 고려한 간격을 두며, 최종 시험 구간은 노출 예약을 먼저 기록해 같은 구간의 반복 사용을 막습니다. 예약 후 실패한 시도도 사용 이력에서 지우지 않습니다.
 

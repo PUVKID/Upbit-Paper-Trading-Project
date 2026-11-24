@@ -5,6 +5,9 @@
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
+<details open>
+<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+
 <a id="reading-level-1"></a>
 ## LEVEL 1 - Beginner
 
@@ -336,6 +339,12 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 
 [이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+
 <a id="reading-level-2"></a>
 ## LEVEL 2 - Explorer
 
@@ -664,6 +673,12 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 원래 10차 이후의 기능 차이와 이 문서 보강을 같은 실험 변화로 합치지 않습니다.
 
 [이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 ## LEVEL 3 - Practitioner
@@ -994,6 +1009,12 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 
 [이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+
 <a id="reading-level-4"></a>
 ## LEVEL 4 - Advanced
 
@@ -1320,6 +1341,12 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 원래 10차 이후의 기능 차이와 이 문서 보강을 같은 실험 변화로 합치지 않습니다.
 
 [이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
+
+</details>
+
+<details>
+<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
@@ -1645,3 +1672,6 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 이번 보강은 11차 원격 병합 커밋 `d313eeb716e5bb86635ebf8249666c636520319f`를 보존한 후속 문서 변경입니다. 11차 상세 README, 프로젝트 첫 화면, 전체 차수 목차와 공개용 변경 기록만 보강합니다. [병합 커밋 이후 전체 차이](https://github.com/PUVKID/Upbit-Paper-Trading-Project/compare/d313eeb716e5bb86635ebf8249666c636520319f...main)는 이 후속 변경이 반영된 뒤 문장·공백·개행까지 보여 줍니다.
 
 원래 10차 이후의 기능 차이와 이 문서 보강을 같은 실험 변화로 합치지 않습니다.
+
+</details>
+
