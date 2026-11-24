@@ -13,7 +13,7 @@
 
 </div>
 <!-- reading-levels:start -->
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
@@ -361,7 +361,7 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36 항
 **확인할 내용:** 루트 공통 엔진·설정·검사와 차수 연결 파일의 실제 import 경로를 확인합니다.
 
 
-[자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+[자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 
 
 </details>
@@ -704,7 +704,7 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36 항
 **확인할 내용:** 루트 공통 엔진·설정·검사와 차수 연결 파일의 실제 import 경로를 확인합니다.
 
 
-[자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+[자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 
 
 </details>
@@ -1045,7 +1045,7 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36 항
 
 학습 손실은 4.521545 →3.839211로 감소했으나 고정 튜닝 손실은 7.453165 →8.106275로 증가했습니다. 과적합 징후이며 성능 개선으로 판단하지 않습니다. 독립 미래 평가·정확도·수익은 미평가이고 매매 적용도 하지 않았습니다. [회차별 집계와 검증 범위](변경기록.md)를 함께 확인할 수 있습니다.
 
-[자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+[자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 
 
 </details>
@@ -1392,7 +1392,7 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36 항
 
 위 구성요소의 입력·출력과 실패 조건을 같은 차수 소스에 연결해 검토합니다. 전체 비교는 추가·수정·삭제와 원래 보관 범위를 구분하는 근거입니다.
 
-[자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+[자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 
 </details>
 
@@ -1402,7 +1402,7 @@ API focused 45개·순수 상태 회귀 12개·브라우저 통제 검사 36 항
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
-기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 <!-- reading-levels:end -->
 
 

@@ -2,7 +2,7 @@
 # 로컬 1·2차 보존 범위 안내
 
 <!-- reading-levels:start -->
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
@@ -36,7 +36,7 @@
 | 동일 자료 연결 안내 | 같은 자료의 연결 안내입니다. |
 
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
 
 
 </details>
@@ -64,7 +64,7 @@
 | 동일 자료 연결 안내 | 같은 자료의 연결 안내입니다. |
 
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
 
 
 </details>
@@ -93,7 +93,7 @@
 | 동일 자료 연결 안내 | 같은 자료의 연결 안내입니다. |
 
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
 
 
 </details>
@@ -122,7 +122,7 @@
 | 동일 자료 연결 안내 | 같은 자료의 연결 안내입니다. |
 
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
 
 </details>
 
@@ -132,7 +132,7 @@
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
-기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](local-history.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](local-history.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 <!-- reading-levels:end -->
 
 

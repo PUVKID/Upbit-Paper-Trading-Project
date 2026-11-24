@@ -1,7 +1,7 @@
 # TimesFM 사전학습 모델의 Zero-Shot 비교
 
 <!-- reading-levels:start -->
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
@@ -152,7 +152,7 @@ suite는 실행 전 예약·기존 예약 거부·실패 재시도 금지·STOP 
 - [연구 계약](연구계약.md) · [비교 runner](pretrained_benchmark.py) · [설정](benchmark-config.json)
 - [10회 suite](benchmark_suite.py) · [원계획 설정](suite-config.json) · [실행 보완 계획](실행보완계획.json) · [실험 결과](실험결과.json)
 - [회귀 검사](../tests/test_pretrained_benchmark.py) · [변경 기록](변경기록.md) · [직전10차 이후 전체 비교](전체비교.md)
-- [10차 결과](../10차/README.md#reading-level-1) · [전체 차수](../docs/REVISION_INDEX.md)
+- [10차 결과](../10차/README.md#user-content-reading-level-1) · [전체 차수](../docs/REVISION_INDEX.md)
 
 직전 공개 기준은 `465127030ddac767a4e4cd36d6e6549a89590768`입니다.
 
@@ -179,7 +179,7 @@ suite는 실행 전 예약·기존 예약 거부·실패 재시도 금지·STOP 
 
 아래 설명은 공개된 코드와 저장 결과를 읽은 안내이며 새 실험을 실행한 기록이 아닙니다.
 
-[프로젝트 첫 화면](../README.md) · [전체 차수 목차](../docs/REVISION_INDEX.md) · [직전 10차](../10차/README.md#reading-level-1) · [10차 이후 원본 전체 비교](전체비교.md) · [이번 설명 보강의 변경 기록](../docs/changes/2026-11-03_차수별_독립안내.md)
+[프로젝트 첫 화면](../README.md) · [전체 차수 목차](../docs/REVISION_INDEX.md) · [직전 10차](../10차/README.md#user-content-reading-level-1) · [10차 이후 원본 전체 비교](전체비교.md) · [이번 설명 보강의 변경 기록](../docs/changes/2026-11-03_차수별_독립안내.md)
 
 **실제 파일·함수:** [`pretrained_benchmark.py`](pretrained_benchmark.py)
 
@@ -337,7 +337,7 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 
 원래 10차 이후의 기능 차이와 이 문서 보강을 같은 실험 변화로 합치지 않습니다.
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
 
 
 </details>
@@ -487,7 +487,7 @@ suite는 실행 전 예약·기존 예약 거부·실패 재시도 금지·STOP 
 - [연구 계약](연구계약.md) · [비교 runner](pretrained_benchmark.py) · [설정](benchmark-config.json)
 - [10회 suite](benchmark_suite.py) · [원계획 설정](suite-config.json) · [실행 보완 계획](실행보완계획.json) · [실험 결과](실험결과.json)
 - [회귀 검사](../tests/test_pretrained_benchmark.py) · [변경 기록](변경기록.md) · [직전10차 이후 전체 비교](전체비교.md)
-- [10차 결과](../10차/README.md#reading-level-2) · [전체 차수](../docs/REVISION_INDEX.md)
+- [10차 결과](../10차/README.md#user-content-reading-level-2) · [전체 차수](../docs/REVISION_INDEX.md)
 
 직전 공개 기준은 `465127030ddac767a4e4cd36d6e6549a89590768`입니다.
 
@@ -514,7 +514,7 @@ suite는 실행 전 예약·기존 예약 거부·실패 재시도 금지·STOP 
 
 아래 설명은 공개된 코드와 저장 결과를 읽은 안내이며 새 실험을 실행한 기록이 아닙니다.
 
-[프로젝트 첫 화면](../README.md) · [전체 차수 목차](../docs/REVISION_INDEX.md) · [직전 10차](../10차/README.md#reading-level-2) · [10차 이후 원본 전체 비교](전체비교.md) · [이번 설명 보강의 변경 기록](../docs/changes/2026-11-03_차수별_독립안내.md)
+[프로젝트 첫 화면](../README.md) · [전체 차수 목차](../docs/REVISION_INDEX.md) · [직전 10차](../10차/README.md#user-content-reading-level-2) · [10차 이후 원본 전체 비교](전체비교.md) · [이번 설명 보강의 변경 기록](../docs/changes/2026-11-03_차수별_독립안내.md)
 
 **실제 파일·함수:** [`pretrained_benchmark.py`](pretrained_benchmark.py)
 
@@ -672,7 +672,7 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 
 원래 10차 이후의 기능 차이와 이 문서 보강을 같은 실험 변화로 합치지 않습니다.
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
 
 
 </details>
@@ -822,7 +822,7 @@ suite는 실행 전 예약·기존 예약 거부·실패 재시도 금지·STOP 
 - [연구 계약](연구계약.md) · [비교 runner](pretrained_benchmark.py) · [설정](benchmark-config.json)
 - [10회 suite](benchmark_suite.py) · [원계획 설정](suite-config.json) · [실행 보완 계획](실행보완계획.json) · [실험 결과](실험결과.json)
 - [회귀 검사](../tests/test_pretrained_benchmark.py) · [변경 기록](변경기록.md) · [직전10차 이후 전체 비교](전체비교.md)
-- [10차 결과](../10차/README.md#reading-level-3) · [전체 차수](../docs/REVISION_INDEX.md)
+- [10차 결과](../10차/README.md#user-content-reading-level-3) · [전체 차수](../docs/REVISION_INDEX.md)
 
 직전 공개 기준은 `465127030ddac767a4e4cd36d6e6549a89590768`입니다.
 
@@ -849,7 +849,7 @@ suite는 실행 전 예약·기존 예약 거부·실패 재시도 금지·STOP 
 
 아래 설명은 공개된 코드와 저장 결과를 읽은 안내이며 새 실험을 실행한 기록이 아닙니다.
 
-[프로젝트 첫 화면](../README.md) · [전체 차수 목차](../docs/REVISION_INDEX.md) · [직전 10차](../10차/README.md#reading-level-3) · [10차 이후 원본 전체 비교](전체비교.md) · [이번 설명 보강의 변경 기록](../docs/changes/2026-11-03_차수별_독립안내.md)
+[프로젝트 첫 화면](../README.md) · [전체 차수 목차](../docs/REVISION_INDEX.md) · [직전 10차](../10차/README.md#user-content-reading-level-3) · [10차 이후 원본 전체 비교](전체비교.md) · [이번 설명 보강의 변경 기록](../docs/changes/2026-11-03_차수별_독립안내.md)
 
 **실제 파일·함수:** [`pretrained_benchmark.py`](pretrained_benchmark.py)
 
@@ -1007,7 +1007,7 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 
 원래 10차 이후의 기능 차이와 이 문서 보강을 같은 실험 변화로 합치지 않습니다.
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
 
 
 </details>
@@ -1155,7 +1155,7 @@ suite는 실행 전 예약·기존 예약 거부·실패 재시도 금지·STOP 
 - [연구 계약](연구계약.md) · [비교 runner](pretrained_benchmark.py) · [설정](benchmark-config.json)
 - [10회 suite](benchmark_suite.py) · [원계획 설정](suite-config.json) · [실행 보완 계획](실행보완계획.json) · [실험 결과](실험결과.json)
 - [회귀 검사](../tests/test_pretrained_benchmark.py) · [변경 기록](변경기록.md) · [직전10차 이후 전체 비교](전체비교.md)
-- [10차 결과](../10차/README.md#reading-level-4) · [전체 차수](../docs/REVISION_INDEX.md)
+- [10차 결과](../10차/README.md#user-content-reading-level-4) · [전체 차수](../docs/REVISION_INDEX.md)
 
 직전 공개 기준은 `465127030ddac767a4e4cd36d6e6549a89590768`입니다.
 
@@ -1182,7 +1182,7 @@ suite는 실행 전 예약·기존 예약 거부·실패 재시도 금지·STOP 
 
 아래 설명은 공개된 코드와 저장 결과를 읽은 안내이며 새 실험을 실행한 기록이 아닙니다.
 
-[프로젝트 첫 화면](../README.md) · [전체 차수 목차](../docs/REVISION_INDEX.md) · [직전 10차](../10차/README.md#reading-level-4) · [10차 이후 원본 전체 비교](전체비교.md) · [이번 설명 보강의 변경 기록](../docs/changes/2026-11-03_차수별_독립안내.md)
+[프로젝트 첫 화면](../README.md) · [전체 차수 목차](../docs/REVISION_INDEX.md) · [직전 10차](../10차/README.md#user-content-reading-level-4) · [10차 이후 원본 전체 비교](전체비교.md) · [이번 설명 보강의 변경 기록](../docs/changes/2026-11-03_차수별_독립안내.md)
 
 **실제 파일·함수:** [`pretrained_benchmark.py`](pretrained_benchmark.py)
 
@@ -1340,7 +1340,7 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 
 원래 10차 이후의 기능 차이와 이 문서 보강을 같은 실험 변화로 합치지 않습니다.
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
 
 </details>
 
@@ -1350,7 +1350,7 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
-기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 <!-- reading-levels:end -->
 
 

@@ -2,7 +2,7 @@
 # 10차·비용 차감 수익 연구와 거래 장부 진단
 
 <!-- reading-levels:start -->
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
@@ -26,7 +26,7 @@
 
 ### LEVEL 1 · 이 자료의 세부 조건을 함께 읽기
 
-[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md) · [⬅️ 9차](../9차/README.md#reading-level-1) · [직전 전체 비교](전체비교.md)
+[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md) · [⬅️ 9차](../9차/README.md#user-content-reading-level-1) · [직전 전체 비교](전체비교.md)
 
 **빠른 목차:** [기능](#features) · [구조](#structure) · [준비](#setup) · [사용](#usage) · [관측 결과](#results) · [변경](#changes)
 
@@ -251,7 +251,7 @@
 
 9차는 자동 학습 중지와 연구 재정비 계약을 남겼습니다. 10차는 중지 표식을 유지하면서 명시 허용된 유한 연구, 거래 장부 진단, 기본 엔진의 낙폭 차단·진입 근거 보존을 추가했습니다. 원래 전체 비교의 파일·주석·공백·해시는 그대로 보존합니다.
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
 
 
 </details>
@@ -272,7 +272,7 @@
 
 ### LEVEL 2 · 이 자료의 세부 조건을 함께 읽기
 
-[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md) · [⬅️ 9차](../9차/README.md#reading-level-2) · [직전 전체 비교](전체비교.md)
+[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md) · [⬅️ 9차](../9차/README.md#user-content-reading-level-2) · [직전 전체 비교](전체비교.md)
 
 **빠른 목차:** [기능](#features) · [구조](#structure) · [준비](#setup) · [사용](#usage) · [관측 결과](#results) · [변경](#changes)
 
@@ -497,7 +497,7 @@
 
 9차는 자동 학습 중지와 연구 재정비 계약을 남겼습니다. 10차는 중지 표식을 유지하면서 명시 허용된 유한 연구, 거래 장부 진단, 기본 엔진의 낙폭 차단·진입 근거 보존을 추가했습니다. 원래 전체 비교의 파일·주석·공백·해시는 그대로 보존합니다.
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
 
 
 </details>
@@ -520,7 +520,7 @@ Linux와 명시 allow_training, 고유 run 및 runner.lock, 기존 DB/모델·�
 
 ### LEVEL 3 · 이 자료의 세부 조건을 함께 읽기
 
-[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md) · [⬅️ 9차](../9차/README.md#reading-level-3) · [직전 전체 비교](전체비교.md)
+[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md) · [⬅️ 9차](../9차/README.md#user-content-reading-level-3) · [직전 전체 비교](전체비교.md)
 
 **빠른 목차:** [기능](#features) · [구조](#structure) · [준비](#setup) · [사용](#usage) · [관측 결과](#results) · [변경](#changes)
 
@@ -745,7 +745,7 @@ Linux와 명시 allow_training, 고유 run 및 runner.lock, 기존 DB/모델·�
 
 9차는 자동 학습 중지와 연구 재정비 계약을 남겼습니다. 10차는 중지 표식을 유지하면서 명시 허용된 유한 연구, 거래 장부 진단, 기본 엔진의 낙폭 차단·진입 근거 보존을 추가했습니다. 원래 전체 비교의 파일·주석·공백·해시는 그대로 보존합니다.
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
 
 
 </details>
@@ -768,7 +768,7 @@ Status는 completed_fits ≤fit_calls ≤max_fits ≤30 과 folds×15 완료를 
 
 ### LEVEL 4 · 이 자료의 세부 조건을 함께 읽기
 
-[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md) · [⬅️ 9차](../9차/README.md#reading-level-4) · [직전 전체 비교](전체비교.md)
+[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md) · [⬅️ 9차](../9차/README.md#user-content-reading-level-4) · [직전 전체 비교](전체비교.md)
 
 **빠른 목차:** [기능](#features) · [구조](#structure) · [준비](#setup) · [사용](#usage) · [관측 결과](#results) · [변경](#changes)
 
@@ -993,7 +993,7 @@ Status는 completed_fits ≤fit_calls ≤max_fits ≤30 과 folds×15 완료를 
 
 9차는 자동 학습 중지와 연구 재정비 계약을 남겼습니다. 10차는 중지 표식을 유지하면서 명시 허용된 유한 연구, 거래 장부 진단, 기본 엔진의 낙폭 차단·진입 근거 보존을 추가했습니다. 원래 전체 비교의 파일·주석·공백·해시는 그대로 보존합니다.
 
-[이 차수의 원래 전체 상세](#reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
+[이 차수의 원래 전체 상세](#user-content-reading-level-5) · [같은 수준 프로젝트 안내](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
 
 </details>
 
@@ -1003,7 +1003,7 @@ Status는 completed_fits ≤fit_calls ≤max_fits ≤30 과 folds×15 완료를 
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
-기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 <!-- reading-levels:end -->
 
 
