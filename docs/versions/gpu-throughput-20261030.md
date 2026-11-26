@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <div align="center">
 
 <a name="-2026-10-30-gpu-처리량-개선"></a>

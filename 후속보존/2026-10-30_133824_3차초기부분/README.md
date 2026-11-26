@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a name="-3차-초기-부분-보존-독립-안내"></a>
 ## 3차 초기 부분 보존 독립 안 내
 

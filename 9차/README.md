@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../en/README.md)
+<!-- language-choice:end -->
+
 <div align="center">
 
 <a name="-학습-중지와-거래-모델-재정비"></a>

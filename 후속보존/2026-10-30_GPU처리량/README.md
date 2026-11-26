@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a name="-gpu-처리량-개선-독립-안내"></a>
 ## GPU 처리량 개선 독립 안내
 

@@ -1,6 +1,30 @@
 
+
 <a name="-upbit-paper-trading-project"></a>
-# Upbit Paper Trading Project
+<!-- readme-header32:start -->
+<a name="upbit-paper-trading-project"></a>
+<p align="center"><img src="assets/readme/icon.svg" alt="" width="72" height="72" /></p>
+<h1 align="center" id="project-title">Upbit Paper Trading Project</h1>
+<p align="center">시계열 모델 평가와 모의거래</p>
+<p align="center">
+  <a href="README.md"><img src="assets/readme/language-ko-active.svg" alt="한국어 · 현재 언어" width="126" height="32" /></a>
+  <a href="en/README.md"><img src="assets/readme/language-en-link.svg" alt="English" width="126" height="32" /></a>
+</p>
+<p align="center">
+  <a href="docs/읽기안내/레벨1.md"><img src="assets/readme/level-1.svg" alt="LEVEL 1 - Beginner" width="92" height="32" /></a>
+  <a href="docs/읽기안내/레벨2.md"><img src="assets/readme/level-2.svg" alt="LEVEL 2 - Explorer" width="92" height="32" /></a>
+  <a href="docs/읽기안내/레벨3.md"><img src="assets/readme/level-3.svg" alt="LEVEL 3 - Practitioner" width="92" height="32" /></a>
+  <a href="docs/읽기안내/레벨4.md"><img src="assets/readme/level-4.svg" alt="LEVEL 4 - Advanced" width="92" height="32" /></a>
+  <a href="docs/읽기안내/레벨5.md"><img src="assets/readme/level-5.svg" alt="LEVEL 5 - Expert" width="92" height="32" /></a>
+</p>
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="assets/readme/flow-ko-dark-mobile.svg" />
+  <source media="(max-width: 600px)" srcset="assets/readme/flow-ko-light-mobile.svg" />
+  <source media="(prefers-color-scheme: dark)" srcset="assets/readme/flow-ko-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="assets/readme/flow-ko-light.svg" />
+  <img src="assets/readme/flow-ko-light.svg" alt="Upbit Paper Trading Project: 공개 캔들 · 호가 → 시계열 모델 평가 → 모의계좌 · 진단" width="100%" />
+</picture>
+<!-- readme-header32:end -->
 
 11차 후속 코드·검증 보완은 [Windows 원자 저장 안내](11차/Windows_원자저장_보완.md)에서 확인하며, 원래 실험 결과와 전체 비교 원문은 보존합니다.
 

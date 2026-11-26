@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../en/README.md)
+<!-- language-choice:end -->
+
 <a name="-10차--비용-차감-수익-연구와-거래-장부-진단"></a>
 # 10차·비용 차감 수익 연구와 거래 장부 진단
 

@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a name="-로컬-12차-보존-범위-안내"></a>
 # 로컬 1·2차 보존 범위 안내
 
