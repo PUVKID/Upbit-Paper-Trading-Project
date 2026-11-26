@@ -4,6 +4,8 @@
 
 # TimesFM 사전학습 모델의 Zero-Shot 비교
 
+화면 통합은 [11차 대시보드 안내](UI통합_안내.md)와 [UI 전용 비교](UI_전체비교.md)에서 구분해 읽을 수 있습니다. 이 연구의 기존 결과·조건·원래 전체 비교는 그대로 보존합니다.
+
 <!-- reading-levels:start -->
 [LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
@@ -14,6 +16,12 @@
 
 <a id="reading-level-1"></a>
 ## LEVEL 1 - Beginner
+
+### LEVEL 1 · 대시보드 통합 안내
+
+화면이 정돈된 것과 연구 성적이 좋아진 것은 다릅니다. 11차의 조회 화면을 실제 파일로 통합했으며 연구 결과·손실·미채택·STOP은 그대로입니다. 화면 문서200과 데이터 조회503을 구분합니다.
+
+[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-1) · [UI 전용 전체 비교](UI_전체비교.md)
 
 ### LEVEL 1 · 처음 읽는 분을 위한 동작과 결과
 
@@ -352,6 +360,12 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 <a id="reading-level-2"></a>
 ## LEVEL 2 - Explorer
 
+### LEVEL 2 · 대시보드 통합 안내
+
+기존 DOM·데이터 흐름에 공식 중립 CSS·Rust 생성 토큰·화면 어댑터를 연결했습니다. 현재 조회 UI는 E11의8881하나이며 D원본 relay 의존은 남습니다. 새 연구·컨테이너·수집·주문을 시작하지 않습니다.
+
+[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-2) · [UI 전용 전체 비교](UI_전체비교.md)
+
 ### LEVEL 2 · 구성과 조건의 관계
 
 완료된 512개 5분봉을 읽어 12 봉(60분)을 예측하고 policy2 일에서 고른 정책을 validation2 일에 적용합니다.
@@ -686,6 +700,12 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 
 <a id="reading-level-3"></a>
 ## LEVEL 3 - Practitioner
+
+### LEVEL 3 · 대시보드 통합 안내
+
+현재 실제 파일은 E11/대시보드이며 그곳의 server.py --port 8881과 시작.ps1이 진입점입니다. 이미 실행 중인 포트를 중복 기동하지 않습니다. 생성 CSS는 보존하지만 공통 Rust 환경·Drelay·비공개 검사 입력이 없어 공개 다운로드만으로 전체 재현 가능한 묶음은 아닙니다.
+
+[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-3) · [UI 전용 전체 비교](UI_전체비교.md)
 
 ### LEVEL 3 · 사용·실험 조건을 대조하는 순서
 
@@ -1022,6 +1042,12 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 <a id="reading-level-4"></a>
 ## LEVEL 4 - Advanced
 
+### LEVEL 4 · 대시보드 통합 안내
+
+실제 E11의24개 보존 파일과3개 안내·시작 파일을 같은 바이트로 공개 사본에 연결했습니다. 서버의 ROOT/web·기본8881·Drelay는 유지하며 연구 소스·STOP·결과를 수정하지 않았습니다. 이전 UI45와 독립 PASS는 재사용하고 공개 문서 영향만 새로 확인합니다.
+
+[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-4) · [UI 전용 전체 비교](UI_전체비교.md)
+
 ### LEVEL 4 · 설계·평가·실패 경계
 
 고정 사전 학습 추론과 GPU 적합을 분리하고 모델 231,289,280 파라미터·장치/자료형·forward 전후 CUDA 입력 출력·의존성 격리를 검토합니다.
@@ -1353,6 +1379,12 @@ STOP·SIGINT·SIGTERM은 해당 실행이 소유한 프로세스 그룹을 대�
 
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
+
+### LEVEL 5 · 대시보드 통합 안내
+
+서버·생성CSS·27파일 해시는 UI 전용 비교와 별도 동결 목록으로 대조합니다. 기존 UI45·Rust 생성 근거·E11교체GET을 재사용하며 새 제품 검사는 수행하지 않습니다. 화면200·테마200·어댑터200·상태503과 실제 브라우저 표시 미확인을 구분하고 이번 공개의 별도 의미 검토·원격 확인은 남겨 둡니다.
+
+[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-5) · [UI 전용 전체 비교](UI_전체비교.md)
 
 기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 <!-- reading-levels:end -->

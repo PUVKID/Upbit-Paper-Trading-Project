@@ -1,0 +1,569 @@
+디오</title><link rel="icon" href="data:,"><script src="/vendor.bundle.js"></script><link rel="stylesheet" href="/astryx-official.css">
++  <link rel="stylesheet" href="/style.css">
++  <link rel="stylesheet" href="/astryx-theme.css">
++  <link rel="stylesheet" href="/astryx-adapter.css"><script src="/scene.js" defer></script><script src="/app.js" defer></script></head>
++<body>
++<header class="sidebar"><a class="brand" href="#" aria-label="투자 스튜디오 홈" title="홈"><i data-lucide="activity"></i></a><nav class="tabs" role="tablist" aria-label="스튜디오"><button role="tab" id="tab-account" data-tab="account" aria-selected="false" aria-controls="account" tabindex="-1"><i data-lucide="home"></i>홈</button><button role="tab" id="tab-training" data-tab="training" aria-selected="true" aria-controls="training"><i data-lucide="book-open"></i>학습</button><button role="tab" id="tab-data" data-tab="data" aria-selected="false" aria-controls="data" tabindex="-1"><i data-lucide="database"></i>시장</button><button role="tab" id="tab-trades" data-tab="trades" aria-selected="false" aria-controls="trades" tabindex="-1"><i data-lucide="receipt-text"></i>거래</button></nav></header>
++<main>
++<div class="heading"><h1 id="page-title">AI 학습</h1><div class="header-tools"><span class="tag">가상 자금 · 실제 주문 없음</span><label class="auto"><input id="auto" type="checkbox" checked>자동 갱신</label><button id="refresh" title="새로고침" aria-label="새로고침"><i data-lucide="refresh-cw"></i></button><button id="motion-toggle" aria-pressed="false" title="화면 모션만 정지합니다. 학습·수집·거래 판단은 계속됩니다." aria-label="화면 모션 정지"><i data-lucide="pause"></i></button><button id="theme-toggle" aria-pressed="false" title="다크 모드로 전환" aria-label="다크 모드로 전환"><i data-lucide="moon"></i></button></div></div>
++<div id="error" role="alert" hidden></div>
++<div class="policy"><span>실제 주문 없음</span><span>알림 없음</span><span>모의 시작 <b id="start">설정 확인 중</b></span><span id="schedule">시작 상태 확인 중</span><span id="entry-guard" hidden></span></div>
++<section id="home-overview" class="overview" aria-label="자금과 현재 상태"><div class="funds"><h2>내 가상 자금</h2><strong id="equity" class="balance">—</strong><dl class="changes"><div><dt>자금 변화</dt><dd id="pnl">—</dd></div><div><dt>변화율</dt><dd id="return">—</dd></div></dl></div><div class="allocation"><h2>자산 구성</h2><div class="allocation-content"><div id="allocation-stage"><canvas id="allocation-scene" role="img" aria-label="실제 현금과 코인의 자산 비중" aria-describedby="allocation-note"></canvas></div><dl class="allocation-legend"><div><dt>현금</dt><dd id="allocation-cash">미기록</dd></div><div><dt>코인</dt><dd id="allocation-coins">미기록</dd></div></dl></div><p id="allocation-note">자산 기록 확인 중</p></div><div class="current-status"><h2>현재 상태</h2><div class="status-copy"><i data-lucide="timer"></i><strong id="operation-state">확인 중</strong></div><p id="state-summary">현재 상태를 확인하고 있어요.</p><button id="account-link" class="text-button">자금 상세 <i data-lucide="chevron-right"></i></button></div></section>
++<div id="status-facts" class="status-summary"><span>원금 <b id="capital">확인 중</b></span><span>체결 <b id="trade-count">미기록</b></span><span>수집 <b id="collector-summary">확인 중</b></span><span>학습 <b id="trainer-summary">확인 중</b></span><span>공개 시세 <b id="quote-summary">확인 중</b></span></div>
++<div id="health-warning" class="health-warning" role="status"><i data-lucide="info"></i><span id="health-summary">점검 확인 중</span></div>
++<div id="connection-details" class="sync"><span id="connection" role="status">로컬 서버 확인 중</span><small id="last-refresh">아직 갱신되지 않음</small></div>
++<section id="account" class="view" role="tabpanel" aria-labelledby="tab-account"><div class="section-head"><h2>계좌 평가 추이</h2><label>조회 구간 <select id="range"><option value="all">전체</option><option value="24">최근 24시간</option><option value="168">최근 7일</option></select></label></div><div class="chart-wrap"><canvas id="equity-chart" role="img" aria-label="모의계좌 평가금액 시계열"></canvas><p id="chart-empty" class="chart-empty">평가 기록 대기</p></div><div id="chart-caption" class="caption">실제 모의계좌 평가 기록 없음</div><h2>보유자산</h2><div class="table-scroll"><table><thead><tr><th>자산</th><th>보유수량</th><th>평균 매수가</th><th>현재가</th><th>평가금액</th><th>미실현 손익</th><th>시세 시각</th></tr></thead><tbody id="assets"></tbody></table></div></section>
++<section id="training" class="view" role="tabpanel" aria-labelledby="tab-training">
++<div class="section-head"><h2>지속학습</h2><label>학습 시장 <select id="market-filter"><option value="all">전체 시장</option><option value="KRW-BTC">BTC</option><option value="KRW-SOL">SOL</option><option value="KRW-ETH">ETH</option><option value="KRW-XRP">XRP</option></select></label><span id="accuracy-target" class="target">전체 표본 정확도 목표 95% · 실측 성적과 구분</span></div>
++<section class="learning-workspace" aria-labelledby="workflow-title">
++<div class="research-heading"><div><span id="research-track" class="eyebrow">기존 모델 연구</span><h2 id="workflow-title">연구 상태를 확인하고 있습니다</h2><p id="workflow-subtitle" class="workflow-subtitle">현재 기록 확인 중</p></div><span id="research-state" class="research-state">대기</span></div>
++<div class="research-layout"><div class="workflow-main"><div id="training-stage" class="training-stage"><canvas id="training-scene" role="img" aria-label="클라우드 수집, 데이터 정리, GPU 학습, 검증, 모델 적용의 입체 흐름" aria-describedby="workflow-status"></canvas><p id="training-scene-fallback" hidden>입체 장면을 사용할 수 없습니다. 실제 단계는 아래에 표시됩니다.</p></div><ol id="workflow-steps" class="workflow-steps"><li><b>클라우드 수집</b><span>대기</span></li><li><b>데이터 정리</b><span>대기</span></li><li><b>GPU 학습</b><span>대기</span></li><li><b>검증</b><span>대기</span></li><li><b>모델 적용</b><span>대기</span></li></ol></div>
++<aside class="research-progress" aria-label="연구 진행"><h3 id="research-progress-label">현재 진행</h3><strong id="research-progress-value">미기록</strong><progress id="research-progress" max="100" aria-label="실제 연구 진행률"></progress><p id="research-progress-detail">기록 확인 중</p><div class="next-stage"><h3><i data-lucide="arrow-right"></i>다음 단계</h3><strong id="research-next">확인 중</strong></div><div class="foundation-status"><h3><i data-lucide="cpu"></i>사전학습 모델 연구</h3><strong id="foundation-state">미실행</strong><dl id="foundation-summary" class="experiment-summary"></dl><details id="foundation-record" class="raw-details"><summary>학습·평가 상세</summary><dl id="foundation-details" class="experiment-summary"></dl></details></div></aside></div>
++<p id="workflow-status" role="status">현재 단계 확인 중</p><dl id="learning-strip" class="learning-strip" aria-label="현재 학습 요약"></dl>
++<details id="return-record" class="raw-details"><summary>수익 예측 연구 · 시간순 비교</summary><div class="table-scroll"><table><thead><tr><th>평가 구간</th><th>후보</th><th>비용</th><th>순수익률</th><th>최대 낙폭</th><th>완료 거래</th></tr></thead><tbody id="return-results"></tbody></table></div></details>
++<div class="dashboard-bottom"><section class="account-metrics"><div class="section-head"><h2><i data-lucide="wallet"></i>가상투자 계좌</h2><button id="research-account-link" class="text-button">계좌 상세<i data-lucide="chevron-right"></i></button></div><dl id="research-account" class="research-account"></dl></section><section class="recent-activity"><div class="section-head"><h2><i data-lucide="receipt-text"></i>최근 기록</h2></div><div class="table-scroll"><table><thead><tr><th>시각 · 한국 시간</th><th>작업</th><th>상태</th></tr></thead><tbody id="research-activity"></tbody></table></div></section></div>
++</section>
++<div class="learning-information"><section class="learning-now"><h2>기존 XGBoost 모델</h2><h3>무엇을 배우나요</h3><p>다양한 시간 단위의 가격 흐름을 학습하고, 다음 움직임을 분류하는 모델을 만들어요.</p><p class="learning-coins">BTC · SOL · ETH · XRP · DOGE</p><div class="timeframe-row"><b>사용 시간봉<br>(9개)</b><div class="timeframes" aria-label="지원 시간봉"><span>1분</span><span>3분</span><span>5분</span><span>10분</span><span>15분</span><span>30분</span><span>60분</span><span>240분</span><span>일봉</span></div></div><div class="classification-row"><b>다음 움직임 분류<br>(3개)</b><div class="class-swatches"><div class="down"><i data-lucide="arrow-down"></i><b>하락</b><small>가격이 더 내려갈 가능성</small></div><div class="flat"><i data-lucide="layers"></i><b>관망</b><small>큰 변화 없이 유지될 가능성</small></div><div class="up"><i data-lucide="arrow-up"></i><b>상승</b><small>가격이 더 올라갈 가능성</small></div></div></div></section><section class="learning-recent"><h2>최근 완료 XGBoost 실험</h2><p>여러 조건으로 반복 실험하며, 더 나은 모델을 찾아가고 있어요.</p><dl id="recent-experiment-summary" class="experiment-summary"></dl><details id="recent-experiment-detail" class="raw-details"><summary>기록 상세</summary><dl id="recent-experiment" class="details"></dl></details></section></div>
++<dl id="current-learning" class="details"></dl>
++<dl id="training-details" class="details"></dl><div class="progress-line"><span id="training-progress-text">전체 후보 진행률 대기</span><progress id="training-progress" max="100"></progress></div>
++<h2>연속 회차 관측</h2><dl id="cycle-details" class="details"></dl>
++<h2>선택 시장 규칙 후보 · 비용·거래·기각 사유</h2><div class="table-scroll"><table><thead><tr><th>시장</th><th>후보 순서</th><th>확신도</th><th>우위</th><th>완료 거래</th><th>수수료</th><th>순수익률</th><th>최대 낙폭</th><th>운용 적격</th><th>기각 사유</th></tr></thead><tbody id="rule-trials"></tbody></table></div>
++<h2>선택 시장 실측 진단 · 실험 파라미터</h2><div class="table-scroll"><table class="diagnostic-table"><thead><tr><th>시장</th><th>구분</th><th>항목</th><th>실측값</th></tr></thead><tbody id="research-diagnostics"></tbody></table></div>
++<h2>실제 사용 구간</h2><div class="table-scroll"><table><thead><tr><th>시장</th><th>구간</th><th>표본 수</th><th>시작 · KST</th><th>종료 · KST</th><th>하락 / 중립 / 상승</th></tr></thead><tbody id="training-splits"></tbody></table></div>
++<h2>선택 시장 평가</h2><p id="evaluation-scope" class="caption">검증은 후보 선정·보정에 사용한 구간이며 독립 잠금 시험과 다릅니다.</p><div class="table-scroll"><table><thead><tr><th>구간</th><th>정확도</th><th>Macro F1</th><th>Balanced accuracy</th><th>다수 클래스 기준선</th><th>표본 수</th><th>기간</th></tr></thead><tbody id="evaluation"></tbody></table></div>
++<h2>시장별 검증·잠금 시험</h2><div class="table-scroll"><table><thead><tr><th>시장</th><th>구간</th><th>정확도</th><th>Macro F1</th><th>Balanced accuracy</th><th>기준선</th><th>표본 수</th><th>기간</th></tr></thead><tbody id="market-evaluation"></tbody></table></div>
++<h2>클래스 분포 · 하락 / 중립 / 상승</h2><div id="distribution" class="distribution"></div>
++<h2>최근 학습 회차 · 최대 20개</h2><div class="table-scroll"><table><thead><tr><th>실행 ID</th><th>완료 시각 · KST</th><th>상태</th><th>검증 정확도</th><th>검증 Macro F1</th><th>검증 표본</th><th>잠금 정확도</th><th>잠금 표본</th></tr></thead><tbody id="rounds"></tbody></table></div></section>
++<section id="data" class="view" role="tabpanel" aria-labelledby="tab-data" hidden><div class="section-head"><h2>기간 제한 없는 데이터 축적</h2><label>자산 <select id="data-filter"><option value="all">전체 자산</option><option value="BTC">BTC</option><option value="SOL">SOL</option><option value="ETH">ETH</option><option value="XRP">XRP</option></select></label></div><dl id="data-details" class="details"></dl><div class="progress-line"><span id="data-progress-text">수집 진행률 대기</span><progress id="data-progress" max="100"></progress></div><div class="chart-wrap small-chart"><canvas id="data-chart" role="img" aria-label="자산별 실제 축적 데이터 행 수"></canvas><p id="data-empty" class="chart-empty">축적 데이터 통계 대기</p></div><div class="table-scroll"><table><thead><tr><th>자산</th><th>시간봉</th><th>행 수</th><th>용량</th><th>시작</th><th>종료</th><th>누락</th><th>상태</th></tr></thead><tbody id="datasets"></tbody></table></div></section>
++<section id="trades" class="view" role="tabpanel" aria-labelledby="tab-trades" hidden><div class="section-head"><h2>실시간 모의 체결</h2><div class="filters"><label>자산 <select id="trade-filter"><option value="all">전체 자산</option><option value="BTC">BTC</option><option value="SOL">SOL</option><option value="ETH">ETH</option><option value="XRP">XRP</option></select></label><label>방향 <select id="side-filter"><option value="all">전체</option><option value="buy">매수</option><option value="sell">매도</option></select></label></div></div><div class="table-scroll"><table><thead><tr><th>시각 · KST</th><th>자산</th><th>방향</th><th>수량</th><th>가격</th><th>수수료</th><th>실현 손익</th><th>사유</th></tr></thead><tbody id="trades-body"></tbody></table></div></section>
++<section id="prediction-workspace" class="prediction-workspace" aria-labelledby="prediction-title"><div class="section-head"><div><h2 id="prediction-title">AI의 최근 연습 결과</h2><p>과거 평가 자료이며, 지금의 매매 신호가 아니에요.</p></div><div class="legend"><span class="down">하락</span><span class="flat">관망</span><span class="up">상승</span></div></div><div id="coin-headings" class="coin-headings"></div><div id="scene-stage" class="scene-stage"><canvas id="prediction-scene" aria-label="다섯 코인 과거 후속 평가의 예측 표본 분포" role="img" aria-describedby="scene-counts"></canvas><output id="scene-tooltip" class="scene-tooltip" hidden></output></div><details id="prediction-detail" class="raw-details"><summary>예측 표본 상세</summary><p id="scene-status" role="status">실측 예측 분포 대기</p><div id="scene-counts" class="scene-counts" aria-label="실측 예측 표본 수"></div></details></section>
++<section class="training-overview" aria-labelledby="learning-title"><i data-lucide="cpu"></i><div><h2 id="learning-title">학습</h2><div id="learning-summary" class="learning-summary">학습 기록 확인 중</div></div><progress id="home-progress" max="100" aria-label="실제 전체 후보 학습 진행률"></progress><button id="training-link" class="text-button">상세 <i data-lucide="chevron-right"></i></button></section>
++<ol id="stage-rail" class="stage-rail"><li data-stage="features">데이터·피처 구성</li><li data-stage="fit">GPU 후보 학습</li><li data-stage="calibration">확률 보정·검증</li><li data-stage="complete">승격 판단</li></ol>
++<details class="raw-details"><summary>서비스 실행·연결 상세</summary><section class="services" aria-label="서비스 상태" id="services"></section></details>
++<details id="decision-raw" class="raw-details"><summary>코인별 운용 판단 · 진단 상세</summary><section class="view" aria-labelledby="decision-title"><h2 id="decision-title">코인별 운용 판단</h2><div class="table-scroll"><table class="diagnostic-table"><thead><tr><th>시장</th><th>항목</th><th>관측값</th></tr></thead><tbody id="decision-diagnostics"></tbody></table></div></section><details><summary>체결 경로 진단 · 전략 성과와 분리</summary><section class="view" aria-labelledby="probe-title"><h2 id="probe-title">체결 경로 진단 · 전략 성과 아님</h2><dl id="probe-details" class="details"></dl><div class="table-scroll"><table class="diagnostic-table"><thead><tr><th>시험 매수·매도 · 예측 성과 아님</th><th>관측값</th></tr></thead><tbody id="probe-diagnostics"></tbody></table></div></section></details></details>
++<dl id="account-facts" class="details"><div><dt>현금</dt><dd id="cash">현금 대기</dd></div><div><dt>실현 / 미실현 손익</dt><dd id="realized">— / —</dd></div><div><dt>최대 낙폭 · MDD</dt><dd id="mdd">—</dd></div><div><dt>시세 최종 시각</dt><dd id="quote">시세 최종 시각 대기</dd></div></dl>
++<footer><span>가상 자금으로만 기록하며 실제 주문은 보내지 않습니다. 수익과 정확도는 보장되지 않습니다.</span><span id="source-state">저장 상태 확인 중</span></footer>
++</main></body></html>
+--- /dev/null
++++ b/11차/대시보드/web/licenses/cryptocurrency-icons.txt
+@@ -0,0 +1,121 @@
++Creative Commons Legal Code
++
++CC0 1.0 Universal
++
++    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE
++    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN
++    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS
++    INFORMATION ON AN "AS-IS" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES
++    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS
++    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM
++    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED
++    HEREUNDER.
++
++Statement of Purpose
++
++The laws of most jurisdictions throughout the world automatically confer
++exclusive Copyright and Related Rights (defined below) upon the creator
++and subsequent owner(s) (each and all, an "owner") of an original work of
++authorship and/or a database (each, a "Work").
++
++Certain owners wish to permanently relinquish those rights to a Work for
++the purpose of contributing to a commons of creative, cultural and
++scientific works ("Commons") that the public can reliably and without fear
++of later claims of infringement build upon, modify, incorporate in other
++works, reuse and redistribute as freely as possible in any form whatsoever
++and for any purposes, including without limitation commercial purposes.
++These owners may contribute to the Commons to promote the ideal of a free
++culture and the further production of creative, cultural and scientific
++works, or to gain reputation or greater distribution for their Work in
++part through the use and efforts of others.
++
++For these and/or other purposes and motivations, and without any
++expectation of additional consideration or compensation, the person
++associating CC0 with a Work (the "Affirmer"), to the extent that he or she
++is an owner of Copyright and Related Rights in the Work, voluntarily
++elects to apply CC0 to the Work and publicly distribute the Work under its
++terms, with knowledge of his or her Copyright and Related Rights in the
++Work and the meaning and intended legal effect of CC0 on those rights.
++
++1. Copyright and Related Rights. A Work made available under CC0 may be
++protected by copyright and related or neighboring rights ("Copyright and
++Related Rights"). Copyright and Related Rights include, but are not
++limited to, the following:
++
++  i. the right to reproduce, adapt, distribute, perform, display,
++     communicate, and translate a Work;
++ ii. moral rights retained by the original author(s) and/or performer(s);
++iii. publicity and privacy rights pertaining to a person's image or
++     likeness depicted in a Work;
++ iv. rights protecting against unfair competition in regards to a Work,
++     subject to the limitations in paragraph 4(a), below;
++  v. rights protecting the extraction, dissemination, use and reuse of data
++     in a Work;
++ vi. database rights (such as those arising under Directive 96/9/EC of the
++     European Parliament and of the Council of 11 March 1996 on the legal
++     protection of databases, and under any national implementation
++     thereof, including any amended or successor version of such
++     directive); and
++vii. other similar, equivalent or corresponding rights throughout the
++     world based on applicable law or treaty, and any national
++     implementations thereof.
++
++2. Waiver. To the greatest extent permitted by, but not in contravention
++of, applicable law, Affirmer hereby overtly, fully, permanently,
++irrevocably and unconditionally waives, abandons, and surrenders all of
++Affirmer's Copyright and Related Rights and associated claims and causes
++of action, whether now known or unknown (including existing as well as
++future claims and causes of action), in the Work (i) in all territories
++worldwide, (ii) for the maximum duration provided by applicable law or
++treaty (including future time extensions), (iii) in any current or future
++medium and for any number of copies, and (iv) for any purpose whatsoever,
++including without limitation commercial, advertising or promotional
++purposes (the "Waiver"). Affirmer makes the Waiver for the benefit of each
++member of the public at large and to the detriment of Affirmer's heirs and
++successors, fully intending that such Waiver shall not be subject to
++revocation, rescission, cancellation, termination, or any other legal or
++equitable action to disrupt the quiet enjoyment of the Work by the public
++as contemplated by Affirmer's express Statement of Purpose.
++
++3. Public License Fallback. Should any part of the Waiver for any reason
++be judged legally invalid or ineffective under applicable law, then the
++Waiver shall be preserved to the maximum extent permitted taking into
++account Affirmer's express Statement of Purpose. In addition, to the
++extent the Waiver is so judged Affirmer hereby grants to each affected
++person a royalty-free, non transferable, non sublicensable, non exclusive,
++irrevocable and unconditional license to exercise Affirmer's Copyright and
++Related Rights in the Work (i) in all territories worldwide, (ii) for the
++maximum duration provided by applicable law or treaty (including future
++time extensions), (iii) in any current or future medium and for any number
++of copies, and (iv) for any purpose whatsoever, including without
++limitation commercial, advertising or promotional purposes (the
++"License"). The License shall be deemed effective as of the date CC0 was
++applied by Affirmer to the Work. Should any part of the License for any
++reason be judged legally invalid or ineffective under applicable law, such
++partial invalidity or ineffectiveness shall not invalidate the remainder
++of the License, and in such case Affirmer hereby affirms that he or she
++will not (i) exercise any of his or her remaining Copyright and Related
++Rights in the Work or (ii) assert any associated claims and causes of
++action with respect to the Work, in either case contrary to Affirmer's
++express Statement of Purpose.
++
++4. Limitations and Disclaimers.
++
++ a. No trademark or patent rights held by Affirmer are waived, abandoned,
++    surrendered, licensed or otherwise affected by this document.
++ b. Affirmer offers the Work as-is and makes no representations or
++    warranties of any kind concerning the Work, express, implied,
++    statutory or otherwise, including without limitation warranties of
++    title, merchantability, fitness for a particular purpose, non
++    infringement, or the absence of latent or other defects, accuracy, or
++    the present or absence of errors, whether or not discoverable, all to
++    the greatest extent permissible under applicable law.
++ c. Affirmer disclaims responsibility for clearing rights of other persons
++    that may apply to the Work or any use thereof, including without
++    limitation any person's Copyright and Related Rights in the Work.
++    Further, Affirmer disclaims responsibility for obtaining any necessary
++    consents, permissions or other rights required for any use of the
++    Work.
++ d. Affirmer understands and acknowledges that Creative Commons is not a
++    party to this document and has no duty or obligation with respect to
++    this CC0 or use of the Work.
+--- /dev/null
++++ b/11차/대시보드/web/licenses/lucide.txt
+@@ -0,0 +1,43 @@
++ISC License
++
++Copyright (c) 2026 Lucide Icons and Contributors
++
++Permission to use, copy, modify, and/or distribute this software for any
++purpose with or without fee is hereby granted, provided that the above
++copyright notice and this permission notice appear in all copies.
++
++THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
++OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
++---
++
++The following Lucide icons are derived from the Feather project:
++
++airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
++
++The MIT License (MIT) (for the icons listed above)
++
++Copyright (c) 2013-present Cole Bemis
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the "Software"), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
+--- /dev/null
++++ b/11차/대시보드/web/licenses/three.txt
+@@ -0,0 +1,21 @@
++The MIT License
++
++Copyright © 2010-2026 three.js authors
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the "Software"), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in
++all copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++THE SOFTWARE.
+--- /dev/null
++++ b/11차/대시보드/web/scene.js
+@@ -0,0 +1,832 @@
++'use strict';
++// 화면과 입체 장면이 동일한 실제 상태를 사용합니다. 시간으로 단계를 전환하지 않습니다.
++window.UpbitWorkflow = {
++  names: ['클라우드 수집', '데이터 정리', 'GPU 학습', '검증', '모델 적용'],
++  repetition(value) {
++    if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
++    const integer = (item,min,max) => Number.isInteger(item) && item >= min && item <= max;
++    if (!['running','training','complete','waiting','error','stopped'].includes(value.state) ||
++        !['extract','finetune','verify','complete'].includes(value.stage) ||
++        value.model_id !== 'amazon/chronos-2' || typeof value.run !== 'string' || !/^[A-Za-z0-9_-]{1,100}$/.test(value.run) ||
++        value.total_repetitions !== 10 || value.total_steps !== 500 || !integer(value.rep_index,1,10) ||
++        !integer(value.completed_repetitions,0,10) || !integer(value.step,0,500) ||
++        ['evaluation_performed','candidate_ready','promote'].some(key=>value[key] !== false)) return null;
++    if (value.state === 'complete' && (value.step !== 500 || value.rep_index !== 10 || value.completed_repetitions !== 10)) return null;
++    return {...value,learning_rate:value.lr,validation_mae:null,baseline_mae:null,direction_accuracy:null,net_return:null,trades:null};
++  },
++  resolve(snapshot) {
++    const training = snapshot.training || {};
++    const foundation = snapshot.foundation_research;
++    const profit = snapshot.return_research;
++    const integer = (item,min,max) => Number.isInteger(item) && item >= min && item <= max;
++    const benchmark = snapshot.pretrained_benchmark;
++    const validBenchmark = benchmark && typeof benchmark === 'object' && !Array.isArray(benchmark) &&
++      benchmark.schema_version === 1 && benchmark.study === 'pretrained_forecast' &&
++      benchmark.model_id === 'google/timesfm-2.5-200m-pytorch' &&
++      typeof benchmark.run === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(benchmark.run) &&
++      ['running','complete','error','stopped'].includes(benchmark.state) &&
++      ['prepare','predict','policy','validation','verify','complete','failed'].includes(benchmark.stage) &&
++      benchmark.fit_calls === 0 && benchmark.promotion === false && benchmark.candidate_ready === false &&
++      integer(benchmark.total_windows,0,6000) && integer(benchmark.windows_completed,0,benchmark.total_windows) &&
++      (benchmark.state !== 'complete' || benchmark.total_windows > 0 && benchmark.windows_completed === benchmark.total_windows && benchmark.evaluation_performed === true);
++    if (validBenchmark) {
++      const failed = benchmark.state === 'error' || benchmark.has_error === true;
++      const stage = {prepare:1,predict:2,policy:3,validation:3,verify:3,complete:3,failed:3}[benchmark.stage];
++      return {stage,active:benchmark.state === 'running' && !failed,failed,
++        status:failed ? '오류' : benchmark.state === 'stopped' ? '중단' : benchmark.state === 'complete' ? '평가 완료 · 미적용' : '진행 중',
++        value:benchmark.total_windows ? benchmark.windows_completed/benchmark.total_windows : null,
++        progressLabel:'처리한 예측 창',source:benchmark,benchmark,returnResearch:null,repetition:null,
++        researchTrack:true,completedStages:benchmark.state === 'complete' ? [0,1,2,3] : [],
++        track:'사전학습 모델 비교',applied:false,foundation:foundation || null};
++    }
++    const validProfit = profit && typeof profit === 'object' && !Array.isArray(profit) && profit.schema_version === 1 &&
++      ['running','preparing','training','validating','complete','waiting','failed','error','stopped'].includes(profit.state) &&
++      ['preflight','prepare','extract','features','fit','training','policy','validation','evaluation','verify','complete','failed'].includes(profit.stage) &&
++      typeof profit.run === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(profit.run) && profit.promotion === false &&
++      profit.objective === 'net_forward_return' && integer(profit.max_fits,1,30) && integer(profit.fit_calls,0,profit.max_fits) &&
++      integer(profit.completed_fits,0,profit.fit_calls) && integer(profit.fold_total,1,2) && integer(profit.fold_index,0,profit.fold_total) &&
++      (profit.state !== 'complete' || profit.completed_fits === profit.max_fits && profit.evaluation_performed === true);
++    if (validProfit) {
++      const failed = ['failed','error'].includes(profit.state) || profit.has_error === true;
++      const active = ['running','preparing','training','validating'].includes(profit.state) && !failed;
++      const stages = {preflight:1,prepare:1,extract:1,features:1,fit:2,training:2,policy:3,validation:3,evaluation:3,verify:3,complete:3,failed:3};
++      return {stage:stages[profit.stage],active,failed,status:failed ? '오류' : profit.state === 'stopped' ? '중단' : active ? '진행 중' : profit.state === 'complete' ? profit.candidate_ready === false ? '연구 완료 · 채택 보류' : '연구 완료 · 적용 전' : '대기',
++        value:profit.completed_fits/profit.max_fits,progressLabel:'완료한 GPU 적합',source:profit,returnResearch:profit,
++        repetition:null,researchTrack:true,completedStages:profit.state === 'complete' ? [0,1,2,3] : [],
++        track:'수익 예측 연구',applied:false,foundation:foundation && Object.keys(foundation).length ? foundation : null};
++    }
++    const repetition = this.repetition(snapshot.training_repetition);
++    const useFoundation = !repetition && foundation && typeof foundation.state === 'string' && !['not_started', 'idle', 'unavailable'].includes(foundation.state);
++    const researchTrack = Boolean(repetition || useFoundation);
++    const source = repetition || (useFoundation ? foundation : training);
++    const mapping = {download: 0, collection: 0, collecting: 0, prepare: 1, preparation: 1, features: 1, preflight: 1, extract: 1, load: 1,
++      fit: 2, training: 2, finetune: 2, calibration: 3, validation: 3, evaluation: 3, locked_test: 3,
++      checkpoint_verify: 3, verify: 3, apply: 4, promotion: 4, complete: repetition ? 2 : useFoundation ? 3 : 4};
++    const running = ['running', 'collecting', 'training', 'retrying'].includes(source.state);
++    const failed = ['error', 'failed'].includes(source.state) || source.has_error === true;
++    const waitingData = !researchTrack && training.state === 'waiting_data';
++    const stage = waitingData ? 0 : mapping[source.stage] ?? null;
++    const active = running || waitingData;
++    const external = snapshot.external_data || {};
++    let value = null;
++    let progressLabel = '진행률 미기록';
++    if (researchTrack && Number.isFinite(source.step) && Number.isFinite(source.total_steps) && source.total_steps > 0) {
++      value = source.step / source.total_steps;
++      progressLabel = repetition ? '전체 추가 학습 스텝' : '현재 모델 학습 스텝';
++    } else if (waitingData && Number.isFinite(external.ingested_archive_bytes) && external.target_archive_bytes > 0) {
++      value = external.ingested_archive_bytes / external.target_archive_bytes;
++      progressLabel = '외부 원본 적재량';
++    } else if (!researchTrack && Number.isFinite(training.progress)) {
++      value = training.progress;
++      progressLabel = '전체 후보 진행률';
++    }
++    const status = failed ? '오류' : source.state === 'stopped' ? '중단' : repetition && source.state === 'waiting' ? '고정 학습 자료 대기' : useFoundation && source.state === 'waiting' ? '새 미사용 자료 대기' : source.state === 'retrying' ? '재시도 중' : active ? '진행 중' :
++      source.state === 'complete' ? '완료' : source.state === 'waiting_request' ? '추가 요청 대기' : '대기';
++    return {stage, active: active && !failed, failed, status, value, progressLabel, source, repetition, researchTrack,
++      completedStages: repetition ? source.state === 'complete' && source.checkpoint_verified === true ? [1,2] : [] : useFoundation && source.state === 'complete' && source.checkpoint_verified === true ? [0,1,2,3] : [],
++      track: repetition ? 'Chronos 추가 학습' : useFoundation ? '사전학습 모델 연구' : '기존 모델 연구',
++      applied: !researchTrack && typeof training.run === 'string' && training.run.length > 0 &&
++        snapshot.research?.run === training.run && snapshot.research?.promoted === true,
++      foundation: foundation && Object.keys(foundation).length ? foundation : null};
++  }
++};
++(() => {
++  const host = document.getElementById('scene-stage');
++  const canvas = document.getElementById('prediction-scene');
++  const status = document.getElementById('scene-status');
++  const counts = document.getElementById('scene-counts');
++  const tooltip = document.getElementById('scene-tooltip');
++  const coins = ['BTC', 'SOL', 'ETH', 'XRP', 'DOGE'];
++  const classes = ['하락', '관망', '상승'];
++  const classNames = ['down', 'flat', 'up'];
++  const colors = [0xe47767, 0x7396a6, 0x08ad91];
++  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
++  let motion = !reduced.matches;
++  let visible = true;
++  let disposed = false;
++  let ready = false;
++  let renderframes = 0;
++  let timer = null;
++  let signature = '';
++  let rows = coins.map(coin => ({coin, values: null, source: '미기록'}));
++  let renderer, scene, camera, group, raycaster, pointer, environment;
++  let resourceGeometries = [], resourceMaterials = [], meshes = [];
++  let targetView = {x: 0, y: 0};
++  let currentView = {x: 0, y: 0};
++  let mobile = false;
++  let allocation = null;
++  let trainingScene = null;
++  const labels = [];
++  const format = value => value.toLocaleString('ko-KR');
++  const valid = value => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
++
++  function parseCounts(report) {
++    // 라벨 분포·확률 분위수와 혼합하지 않고 예측 표본 수만 사용합니다.
++    for (const kind of ['diagnostics', 'research']) {
++      for (const key of ['argmax_counts', 'prediction_distribution', 'predicted_distribution']) {
++        const raw = report?.[kind]?.[key];
++        const values = Array.isArray(raw) ? raw : raw && ['down', 'flat', 'up'].map(name => raw[name]);
++        if (values?.length === 3 && values.every(valid)) return {values, source: `${kind}.${key}`};
++      }
++    }
++    return {values: null, source: '예측 표본 미기록'};
++  }
++
++  function renderCounts() {
++    counts.replaceChildren();
++    for (const [index, row] of rows.entries()) {
++      const heading = document.getElementById('coin-headings')?.children[index];
++      const symbol = heading?.querySelector('small');
++      if (symbol) symbol.textContent = row.values ? row.coin : `${row.coin} · 평가 대기`;
++      const item = document.createElement('div');
++      item.className = 'count-group';
++      const title = document.createElement('b');
++      title.textContent = row.coin;
++      const source = document.createElement('small');
++      source.textContent = row.values ? `후속 평가 예측 ${format(row.values.reduce((a, b) => a + b, 0))}개` : '예측 표본 대기';
++      source.title = row.source;
++      const values = document.createElement('div');
++      values.className = 'count-values';
++      classes.forEach((label, index) => {
++        const value = document.createElement('span');
++        value.className = classNames[index];
++        value.textContent = `${label} ${row.values ? format(row.values[index]) : '—'}`;
++        values.append(value);
++      });
++      item.append(title, source, values);
++      if (!ready) {
++        const bars = document.createElement('div');
++        bars.className = 'fallback-bars';
++        bars.setAttribute('aria-hidden', 'true');
++        const max = Math.max(1, ...(row.values || []));
++        (row.values || [0, 0, 0]).forEach((value, index) => {
++          const bar = document.createElement('div');
++          bar.className = `fallback-bar ${classNames[index]}`;
++          const fill = document.createElement('span');
++          fill.style.height = `${value / max * 100}%`;
++          bar.append(fill);
++          bars.append(bar);
++        });
++        item.append(bars);
++      }
++      counts.append(item);
++    }
++  }
++
++  function stopTimer() {
++    if (timer !== null) clearTimeout(timer);
++    timer = null;
++  }
++
++  function inViewport(element) {
++    if (element.closest('[hidden],details:not([open])')) return false;
++    const rect = element.getBoundingClientRect();
++    return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < innerHeight && rect.right > 0 && rect.left < innerWidth;
++  }
++
++  function syncVisibility() {
++    visible = inViewport(host);
++    allocation?.syncVisibility();
++    if (visible || allocation?.visible) schedule();
++    else stopTimer();
++  }
++
++  function active() { return motion && !reduced.matches && !document.hidden && (visible || allocation?.visible) && !disposed; }
++
++  function frame() {
++    timer = null;
++    if (!ready || disposed || document.hidden || !(visible || allocation?.visible)) return;
++    let changing = false;
++    for (const mesh of meshes) {
++      const goal = mesh.userData.target;
++      const next = active() ? mesh.scale.y + (goal - mesh.scale.y) * .18 : goal;
++      mesh.scale.y = Math.abs(goal - next) < .002 ? goal : next;
++      mesh.position.y = .11 + mesh.scale.y / 2;
++      if (Math.abs(mesh.scale.y - goal) > .002) changing = true;
++    }
++    for (const key of ['x', 'y']) {
++      currentView[key] = active() ? currentView[key] + (targetView[key] - currentView[key]) * .14 : 0;
++      if (active() && Math.abs(currentView[key] - targetView[key]) > .0005) changing = true;
++    }
++    group.rotation.y = currentView.x;
++    group.rotation.x = currentView.y;
++    if (visible) { renderer.render(scene, camera); renderframes++; }
++    for (const label of labels) {
++      const anchor = meshes[label.index].position.clone();
++      anchor.y = .1;
++      anchor.z += .8;
++      anchor.applyMatrix4(group.matrixWorld).project(camera);
++      label.element.style.left = `${(anchor.x * .5 + .5) * host.clientWidth}px`;
++      label.element.style.top = `${(-anchor.y * .5 + .5) * host.clientHeight}px`;
++    }
++    const headingContainer = document.getElementById('coin-headings');
++    if (headingContainer) {
++      if (mobile) {
++        headingContainer.style.inset = '0';
++        headingContainer.style.display = 'block';
++      } else headingContainer.removeAttribute('style');
++      [...headingContainer.children].forEach((heading, index) => {
++        if (!mobile) { heading.removeAttribute('style'); return; }
++        const anchor = meshes[index * 3 + 1].position.clone();
++        anchor.y = 3.1;
++        anchor.project(camera);
++        heading.style.position = 'absolute';
++        heading.style.width = '45%';
++        heading.style.justifyContent = 'center';
++        heading.style.transform = 'translate(-50%,-100%)';
++        heading.style.left = `${(anchor.x * .5 + .5) * host.clientWidth}px`;
++        heading.style.top = `${host.offsetTop + (-anchor.y * .5 + .5) * host.clientHeight}px`;
++      });
++    }
++    if (allocation?.draw(active())) changing = true;
++    if (changing && active()) schedule();
++  }
++
++  function schedule() {
++    if (timer === null && ready && !document.hidden && (visible || allocation?.visible) && !disposed) timer = setTimeout(frame, Math.ceil(1000 / 24));
++  }
++
++  function resize() {
++    if (!ready || disposed) return;
++    visible = inViewport(host);
++    const width = host.clientWidth;
++    if (!width) return;
++    mobile = width < 730;
++    // 장면 행 수와 CSS 높이는 같은 컨테이너 폭 판정을 사용합니다.
++    document.getElementById('prediction-workspace').classList.toggle('stacked-scene', mobile);
++    const height = host.clientHeight;
++    if (!height) return;
++    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.25));
++    renderer.setSize(width, height, false);
++    const aspect = width / height;
++    const viewWidth = mobile ? 8.8 : Math.max(15, 5 * aspect);
++    const viewHeight = Math.max(mobile ? 12 : 5.1, viewWidth / aspect);
++    camera.left = -viewWidth / 2;
++    camera.right = viewWidth / 2;
++    camera.top = viewHeight / 2;
++    camera.bottom = -viewHeight / 2;
++    camera.position.set(0, mobile ? 12 : 6.4, mobile ? 8 : 13);
++    camera.lookAt(0, .9, 0);
++    camera.updateProjectionMatrix();
++    for (const mesh of meshes) {
++      const {coinIndex, classIndex} = mesh.userData;
++      const column = coinIndex === coins.length - 1 ? 0 : coinIndex % 2 ? 2 : -2;
++      mesh.position.x = mobile ? column + (classIndex - 1) * .66 : (coinIndex - (coins.length - 1) / 2) * viewWidth * .18 + (classIndex - 1) * .9;
++      mesh.position.z = mobile ? (Math.floor(coinIndex / 2) - 1) * 5.4 : 0;
++      mesh.scale.x = mobile ? 1 : 1.6;
++      mesh.scale.z = mobile ? 1 : 1.38;
++    }
++    const platform = group.getObjectByName('platform');
++    platform.scale.set(mobile ? 7.6 : viewWidth * .95, 1, mobile ? 13.8 : 2.8);
++    setTargets();
++  }
++
++  function setTargets() {
++    const max = Math.max(1, ...rows.flatMap(row => row.values || []));
++    for (const mesh of meshes) {
++      const row = rows[mesh.userData.coinIndex];
++      const value = row.values?.[mesh.userData.classIndex];
++      mesh.visible = row.values !== null;
++      mesh.userData.value = value;
++      mesh.userData.target = value === undefined ? .001 : Math.max(.008, value / max * (mobile ? 2.45 : 3.2));
++    }
++    schedule();
++  }
++
++  function cleanupResources() {
++    stopTimer();
++    resourceGeometries.forEach(value => value.dispose());
++    resourceMaterials.forEach(value => value.dispose());
++    environment?.dispose();
++    renderer?.dispose();
++    resourceGeometries = [];
++    resourceMaterials = [];
++  }
++
++  function fallback(reason) {
++    ready = false;
++    cleanupResources();
++    canvas.hidden = true;
++    labels.forEach(label => { label.element.hidden = true; });
++    host.classList.add('fallback');
++    host.style.height = '0px';
++    host.style.marginTop = '0';
++    document.getElementById('prediction-detail').open = true;
++    status.textContent = `${reason} · 아래 2D 막대와 실측 표본 수로 표시합니다.`;
++    renderCounts();
++  }
++
++  function init() {
++    const vendor = window.UpbitVendors;
++    if (!vendor?.THREE) return fallback('3D 라이브러리를 불러오지 못했습니다');
++    const T = vendor.THREE;
++    try {
++      renderer = new T.WebGLRenderer({canvas, antialias: true, alpha: true, powerPreference: 'low-power'});
++      renderer.setClearColor(0xf2f7f8, 0);
++      renderer.toneMapping = T

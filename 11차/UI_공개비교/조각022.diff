@@ -1,0 +1,304 @@
+nu=[["path",{d:"M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z"}],["circle",{cx:"12",cy:"12",r:"10"}]];var bh=[["path",{d:"M12 20v2"}],["path",{d:"M12 2v2"}],["path",{d:"M17 20v2"}],["path",{d:"M17 2v2"}],["path",{d:"M2 12h2"}],["path",{d:"M2 17h2"}],["path",{d:"M2 7h2"}],["path",{d:"M20 12h2"}],["path",{d:"M20 17h2"}],["path",{d:"M20 7h2"}],["path",{d:"M7 20v2"}],["path",{d:"M7 2v2"}],["rect",{x:"4",y:"4",width:"16",height:"16",rx:"2"}],["rect",{x:"8",y:"8",width:"8",height:"8",rx:"1"}]];var Ah=[["ellipse",{cx:"12",cy:"5",rx:"9",ry:"3"}],["path",{d:"M3 5V19A9 3 0 0 0 21 19V5"}],["path",{d:"M3 12A9 3 0 0 0 21 12"}]];var wh=[["path",{d:"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"}],["path",{d:"M14.084 14.158a3 3 0 0 1-4.242-4.242"}],["path",{d:"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"}],["path",{d:"m2 2 20 20"}]];var Th=[["path",{d:"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"}],["circle",{cx:"12",cy:"12",r:"3"}]];var Eh=[["path",{d:"M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"}]];var iu=[["path",{d:"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"}],["path",{d:"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"}]];var Ch=[["circle",{cx:"12",cy:"12",r:"10"}],["path",{d:"M12 16v-4"}],["path",{d:"M12 8h.01"}]];var ru=[["path",{d:"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"}],["path",{d:"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"}],["path",{d:"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"}]];var Rh=[["rect",{width:"7",height:"9",x:"3",y:"3",rx:"1"}],["rect",{width:"7",height:"5",x:"14",y:"3",rx:"1"}],["rect",{width:"7",height:"9",x:"14",y:"12",rx:"1"}],["rect",{width:"7",height:"5",x:"3",y:"16",rx:"1"}]];var Ph=[["path",{d:"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"}]];var Ih=[["rect",{x:"14",y:"3",width:"5",height:"18",rx:"1"}],["rect",{x:"5",y:"3",width:"5",height:"18",rx:"1"}]];var Lh=[["path",{d:"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"}]];var Dh=[["path",{d:"M13 16H8"}],["path",{d:"M14 8H8"}],["path",{d:"M16 12H8"}],["path",{d:"M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"}]];var Uh=[["path",{d:"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"}],["path",{d:"M21 3v5h-5"}],["path",{d:"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"}],["path",{d:"M8 16H3v5"}]];var Nh=[["path",{d:"M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"}],["path",{d:"M21 3v5h-5"}]];var Fh=[["path",{d:"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["path",{d:"m9 12 2 2 4-4"}]];var Bh=[["circle",{cx:"12",cy:"12",r:"4"}],["path",{d:"M12 2v2"}],["path",{d:"M12 20v2"}],["path",{d:"m4.93 4.93 1.41 1.41"}],["path",{d:"m17.66 17.66 1.41 1.41"}],["path",{d:"M2 12h2"}],["path",{d:"M20 12h2"}],["path",{d:"m6.34 17.66-1.41 1.41"}],["path",{d:"m19.07 4.93-1.41 1.41"}]];var Oh=[["line",{x1:"10",x2:"14",y1:"2",y2:"2"}],["line",{x1:"12",x2:"15",y1:"14",y2:"11"}],["circle",{cx:"12",cy:"14",r:"8"}]];var kh=[["path",{d:"M16 7h6v6"}],["path",{d:"m22 7-8.5 8.5-5-5L2 17"}]];var zh=[["path",{d:"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"}],["path",{d:"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"}]];var Vh=({icons:r={},nameAttr:e="data-lucide",attrs:t={},root:n=document,inTemplates:i}={})=>{if(!Object.values(r).length)throw new Error(`Please provide an icons object.
++If you want to use all the icons you can import it like:
++ \`import { createIcons, icons } from 'lucide';
++lucide.createIcons({icons});\``);if(typeof n>"u")throw new Error("`createIcons()` only works in a browser environment.");if(Array.from(n.querySelectorAll(`[${e}]`)).forEach(a=>ph(a,{nameAttr:e,icons:r,attrs:t})),i&&Array.from(n.querySelectorAll("template")).forEach(o=>Vh({icons:r,nameAttr:e,attrs:t,root:o.content,inTemplates:i})),e==="data-lucide"){let a=n.querySelectorAll("[icon-name]");a.length>0&&(console.warn("[Lucide] Some icons were found with the now deprecated icon-name attribute. These will still be replaced for backwards compatibility, but will no longer be supported in v1.0 and you should switch to data-lucide"),Array.from(a).forEach(o=>ph(o,{nameAttr:"icon-name",icons:r,attrs:t})))}};(()=>{let r=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";try{let e=localStorage.getItem("upbit-theme");(e==="light"||e==="dark")&&(r=e)}catch{document.documentElement.dataset.themeStorage="unavailable"}document.documentElement.dataset.theme=r})();window.UpbitVendors={THREE:hh,RoomEnvironment:$f,RoundedBoxGeometry:Qf,createIcons:Vh,icons:{Activity:mh,ArrowDown:xh,ArrowUp:_h,ArrowRight:gh,Check:yh,ChevronDown:Sh,ChevronRight:Mh,CirclePause:tu,CirclePlay:nu,Database:Ah,Home:iu,Layers:ru,LayoutDashboard:Rh,RefreshCw:Uh,ShieldCheck:Fh,TrendingUp:kh,Wallet:zh,ReceiptText:Dh,Cpu:bh,BarChart3:eu,Info:Ch,Pause:Ih,Play:Lh,Eye:Th,EyeOff:wh,Timer:Oh,Sun:Bh,Moon:Ph,BookOpen:vh,Flag:Eh,RotateCw:Nh}};})();
++/*! Bundled license information:
++
++three/build/three.core.js:
++three/build/three.module.js:
++  (**
++   * @license
++   * Copyright 2010-2026 Three.js Authors
++   * SPDX-License-Identifier: MIT
++   *)
++
++lucide/dist/esm/defaultAttributes.mjs:
++lucide/dist/esm/createElement.mjs:
++lucide/dist/esm/shared/src/utils/mergeClasses.mjs:
++lucide/dist/esm/shared/src/utils/hasA11yProp.mjs:
++lucide/dist/esm/shared/src/utils/toCamelCase.mjs:
++lucide/dist/esm/shared/src/utils/toPascalCase.mjs:
++lucide/dist/esm/replaceElement.mjs:
++lucide/dist/esm/icons/activity.mjs:
++lucide/dist/esm/icons/arrow-down.mjs:
++lucide/dist/esm/icons/arrow-right.mjs:
++lucide/dist/esm/icons/arrow-up.mjs:
++lucide/dist/esm/icons/book-open.mjs:
++lucide/dist/esm/icons/chart-column.mjs:
++lucide/dist/esm/icons/check.mjs:
++lucide/dist/esm/icons/chevron-down.mjs:
++lucide/dist/esm/icons/chevron-right.mjs:
++lucide/dist/esm/icons/circle-pause.mjs:
++lucide/dist/esm/icons/circle-play.mjs:
++lucide/dist/esm/icons/cpu.mjs:
++lucide/dist/esm/icons/database.mjs:
++lucide/dist/esm/icons/eye-off.mjs:
++lucide/dist/esm/icons/eye.mjs:
++lucide/dist/esm/icons/flag.mjs:
++lucide/dist/esm/icons/house.mjs:
++lucide/dist/esm/icons/info.mjs:
++lucide/dist/esm/icons/layers.mjs:
++lucide/dist/esm/icons/layout-dashboard.mjs:
++lucide/dist/esm/icons/moon.mjs:
++lucide/dist/esm/icons/pause.mjs:
++lucide/dist/esm/icons/play.mjs:
++lucide/dist/esm/icons/receipt-text.mjs:
++lucide/dist/esm/icons/refresh-cw.mjs:
++lucide/dist/esm/icons/rotate-cw.mjs:
++lucide/dist/esm/icons/shield-check.mjs:
++lucide/dist/esm/icons/sun.mjs:
++lucide/dist/esm/icons/timer.mjs:
++lucide/dist/esm/icons/trending-up.mjs:
++lucide/dist/esm/icons/wallet.mjs:
++lucide/dist/esm/lucide.mjs:
++  (**
++   * @license lucide v1.61.0 - ISC
++   *
++   * This source code is licensed under the ISC license.
++   * See the LICENSE file in the root directory of this source tree.
++   *)
++*/
+--- /dev/null
++++ b/11차/대시보드/시작.ps1
+@@ -0,0 +1,18 @@
++Set-StrictMode -Version Latest
++$ErrorActionPreference = 'Stop'
++$python = Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
++if (-not (Test-Path -LiteralPath $python -PathType Leaf)) {
++    throw '기존 Codex runtime Python이 없습니다. 기동 담당자가 실행 환경을 확인해야 합니다.'
++}
++
++# 부모가 기존 읽기 전용 화면을 교체한 뒤 이 E11 경로에서만 시작합니다.
++$exitCode = 1
++Push-Location -LiteralPath $PSScriptRoot
++try {
++    & $python -B -X utf8 (Join-Path $PSScriptRoot 'server.py') --port 8881
++    $exitCode = $LASTEXITCODE
++}
++finally {
++    Pop-Location
++}
++exit $exitCode
+--- /dev/null
++++ b/11차/대시보드/테마생성.py
+@@ -0,0 +1,33 @@
++"""실제 Rust 테마 컴파일러 출력을 사용자 화면에 연결합니다."""
++from pathlib import Path
++import hashlib
++import json
++import subprocess
++
++ROOT=Path(__file__).resolve().parent
++FRONT=ROOT/'web'
++SHARED=Path('E:/2026/Astryx 공통 디자인/1차')
++EXECUTABLE=SHARED/'target/release/astryx-theme.exe'
++OFFICIAL=SHARED/'node_modules/@astryxdesign/theme-neutral/dist/theme.css'
++
++def main():
++    palettes=json.loads((ROOT/'테마설정.json').read_text(encoding='utf-8'))
++    outputs=[]
++    calls=[]
++    for mode in ['light','dark']:
++        argv=[str(EXECUTABLE),'--format','css','--mode',mode]
++        for key,color in zip(['accent','background','surface','text','muted','border'],palettes[mode]):
++            argv.extend(['--'+key,color])
++        result=subprocess.run(argv,cwd=ROOT,capture_output=True,check=True,timeout=10)
++        text=result.stdout.decode('utf-8',errors='strict')
++        if '--color-primary:' not in text or '\ufffd' in text:
++            raise ValueError('테마 출력 형식을 확인할 수 없습니다')
++        outputs.append(text)
++        calls.append({'argv':argv,'cwd':str(ROOT),'exit_code':result.returncode,'stdout_bytes':len(result.stdout),'sha256':hashlib.sha256(result.stdout).hexdigest()})
++    raw='\n'.join(outputs).encode('utf-8')
++    (FRONT/'astryx-theme.css').write_bytes(raw)
++    (FRONT/'astryx-official.css').write_bytes(OFFICIAL.read_bytes())
++    (ROOT/'work/Rust테마_실제호출_비공개.json').write_text(json.dumps({'calls':calls,'css_sha256':hashlib.sha256(raw).hexdigest(),'mode':'빌드 시 실제 호출','performance':'동일 조건 전후 성능 미측정'},ensure_ascii=False,indent=2),encoding='utf-8')
++    print('Rust 실제 호출2회, 라이트·다크 CSS 연결:',FRONT)
++
++if __name__=='__main__':main()
+--- /dev/null
++++ b/11차/대시보드/테마설정.json
+@@ -0,0 +1,18 @@
++{
++  "light": [
++    "#087E59",
++    "#FFFFFF",
++    "#F4F8FA",
++    "#18212C",
++    "#596574",
++    "#E0E9E5"
++  ],
++  "dark": [
++    "#74DFB1",
++    "#181D20",
++    "#252E33",
++    "#E7EDF1",
++    "#ADB7BF",
++    "#41504A"
++  ]
++}
+\ No newline at end of file
+--- a/README.md
++++ b/README.md
+@@ -42,6 +42,18 @@
+ 모든 안내는 같은 프로젝트와 전체 차수를 다룹니다. 기존 상세 본문은 아래에 계속 보존합니다.
+ <!-- project-levels:end -->
+ 
++## 11차 대시보드 통합
++
++현재 조회 UI를 11차의 실제 대시보드 파일로 통합했습니다. 다섯 코인·3D·라이트/다크·나눔고딕700과 기존 기능을 보존하고 Astryx 조작부·테마를 연결합니다. **화면 통합과 연구 성과는 별개**이며 아래 zero-shot 실험 결과·미채택·STOP은 바뀌지 않았습니다.
++
++| 구성 | 실제 연결 | 확인·제약 |
++| --- | --- | --- |
++| 화면 | [11차 대시보드](11차/대시보드/)의 실제27파일 | E11 조회 서버가8881승계, 구 UI 병행 기본값 아님 |
++| 상태 | 기존 D relay 읽기 전용 조회 | 화면200·상태 API503 기록, 정상 시세 연결 성공 아님 |
++| 재현 | 보존된 Rust 생성 CSS·공통 외부 의존 | Drelay·공통 Rust 환경이 남아 전체 E이전·단독 재현 완료 아님 |
++
++[다섯 수준 UI 안내](11차/UI통합_안내.md) · [UI 전용 전체 비교](11차/UI_전체비교.md) · [공개 변경 기록](docs/changes/2026-11-26_11차_UI통합.md)
++
+ 
+ <a name="-11차-timesfm-사전학습-모델의-zero-shot-비교"></a>
+ ## 11차 TimesFM 사전 학습 모델의 Zero-Shot 비교
+@@ -157,7 +169,7 @@
+ | 8차 | [자료 폴더](8%EC%B0%A8) | [상세 설명](8%EC%B0%A8/README.md)<br>[전체 비교·범위](8%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+ | 9차 | [자료 폴더](9%EC%B0%A8) | [상세 설명](9%EC%B0%A8/README.md)<br>[전체 비교·범위](9%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+ | 10차 | [자료 폴더](10%EC%B0%A8) | [상세 설명](10%EC%B0%A8/README.md)<br>[전체 비교·범위](10%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+-| 11차 | [자료 폴더](11차/) | [GPU10회 완료·fit0·미채택](11차/README.md)<br>[전체 비교·범위](11차/전체비교.md) |
++| 11차 | [자료 폴더](11차/) | [GPU10회 완료·fit0·미채택](11차/README.md)<br>[전체 비교·범위](11차/전체비교.md)<br>[대시보드 통합](11차/UI통합_안내.md) · [UI 비교](11차/UI_전체비교.md) |
+ 
+ 최종 본으로 지정된 차수는 없습니다. 4차 복구 시점의 관측을 현재 수집 량·신규 모델 성적이나 수익 검증 완료로 해석하지 않습니다.
+ 
+--- a/docs/REVISION_INDEX.md
++++ b/docs/REVISION_INDEX.md
+@@ -1,5 +1,11 @@
+ <a name="️-차수별-독립-프로젝트-안내"></a>
+ # 차수별 독립 프로젝트 안내
++
++## 11차 화면 통합 안내
++
++현재 조회 UI를 [11차 대시보드](../11차/대시보드/)에 실제 파일로 통합했습니다. 연구의 유효10회·추가 학습0·미채택·STOP과 원래 비교는 보존합니다. UI만 별도 새 차수로 게시하지 않습니다.
++
++[다섯 수준 통합 설명](../11차/UI통합_안내.md) · [UI 전용 전체 비교](../11차/UI_전체비교.md) · [공개 변경 기록](changes/2026-11-26_11차_UI통합.md)
+ 
+ ## 11차 사전 학습 모델 Zero-Shot 비교
+ 
+@@ -30,7 +36,7 @@
+ | 8차 | [자료 폴더](../8%EC%B0%A8) | [상세 설명](../8%EC%B0%A8/README.md) | [전체 비교·범위](../8%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+ | 9차 | [자료 폴더](../9%EC%B0%A8) | [상세 설명](../9%EC%B0%A8/README.md) | [전체 비교·범위](../9%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+ | 10차 | [자료 폴더](../10%EC%B0%A8) | [상세 설명](../10%EC%B0%A8/README.md) | [전체 비교·범위](../10%EC%B0%A8/%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+-| 11차 | [자료 폴더](../11차/) | [GPU10회 완료·fit0·미채택](../11차/README.md) | [전체 비교·범위](../11차/전체비교.md) |
++| 11차 | [자료 폴더](../11차/) | [GPU10회 완료·fit0·미채택](../11차/README.md)<br>[대시보드 통합](../11차/UI통합_안내.md) | [전체 비교·범위](../11차/전체비교.md)<br>[UI 전용 비교](../11차/UI_전체비교.md) |
+ 
+ 11차는 [코드·자료·예산·저장·재로드 상세](../11차/README.md), [원래 10차 이후 전체 비교](../11차/전체비교.md), [이번 안내 보강 기록](changes/2026-11-03_차수별_독립안내.md)을 구분해 읽을 수 있습니다.
+ 
+--- /dev/null
++++ b/docs/changes/2026-11-26_11차_UI통합.md
+@@ -0,0 +1,14 @@
++# 11차 화면 통합 공개 변경 기록
++
++| 구분 | 변경 | 보존·제약 |
++| --- | --- | --- |
++| 파일 추가 | [11차 대시보드](../../11차/대시보드/) 실제27파일 | 현재 E11 실행 소스 그대로, 구현 수정 없음 |
++| 안내 추가 | [다섯 수준 UI 통합 설명](../../11차/UI통합_안내.md) | 기존 실험 결과·집계·미채택·STOP과 분리 |
++| 탐색 추가 | 첫 화면·차수 목차·LEVEL1~5·11차 README | 기존14차수와 같은 수준 앵커 보존, 새 디자인 차수 행 없음 |
++| 비교 추가 | [UI 전용 전체 비교](../../11차/UI_전체비교.md) | 기존11차 전체비교.md 덮어쓰지 않음 |
++
++현재 조회 UI는 E11의 8881 화면으로 교체한 기록을 사용합니다. 문서·테마·어댑터 HTTP200과 상태 API HTTP503을 구분하며 정상 시세 연결 성공으로 보고하지 않습니다. 제품·UI·Rust 검사는 기존 유효 근거를 재사용하고, 이번에는 공개 영향만 확인합니다.
++
++`SOURCE`의 D relay 의존과 테마 생성기의 공통 E Rust 의존은 남습니다. 현재 공개 파일만으로 원래 실행 환경·데이터·공통 Rust 빌드 전체를 재현할 수 있다는 뜻이 아닙니다. 현재 소스의 개인 홈 동적 Python 탐색은 그대로 보존합니다. 학습·계좌·전략·인증·컨테이너·실주문·원래 결과는 변경하지 않았습니다.
++
++현재 공개 기준은 `36431ba6997647f6e330901b791e67acc0bc3e1a`입니다. 최초 준비 기준은 `7eb008faa43f102ad634d09f68d615094cc3ec83`이며, 이후 원격 문서 변경을 병합해 현재 기준으로 정합했습니다. 보존된 과거 공개 검토는 그 당시 범위에 한정하며 최신 원격 안내와 이번 UI 통합을 과거 PASS로 승인하지 않습니다. 이 후보는 독립 공개 검토와 최종 반영이 남은 상태입니다.
+--- a/docs/읽기안내/레벨1.md
++++ b/docs/읽기안내/레벨1.md
+@@ -18,6 +18,16 @@
+ </details>
+ 
+ [같은 수준의 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨1.md) · [프로젝트 첫 화면](../../README.md)
++
++## 11차 대시보드 통합
++
++화면이 정돈된 것과 연구 성적이 좋아진 것은 다릅니다. 11차의 조회 화면을 실제 파일로 통합했으며 연구 결과·손실·미채택·STOP은 그대로입니다. 화면 문서200과 데이터 조회503을 구분합니다.
++
++| 연결 | 이 수준에서 확인할 내용 |
++| --- | --- |
++| [UI 통합 설명](../../11차/UI통합_안내.md#user-content-reading-level-1) | 화면 위치·조회 실패·의존성·검증 범위를 기존 연구와 구분 |
++| [같은 수준 연구 설명](../../11차/README.md#user-content-reading-level-1) | 기존 결과·분모·실패·미채택·STOP 보존 |
++| [UI 전용 비교](../../11차/UI_전체비교.md) | 원래 연구 비교와 별도로 파일·문서·탐색 변경 확인 |
+ 
+ <a id="level-1--프로젝트-소개와-읽는-방법"></a>
+ 
+--- a/docs/읽기안내/레벨2.md
++++ b/docs/읽기안내/레벨2.md
+@@ -18,6 +18,16 @@
+ </details>
+ 
+ [같은 수준의 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨2.md) · [프로젝트 첫 화면](../../README.md)
++
++## 11차 대시보드 통합
++
++기존 DOM·데이터 흐름에 공식 중립 CSS·Rust 생성 토큰·화면 어댑터를 연결했습니다. 현재 조회 UI는 E11의8881하나이며 D원본 relay 의존은 남습니다. 새 연구·컨테이너·수집·주문을 시작하지 않습니다.
++
++| 연결 | 이 수준에서 확인할 내용 |
++| --- | --- |
++| [UI 통합 설명](../../11차/UI통합_안내.md#user-content-reading-level-2) | 화면 위치·조회 실패·의존성·검증 범위를 기존 연구와 구분 |
++| [같은 수준 연구 설명](../../11차/README.md#user-content-reading-level-2) | 기존 결과·분모·실패·미채택·STOP 보존 |
++| [UI 전용 비교](../../11차/UI_전체비교.md) | 원래 연구 비교와 별도로 파일·문서·탐색 변경 확인 |
+ 
+ <a id="level-2--프로젝트-소개와-읽는-방법"></a>
+ 
+--- a/docs/읽기안내/레벨3.md
++++ b/docs/읽기안내/레벨3.md
+@@ -18,6 +18,16 @@
+ </details>
+ 
+ [같은 수준의 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨3.md) · [프로젝트 첫 화면](../../README.md)
++
++## 11차 대시보드 통합
++
++현재 실제 파일은 E11/대시보드이며 그곳의 server.py --port 8881과 시작.ps1이 진입점입니다. 이미 실행 중인 포트를 중복 기동하지 않습니다. 생성 CSS는 보존하지만 공통 Rust 환경·Drelay·비공개 검사 입력이 없어 공개 다운로드만으로 전체 재현 가능한 묶음은 아닙니다.
++
++| 연결 | 이 수준에서 확인할 내용 |
++| --- | --- |
++| [UI 통합 설명](../../11차/UI통합_안내.md#user-content-reading-level-3) | 화면 위치·조회 실패·의존성·검증 범위를 기존 연구와 구분 |
++| [같은 수준 연구 설명](../../11차/README.md#user-content-reading-level-3) | 기존 결과·분모·실패·미채택·STOP 보존 |
++| [UI 전용 비교](../../11차/UI_전체비교.md) | 원래 연구 비교와 별도로 파일·문서·탐색 변경 확인 |
+ 
+ <a id="level-3--프로젝트-소개와-읽는-방법"></a>
+ 
+--- a/docs/읽기안내/레벨4.md
++++ b/docs/읽기안내/레벨4.md
+@@ -18,6 +18,16 @@
+ </details>
+ 
+ [같은 수준의 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨4.md) · [프로젝트 첫 화면](../../README.md)
++
++## 11차 대시보드 통합
++
++실제 E11의24개 보존 파일과3개 안내·시작 파일을 같은 바이트로 공개 사본에 연결했습니다. 서버의 ROOT/web·기본8881·Drelay는 유지하며 연구 소스·STOP·결과를 수정하지 않았습니다. 이전 UI45와 독립 PASS는 재사용하고 공개 문서 영향만 새로 확인합니다.
++
++| 연결 | 이 수준에서 확인할 내용 |
++| --- | --- |
++| [UI 통합 설명](../../11차/UI통합_안내.md#user-content-reading-level-4) | 화면 위치·조회 실패·의존성·검증 범위를 기존 연구와 구분 |
++| [같은 수준 연구 설명](../../11차/README.md#user-content-reading-level-4) | 기존 결과·분모·실패·미채택·STOP 보존 |
++| [UI 전용 비교](../../11차/UI_전체비교.md) | 원래 연구 비교와 별도로 파일·문서·탐색 변경 확인 |
+ 
+ <a id="level-4--프로젝트-소개와-읽는-방법"></a>
+ 
+--- a/docs/읽기안내/레벨5.md
++++ b/docs/읽기안내/레벨5.md
+@@ -18,6 +18,16 @@
+ </details>
+ 
+ [같은 수준의 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨5.md) · [프로젝트 첫 화면](../../README.md)
++
++## 11차 대시보드 통합
++
++서버·생성CSS·27파일 해시는 UI 전용 비교와 별도 동결 목록으로 대조합니다. 기존 UI45·Rust 생성 근거·E11교체GET을 재사용하며 새 제품 검사는 수행하지 않습니다. 화면200·테마200·어댑터200·상태503과 실제 브라우저 표시 미확인을 구분하고 이번 공개의 별도 의미 검토·원격 확인은 남겨 둡니다.
++
++| 연결 | 이 수준에서 확인할 내용 |
++| --- | --- |
++| [UI 통합 설명](../../11차/UI통합_안내.md#user-content-reading-level-5) | 화면 위치·조회 실패·의존성·검증 범위를 기존 연구와 구분 |
++| [같은 수준 연구 설명](../../11차/README.md#user-content-reading-level-5) | 기존 결과·분모·실패·미채택·STOP 보존 |
++| [UI 전용 비교](../../11차/UI_전체비교.md) | 원래 연구 비교와 별도로 파일·문서·탐색 변경 확인 |
+ 
+ <a id="level-5--프로젝트-소개와-읽는-방법"></a>
+ 

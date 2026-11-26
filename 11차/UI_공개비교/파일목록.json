@@ -1,0 +1,483 @@
+{
+  "baseline_commit": "36431ba6997647f6e330901b791e67acc0bc3e1a",
+  "files": [
+    {
+      "path": "11차/README.md",
+      "status": "modified",
+      "before": {
+        "bytes": 135088,
+        "sha256": "ec73c7e82f87de72eaa1a3f8a041d6bb6899fed7cc85cb9aab230f56df282340"
+      },
+      "after": {
+        "bytes": 137797,
+        "sha256": "aa0d7b71740a028475c4456991e969be7f786e43907e3ea8ea339f9bf063d9d9"
+      }
+    },
+    {
+      "path": "11차/UI통합_안내.md",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 7666,
+        "sha256": "846c77a354ca21f0eab8f8e277ec9dcbe24ec9375892672fa57bbae3533e45b7"
+      }
+    },
+    {
+      "path": "11차/대시보드/Astryx-MIT-LICENSE.txt",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 1077,
+        "sha256": "a6855be541fc8f446acd1bc4f2f8efce1ace6dce71dba32fcd8da553ee54b473"
+      }
+    },
+    {
+      "path": "11차/대시보드/README.md",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 3374,
+        "sha256": "78a486d6ed98fedd9cf5d4ad1a320839efbad458595132085ed03e21eeee7ef2"
+      }
+    },
+    {
+      "path": "11차/대시보드/docs/11차_UI통합.md",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 4247,
+        "sha256": "ea968755a44c3787e9b44311837071b184063e2613c1c8b900bd11957fa887f6"
+      }
+    },
+    {
+      "path": "11차/대시보드/server.py",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 10128,
+        "sha256": "d2a1fb0179c2a653bcc865db3d8d96708a8dcd6aa8dd710c84112f200689d3df"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/app.js",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 64365,
+        "sha256": "09ecb37499281044f6e1d156c6f6a59774fea80120c97605efdf0acd3c4059ed"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/assets/btc.png",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 2589,
+        "sha256": "8022fd53c251f18cb39cefede445f1c78a3b265989232f0bb46b9c4622e55a9e"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/assets/doge.png",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 1597,
+        "sha256": "4a789f36f6ca12a6d1901ab8441a9cab7a4a9a5fd4ba87c887c4d45c729fffce"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/assets/eth.png",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 3437,
+        "sha256": "99bf2102cc13a51bb226f931b8d0fa4c5b3ca9dc4179167e89d7ee3f677c3fdb"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/assets/learning-glass.png",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 1178531,
+        "sha256": "00b32184c1bced24747adb7d651d05ff61909d16c5691c106d81f19acc5bf77c"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/assets/sol.png",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 4222,
+        "sha256": "b9296ce1118a6d150e57049190aeb4c024199e0787e0c6198c244230b8d704f5"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/assets/xrp.png",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 2393,
+        "sha256": "0875539d872ac02066c129360ade039e835bd7b9b2320f3a4d24ed4ef72c3051"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/astryx-adapter.css",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 7345,
+        "sha256": "a674341474c262db49b20bae7a1633214155caa666c5ea068eacdf72731e1ca0"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/astryx-official.css",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 30284,
+        "sha256": "7b87f44cf2e3000e1aa5e94cff5ccfcee9c665e886657082508854c373dc1bf5"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/astryx-theme.css",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 2003,
+        "sha256": "443e52130566ff1cb9f86165448abcd5a60bfa43bcbc0459ed171494f71d265f"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/fonts/NanumGothic-Bold.ttf",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 2073868,
+        "sha256": "f96298f9fb18e364d2370f4c3ce948ac67a2b61af992d7234bc15c42b033c674"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/fonts/OFL.txt",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 4534,
+        "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/index.html",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 17585,
+        "sha256": "aa791cfea159bc589e71e9a5208adf816821a2d7607552dd12b0454fbca86dc1"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/licenses/cryptocurrency-icons.txt",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 7048,
+        "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/licenses/lucide.txt",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 3208,
+        "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/licenses/three.txt",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 1081,
+        "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/scene.js",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 46498,
+        "sha256": "52281ad682c2931971a59a02d684a764d1ebb4b14c1beccaf3792048e0379777"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/style.css",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 32740,
+        "sha256": "dd8eea72dc91a166bbd70491178638563f14483950b0efe0a1bd0e83d7ab2723"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/vendor-entry.js",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 1389,
+        "sha256": "408ced812668d956316c352d308321eb07d5164c6ab22c8bd70788cea54d0a74"
+      }
+    },
+    {
+      "path": "11차/대시보드/web/vendor.bundle.js",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 756412,
+        "sha256": "9ca8a8c2d62edcc23100bb54b3ef7be64067431802d5a1db5b5667a622fbb804"
+      }
+    },
+    {
+      "path": "11차/대시보드/시작.ps1",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 668,
+        "sha256": "47ca6829d67a066243b4f6277079ed32ee590404f16cd77958408b7911a37e36"
+      }
+    },
+    {
+      "path": "11차/대시보드/테마생성.py",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 1812,
+        "sha256": "407cb151d7b78c1e7e3b07e933f5d18c560944ae71999b6973c825fbf89ea8bf"
+      }
+    },
+    {
+      "path": "11차/대시보드/테마설정.json",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 232,
+        "sha256": "a452bd82b67d177407d2c097ba4c826fda095568ee4c811dcac48ed73e3e64bd"
+      }
+    },
+    {
+      "path": "README.md",
+      "status": "modified",
+      "before": {
+        "bytes": 35634,
+        "sha256": "0c725fd75f878a940e27f0cf83a979a50d1d630fc950c69e33fb02bb7a8d6227"
+      },
+      "after": {
+        "bytes": 36739,
+        "sha256": "84c750ed90cac8e11a2692678d4c4d1e669a7db5ac5a62cd8439b2b5e72a676e"
+      }
+    },
+    {
+      "path": "docs/REVISION_INDEX.md",
+      "status": "modified",
+      "before": {
+        "bytes": 4342,
+        "sha256": "8de4c51682725e0657aac73bc3ad9e6d6b43352406d3836fd20733d6789fca83"
+      },
+      "after": {
+        "bytes": 4912,
+        "sha256": "b45cc1bae01dfa1710ec04fc8434f8521a233d6e23264b15611be2089cbc3244"
+      }
+    },
+    {
+      "path": "docs/changes/2026-11-26_11차_UI통합.md",
+      "status": "added",
+      "before": null,
+      "after": {
+        "bytes": 1871,
+        "sha256": "14eb7ac2436b4dd9de64e35b71028f3f13b781d41be7b6b06d4d2bba0600ad87"
+      }
+    },
+    {
+      "path": "docs/읽기안내/레벨1.md",
+      "status": "modified",
+      "before": {
+        "bytes": 97664,
+        "sha256": "1361b4e960b8d06e2529cd732ad6bfb09c804be77176c648d4c0da7796d07823"
+      },
+      "after": {
+        "bytes": 98451,
+        "sha256": "fcda4bd7cd8feea0c2619373e64b72cf957663b6acf6b636afc6961b1ec0156f"
+      }
+    },
+    {
+      "path": "docs/읽기안내/레벨2.md",
+      "status": "modified",
+      "before": {
+        "bytes": 123150,
+        "sha256": "acb2101afa88ca548cfedf0a42b8d87c6d5bfac5d1c7c78ddf3ced0c6e7b6fad"
+      },
+      "after": {
+        "bytes": 123944,
+        "sha256": "caa611163bd597f1fc6a0446fa8410cd98bbf8b75df43b14e00d803f0038c217"
+      }
+    },
+    {
+      "path": "docs/읽기안내/레벨3.md",
+      "status": "modified",
+      "before": {
+        "bytes": 121931,
+        "sha256": "a318c94005e0cd195d239cd2e540befc2c67e0a58f3d9e61745cf42389bbb85f"
+      },
+      "after": {
+        "bytes": 122812,
+        "sha256": "907f145970c8e2829fdfff9c82d0bb7495fe6177c208e6b55dc416cb86335729"
+      }
+    },
+    {
+      "path": "docs/읽기안내/레벨4.md",
+      "status": "modified",
+      "before": {
+        "bytes": 119806,
+        "sha256": "32f788da68b5b80f9d82af08b16e729e1005786294e5aef8400af6b1432f7326"
+      },
+      "after": {
+        "bytes": 120669,
+        "sha256": "7c733d8aedf18cf10b26fd9db209ce1744590b21cb208dd734c5b426b3376200"
+      }
+    },
+    {
+      "path": "docs/읽기안내/레벨5.md",
+      "status": "modified",
+      "before": {
+        "bytes": 128461,
+        "sha256": "aea04409ddb4f118678cac30c974fc3afb7b0cf91f87b8f1c9f8121fa618b239"
+      },
+      "after": {
+        "bytes": 129383,
+        "sha256": "8c7a2f59aea13b37d1e04762adbb2e07591d5115d0a06f64dbcb5137780db25e"
+      }
+    }
+  ],
+  "patch": {
+    "bytes": 1030961,
+    "sha256": "55a34cd64bae14e64fb39406d614ef2875525c64e296cf5452b36fa7871a9511"
+  },
+  "chunks": [
+    {
+      "path": "조각001.diff",
+      "bytes": 48000,
+      "sha256": "9e5e98ae93359660ceb3a1656d7e3592ffae776fd49aaadd2ecb349ae926515b"
+    },
+    {
+      "path": "조각002.diff",
+      "bytes": 48000,
+      "sha256": "6b188e6bf2388e0aa4c24eccd05fc53b8b800c86382a643d120a6dc0db16185b"
+    },
+    {
+      "path": "조각003.diff",
+      "bytes": 48000,
+      "sha256": "a6c726577ef40fac97994bea23d583cc3bf3730e5d542f9d6d650c7e2731e500"
+    },
+    {
+      "path": "조각004.diff",
+      "bytes": 48000,
+      "sha256": "217ed3aa713dd1cd20a488c3001d44cf0ccd2306c6b3f4864812b61b5a4fc5a2"
+    },
+    {
+      "path": "조각005.diff",
+      "bytes": 48000,
+      "sha256": "272d93f802730904ccadd3809de86de613a6787e4a3dc3ec9ba9d45566a24b11"
+    },
+    {
+      "path": "조각006.diff",
+      "bytes": 48000,
+      "sha256": "dfc3fbb5e23d82cb4a51729c6fe3f620c5992a000fc8f8ba3749ff6835965b92"
+    },
+    {
+      "path": "조각007.diff",
+      "bytes": 48000,
+      "sha256": "e49dc54a067008edf9cfb442541a28c5713404fffd986f15020f7aad668be688"
+    },
+    {
+      "path": "조각008.diff",
+      "bytes": 48000,
+      "sha256": "c35f65d34e43c4ebdabc7cbcb87edf7090ed952c56231d8d52d5b66a5125a736"
+    },
+    {
+      "path": "조각009.diff",
+      "bytes": 48000,
+      "sha256": "6680d685c14fbcce338b88e5478f35a7f7b383157817968cfb46e6897b482d38"
+    },
+    {
+      "path": "조각010.diff",
+      "bytes": 48000,
+      "sha256": "a14d02d8220fce0f1dcc4d6f753c35de84602a512b62fb63737042c8f9ada578"
+    },
+    {
+      "path": "조각011.diff",
+      "bytes": 48000,
+      "sha256": "e3f14b449ce41c09cdd5b894a9f8328091dc26a708881a728079e2493e78a223"
+    },
+    {
+      "path": "조각012.diff",
+      "bytes": 48000,
+      "sha256": "5a422a707d3f6b3a7b500a3f4c18b5b06e2da87c0838f2c86536066329edd1a9"
+    },
+    {
+      "path": "조각013.diff",
+      "bytes": 48000,
+      "sha256": "12bbadf1c93dd9a538f8835234dfe17095f5a0dce9f5f60fd2399c283b29bc50"
+    },
+    {
+      "path": "조각014.diff",
+      "bytes": 48000,
+      "sha256": "049ac680a39db0552852dda625f46bd8232afe53d60b0b819b2102e553a34526"
+    },
+    {
+      "path": "조각015.diff",
+      "bytes": 48000,
+      "sha256": "bbf07c84f01e65e149ce57c8d725fbb66af674e50bbaaab2950a8b3f0534a550"
+    },
+    {
+      "path": "조각016.diff",
+      "bytes": 48000,
+      "sha256": "37cd78e96298c2e51fb4dde98b475906367848771c7aeeae4e17e5ce521575a5"
+    },
+    {
+      "path": "조각017.diff",
+      "bytes": 48000,
+      "sha256": "1506c02a70d2b2a124d2074924023ecb7f0b01a628f7e86845de7f735575a3d7"
+    },
+    {
+      "path": "조각018.diff",
+      "bytes": 48000,
+      "sha256": "cc0aa10293e2ab862322c196f94bba42343d841e770cfcc5fb59d283a0f2150e"
+    },
+    {
+      "path": "조각019.diff",
+      "bytes": 48000,
+      "sha256": "0e54a9e592f03c1f572207737e74b7cdbb52c78bc1546a394840b70d34d04415"
+    },
+    {
+      "path": "조각020.diff",
+      "bytes": 48000,
+      "sha256": "fe02c4679c3448a5fb458c6654db4dfb6aaac9c11f589d94259c0b686554d598"
+    },
+    {
+      "path": "조각021.diff",
+      "bytes": 48000,
+      "sha256": "9f620bbb7dd606410c01a1eefd743daac2c2ed7cadf3dc06cb8eaba4080e371c"
+    },
+    {
+      "path": "조각022.diff",
+      "bytes": 22961,
+      "sha256": "dcf6dd39db6e2647119b445f275c05556e367e4494d0c3ded7cd93ecc29f2aa4"
+    }
+  ],
+  "self_reference_exclusions": [
+    "11차/UI_공개비교/",
+    "11차/UI_전체비교.md"
+  ],
+  "meaning": "기존11차 전체비교.md는 변경하지 않음. 새UI 공개 변경을 공백·주석·바이너리 해시까지 비교. 비교에서 파생한 안내·조각·목록 자체는 순환 방지를 위해 본문에서 제외, 최종manifest는 전부 포함."
+}

@@ -1,0 +1,973 @@
+=== 'dark';
++  const button = $('theme-toggle');
++  const label = dark ? '라이트 모드로 전환' : '다크 모드로 전환';
++  button.setAttribute('aria-pressed', String(dark));
++  button.setAttribute('aria-label', label);
++  button.title = document.documentElement.dataset.themeStorage === 'unavailable' ? `${label} · 선택 저장 불가` : label;
++  const icon = document.createElement('i');
++  icon.dataset.lucide = dark ? 'sun' : 'moon';
++  button.replaceChildren(icon);
++  icons();
++}
++$('theme-toggle').addEventListener('click', () => {
++  const root = document.documentElement;
++  root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
++  try {
++    localStorage.setItem('upbit-theme', root.dataset.theme);
++    delete root.dataset.themeStorage;
++  } catch (error) {
++    root.dataset.themeStorage = 'unavailable';
++  }
++  updateThemeButton();
++  drawCharts();
++  window.dispatchEvent(new Event('resize'));
++});
++updateThemeButton();
+Binary {"path": "11차/대시보드/web/assets/btc.png", "status": "added", "before": null, "after": {"bytes": 2589, "sha256": "8022fd53c251f18cb39cefede445f1c78a3b265989232f0bb46b9c4622e55a9e"}}
+Binary {"path": "11차/대시보드/web/assets/doge.png", "status": "added", "before": null, "after": {"bytes": 1597, "sha256": "4a789f36f6ca12a6d1901ab8441a9cab7a4a9a5fd4ba87c887c4d45c729fffce"}}
+Binary {"path": "11차/대시보드/web/assets/eth.png", "status": "added", "before": null, "after": {"bytes": 3437, "sha256": "99bf2102cc13a51bb226f931b8d0fa4c5b3ca9dc4179167e89d7ee3f677c3fdb"}}
+Binary {"path": "11차/대시보드/web/assets/learning-glass.png", "status": "added", "before": null, "after": {"bytes": 1178531, "sha256": "00b32184c1bced24747adb7d651d05ff61909d16c5691c106d81f19acc5bf77c"}}
+Binary {"path": "11차/대시보드/web/assets/sol.png", "status": "added", "before": null, "after": {"bytes": 4222, "sha256": "b9296ce1118a6d150e57049190aeb4c024199e0787e0c6198c244230b8d704f5"}}
+Binary {"path": "11차/대시보드/web/assets/xrp.png", "status": "added", "before": null, "after": {"bytes": 2393, "sha256": "0875539d872ac02066c129360ade039e835bd7b9b2320f3a4d24ed4ef72c3051"}}
+--- /dev/null
++++ b/11차/대시보드/web/astryx-adapter.css
+@@ -0,0 +1,44 @@
++/* Astryx 공식 토큰과 기존 DOM의 연결입니다. React 컴포넌트 직접 사용과 구분합니다. */
++:root,[data-theme] {
++  --bg:var(--color-background-body);--page:var(--color-background-body);--surface:var(--color-background-surface);
++  --ink:var(--color-text-primary);--muted:var(--color-text-secondary);--line:var(--color-border);
++  --accent:var(--color-primary);--teal:var(--color-primary);--mint:var(--color-primary);
++  --accent-soft:var(--color-background-selected);--tint:var(--color-background-hover);--tint-strong:var(--color-background-selected);
++}
++@font-face{font-family:NanumGothic;src:url('/fonts/NanumGothic-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
++html{background:var(--color-background-body);color:var(--color-text-primary);scroll-padding-top:24px}
++body{background:var(--color-background-body);color:var(--color-text-primary);font-family:var(--font-family-body);font-weight:700;line-height:1.7}
++button,input,select,textarea,table,summary{font-family:var(--font-family-body);font-weight:700}
++h1,h2,h3,h4{font-family:var(--font-family-heading);color:var(--color-text-primary);text-wrap:balance}
++button,select,input:not([type=checkbox]):not([type=radio]),textarea{min-height:var(--astryx-control-height);border:1px solid var(--color-border);border-radius:var(--radius-element);background:var(--color-background-surface);color:var(--color-text-primary);padding:10px 14px;font-size:13px;transition:background .16s,border-color .16s,box-shadow .16s}
++button{cursor:pointer;min-width:44px;touch-action:manipulation}
++button:hover:not(:disabled),select:hover{background:var(--color-background-hover);border-color:var(--color-border-emphasized)}
++button:active:not(:disabled){background:var(--color-background-selected)}
++button:disabled,input:disabled,select:disabled{color:var(--color-text-disabled);opacity:.7;cursor:not-allowed}
++button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:var(--astryx-focus-width) solid var(--color-primary);outline-offset:3px}
++button.primary,[data-variant=primary]{background:var(--color-background-primary);color:var(--color-text-on-primary);border-color:var(--color-primary)}
++button.primary:hover:not(:disabled){background:var(--color-primary);box-shadow:0 0 0 3px var(--color-background-selected)}
++button.secondary,button.quiet,.text-button{background:var(--color-background-surface);color:var(--color-text-primary)}
++.sidebar{background:var(--color-background-surface);border-color:var(--color-border)}
++.sidebar nav{gap:8px}.sidebar nav a,.sidebar nav button,.tabs button{min-height:44px;border-radius:var(--radius-element);font-size:14px;line-height:1.5}
++.sidebar nav a:hover,.sidebar nav button:hover{background:var(--color-background-hover)}
++.sidebar nav a.selected,.sidebar nav button.active,.sidebar nav button[aria-current=page],.tabs button[aria-selected=true]{background:var(--color-background-selected);color:var(--color-primary);border-color:var(--color-border)}
++.table-wrap,.table-scroll{border:1px solid var(--color-border);border-radius:var(--radius-container);background:var(--color-background-surface);overflow-x:auto;max-width:100%}
++table{color:var(--color-text-primary);font-size:12px;line-height:1.65}
++th{background:var(--color-background-hover);color:var(--color-text-secondary);font-size:11px;padding:14px 16px}
++td{padding:15px 16px;border-color:var(--color-border)}tbody tr:hover{background:var(--color-background-hover)}
++details{border-color:var(--color-border);border-radius:var(--radius-element)}summary{cursor:pointer;min-height:44px;padding-top:10px;padding-bottom:10px}
++pre,.logs,.log-lines{color:var(--color-text-primary);background:var(--color-background-surface);border-color:var(--color-border);border-radius:var(--radius-element)}
++dialog,[role=dialog],.modal,.tooltip,.chart-tooltip{background:var(--color-background-surface);color:var(--color-text-primary);border:1px solid var(--color-border);border-radius:var(--radius-container)}
++progress{accent-color:var(--color-primary)}progress::-webkit-progress-value{background:var(--color-primary)}progress::-webkit-progress-bar{background:var(--color-background-selected)}
++.astryx-design-label{font-size:10px;letter-spacing:.08em;color:var(--color-text-secondary);margin-top:14px}
++@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
++@media(max-width:760px){button,select,input{font-size:13px}.sidebar nav a,.sidebar nav button,.tabs button{font-size:12px}table{font-size:11px}th,td{padding:12px}.section-heading,.page-header{flex-wrap:wrap}.actions{flex-wrap:wrap}.header-tools{flex-wrap:wrap}}
++main{padding:28px 32px;max-width:1900px}.heading{padding-bottom:20px;margin-bottom:24px}h1{font-size:32px;letter-spacing:-1px}.sidebar{width:216px;padding:28px 16px}.sidebar .tabs button{min-height:52px;padding:14px}.sidebar .brand{background:var(--color-background-selected);border-radius:var(--radius-element)}main{margin-left:216px}.research-layout{gap:24px;grid-template-columns:minmax(0,1fr) 288px}.workflow-main,.research-progress,.learning-information>section,.dashboard-bottom>section{background:var(--color-background-surface);border:1px solid var(--color-border);border-radius:var(--radius-container);padding:20px;min-width:0}.workflow-main{padding:0;overflow:hidden}.research-progress{padding:22px;border-left:1px solid var(--color-border)}.dashboard-bottom{gap:24px;padding:24px 0}.research-account{gap:12px}.research-account>div{border-radius:var(--radius-element);background:var(--color-background-body)}.learning-strip{gap:0;border:1px solid var(--color-border);border-radius:var(--radius-container);background:var(--color-background-surface);padding:16px 0}.research-state,.tag{border-radius:var(--radius-inner)}.workflow-steps b{border-radius:var(--radius-inner);background:var(--color-background-body)}.learning-information{border:0;gap:24px}.learning-information .learning-now{background:var(--color-background-surface)}.services>div,.market-row{border-radius:var(--radius-element)}@media(max-width:1100px){.research-layout{grid-template-columns:1fr}.dashboard-bottom{grid-template-columns:1fr}.research-progress{border-left:1px solid var(--color-border)}}@media(max-width:760px){.sidebar{width:auto;padding:14px 16px 0}main{margin:0;padding:22px 16px}.sidebar .tabs button{min-height:44px;padding:10px 8px}.heading h1{font-size:27px}.research-progress,.learning-information>section,.dashboard-bottom>section{padding:18px}.header-tools button{width:44px;height:44px;min-height:44px}.research-state{white-space:normal}.learning-strip{border-radius:var(--radius-element)}.learning-information{grid-template-columns:1fr}.research-layout{gap:16px}}
++
++/* 기존 화면과 공식 컴포넌트의 개별 높이보다 실제 Astryx 조작부 토큰을 우선합니다. */
++html[data-theme] button,html[data-theme] select,html[data-theme] textarea,
++html[data-theme] input:not([type=checkbox]):not([type=radio]){min-height:var(--astryx-control-height)}
++html[data-theme] button{min-width:var(--astryx-control-height)}
++/* 상태 라벨이 제목의 남는 폭에 눌려 한 글자씩 줄바꿈되지 않게 합니다. */
++.research-state{flex-shrink:0;white-space:nowrap;word-break:keep-all}
+--- /dev/null
++++ b/11차/대시보드/web/astryx-official.css
+@@ -0,0 +1,748 @@
++/*
++ * @generated by `astryx theme build` — do not edit manually.
++ * Source: src/neutralTheme.ts
++ * Command: astryx theme build src/neutralTheme.ts --out dist/theme.css
++ * CLI: @astryxdesign/cli@0.7.17
++ * Core: @astryxdesign/core@0.7.17
++ */
++
++@layer reset, astryx-base, astryx-theme;
++
++@layer reset {
++@scope ([data-astryx-theme="neutral"]) to ([data-astryx-theme]) {
++  :where(h1, h2, h3, h4, h5, h6) {
++    font-family: var(--font-family-heading);
++    color: var(--color-text-primary);
++  }
++
++  :where(h1) {
++    font-size: var(--text-heading-1-size);
++    font-weight: var(--text-heading-1-weight);
++    line-height: var(--text-heading-1-leading);
++  }
++
++  :where(h2) {
++    font-size: var(--text-heading-2-size);
++    font-weight: var(--text-heading-2-weight);
++    line-height: var(--text-heading-2-leading);
++  }
++
++  :where(h3) {
++    font-size: var(--text-heading-3-size);
++    font-weight: var(--text-heading-3-weight);
++    line-height: var(--text-heading-3-leading);
++  }
++
++  :where(h4) {
++    font-size: var(--text-heading-4-size);
++    font-weight: var(--text-heading-4-weight);
++    line-height: var(--text-heading-4-leading);
++  }
++
++  :where(h5) {
++    font-size: var(--text-heading-5-size);
++    font-weight: var(--text-heading-5-weight);
++    line-height: var(--text-heading-5-leading);
++  }
++
++  :where(h6) {
++    font-size: var(--text-heading-6-size);
++    font-weight: var(--text-heading-6-weight);
++    line-height: var(--text-heading-6-leading);
++  }
++
++  :where(p) {
++    font-family: var(--font-family-body);
++    font-size: var(--text-body-size);
++    font-weight: var(--text-body-weight);
++    line-height: var(--text-body-leading);
++    color: var(--color-text-primary);
++  }
++
++  :where(small) {
++    font-size: var(--text-supporting-size);
++    font-weight: var(--text-supporting-weight);
++    line-height: var(--text-supporting-leading);
++    color: var(--color-text-secondary);
++  }
++
++  :where(code, pre) {
++    font-family: var(--font-family-code);
++    font-size: var(--text-code-size);
++    line-height: var(--text-code-leading);
++  }
++
++  :where(hr) {
++    border: none;
++    border-top: 1px solid var(--color-border);
++  }
++}
++}
++
++@layer astryx-theme {
++  html[data-theme="light"] { color-scheme: light; }
++  html[data-theme="dark"] { color-scheme: dark; }
++
++@scope ([data-astryx-theme="neutral"]) to ([data-astryx-theme]) {
++  :scope {
++    --_scaled-font-size-4xs: min(calc(0.375rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-3xs));
++    --font-size-4xs: var(--_scaled-font-size-4xs);
++    --_scaled-font-size-3xs: min(calc(0.4375rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-2xs));
++    --font-size-3xs: var(--_scaled-font-size-3xs);
++    --_scaled-font-size-2xs: min(calc(0.5rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-xs));
++    --font-size-2xs: var(--_scaled-font-size-2xs);
++    --_scaled-font-size-xs: min(calc(0.625rem * var(--_dynamic-type-caption1, 1)), var(--_scaled-font-size-sm));
++    --font-size-xs: var(--_scaled-font-size-xs);
++    --_scaled-font-size-sm: min(calc(0.75rem * var(--_dynamic-type-footnote, 1)), var(--_scaled-font-size-base));
++    --font-size-sm: var(--_scaled-font-size-sm);
++    --_scaled-font-size-base: min(calc(0.875rem * var(--_dynamic-type-body, 1)), var(--_scaled-font-size-lg));
++    --font-size-base: var(--_scaled-font-size-base);
++    --_scaled-font-size-lg: min(calc(1.0625rem * var(--_dynamic-type-title3, 1)), var(--_scaled-font-size-xl));
++    --font-size-lg: var(--_scaled-font-size-lg);
++    --_scaled-font-size-xl: min(calc(1.25rem * var(--_dynamic-type-title2, 1)), var(--_scaled-font-size-2xl));
++    --font-size-xl: var(--_scaled-font-size-xl);
++    --_scaled-font-size-2xl: min(calc(1.5rem * var(--_dynamic-type-title1, 1)), var(--_scaled-font-size-3xl));
++    --font-size-2xl: var(--_scaled-font-size-2xl);
++    --_scaled-font-size-3xl: min(calc(1.8125rem * var(--_dynamic-type-title1, 1)), var(--_scaled-font-size-4xl));
++    --font-size-3xl: var(--_scaled-font-size-3xl);
++    --_scaled-font-size-4xl: min(calc(2.1875rem * var(--_dynamic-type-large-title, 1)), var(--_scaled-font-size-5xl));
++    --font-size-4xl: var(--_scaled-font-size-4xl);
++    --_scaled-font-size-5xl: calc(2.625rem * var(--_dynamic-type-large-title, 1));
++    --font-size-5xl: var(--_scaled-font-size-5xl);
++    --text-heading-1-size: var(--font-size-2xl);
++    --text-heading-1-weight: var(--font-weight-semibold);
++    --text-heading-1-leading: 1.3333;
++    --text-heading-2-size: var(--font-size-xl);
++    --text-heading-2-weight: var(--font-weight-semibold);
++    --text-heading-2-leading: 1.4;
++    --text-heading-3-size: var(--font-size-lg);
++    --text-heading-3-weight: var(--font-weight-bold);
++    --text-heading-3-leading: 1.4118;
++    --text-heading-4-size: var(--font-size-base);
++    --text-heading-4-weight: var(--font-weight-bold);
++    --text-heading-4-leading: 1.4286;
++    --text-heading-5-size: var(--font-size-sm);
++    --text-heading-5-weight: var(--font-weight-semibold);
++    --text-heading-5-leading: 1.6667;
++    --text-heading-6-size: var(--font-size-xs);
++    --text-heading-6-weight: var(--font-weight-semibold);
++    --text-heading-6-leading: 1.6;
++    --text-body-size: var(--font-size-base);
++    --text-body-weight: var(--font-weight-normal);
++    --text-body-leading: 1.4286;
++    --text-large-size: var(--font-size-lg);
++    --text-large-weight: var(--font-weight-semibold);
++    --text-large-leading: 1.4118;
++    --text-label-size: var(--font-size-base);
++    --text-label-weight: var(--font-weight-medium);
++    --text-label-leading: 1.4286;
++    --text-code-size: var(--font-size-base);
++    --text-code-weight: var(--font-weight-normal);
++    --text-code-leading: 1.4286;
++    --text-supporting-size: var(--font-size-sm);
++    --text-supporting-weight: var(--font-weight-normal);
++    --text-supporting-leading: 1.6667;
++    --text-display-1-size: var(--font-size-5xl);
++    --text-display-1-weight: var(--font-weight-normal);
++    --text-display-1-leading: 1.2381;
++    --text-display-2-size: var(--font-size-4xl);
++    --text-display-2-weight: var(--font-weight-normal);
++    --text-display-2-leading: 1.2571;
++    --text-display-3-size: var(--font-size-3xl);
++    --text-display-3-weight: var(--font-weight-normal);
++    --text-display-3-leading: 1.3793;
++    --duration-fast-min: 95ms;
++    --duration-fast: 125ms;
++    --duration-fast-max: 165ms;
++    --duration-medium-min: 225ms;
++    --duration-medium: 300ms;
++    --duration-medium-max: 400ms;
++    --duration-slow-min: 525ms;
++    --duration-slow: 700ms;
++    --duration-slow-max: 935ms;
++    --_astryx-pre-tempo-duration-fast-min: 95ms;
++    --_astryx-pre-tempo-duration-fast: 125ms;
++    --_astryx-pre-tempo-duration-fast-max: 165ms;
++    --_astryx-pre-tempo-duration-medium-min: 225ms;
++    --_astryx-pre-tempo-duration-medium: 300ms;
++    --_astryx-pre-tempo-duration-medium-max: 400ms;
++    --_astryx-pre-tempo-duration-slow-min: 525ms;
++    --_astryx-pre-tempo-duration-slow: 700ms;
++    --_astryx-pre-tempo-duration-slow-max: 935ms;
++    --_astryx-motion-tempo: 1;
++    --font-family-body: Figtree, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
++    --font-family-heading: Figtree, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
++    --font-family-code: ui-monospace, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
++    --color-syntax-keyword: light-dark(#6b187c, #efa8ff);
++    --color-syntax-string: light-dark(#0b5615, #a4d6a3);
++    --color-syntax-comment: light-dark(#525252, #b9b9b9);
++    --color-syntax-number: light-dark(#733100, #ffb37e);
++    --color-syntax-function: light-dark(#00458c, #a1caff);
++    --color-syntax-type: light-dark(#6b187c, #efa8ff);
++    --color-syntax-variable: light-dark(#111111, #e2e2e2);
++    --color-syntax-operator: light-dark(#525252, #b9b9b9);
++    --color-syntax-constant: light-dark(#733100, #ffb37e);
++    --color-syntax-tag: light-dark(#8a0011, #ffaea7);
++    --color-syntax-attribute: light-dark(#584400, #eec448);
++    --color-syntax-property: light-dark(#005348, #90d7c8);
++    --color-syntax-punctuation: light-dark(#525252, #b9b9b9);
++    --color-syntax-background: light-dark(#ffffff, #111111);
++    --color-syntax-added: color-mix(in srgb, var(--color-success-muted) 25%, transparent);
++    --color-syntax-removed: color-mix(in srgb, var(--color-error-muted) 25%, transparent);
++    --color-syntax-diff-header: transparent;
++    --color-syntax-added-marker: var(--color-syntax-punctuation);
++    --color-syntax-removed-marker: var(--color-syntax-punctuation);
++    --color-background-surface: light-dark(#ffffff, #262626);
++    --color-background-body: light-dark(#f1f1f1, #1b1b1b);
++    --color-background-card: light-dark(#ffffff, #1b1b1b);
++    --color-background-popover: light-dark(#ffffff, #1b1b1b);
++    --color-background-muted: light-dark(#f1f1f1, #1b1b1b);
++    --color-accent: light-dark(#1b1b1b, #f1f1f1);
++    --color-accent-muted: light-dark(#d4d4d4, #474747);
++    --color-neutral: light-dark(#0000000F, #ffffff1A);
++    --color-overlay: light-dark(#00000080, #000000CC);
++    --color-overlay-hover: light-dark(#0000000D, #ffffff0D);
++    --color-overlay-pressed: light-dark(#0000001A, #ffffff1A);
++    --color-text-primary: light-dark(#000000, #ffffff);
++    --color-text-secondary: light-dark(#474747, #9e9e9e);
++    --color-text-disabled: light-dark(#919191, #525252);
++    --color-text-accent: light-dark(#1b1b1b, #f1f1f1);
++    --color-on-dark: #ffffff;
++    --color-on-light: #111111;
++    --color-on-accent: light-dark(#ffffff, #111111);
++    --color-on-success: light-dark(#ffffff, #111111);
++    --color-on-error: light-dark(#ffffff, #111111);
++    --color-on-warning: #111111;
++    --color-info: light-dark(#0074e2, #6d9cfe);
++    --color-info-muted: light-dark(#b9d7ff, #88bcff3D);
++    --color-on-info: light-dark(#ffffff, #111111);
++    --color-text-info: light-dark(#0067ce, #a1caff);
++    --color-text-success: light-dark(#2f7d33, #90ca90);
++    --color-text-warning: light-dark(#836700, #eec448);
++    --color-text-error: light-dark(#c0262c, #ffaea7);
++    --color-on-info-muted: light-dark(#003978, #a1caff);
++    --color-on-success-muted: light-dark(#00490b, #90ca90);
++    --color-on-warning-muted: light-dark(#4b3900, #eec448);
++    --color-on-error-muted: light-dark(#76000c, #ffaea7);
++    --color-icon-accent: light-dark(#1b1b1b, #f1f1f1);
++    --color-icon-primary: light-dark(#000000, #ffffff);
++    --color-icon-secondary: light-dark(#6a6a6a, #9e9e9e);
++    --color-icon-disabled: light-dark(#919191, #525252);
++    --color-success: light-dark(#198100, #64af4c);
++    --color-warning: #ffce2f;
++    --color-error: light-dark(#c9303a, #ff705d);
++    --color-success-muted: light-dark(#bce0bb, #90ca903D);
++    --color-error-muted: light-dark(#ffc4be, #ff98903D);
++    --color-warning-muted: light-dark(#fae19e, #e2b6233D);
++    --color-border: light-dark(#00000014, #ffffff1A);
++    --color-border-emphasized: light-dark(#d4d4d4, #525252);
++    --color-skeleton: light-dark(#d4d4d4, #525252);
++    --color-shadow: light-dark(#0000001A, #0000004D);
++    --color-tint-hover: light-dark(#000000, #ffffff);
++    --color-background-red: light-dark(#ffc4be, #5b2b28);
++    --color-border-red: light-dark(#ffaea7, #fa6762);
++    --color-icon-red: light-dark(#76000c, #ff9890);
++    --color-text-red: light-dark(#76000c, #ffaea7);
++    --color-background-orange: light-dark(#ffc7a1, #503424);
++    --color-border-orange: light-dark(#ffc7a1, #df843f);
++    --color-icon-orange: light-dark(#622700, #ff9e55);
++    --color-text-orange: light-dark(#622700, #ffb37e);
++    --color-background-yellow: light-dark(#fae19e, #453a1c);
++    --color-border-yellow: light-dark(#e3c36c, #c29900);
++    --color-icon-yellow: light-dark(#4b3900, #e2b623);
++    --color-text-yellow: light-dark(#4b3900, #eec448);
++    --color-background-green: light-dark(#bce0bb, #2b422b);
++    --color-border-green: light-dark(#aad4a9, #6ab26b);
++    --color-icon-green: light-dark(#00490b, #90ca90);
++    --color-text-green: light-dark(#00490b, #90ca90);
++    --color-background-teal: light-dark(#a9e2d6, #28413c);
++    --color-border-teal: light-dark(#90d7c8, #4fb1a0);
++    --color-icon-teal: light-dark(#00463d, #81c9bb);
++    --color-text-teal: light-dark(#00463d, #90d7c8);
++    --color-background-cyan: light-dark(#9ae2f4, #274046);
++    --color-border-cyan: light-dark(#85d5e9, #49adc4);
++    --color-icon-cyan: light-dark(#004351, #71c7dd);
++    --color-text-cyan: light-dark(#004351, #85d5e9);
++    --color-background-blue: light-dark(#b9d7ff, #253c5a);
++    --color-border-blue: light-dark(#a1caff, #5aa0f8);
++    --color-icon-blue: light-dark(#003978, #88bcff);
++    --color-text-blue: light-dark(#003978, #a1caff);
++    --color-background-purple: light-dark(#f7d5ff, #4a2f51);
++    --color-border-purple: light-dark(#f3bfff, #d885eb);
++    --color-icon-purple: light-dark(#5c0e6c, #e496f6);
++    --color-text-purple: light-dark(#5c0e6c, #eaacf8);
++    --color-background-pink: light-dark(#ffc0d7, #572b3d);
++    --color-border-pink: light-dark(#ffc0d7, #fc78b1);
++    --color-icon-pink: light-dark(#70003f, #fd92bd);
++    --color-text-pink: light-dark(#70003f, #ffa9ca);
++    --color-background-gray: light-dark(#e2e2e2, #303030);
++    --color-border-gray: light-dark(#d4d4d4, #262626);
++    --color-icon-gray: light-dark(#474747, #9e9e9e);
++    --color-text-gray: light-dark(#1b1b1b, #d4d4d4);
++    --radius-none: 0px;
++    --radius-inner: 0.375rem;
++    --radius-element: 0.625rem;
++    --radius-container: 0.75rem;
++    --radius-page: 1.75rem;
++    --radius-chat: 28px;
++    --radius-full: 9999px;
++    --shadow-low: 0 2px 4px light-dark(oklch(0 0 0 / 5%), oklch(0 0 0 / 25%)), 0 4px 8px light-dark(oklch(0 0 0 / 10%), oklch(0 0 0 / 40%)), inset 0 0 0 1px light-dark(transparent, oklch(1 0 0 / 8%));
++    --shadow-med: 0 2px 4px light-dark(oklch(0 0 0 / 5%), oklch(0 0 0 / 35%)), 0 4px 12px light-dark(oklch(0 0 0 / 10%), oklch(0 0 0 / 50%)), inset 0 0 0 1px light-dark(transparent, oklch(1 0 0 / 12%));
++    --shadow-high: 0 4px 6px light-dark(oklch(0 0 0 / 10%), oklch(0 0 0 / 50%)), 0 12px 24px light-dark(oklch(0 0 0 / 15%), oklch(0 0 0 / 70%)), inset 0 0 0 1px light-dark(transparent, oklch(1 0 0 / 15%));
++    --shadow-inset-hover: inset 0px 0px 0px 2px #0074e24D;
++    --shadow-inset-selected: inset 0px 0px 0px 2px #0074e280;
++    --shadow-inset-success: inset 0px 0px 0px 2px #2f7d334D;
++    --shadow-inset-warning: inset 0px 0px 0px 2px #f8d36a4D;
++    --shadow-inset-error: inset 0px 0px 0px 2px #de47454D;
++    --color-icon-info: var(--color-text-info);
++    --color-icon-success: var(--color-text-success);
++    --color-icon-warning: var(--color-text-warning);
++    --color-icon-error: var(--color-text-error);
++    --color-border-info: var(--color-text-info);
++    --color-border-success: var(--color-text-success);
++    --color-border-warning: var(--color-text-warning);
++    --color-border-error: var(--color-text-error);
++    --duration-exit: var(--duration-fast);
++    --astryx-theme-neutral-color-status-fill-accent: light-dark(#0074e2, #6d9cfe);
++  }
++
++  :scope {
++    font-family: var(--font-family-body);
++  }
++
++  .astryx-heading[data-level="1"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-heading-1-size);
++    font-weight: var(--text-heading-1-weight);
++    line-height: var(--text-heading-1-leading);
++  }
++
++  .astryx-heading[data-level="2"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-heading-2-size);
++    font-weight: var(--text-heading-2-weight);
++    line-height: var(--text-heading-2-leading);
++  }
++
++  .astryx-heading[data-level="3"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-heading-3-size);
++    font-weight: var(--text-heading-3-weight);
++    line-height: var(--text-heading-3-leading);
++  }
++
++  .astryx-heading[data-level="4"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-heading-4-size);
++    font-weight: var(--text-heading-4-weight);
++    line-height: var(--text-heading-4-leading);
++  }
++
++  .astryx-heading[data-level="5"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-heading-5-size);
++    font-weight: var(--text-heading-5-weight);
++    line-height: var(--text-heading-5-leading);
++  }
++
++  .astryx-heading[data-level="6"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-heading-6-size);
++    font-weight: var(--text-heading-6-weight);
++    line-height: var(--text-heading-6-leading);
++  }
++
++  .astryx-heading[data-type="display-1"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-display-1-size);
++    line-height: var(--text-display-1-leading);
++  }
++
++  .astryx-heading[data-type="display-2"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-display-2-size);
++    line-height: var(--text-display-2-leading);
++  }
++
++  .astryx-heading[data-type="display-3"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-display-3-size);
++    line-height: var(--text-display-3-leading);
++  }
++
++  .astryx-text[data-type="body"] {
++    font-family: var(--font-family-body);
++    font-size: var(--text-body-size);
++    line-height: var(--text-body-leading);
++  }
++
++  .astryx-text[data-type="large"] {
++    font-family: var(--font-family-body);
++    font-size: var(--text-large-size);
++    line-height: var(--text-large-leading);
++  }
++
++  .astryx-text[data-type="label"] {
++    font-family: var(--font-family-body);
++    font-size: var(--text-label-size);
++    line-height: var(--text-label-leading);
++  }
++
++  .astryx-text[data-type="code"] {
++    font-family: var(--font-family-code);
++    font-size: var(--text-code-size);
++    line-height: var(--text-code-leading);
++  }
++
++  .astryx-text[data-type="supporting"] {
++    font-family: var(--font-family-body);
++    font-size: var(--text-supporting-size);
++    line-height: var(--text-supporting-leading);
++  }
++
++  .astryx-text[data-type="display-1"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-display-1-size);
++    line-height: var(--text-display-1-leading);
++  }
++
++  .astryx-text[data-type="display-2"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-display-2-size);
++    line-height: var(--text-display-2-leading);
++  }
++
++  .astryx-text[data-type="display-3"] {
++    font-family: var(--font-family-heading);
++    font-size: var(--text-display-3-size);
++    line-height: var(--text-display-3-leading);
++  }
++
++  .astryx-item[data-selected="selected"] {
++    --color-text-secondary: light-dark(#474747, #c6c6c6);
++  }
++
++  .astryx-tree-list-item[data-selected="selected"] {
++    --color-text-secondary: light-dark(#474747, #c6c6c6);
++  }
++
++  .astryx-file-input[data-mode="dropzone"] {
++    --color-text-secondary: light-dark(#474747, #c6c6c6);
++  }
++
++  .astryx-citation[data-variant="number"] {
++    --color-text-secondary: light-dark(#474747, #c6c6c6);
++  }
++
++  .astryx-button[data-variant="destructive"] {
++    background-color: var(--color-error-muted);
++    color: var(--color-on-error-muted);
++  }
++
++  .astryx-badge[data-variant="neutral"] {
++    background-color: var(--color-background-gray);
++    color: var(--color-text-gray);
++  }
++
++  .astryx-badge[data-variant="red"] {
++    background-color: var(--color-background-red);
++    color: var(--color-text-red);
++  }
++
++  .astryx-badge[data-variant="orange"] {
++    background-color: var(--color-background-orange);
++    color: var(--color-text-orange);
++  }
++
++  .astryx-badge[data-variant="yellow"] {
++    background-color: var(--color-background-yellow);
++    color: var(--color-text-yellow);
++  }
++
++  .astryx-badge[data-variant="green"] {
++    background-color: var(--color-background-green);
++    color: var(--color-text-green);
++  }
++
++  .astryx-badge[data-variant="teal"] {
++    background-color: var(--color-background-teal);
++    color: var(--color-text-teal);
++  }
++
++  .astryx-badge[data-variant="cyan"] {
++    background-color: var(--color-background-cyan);
++    color: var(--color-text-cyan);
++  }
++
++  .astryx-badge[data-variant="blue"] {
++    background-color: var(--color-background-blue);
++    color: var(--color-text-blue);
++  }
++
++  .astryx-badge[data-variant="purple"] {
++    background-color: var(--color-background-purple);
++    color: var(--color-text-purple);
++  }
++
++  .astryx-badge[data-variant="pink"] {
++    background-color: var(--color-background-pink);
++    color: var(--color-text-pink);
++  }
++
++  .astryx-badge[data-variant="gray"] {
++    background-color: var(--color-background-gray);
++    color: var(--color-text-gray);
++  }
++
++  .astryx-segmented-control {
++    padding: var(--spacing-1);
++    --_segmented-control-padding: var(--spacing-1);
++  }
++
++  .astryx-segmented-control-item {
++    --color-text-secondary: light-dark(#474747, #c6c6c6);
++  }
++
++  .astryx-segmented-control-item[data-size="sm"] {
++    height: calc(var(--size-element-sm) - 8px);
++  }
++
++  .astryx-segmented-control-item[data-size="md"] {
++    height: calc(var(--size-element-md) - 8px);
++  }
++
++  .astryx-segmented-control-item[data-size="lg"] {
++    height: calc(var(--size-element-lg) - 8px);
++  }
++
++  .astryx-segmented-control-item[data-selected="selected"] {
++    box-shadow: none;
++  }
++
++  .astryx-switch {
++    --color-background-gray: var(--color-border-emphasized);
++  }
++
++  .astryx-progress-bar {
++    --color-background-muted: var(--color-border-emphasized);
++  }
++
++  .astryx-progress-bar-fill[data-variant="neutral"] {
++    background-color: light-dark(var(--color-text-secondary), #b9b9b9);
++  }
++
++  .astryx-progress-bar-fill[data-variant="disabled"] {
++    background-color: light-dark(var(--color-text-secondary), #b9b9b9);
++  }
++
++  .astryx-card {
++    --astryx-card-padding: var(--spacing-3);
++  }
++
++  .astryx-card[data-variant="blue"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-card[data-variant="cyan"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-card[data-variant="green"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-card[data-variant="orange"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-card[data-variant="pink"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-card[data-variant="purple"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-card[data-variant="red"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-card[data-variant="teal"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-card[data-variant="yellow"] {
++    --color-text-secondary: light-dark(#474747, #b9b9b9);
++  }
++
++  .astryx-section {
++    --astryx-section-padding: var(--spacing-3);
++  }
++
++  .astryx-text[data-color="primary"] { color: var(--color-text-primary); }
++
++  .astryx-heading[data-color="primary"] { color: var(--color-text-primary); }
++
++  .astryx-text[data-color="secondary"] { color: var(--color-text-secondary); }
++
++  .astryx-heading[data-color="secondary"] { color: var(--color-text-secondary); }
++
++  .astryx-text[data-color="disabled"] { color: var(--color-text-disabled); }
++
++  .astryx-heading[data-color="disabled"] { color: var(--color-text-disabled); }
++
++  .astryx-text[data-color="placeholder"] { color: var(--color-text-secondary); }
++
++  .astryx-heading[data-color="placeholder"] { color: var(--color-text-secondary); }
++
++  .astryx-text[data-color="accent"] { color: var(--color-text-accent); }
++
++  .astryx-heading[data-color="accent"] { color: var(--color-text-accent); }
++
++  .astryx-text[data-color="inherit"] { color: inherit; }
++
++  .astryx-heading[data-color="inherit"] { color: inherit; }
++
++  .astryx-text[data-size="4xs"] { font-size: var(--font-size-4xs); }
++
++  .astryx-text[data-size="3xs"] { font-size: var(--font-size-3xs); }
++
++  .astryx-text[data-size="2xs"] { font-size: var(--font-size-2xs); }
++
++  .astryx-text[data-size="xsm"] { font-size: var(--font-size-xs); }
++
++  .astryx-text[data-size="sm"] { font-size: var(--font-size-sm); }
++
++  .astryx-text[data-size="base"] { font-size: var(--font-size-base); }
++
++  .astryx-text[data-size="lg"] { font-size: var(--font-size-lg); }
++
++  .astryx-text[data-size="xl"] { font-size: var(--font-size-xl); }
++
++  .astryx-text[data-size="2xl"] { font-size: var(--font-size-2xl); }
++
++  .astryx-text[data-size="3xl"] { font-size: var(--font-size-3xl); }
++
++  .astryx-text[data-size="4xl"] { font-size: var(--font-size-4xl); }
++
++  .astryx-heading[data-weight="normal"] { font-weight: var(--font-weight-normal); }
++
++  .astryx-heading[data-weight="medium"] { font-weight: var(--font-weight-medium); }
++
++  .astryx-heading[data-weight="semibold"] { font-weight: var(--font-weight-semibold); }
++
++  .astryx-heading[data-weight="bold"] { font-weight: var(--font-weight-bold); }
++}
++}
++
++@layer astryx-theme {
++@media (width < 1024px) and (pointer: coarse) {
++  @scope ([data-astryx-theme="neutral"]) to ([data-astryx-theme]) {
++    :scope {
++    --_scaled-font-size-4xs: min(calc(0.4375rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-3xs));
++    --font-size-4xs: var(--_scaled-font-size-4xs);
++    --_scaled-font-size-3xs: min(calc(0.5rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-2xs));
++    --font-size-3xs: var(--_scaled-font-size-3xs);
++    --_scaled-font-size-2xs: min(calc(0.625rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-xs));
++    --font-size-2xs: var(--_scaled-font-size-2xs);
++    --_scaled-font-size-xs: min(calc(0.75rem * var(--_dynamic-type-caption1, 1)), var(--_scaled-font-size-sm));
++    --font-size-xs: var(--_scaled-font-size-xs);
++    --_scaled-font-size-sm: min(calc(0.875rem * var(--_dynamic-type-footnote, 1)), var(--_scaled-font-size-base));
++    --font-size-sm: var(--_scaled-font-size-sm);
++    --_scaled-font-size-base: min(calc(1rem * var(--_dynamic-type-body, 1)), var(--_scaled-font-size-lg));
++    --font-size-base: var(--_scaled-font-size-base);
++    --_scaled-font-size-lg: min(calc(1.1875rem * var(--_dynamic-type-title3, 1)), var(--_scaled-font-size-xl));
++    --font-size-lg: var(--_scaled-font-size-lg);
++    --_scaled-font-size-xl: min(calc(1.375rem * var(--_dynamic-type-title2, 1)), var(--_scaled-font-size-2xl));
++    --font-size-xl: var(--_scaled-font-size-xl);
++    --_scaled-font-size-2xl: min(calc(1.625rem * var(--_dynamic-type-title1, 1)), var(--_scaled-font-size-3xl));
++    --font-size-2xl: var(--_scaled-font-size-2xl);
++    --_scaled-font-size-3xl: min(calc(1.875rem * var(--_dynamic-type-title1, 1)), var(--_scaled-font-size-4xl));
++    --font-size-3xl: var(--_scaled-font-size-3xl);
++    --_scaled-font-size-4xl: min(calc(2.25rem * var(--_dynamic-type-large-title, 1)), var(--_scaled-font-size-5xl));
++    --font-size-4xl: var(--_scaled-font-size-4xl);
++    --_scaled-font-size-5xl: calc(2.625rem * var(--_dynamic-type-large-title, 1));
++    --font-size-5xl: var(--_scaled-font-size-5xl);
++    --text-heading-1-size: var(--font-size-2xl);
++    --text-heading-1-weight: var(--font-weight-semibold);
++    --text-heading-1-leading: 1.3846;
++    --text-heading-2-size: var(--font-size-xl);
++    --text-heading-2-weight: var(--font-weight-semibold);
++    --text-heading-2-leading: 1.4545;
++    --text-heading-3-size: var(--font-size-lg);
++    --text-heading-3-weight: var(--font-weight-bold);
++    --text-heading-3-leading: 1.4737;
++    --text-heading-4-size: var(--font-size-base);
++    --text-heading-4-weight: var(--font-weight-bold);
++    --text-heading-4-leading: 1.5;
++    --text-heading-5-size: var(--font-size-sm);
++    --text-heading-5-weight: var(--font-weight-semibold);
++    --text-heading-5-leading: 1.4286;
++    --text-heading-6-size: var(--font-size-xs);
++    --text-heading-6-weight: var(--font-weight-semibold);
++    --text-heading-6-leading: 1.6667;
++    --text-body-size: var(--font-size-base);
++    --text-body-weight: var(--font-weight-normal);
++    --text-body-leading: 1.5;
++    --text-large-size: var(--font-size-lg);
++    --text-large-weight: var(--font-weight-semibold);
++    --text-large-leading: 1.4737;
++    --text-label-size: var(--font-size-base);
++    --text-label-weight: var(--font-weight-medium);
++    --text-label-leading: 1.5;
++    --text-code-size: var(--font-size-base);
++    --text-code-weight: var(--font-weight-normal);
++    --text-code-leading: 1.5;
++    --text-supporting-size: var(--font-size-sm);
++    --text-supporting-weight: var(--font-weight-normal);
++    --text-supporting-leading: 1.4286;
++    --text-display-1-size: var(--font-size-5xl);
++    --text-display-1-weight: var(--font-weight-normal);
++    --text-display-1-leading: 1.2381;
++    --text-display-2-size: var(--font-size-4xl);
++    --text-display-2-weight: var(--font-weight-normal);
++    --text-display-2-leading: 1.2222;
++    --text-display-3-size: var(--font-size-3xl);
++    --text-display-3-weight: var(--font-weight-normal);
++    --text-display-3-leading: 1.4667;
++    --font-family-body: Figtree, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
++    --font-family-heading: Figtree, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
++    --font-family-code: ui-monospace, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
++  }
++  }
++}
++}
++
++@layer astryx-theme {
++@scope ([data-astryx-theme="neutral"]) to ([data-astryx-theme]) {
++  [data-astryx-media="dark"] {
++    color-scheme: dark;
++    --color-text-primary: var(--color-on-dark);
++    --color-icon-primary: var(--color-on-dark);
++    --color-accent: var(--color-on-dark);
++  }
++
++  [data-astryx-media="light"] {
++    color-scheme: light;
++    --color-text-primary: var(--color-on-light);
++    --color-icon-primary: var(--color-on-light);
++    --color-accent: var(--color-on-light);
++  }
++
++  :where(:scope[data-theme="dark"]) [data-astryx-media-dark-page="light"], :where(:scope:not([data-theme="light"], [data-theme="dark"]):not(:is([data-theme="light"], [data-theme="dark"]) *):where(html[data-astryx-scheme="dark"] *)) [data-astryx-media-dark-page="light"] {
++    color-scheme: light;
++    --color-text-primary: var(--color-on-light);
++    --color-icon-primary: var(--color-on-light);
++    --color-accent: var(--color-on-light);
++  }
++
++  @media (prefers-color-scheme: dark) {
++  :where(:scope:not([data-theme="light"], [data-theme="dark"]):not(:is([data-theme="light"], [data-theme="dark"]) *):where(html:not([data-astryx-scheme]) *)) [data-astryx-media-dark-page="light"], :where(:is([data-theme="light"], [data-theme="dark"]) :scope:not([data-theme="light"], [data-theme="dark"])) [data-astryx-media-dark-page="light"] {
++    color-scheme: light;
++    --color-text-primary: var(--color-on-light);
++    --color-icon-primary: var(--color-on-light);
++    --color-accent: var(--color-on-light);
++  }
++  }
++}
++}
+--- /dev/null
++++ b/11차/대시보드/web/astryx-theme.css
+@@ -0,0 +1,35 @@
++/* Rust에서 생성한 Astryx 프로젝트 테마: light */
++:root,[data-theme="light"],[data-mode="light"] {
++  color-scheme: light;
++  --color-background-body: #FFFFFF; --color-background-surface: #F4F8FA;
++  --color-background-card: #F4F8FA; --color-text-primary: #18212C;
++  --color-text-secondary: #596574; --color-border: #E0E9E5;
++  --color-border-emphasized: #087E59; --color-primary: #087E59;
++  --color-background-primary: #087E59; --color-text-on-primary: #FFFFFF;
++  --color-background-hover: #E3EFEF; --color-background-selected: #D3E7E3;
++  --color-text-disabled: #9CA2A8;
++  --font-family-body: 'NanumGothic', 'Nanum Gothic', 'Malgun Gothic', sans-serif;
++  --font-family-heading: var(--font-family-body); --font-weight-body: 700;
++  --spacing-1: 4px; --spacing-2: 8px; --spacing-3: 12px; --spacing-4: 16px;
++  --spacing-5: 20px; --spacing-6: 24px; --spacing-8: 32px;
++  --radius-inner: 6px; --radius-element: 10px; --radius-container: 16px;
++  --astryx-control-height: 44px; --astryx-focus-width: 2px;
++}
++
++/* Rust에서 생성한 Astryx 프로젝트 테마: dark */
++[data-theme="dark"],[data-mode="dark"] {
++  color-scheme: dark;
++  --color-background-body: #181D20; --color-background-surface: #252E33;
++  --color-background-card: #252E33; --color-text-primary: #E7EDF1;
++  --color-text-secondary: #ADB7BF; --color-border: #41504A;
++  --color-border-emphasized: #74DFB1; --color-primary: #74DFB1;
++  --color-background-primary: #74DFB1; --color-text-on-primary: #000000;
++  --color-background-hover: #2B3A3C; --color-background-selected: #304745;
++  --color-text-disabled: #737A7F;
++  --font-family-body: 'NanumGothic', 'Nanum Gothic', 'Malgun Gothic', sans-serif;
++  --font-family-heading: var(--font-family-body); --font-weight-body: 700;
++  --spacing-1: 4px; --spacing-2: 8px; --spacing-3: 12px; --spacing-4: 16px;
++  --spacing-5: 20px; --spacing-6: 24px; --spacing-8: 32px;
++  --radius-inner: 6px; --radius-element: 10px; --radius-container: 16px;
++  --astryx-control-height: 44px; --astryx-focus-width: 2px;
++}
+Binary {"path": "11차/대시보드/web/fonts/NanumGothic-Bold.ttf", "status": "added", "before": null, "after": {"bytes": 2073868, "sha256": "f96298f9fb18e364d2370f4c3ce948ac67a2b61af992d7234bc15c42b033c674"}}
+--- /dev/null
++++ b/11차/대시보드/web/fonts/OFL.txt
+@@ -0,0 +1,96 @@
++Copyright (c) 2010, NHN Corporation (http://www.nhncorp.com),
++with Reserved Font Name Nanum, Naver Nanum, NanumGothic, Naver 
++NanumGothic, NanumMyeongjo, Naver NanumMyeongjo, NanumBrush, Naver
++NanumBrush, NanumPen, Naver NanumPen.
++
++This Font Software is licensed under the SIL Open Font License, Version 1.1.
++This license is copied below, and is also available with a FAQ at:
++http://scripts.sil.org/OFL
++
++
++-----------------------------------------------------------
++SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
++-----------------------------------------------------------
++
++PREAMBLE
++The goals of the Open Font License (OFL) are to stimulate worldwide
++development of collaborative font projects, to support the font creation
++efforts of academic and linguistic communities, and to provide a free and
++open framework in which fonts may be shared and improved in partnership
++with others.
++
++The OFL allows the licensed fonts to be used, studied, modified and
++redistributed freely as long as they are not sold by themselves. The
++fonts, including any derivative works, can be bundled, embedded, 
++redistributed and/or sold with any software provided that any reserved
++names are not used by derivative works. The fonts and derivatives,
++however, cannot be released under any other type of license. The
++requirement for fonts to remain under this license does not apply
++to any document created using the fonts or their derivatives.
++
++DEFINITIONS
++"Font Software" refers to the set of files released by the Copyright
++Holder(s) under this license and clearly marked as such. This may
++include source files, build scripts and documentation.
++
++"Reserved Font Name" refers to any names specified as such after the
++copyright statement(s).
++
++"Original Version" refers to the collection of Font Software components as
++distributed by the Copyright Holder(s).
++
++"Modified Version" refers to any derivative made by adding to, deleting,
++or substituting -- in part or in whole -- any of the components of the
++Original Version, by changing formats or by porting the Font Software to a
++new environment.
++
++"Author" refers to any designer, engineer, programmer, technical
++writer or other person who contributed to the Font Software.
++
++PERMISSION & CONDITIONS
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of the Font Software, to use, study, copy, merge, embed, modify,
++redistribute, and sell modified and unmodified copies of the Font
++Software, subject to the following conditions:
++
++1) Neither the Font Software nor any of its individual components,
++in Original or Modified Versions, may be sold by itself.
++
++2) Original or Modified Versions of the Font Software may be bundled,
++redistributed and/or sold with any software, provided that each copy
++contains the above copyright notice and this license. These can be
++included either as stand-alone text files, human-readable headers or
++in the appropriate machine-readable metadata fields within text or
++binary files as long as those fields can be easily viewed by the user.
++
++3) No Modified Version of the Font Software may use the Reserved Font
++Name(s) unless explicit written permission is granted by the corresponding
++Copyright Holder. This restriction only applies to the primary font name as
++presented to the users.
++
++4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
++Software shall not be used to promote, endorse or advertise any
++Modified Version, except to acknowledge the contribution(s) of the
++Copyright Holder(s) and the Author(s) or with their explicit written
++permission.
++
++5) The Font Software, modified or unmodified, in part or in whole,
++must be distributed entirely under this license, and must not be
++distributed under any other license. The requirement for fonts to
++remain under this license does not apply to any document created
++using the Font Software.
++
++TERMINATION
++This license becomes null and void if any of the above conditions are
++not met.
++
++DISCLAIMER
++THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
++OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
++COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
++DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
++OTHER DEALINGS IN THE FONT SOFTWARE.
+--- /dev/null
++++ b/11차/대시보드/web/index.html
+@@ -0,0 +1,48 @@
++<!doctype html>
++<html lang="ko">
++<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>투자 연구 스튜

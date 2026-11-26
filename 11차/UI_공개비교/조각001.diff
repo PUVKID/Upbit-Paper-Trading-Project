@@ -1,0 +1,697 @@
+--- a/11차/README.md
++++ b/11차/README.md
+@@ -4,6 +4,8 @@
+ 
+ # TimesFM 사전학습 모델의 Zero-Shot 비교
+ 
++화면 통합은 [11차 대시보드 안내](UI통합_안내.md)와 [UI 전용 비교](UI_전체비교.md)에서 구분해 읽을 수 있습니다. 이 연구의 기존 결과·조건·원래 전체 비교는 그대로 보존합니다.
++
+ <!-- reading-levels:start -->
+ [LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
+ 
+@@ -14,6 +16,12 @@
+ 
+ <a id="reading-level-1"></a>
+ ## LEVEL 1 - Beginner
++
++### LEVEL 1 · 대시보드 통합 안내
++
++화면이 정돈된 것과 연구 성적이 좋아진 것은 다릅니다. 11차의 조회 화면을 실제 파일로 통합했으며 연구 결과·손실·미채택·STOP은 그대로입니다. 화면 문서200과 데이터 조회503을 구분합니다.
++
++[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-1) · [UI 전용 전체 비교](UI_전체비교.md)
+ 
+ ### LEVEL 1 · 처음 읽는 분을 위한 동작과 결과
+ 
+@@ -352,6 +360,12 @@
+ <a id="reading-level-2"></a>
+ ## LEVEL 2 - Explorer
+ 
++### LEVEL 2 · 대시보드 통합 안내
++
++기존 DOM·데이터 흐름에 공식 중립 CSS·Rust 생성 토큰·화면 어댑터를 연결했습니다. 현재 조회 UI는 E11의8881하나이며 D원본 relay 의존은 남습니다. 새 연구·컨테이너·수집·주문을 시작하지 않습니다.
++
++[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-2) · [UI 전용 전체 비교](UI_전체비교.md)
++
+ ### LEVEL 2 · 구성과 조건의 관계
+ 
+ 완료된 512개 5분봉을 읽어 12 봉(60분)을 예측하고 policy2 일에서 고른 정책을 validation2 일에 적용합니다.
+@@ -687,6 +701,12 @@
+ <a id="reading-level-3"></a>
+ ## LEVEL 3 - Practitioner
+ 
++### LEVEL 3 · 대시보드 통합 안내
++
++현재 실제 파일은 E11/대시보드이며 그곳의 server.py --port 8881과 시작.ps1이 진입점입니다. 이미 실행 중인 포트를 중복 기동하지 않습니다. 생성 CSS는 보존하지만 공통 Rust 환경·Drelay·비공개 검사 입력이 없어 공개 다운로드만으로 전체 재현 가능한 묶음은 아닙니다.
++
++[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-3) · [UI 전용 전체 비교](UI_전체비교.md)
++
+ ### LEVEL 3 · 사용·실험 조건을 대조하는 순서
+ 
+ 고정 TimesFM revision·SHA·cuda:0/float32·문맥 512/지평 12·상한 6000 창·policy/validation 각 2일을 해당 manifest와 대조합니다.
+@@ -1022,6 +1042,12 @@
+ <a id="reading-level-4"></a>
+ ## LEVEL 4 - Advanced
+ 
++### LEVEL 4 · 대시보드 통합 안내
++
++실제 E11의24개 보존 파일과3개 안내·시작 파일을 같은 바이트로 공개 사본에 연결했습니다. 서버의 ROOT/web·기본8881·Drelay는 유지하며 연구 소스·STOP·결과를 수정하지 않았습니다. 이전 UI45와 독립 PASS는 재사용하고 공개 문서 영향만 새로 확인합니다.
++
++[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-4) · [UI 전용 전체 비교](UI_전체비교.md)
++
+ ### LEVEL 4 · 설계·평가·실패 경계
+ 
+ 고정 사전 학습 추론과 GPU 적합을 분리하고 모델 231,289,280 파라미터·장치/자료형·forward 전후 CUDA 입력 출력·의존성 격리를 검토합니다.
+@@ -1354,6 +1380,12 @@
+ <a id="reading-level-5"></a>
+ ## LEVEL 5 - Expert
+ 
++### LEVEL 5 · 대시보드 통합 안내
++
++서버·생성CSS·27파일 해시는 UI 전용 비교와 별도 동결 목록으로 대조합니다. 기존 UI45·Rust 생성 근거·E11교체GET을 재사용하며 새 제품 검사는 수행하지 않습니다. 화면200·테마200·어댑터200·상태503과 실제 브라우저 표시 미확인을 구분하고 이번 공개의 별도 의미 검토·원격 확인은 남겨 둡니다.
++
++[같은 수준 UI 통합 설명](UI통합_안내.md#user-content-reading-level-5) · [UI 전용 전체 비교](UI_전체비교.md)
++
+ 기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](.) · [직전 비교·자료 범위](%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
+ <!-- reading-levels:end -->
+ 
+--- /dev/null
++++ b/11차/UI통합_안내.md
+@@ -0,0 +1,90 @@
++# 11차 대시보드 통합
++
++11차의 연구 결과와 현재 조회 화면을 같은 차수에서 읽도록 통합했습니다. **디자인만 별도 차수로 게시하지 않습니다.** 기존 실험 설명·집계·원래 전체 비교·미채택·STOP은 그대로 보존합니다.
++
++| 자료 | 확인할 내용 |
++| --- | --- |
++| [원래 실험 설명](README.md) | TimesFM zero-shot 비교, 추가 학습 0회·후향 한계·미채택 |
++| [실제 대시보드 파일](대시보드/) | HTML·JavaScript·3D·CSS·폰트·서버·시작 진입점의 보존 사본 |
++| [UI 전용 전체 비교](UI_전체비교.md) | 이번 공개 파일·안내·탐색 변경과 바이너리 크기·해시 |
++| [원래 연구 전체 비교](전체비교.md) | 기존 10차 이후 연구 코드 비교, 이번에 덮어쓰지 않음 |
++
++아래 다섯 설명은 같은 통합을 서로 다른 출발점에서 설명합니다. 대시보드 안의 README는 통합 준비 시점의 문서를 원문 보존한 것입니다. 실제 화면 교체 확인과 현재 제약은 이 안내에서 구분합니다.
++
++<a id="reading-level-1"></a>
++## LEVEL 1 - Beginner
++
++대시보드는 저장된 연구·시장·가상계좌 정보를 보여 주는 화면입니다. 화면을 정리했다고 새 모델이 더 좋은 성적을 낸 것은 아닙니다. 11차의 기존 예측 결과와 거래 손실·미채택은 바뀌지 않았습니다.
++
++| 확인할 것 | 실제 상태 | 주의 |
++| --- | --- | --- |
++| 화면 위치 | E11의 대시보드 파일로 통합 | 보존 이력 폴더에서 실행하지 않음 |
++| 표시 | 다섯 코인·3D·밝은/어두운 테마·굵은 한글 글꼴 유지 | 예시 숫자·새 성과를 만들지 않음 |
++| 연결 | 화면 문서 응답 200, 상태 조회 503 확인 기록 | 화면이 열리는 것과 시세를 읽는 것은 다름 |
++
++현재 조회 화면은 8881 주소를 승계한 하나의 UI입니다. 옛 화면을 선택지나 별도 포트의 병행 기본값으로 남기지 않습니다. 연결 실패는 정상 시세가 아니며, 11차 STOP과 자동 반복 일시정지·실제 주문 금지 경계를 유지합니다.
++
++[같은 수준 연구 설명](README.md#user-content-reading-level-1) · [같은 수준 프로젝트](../docs/읽기안내/레벨1.md)
++
++<a id="reading-level-2"></a>
++## LEVEL 2 - Explorer
++
++Astryx는 화면 요소의 색·간격·테두리·조작 상태를 일관되게 연결하는 디자인 체계입니다. 기존 DOM과 데이터 처리를 유지하면서 공식 중립 CSS·생성 토큰·화면 어댑터를 함께 사용합니다.
++
++| 입력 | 연결 | 출력·경계 |
++| --- | --- | --- |
++| 기존 HTML·JS·3D·폰트 | 실제 파일을 E11 대시보드에 복사 | 기능·선택·필터·정보 보존 |
++| 기존 두 테마 팔레트 | Rust 생성 CSS와 어댑터 로드 | 밝은/어두운 화면, 새 Rust 실행 아님 |
++| D 원본 상태 relay | 읽기 전용 `/api/status` 전달 | 연결 실패는 HTTP 503으로 유지 |
++
++실행 위치가 E11로 바뀌어도 원래 D 데이터 relay 의존은 남습니다. 프로젝트 전체를 E로 이전한 상태가 아닙니다. 새 연구·수집·컨테이너·거래를 시작하거나 화면 변경을 수익 개선으로 설명하지 않습니다.
++
++[같은 수준 연구 설명](README.md#user-content-reading-level-2) · [같은 수준 프로젝트](../docs/읽기안내/레벨2.md)
++
++<a id="reading-level-3"></a>
++## LEVEL 3 - Practitioner
++
++현재 화면의 cwd는 `E:/2026/Upbit 5-Coin Project/11차/대시보드`이며 진입점은 그 폴더의 `server.py --port 8881` 또는 `시작.ps1`입니다. 시작 스크립트는 개인 홈에서 기존 Codex runtime Python을 찾으며 인증·새 환경 설치·기존 프로세스 종료를 수행하지 않습니다.
++
++| 순서 | 확인 | 해석 |
++| --- | --- | --- |
++| 파일 | 이 저장소의 `11차/대시보드` 27파일 | 원본과 같은 바이트로 보존한 사본 |
++| 운영 | E11 서버로 8881 교체·GET 확인 기록 | 이미 실행 중인 포트를 중복 기동하지 않음 |
++| 응답 | `/` 200·17,585바이트, 테마/어댑터 200 | 상태 API의 503과 구분 |
++| 재현 조건 | D relay와 공통 E Rust 환경 | 공개 다운로드만으로 전체 환경 재현 가능하다고 하지 않음 |
++
++공통 Rust 실행 파일·Cargo 소스·lock·공식 패키지 설치 환경은 이 묶음에 없습니다. 생성된 CSS는 포함하지만 재생성에는 별도 의존성과 `work` 출력 위치 준비가 필요합니다. 비공개 원본 목록에 의존하는 검사.py는 복제하지 않았습니다. 기존 45항목 UI 검사와 생성 해시는 재사용했습니다.
++
++[같은 수준 연구 설명](README.md#user-content-reading-level-3) · [같은 수준 프로젝트](../docs/읽기안내/레벨3.md)
++
++<a id="reading-level-4"></a>
++## LEVEL 4 - Advanced
++
++화면 파일 24개와 통합 안내·시작 진입점 3개를 실제 E11에서 보존했습니다. `server.py`의 `ROOT/web`는 현재 대시보드를 가리키며, 기본 포트 8881과 D 원본 relay 호출은 바꾸지 않았습니다.
++
++| 경계 | 구현 | 검증·제약 |
++| --- | --- | --- |
++| UI | 공식 CSS·테마 CSS·기존 어댑터와 실제 DOM | 기존 UI 독립 PASS·45항목 재사용 |
++| 서버 | loopback·허용 GET·변경 요청 거부 | 기존 읽기 경계 근거 재사용 |
++| 데이터 | `D:/2026/Upbit 5-Coin Project/tools/docker_control.py` | D 원본 의존 유지, SQLite 직접 개방 추가 없음 |
++| 공개 | 실행 소스 27파일 불변, 공개 안내·링크·비교 추가 | 개인 지침·work·evidence·계좌·인증 제외 |
++
++D의 기존 root/web는 현재 역할을 임의 확정해 삭제하거나 교체하지 않았습니다. 구 UI 병행 운영을 권장하는 의미도 아닙니다. 공개 준비에서는 제품 모듈·UI·Rust를 실행하지 않고 공개 파일 분류·문서 링크·목록만 확인합니다.
++
++[같은 수준 연구 설명](README.md#user-content-reading-level-4) · [같은 수준 프로젝트](../docs/읽기안내/레벨4.md)
++
++<a id="reading-level-5"></a>
++## LEVEL 5 - Expert
++
++서버 소스 SHA-256은 `d2a1fb0179c2a653bcc865db3d8d96708a8dcd6aa8dd710c84112f200689d3df`, 생성 테마 CSS는 `443e52130566ff1cb9f86165448abcd5a60bfa43bcbc0459ed171494f71d265f`입니다. 실제 E11 파일·공개 사본·비공개 snapshot의 27파일을 별도로 대조합니다. 11차 원래 실험 결과의 분모·수치·실패를 UI 통합의 결과로 재분류하지 않습니다.
++
++| 근거 | 확인 범위 | 대신하지 않는 것 |
++| --- | --- | --- |
++| 기존 UI45·독립 PASS | 테마·폭·조작부·읽기 경계 | 이번 공개 안전성·읽기 수준 의미 검토 |
++| Rust 생성 기록 | light/dark 기존 실호출과 CSS 해시 | 새로운 Rust 빌드 재현·가속·성능 향상 |
++| 화면 교체 인계 | 실제 E11 8881, 문서·테마·어댑터 200, 상태503 | 유효 시세·계좌 연결 성공 |
++| 공개 UI 전용 비교 | 새 파일·문서·공백·주석·바이너리 해시 | 원래11차 연구 전체 비교의 대체 |
++
++실제 브라우저 표시는 이번 교체 인계에서 확인하지 못했습니다. 기존 Three.js 경고·물리 터치·모든 브라우저 미확인 한계는 유지합니다. 독립 공개 검토·최종 커밋·푸시·원격 일치가 완료되기 전 이 후보를 공개 완료로 보고하지 않습니다. 보존 이력과 실패·미게시 초안은 로컬에 남기며 별도 디자인 차수를 새 연구 차수로 게시하지 않습니다.
++
++[같은 수준 연구 설명](README.md#user-content-reading-level-5) · [같은 수준 프로젝트](../docs/읽기안내/레벨5.md)
+--- /dev/null
++++ b/11차/대시보드/Astryx-MIT-LICENSE.txt
+@@ -0,0 +1,21 @@
++MIT License
++
++Copyright (c) 2026 Meta Platforms, Inc.
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the "Software"), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
+--- /dev/null
++++ b/11차/대시보드/README.md
+@@ -0,0 +1,37 @@
++# 11차 투자 연구 스튜디오 · 대시보드 통합
++
++Astryx 화면을 11차의 실제 대시보드 파일로 통합했습니다. **표시 계층의 통합이며 11차 연구 결과의 변경은 아닙니다.** 실험 원본 README·학습 코드·STOP·결과는 수정하거나 복제하지 않았습니다.
++
++| 구성 | 실제 위치·역할 | 경계 |
++| --- | --- | --- |
++| 현재 화면 | 이 폴더의 `web/` | 보존 이력 폴더를 참조 실행하지 않음 |
++| 읽기 전용 서버 | 이 폴더의 `server.py` | loopback `127.0.0.1:8881`, 기존 상태 조회만 전달 |
++| 시작 진입점 | [시작.ps1](시작.ps1) | 이 폴더를 cwd로 사용, 기존 프로세스를 종료하지 않음 |
++| 테마 | 보존된 공식 CSS·Rust 생성 CSS·화면 어댑터 | 새 Rust 생성·빌드 없이 기존 생성 해시 재사용 |
++| 실험 원본 | 기존 D 프로젝트의 11차 | 이 UI 안내가 실험 원본 설명을 대체하지 않음 |
++
++## 시작과 교체
++
++**현재 UI 진입점은 이 E11 대시보드 하나입니다.** 구 UI를 선택지나 병행 기본값으로 운영하지 않습니다. 부모 담당자가 기존 8881 읽기 전용 화면의 commandline을 확인한 뒤 이 경로의 서버로 교체합니다. 실행 중인 8881 서버가 남아 있다면 이 시작 명령을 중복 실행하지 않습니다.
++
++기동 담당자가 사용할 cwd는 `E:/2026/Upbit 5-Coin Project/11차/대시보드`입니다. 준비된 Python에서 실행할 인자는 다음과 같습니다.
++
++```powershell
++python -B -X utf8 server.py --port 8881
++```
++
++또는 이 폴더의 `시작.ps1`을 사용합니다. 스크립트는 사용자 홈의 기존 Codex runtime Python을 확인하고 위 서버를 실행합니다. Python 설치·컨테이너 기동·학습·수집·실주문·다른 프로세스 종료는 수행하지 않습니다. 이 통합 담당자는 실제 기동을 실행하지 않았으며 부모의 교체·GET 확인이 남아 있습니다.
++
++주소는 `http://127.0.0.1:8881/`입니다. 화면 문서 HTTP 200과 `/api/status` HTTP 503은 다른 상태입니다. 상태 조회의 503을 정상 시세나 계좌 연결 성공으로 표시하지 않습니다.
++
++## 재현 조건과 확인 범위
++
++| 항목 | 유지한 조건 | 한계 |
++| --- | --- | --- |
++| 기존 UI 검증 | 45항목의 조작부·양테마·폭·포커스 근거와 독립 UI PASS 재사용 | 이번에 같은 UI 검사를 반복하지 않음 |
++| 새 경로 확인 | 실제 복사 바이트·정적 연결·기본 포트·시작 인자 확인 | 실제 서비스 기동·GET·브라우저 표시는 부모 담당 |
++| D 상태 relay | `D:/2026/Upbit 5-Coin Project/tools/docker_control.py` | 기존 D 의존 유지. E 전체 이전 완료가 아님 |
++| Rust 테마 생성 | `E:/2026/Astryx 공통 디자인/1차`의 기존 생성기·공식 CSS | 공통 Cargo 소스·lock·실행 환경은 이 폴더에 없음 |
++| 검사 원본 | 기존 비공개 검증 기록을 재사용 | 개인 원본 목록에 의존하는 `검사.py`는 복사하지 않음 |
++
++상세 조건은 [11차 UI 통합 설명](docs/11차_UI통합.md)을 확인하십시오. 공개 게시·독립 통합 검증·현재 데이터 연결 성공을 이 파일 저장만으로 완료했다고 보고하지 않습니다. 과거 디자인 폴더는 이력으로 보존하며 실행 경로로 연결하지 않습니다.
+--- /dev/null
++++ b/11차/대시보드/docs/11차_UI통합.md
+@@ -0,0 +1,40 @@
++# 11차 UI 통합과 실행 경계
++
++[대시보드 첫 안내](../README.md)
++
++## 통합한 파일
++
++| 파일 | 실제 연결 | 변경 여부 |
++| --- | --- | --- |
++| `web/` | 이 폴더의 HTML·JavaScript·3D·이미지·폰트·CSS | 보존 원본 바이트 그대로 복사 |
++| `server.py` | `ROOT`는 이 대시보드, `WEB`은 `ROOT/web` | 기본 포트 8881을 그대로 유지 |
++| `테마생성.py`·`테마설정.json` | 이 폴더를 ROOT로 하여 공통 Rust 생성기를 호출하는 기존 코드 | 파일 보존, 실제 호출은 하지 않음 |
++| `Astryx-MIT-LICENSE.txt` | 공식 중립 CSS의 MIT 원문 | 원문 보존 |
++| `시작.ps1` | 이 대시보드 cwd와 이곳의 server.py | 새 통합 진입점, 다른 화면 경로 실행 없음 |
++
++후속 디자인 이력의 파일을 현재 11차에 실제 복사했습니다. 실행 시 과거 상위 번호 폴더를 읽거나 거기로 이동하는 래퍼가 아닙니다. 화면 내부에 해당 번호 문구가 없으므로 기능·DOM·표·필터·3D·테마를 수정하지 않았습니다. 서버 구현도 기본 포트가 이미 8881이어서 수정하지 않았습니다.
++
++## 단일 화면 교체 원칙
++
++현재 화면은 `E:/2026/Upbit 5-Coin Project/11차/대시보드`의 읽기 전용 서버가 8881을 승계하는 구성입니다. 부모 담당자가 기존 화면 프로세스의 commandline을 대조한 뒤 읽기 전용 화면만 교체합니다. 이 담당자는 프로세스 조회를 통한 교체 판단·종료·기동을 하지 않습니다.
++
++보존 이력의 구 UI는 선택 메뉴·별도 포트·병행 기본값으로 제공하지 않습니다. D의 기존 `root/web`는 역할과 사용 여부를 임의 확정해 삭제하거나 교체하지 않습니다. 이를 별도 UI 운영 대상으로 안내하지도 않습니다. 원래 백엔드·컨테이너·모델·수집·실주문·계좌·전략·인증은 이번 범위가 아닙니다.
++
++## 실제 외부 의존성
++
++| 의존 | 코드에서 읽는 위치 | 재현 제약 |
++| --- | --- | --- |
++| 상태 조회 relay | `D:/2026/Upbit 5-Coin Project/tools/docker_control.py` | 현재 실제 원본 소스 경로를 유지. D에서 E로 전체 이전한 구성이 아님 |
++| Rust 실행 파일 | 공통 E 폴더의 `target/release/astryx-theme.exe` | 실행 파일·공통 Cargo 소스·빌드 환경은 이 대시보드 묶음 밖 |
++| 공식 테마 CSS | 같은 공통 E 폴더의 `node_modules/@astryxdesign/theme-neutral/dist/theme.css` | 이미 복사된 CSS 사용과 공통 의존성 재설치를 구분 |
++| 테마 생성 기록 저장 | 테마 생성 코드의 `work/Rust테마_실제호출_비공개.json` | work는 복제하지 않았으므로 생성기를 실행하려면 해당 출력 경로 준비도 필요 |
++
++Python 진입점은 `server.py --port 8881`이며 현재 폴더를 cwd로 사용합니다. 이 안내는 테마 생성기 실행이나 학습·서비스 재개 지시가 아닙니다. 생성 CSS는 기존 실제 Rust 호출 결과의 해시를 재사용합니다. 새 Rust 실행·가속·성능 개선을 주장하지 않습니다.
++
++## 재사용 근거와 새 확인
++
++기존 45항목 UI 조작부 검사와 독립 UI PASS, Rust light/dark 실호출·생성 CSS 해시를 로컬 비공개 인계에서 연결합니다. 구현과 자산이 같은 바이트인지를 확인하되 동일 UI/full 검사는 반복하지 않습니다. 이 대시보드에는 비공개 원장 목록·검사.py·evidence·work·라우팅 상태를 복제하지 않았습니다.
++
++새 확인은 복사 파일의 크기·SHA-256, HTML/CSS의 실제 정적 자산 연결, 높은 차수 실행 파일 참조 부재, E11 시작 경로와 8881 인자로 한정합니다. 이전 API 503은 실패 관측이며 새 경로의 실제 GET은 부모가 확인해야 합니다. 이전 검증을 현재 시세 연결 성공·전체 연구 성능·모든 브라우저 무결함으로 확대하지 않습니다.
++
++E11의 이 폴더는 대시보드 통합본일 뿐입니다. D11의 실험 원본·학습 코드·STOP·모델·결과는 그대로 남아 있으며, E11의 연구 코드 전체 준비나 전체 이전을 완료한 것으로 표시하지 않습니다. 기존 실험 README는 변경하지 않았습니다.
+--- /dev/null
++++ b/11차/대시보드/server.py
+@@ -0,0 +1,184 @@
++"""새 화면과 기존 실행을 분리하는 127.0.0.1 전용 대시보드입니다."""
++import argparse
++import base64
++from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
++import importlib.util
++import json
++import mimetypes
++from pathlib import Path
++import sys
++from urllib.error import HTTPError
++from urllib.parse import parse_qs, unquote, urlsplit
++from urllib.request import Request, urlopen
++
++ROOT = Path(__file__).resolve().parent
++PROJECT = 'upbit'
++SOURCE = Path('D:/2026/Upbit 5-Coin Project')
++WEB = ROOT / 'web'
++MAX_BYTES = 8 * 1024 * 1024
++
++
++def source_module(name, path):
++    """원본의 읽기 어댑터만 적재하며 main·서비스 시작 함수를 호출하지 않습니다."""
++    specification = importlib.util.spec_from_file_location(name, path)
++    module = importlib.util.module_from_spec(specification)
++    specification.loader.exec_module(module)
++    return module
++
++
++def make_server(port=8881, upstream_port=8879, reader=None):
++    web = WEB.resolve()
++    if reader is None and PROJECT == 'upbit':
++        sys.path.insert(0, str(SOURCE/'tools'))
++        original = source_module('astryx_original_upbit_gateway', SOURCE/'tools/docker_control.py')
++        def reader(path):
++            result = original.relay(path)
++            status = result['status']
++            if type(status) is not int or not 200 <= status <= 599:
++                raise ValueError('원본 응답 상태가 유효하지 않습니다')
++            raw = base64.b64decode(result['body_base64'], validate=True)
++            if len(raw) > MAX_BYTES:
++                raise ValueError('원본 응답 상한을 넘었습니다')
++            return status, raw
++    elif reader is None and PROJECT == 'face':
++        sys.path.insert(0, str(SOURCE))
++        from benchmark.status import read_public_status, log_tail, json_bytes
++        state_dir = SOURCE.parent/'work/stage1_revision2'
++        def reader(path):
++            parsed = urlsplit(path)
++            if parsed.path == '/api/status':
++                if parsed.query:
++                    return 400, json_bytes({'error': '상태 조회는 입력을 받지 않습니다'})
++                return 200, json_bytes(read_public_status(state_dir))
++            query = parse_qs(parsed.query, keep_blank_values=True, strict_parsing=True)
++            if set(query)-{'id', 'limit'} or any(len(values) != 1 for values in query.values()):
++                raise ValueError('로그 조회 인자가 유효하지 않습니다')
++            try:
++                return 200, json_bytes(log_tail(state_dir, query.get('id', ['acquisition'])[0], int(query.get('limit', ['100'])[0])))
++            except (ValueError, TypeError):
++                return 400, json_bytes({'error': '허용된 로그와 줄 수만 조회할 수 있습니다'})
++
++    class Handler(BaseHTTPRequestHandler):
++        server_version = 'AstryxLocalDashboard/1'
++        sys_version = ''
++
++        def log_message(self, *args):
++            # URL·인증값을 접근 로그에 복제하지 않습니다.
++            pass
++
++        def valid_host(self):
++            return self.headers.get('Host') in {f'127.0.0.1:{self.server.server_port}', f'localhost:{self.server.server_port}'}
++
++        def send(self, status, body, content_type='application/json; charset=utf-8'):
++            self.send_response(status)
++            self.send_header('Content-Type', content_type)
++            self.send_header('Content-Length', str(len(body)))
++            self.send_header('Cache-Control', 'no-store')
++            self.send_header('X-Content-Type-Options', 'nosniff')
++            self.send_header('X-Frame-Options', 'DENY')
++            self.send_header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
++            self.end_headers()
++            try:
++                self.wfile.write(body)
++            except (BrokenPipeError, ConnectionResetError):
++                pass
++
++        def reply(self, status, value):
++            self.send(status, json.dumps(value, ensure_ascii=False, allow_nan=False).encode('utf-8'))
++
++        def relay_etf(self, body=None):
++            headers = {'Accept': 'application/json'}
++            if body is not None:
++                headers.update({'Content-Type': 'application/json', 'X-Local-Request': '1', 'Origin': f'http://127.0.0.1:{upstream_port}'})
++            request = Request(f'http://127.0.0.1:{upstream_port}'+self.path, data=body, headers=headers)
++            try:
++                response = urlopen(request, timeout=10)
++            except HTTPError as error:
++                response = error
++            with response:
++                raw = response.read(MAX_BYTES+1)
++                if len(raw) > MAX_BYTES:
++                    raise ValueError('원본 응답 상한을 넘었습니다')
++                self.send(response.status, raw)
++
++        def do_GET(self):
++            if not self.valid_host():
++                return self.reply(403, {'error': '로컬 Host만 허용합니다'})
++            parsed = urlsplit(self.path)
++            route = unquote(parsed.path)
++            allowed = {'etf': {'/api/state', '/api/trades'}, 'upbit': {'/api/status'}, 'face': {'/api/status', '/api/logs'}}[PROJECT]
++            if route.startswith('/api'):
++                if route not in allowed:
++                    return self.reply(404, {'error': '없는 API입니다'})
++                try:
++                    if PROJECT == 'etf':
++                        return self.relay_etf()
++                    if PROJECT == 'upbit' and parsed.query:
++                        return self.reply(400, {'error': '상태 조회는 입력을 받지 않습니다'})
++                    status, body = reader(self.path)
++                    if len(body) > MAX_BYTES:
++                        raise ValueError('응답 상한을 넘었습니다')
++                    return self.send(status, body)
++                except (OSError, RuntimeError, ValueError, KeyError, TypeError, AttributeError) as error:
++                    print(f'기존 상태 연결 실패: {type(error).__name__}: {error}', file=sys.stderr, flush=True)
++                    return self.reply(503, {'error': '기존 상태에 연결하지 못했습니다. 실행 상태를 원래 프로젝트에서 확인해 주세요.'})
++            if parsed.query or '\\' in route or any(part.startswith('.') for part in Path(route).parts):
++                return self.reply(403, {'error': '정적 경로를 거부했습니다'})
++            target = web/(route.lstrip('/') or 'index.html')
++            if not target.resolve().is_relative_to(web) or any(parent.is_symlink() or (hasattr(parent, 'is_junction') and parent.is_junction()) for parent in [target, *target.parents] if parent != web.parent):
++                return self.reply(403, {'error': '화면 폴더 밖의 경로입니다'})
++            if not target.is_file():
++                return self.reply(404, {'error': '화면 파일이 없습니다'})
++            if target.stat().st_size > 10*1024*1024:
++                return self.reply(413, {'error': '정적 출력 상한을 넘었습니다'})
++            content_type = mimetypes.guess_type(target.name)[0] or 'application/octet-stream'
++            if content_type.startswith('text/') or target.suffix == '.js':
++                content_type += '; charset=utf-8'
++            self.send(200, target.read_bytes(), content_type)
++
++        def do_POST(self):
++            if not self.valid_host():
++                return self.reply(403, {'error': '로컬 Host만 허용합니다'})
++            if PROJECT != 'etf':
++                return self.reply(405, {'error': '읽기 전용 화면입니다'})
++            if self.path != '/api/jobs':
++                return self.reply(404, {'error': '없는 API입니다'})
++            if self.headers.get('X-Local-Request') != '1' or self.headers.get('Origin') not in {None, f'http://{self.headers.get("Host")}'}:
++                return self.reply(403, {'error': '현재 로컬 화면의 요청만 허용합니다'})
++            try:
++                length = int(self.headers.get('Content-Length', '0'))
++                if not 0 < length <= 4096 or self.headers.get_content_type() != 'application/json':
++                    raise ValueError('유효한 JSON 요청이 필요합니다')
++                body = self.rfile.read(length)
++                value = json.loads(body.decode('utf-8'))
++                if not isinstance(value, dict) or set(value) != {'action'} or value['action'] not in {'refresh', 'train', 'stop', 'start'}:
++                    raise ValueError('원래 화면에서 지원하는 작업만 허용합니다')
++            except (ValueError, UnicodeError, TypeError) as error:
++                return self.reply(400, {'error': str(error)})
++            try:
++                # 새 작업자를 만들지 않고 원래 서버의 중복 실행 방어를 사용합니다.
++                self.relay_etf(body)
++            except (OSError, ValueError) as error:
++                print(f'원래 작업 요청 연결 실패: {error}', file=sys.stderr, flush=True)
++                self.reply(503, {'error': '원래 서버에 요청을 전달하지 못했습니다. 자동 재시도하지 않습니다.'})
++
++        def reject(self):
++            self.reply(405, {'error': '지원하지 않는 요청입니다'})
++
++        do_PUT = do_DELETE = do_PATCH = do_OPTIONS = reject
++
++    server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
++    server.daemon_threads = True
++    return server
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--port', type=int, default=8881)
++    args = parser.parse_args()
++    with make_server(args.port) as server:
++        print(f'새 차수 화면 http://127.0.0.1:{server.server_port}', flush=True)
++        try:
++            server.serve_forever()
++        except KeyboardInterrupt:
++            pass
+--- /dev/null
++++ b/11차/대시보드/web/app.js
+@@ -0,0 +1,769 @@
++'use strict';
++const $ = id => document.getElementById(id);
++const coins = ['BTC', 'SOL', 'ETH', 'XRP', 'DOGE'];
++const coinNames = {BTC: '비트코인', SOL: '솔라나', ETH: '이더리움', XRP: '리플', DOGE: '도지코인'};
++let snapshot = null;
++let loading = false;
++let lastSuccess = null;
++const numeric = v => typeof v === 'number' && Number.isFinite(v);
++const number = (v, digits = 0) => numeric(v) ? v.toLocaleString('ko-KR', {maximumFractionDigits: digits}) : '—';
++const percent = v => numeric(v) ? `${number(v * 100, 2)}%` : '—';
++const money = v => numeric(v) ? `${number(v)} 원` : '—';
++const text = v => v === null || v === undefined || v === '' ? '대기' : String(v);
++const date = v => {
++  if (!v) return '대기';
++  const d = new Date(v);
++  return Number.isNaN(d.getTime()) ? '시각 확인 필요' : d.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
++};
++function set(id, value) { $(id).textContent = value; }
++function empty(tbody, columns, label) {
++  const row = tbody.insertRow();
++  const cell = row.insertCell();
++  cell.colSpan = columns;
++  cell.className = 'empty';
++  cell.textContent = label;
++}
++function table(id, items, render, columns, label = '저장된 기록 대기') {
++  const tbody = $(id);
++  tbody.replaceChildren();
++  if (!items.length) return empty(tbody, columns, label);
++  for (const item of items) {
++    const row = tbody.insertRow();
++    for (const value of render(item)) row.insertCell().textContent = text(value);
++  }
++}
++function details(id, entries) {
++  const fragment = document.createDocumentFragment();
++  for (const [label, value, id] of entries) {
++    const group = document.createElement('div');
++    const term = document.createElement('dt');
++    const description = document.createElement('dd');
++    if (id) description.id = id;
++    term.textContent = label;
++    description.textContent = text(value);
++    group.append(term, description);
++    fragment.append(group);
++  }
++  $(id).replaceChildren(fragment);
++}
++function progress(id, value, label) {
++  if (numeric(value)) {
++    $(id).value = Math.max(0, Math.min(100, value * 100));
++    set(`${id}-text`, `${label} ${number(value * 100, 1)}%`);
++  } else {
++    $(id).removeAttribute('value');
++    set(`${id}-text`, `${label} 대기`);
++  }
++}
++function healthStatus(s) {
++  const worker = s.services?.health || {};
++  const checked = Date.parse(s.health?.checked_utc);
++  const age = (Date.now() - checked) / 1000;
++  const workerError = /오류|실패|재시도/.test(worker.state || '') || (numeric(worker.consecutive_failures) && worker.consecutive_failures > 0);
++  const delayed = workerError || (Number.isFinite(age) && age > 600);
++  return {delayed, label: delayed ? '점검 지연 · 재시도 중' : !Number.isFinite(checked) ? '점검 기록 대기' : text(s.health?.state)};
++}
++function services(s) {
++  const container = $('services');
++  container.replaceChildren();
++  for (const [key, title] of [['collector', '최신 데이터'], ['backfill', '과거 데이터'], ['trainer', '학습'], ['paper', '모의 운용'], ['health', '운용검증']]) {
++    const service = s.services?.[key];
++    const health = key === 'health' ? s.health : null;
++    const currentHealth = key === 'health' ? healthStatus(s) : null;
++    const currentState = currentHealth ? currentHealth.label : service?.state;
++    const item = document.createElement('div');
++    item.className = 'service';
++    const dot = document.createElement('span');
++    dot.className = `dot${currentHealth?.delayed ? ' delayed' : ['실행 중', '검사통과'].includes(currentState) ? ' active' : currentState === '검사실패' ? ' failed' : ''}`;
++    dot.setAttribute('aria-hidden', 'true');
++    const name = document.createElement('b');
++    name.textContent = title;
++    const state = document.createElement('span');
++    state.textContent = text(currentState);
++    const count = document.createElement('small');
++    count.textContent = key === 'health'
++      ? `이전 결과 ${text(health?.state)} · 검사 시각 ${date(health?.checked_utc)} · 데이터셋 ${number(health?.checked_datasets)} · 오류 ${number(health?.errors_count)} · 대기 ${number(health?.pending_count)} · 검사기 ${text(service?.state)} · 연속 실패 ${number(service?.consecutive_failures)} · 시작 ${date(service?.started_utc)} · 실패 ${date(service?.failed_utc)}`
++      : service?.iteration == null ? '회차 대기' : `${number(service.iteration)}회차 · 연속 실패 ${number(service.consecutive_failures)}`;
++    item.append(dot, name, state, count);
++    container.append(item);
++  }
++}
++function distributionText(value) {
++  return ['down', 'flat', 'up'].map(key => number(value?.[key])).join(' / ');
++}
++function sumDistribution(values) {
++  const available = values.filter(value => value && typeof value === 'object');
++  if (!available.length) return null;
++  return Object.fromEntries(['down', 'flat', 'up'].map(key => [key, available.every(value => numeric(value[key])) ? available.reduce((sum, value) => sum + value[key], 0) : null]));
++}
++const diagnosticLabels = {
++  diagnostics: '진단', research: '연구', prediction_distribution: '예측 분포', predicted_distribution: '예측 분포',
++  class_distribution: '클래스 분포', label_distribution: '라벨 분포', actual_distribution: '실제 분포',
++  probability_quantiles: '확률 분위수', probabilities: '확률', quantiles: '분위수',
++  down: '하락', flat: '중립', up: '상승', candidates: '후보', candidate: '후보 번호', candidate_id: '후보 ID',
++  rule: '규칙', rules: '규칙', rule_evaluations: '규칙 평가', confidence: '매매 확률 임계값', edge: '매매 우위 임계값',
++  trades: '거래 수', fees_paid: '지급 수수료', fees: '수수료', costs: '비용',
++  rejection_reasons: '기각 사유', rejection_reason: '기각 사유', reason: '사유', reasons: '사유',
++  parameters: '실험 파라미터', params: '실험 파라미터', label_threshold: '라벨 임계값',
++  class_weights: '클래스 가중치', depth: '깊이', horizon: '예측 지평',
++  net_return: '순수익률', net_pnl: '순손익', MDD: '최대 낙폭', logloss: '로그 손실',
++  accuracy: '정확도', macro_f1: '매크로 F1', balanced_accuracy: '균형 정확도',
++  promotion: '승격', promotion_reason: '승격 사유', promote: '승격 여부',
++  expected_return: '기대 수익률', signal: '신호', guard: '진입 제한', quote_age: '호가 경과',
++  buy: '시험 매수', sell: '시험 매도', qty: '수량', cash: '진단 현금', vwap: '체결 평균가',
++  fee_paid: '지급 수수료', unfilled: '미체결', partial: '부분 체결', timestamp: '시각',
++  event_id: '이벤트 ID', paper_only: '모의 전용', quote_timestamps: '호가 시각', error: '오류 코드',
++  argmax_counts: '최대 확률 예측 수 · 하락/중립/상승', signal_counts: '신호 수 · 하락/중립/상승',
++  filter_reasons: '중립 필터 사유', no_trade_policy: '무거래 정책', buy_confidence_below: '매수 확신도 미달',
++  buy_edge_below: '매수 우위 미달', neutral_signal: '중립 신호', trials: '규칙 후보 평가', trading: '거래 평가',
++  objective: '선정 목적값', min_closed_trades: '완료 거래 증거 하한', sequence: '연구 순번',
++  class_weight_mode: '클래스 가중치 방식', horizon_minutes: '예측 지평 · 분',
++  eligible: '운용 적격', executions: '체결 수', scope: '평가 범위', class_counts: '클래스 표본 수',
++  class_factors: '클래스 가중치 계수', cap: '가중치 상한', half_life_days: '가중치 반감기 · 일',
++  rule_trials: '규칙별 평가', weighting: '학습 가중치', feature_rows_dropped: '피처 결측 제외 행',
++  policy_eligible: '정책 운용 적격', deployment: '운용 승격 하한', eligibility: '운용 적격 근거',
++  temperature: '확률 보정 온도', weights: '후보 앙상블 가중치', schema_version: '스키마 버전',
++  checked_at: '관측 시각', model_run: '실제 모델 ID', latest_raw_bar: '최근 원시 봉',
++  base_timeframe: '기본 시간봉', signal_time: '신호 봉 시각', feature_age_seconds: '피처 경과 · 초',
++  argmax: '최대 확률 클래스', inference_diagnostics: '추론 관측', decision_diagnostics: '운용 판단'
++};
++const diagnosticValues = {
++  non_positive_net_return: '비용 차감 순수익 0 이하',
++  non_positive_risk_adjusted_return: '위험 조정 수익 0 이하',
++  insufficient_closed_trades: '완료 거래 증거 부족', no_trades: '거래 없음',
++  no_signal: '신호 없음', unvalidated_or_unprofitable_model: '검증 미달 또는 수익 기준 미달',
++  legacy_schema_requires_validation: '이전 스키마 재검증 필요', model_load_error: '운용 모델 읽기 실패',
++  no_complete_features: '완성 피처 없음', stale_features: '피처 시각 만료', future_features: '미래 피처 차단',
++  duplicate_signal_bar: '중복 신호 봉', no_trade_policy: '무거래 정책',
++  model_neutral_or_threshold: '모델 중립 또는 임계값 미달', signal_ready: '모델 신호 준비', inference_error: '추론 오류'
++};
++function diagnosticRows(value, prefix = '') {
++  const result = [];
++  function visit(item, path, depth) {
++    if (result.length >= 500 || depth > 10) return;
++    if (item && typeof item === 'object') {
++      for (const [key, child] of Object.entries(item).slice(0, 100)) {
++        const label = Array.isArray(item) ? `[${Number(key) + 1}]` : diagnosticLabels[key] || key;
++        visit(child, path ? `${path} / ${label}` : label, depth + 1);
++      }
++    } else if (item !== null && item !== undefined) {
++      result.push({path, value: typeof item === 'boolean' ? (item ? '예' : '아니요') : diagnosticValues[item] || text(item).slice(0, 240)});
++    }
++  }
++  visit(value, prefix, 0);
++  return result;
++}
++function renderDiagnostics(s, marketEntries) {
++  const cycle = s.services?.trainer || {};
++  details('cycle-details', [
++    ['현재 프로세스 회차', number(cycle.iteration)], ['성공 완료 횟수', number(cycle.successful_cycles)],
++    ['다음 프로세스 회차', number(cycle.next_iteration)], ['성공 후 설정 대기 · 초', number(cycle.interval_seconds, 3)],
++    ['직전 성공 실제 종료', date(cycle.previous_finished_utc)], ['직전 성공→현재 시작 · 초', number(cycle.success_gap_seconds, 3)],
++    ['현재 프로세스 실제 시작', date(cycle.started_utc)], ['최근 프로세스 실제 종료', date(cycle.finished_utc)],
++    ['완료 프로세스 실제 소요 · 초', number(cycle.duration_seconds, 3)]
++  ]);
++  const trials = marketEntries.flatMap(([market, report]) => (report.diagnostics?.rule_trials || report.research?.trials || []).map((trial, index) => ({market, index, trial})));
++  table('rule-trials', trials, ({market, index, trial}) => [market.replace('KRW-', ''), index + 1,
++    number(trial.rule?.confidence, 3), number(trial.rule?.edge, 3), number(trial.trading?.trades),
++    money(trial.trading?.fees_paid), percent(trial.trading?.net_return), percent(trial.trading?.MDD),
++    trial.eligible === true ? '적격' : trial.eligible === false ? '보류' : '대기',
++    (trial.rejection_reasons || []).map(value => diagnosticValues[value] || text(value)).join(' · ') || '대기'], 10, '규칙별 평가 기록 대기');
++  const research = marketEntries.flatMap(([market, report]) => ['diagnostics', 'research', 'rule', 'weights', 'temperature'].flatMap(kind =>
++    diagnosticRows(report[kind]).map(row => ({...row, market, kind: diagnosticLabels[kind]}))));
++  research.push(...diagnosticRows(s.research).map(row => ({...row, market: '전체 실험', kind: '연구'})));
++  research.push(...diagnosticRows(s.promotion?.eligibility).map(row => ({...row, market: '전체 실험', kind: '승격 보류 근거'})));
++  table('research-diagnostics', research.slice(0, 1000), row => [row.market.replace('KRW-', ''), row.kind, row.path, row.value], 4, '실측 진단 기록 대기');
++  const decisions = coins.flatMap(coin => ['decision_diagnostics', 'inference_diagnostics'].flatMap(kind =>
++    diagnosticRows(s[kind]?.[`KRW-${coin}`], diagnosticLabels[kind]).map(row => ({...row, coin}))));
++  table('decision-diagnostics', decisions, row => [row.coin, row.path, row.value], 3, '운용 판단 기록 대기');
++  const probe = s.execution_probe || {};
++  details('probe-details', [
++    ['확인 시각', date(probe.checked_at)], ['시장', text(probe.market)], ['출처', text(probe.source)],
++    ['범위', text(probe.scope)], ['경로 통과', probe.passed === true ? '통과' : probe.passed === false ? '실패' : '대기'],
++    ['진단 왕복 순손익 · 본 계좌 제외', money(probe.round_trip_net_pnl)], ['진단 수수료', money(probe.fees)]
++  ]);
++  const paths = Object.fromEntries(['buy', 'sell', 'quote_timestamps', 'error'].filter(key => probe[key] != null).map(key => [key, probe[key]]));
++  table('probe-diagnostics', diagnosticRows(paths), row => [row.path, row.value], 2, '체결 경로 진단 기록 대기');
++}
++function render() {
++  if (!snapshot) return;
++  const s = snapshot;
++  const a = s.account || {};
++  renderOverview(s);
++  window.UpbitScene?.update(s);
++  services(s);
++  set('capital', `${number(s.policy.initial_capital)} KRW`);
++  set('start', date(s.policy.paper_start));
++  set('equity', money(a.equity));
++  set('cash', `현금 ${money(a.cash)}`);
++  set('pnl', money(a.total_pnl));
++  $('pnl').className = numeric(a.total_pnl) && a.total_pnl !== 0 ? (a.total_pnl < 0 ? 'negative' : 'positive') : '';
++  set('return', numeric(a.return_pct) ? number(a.return_pct, 2) + '%' : '미기록');
++  set('realized', `${number(a.realized_pnl)} / ${number(a.unrealized_pnl)}`);
++  set('mdd', numeric(a.mdd_pct) ? `${number(a.mdd_pct, 2)}%` : '—');
++  set('quote', `시세 최종 ${date(a.quote_utc)}`);
++  const service = s.services?.paper;
++  set('schedule', service?.state || (new Date() < new Date(s.policy.paper_start) ? '예약 시각 전' : '실행 상태 대기'));
++  $('entry-guard').hidden = !a.entry_guard;
++  set('entry-guard', a.entry_guard || '');
++  table('assets', coins.map(symbol => ({symbol, ...(s.assets || []).find(row => row.symbol?.replace('KRW-', '') === symbol)})),
++    row => [row.symbol, number(row.quantity, 8), money(row.average_price), money(row.price), money(row.market_value), money(row.unrealized_pnl), date(row.quote_utc)], 7);
++  const t = s.training || {};
++  const gpu = s.gpu || {};
++  const promotion = s.promotion || {};
++  const selected = $('market-filter').value;
++  const marketEntries = Object.entries(s.markets || {}).filter(([market]) => selected === 'all' || selected === market);
++  const selectedReport = s.markets?.[selected];
++  const validationLabel = s.research?.schema_version === 2 ? '후속 평가 · 정책 선정 이후' : '검증 · 보정 구간';
++  if ($('training-raw')?.open || $('decision-raw')?.open) renderDiagnostics(s, marketEntries);
++  const trainSplits = marketEntries.map(([, report]) => report.train).filter(split => numeric(split?.rows));
++  const starts = trainSplits.map(split => split.period_start).filter(value => typeof value === 'string').sort();
++  const ends = trainSplits.map(split => split.period_end).filter(value => typeof value === 'string').sort();
++  const gpuFits = marketEntries.flatMap(([, report]) => report.gpu || []);
++  const states = {running: '진행 중', complete: '완료', failed: '오류', error: '오류', waiting_data: '자료 준비', waiting_request: '추가 요청 대기'};
++  const stages = {features: '피처 구성', fit: '후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '완료', download: '수집 · 검증 · 처리', idle: '연구 대기'};
++  const external = s.external_data || {};
++  const gb = value => numeric(value) ? `${number(value / 1e9, 2)} GB` : '미기록';
++  const flow = renderResearch(s);
++  const stepIndex = flow.stage ?? undefined;
++  const stepNames = window.UpbitWorkflow.names;
++  details('learning-strip', flow.benchmark ? [
++    ['모델','TimesFM 

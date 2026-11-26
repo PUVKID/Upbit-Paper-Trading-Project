@@ -1,0 +1,515 @@
+2.5'],['처리한 예측 창',`${number(flow.source.windows_completed)} / ${number(flow.source.total_windows)}`],
++    ['실험 방식','사전학습 가중치 예측'],['추가 학습','없음'],['장치',flow.source.device || 'GPU 확인 전'],['적용','현재 모델 유지']
++  ] : flow.returnResearch ? [
++    ['학습',`${number(flow.source.completed_fits)} / ${number(flow.source.max_fits)} 모델`],
++    ['시간순 구간',`${number(flow.source.fold_index)} / ${number(flow.source.fold_total)}`],
++    ['현재 시장',flow.source.market ? coinNames[flow.source.market.replace('KRW-','')] || flow.source.market : '준비 중'],
++    ['학습 자료',numeric(flow.source.rows) ? `${number(flow.source.rows)}행` : '준비 중'],
++    ['장치',flow.source.device || 'GPU 확인 전'],['예측 목표','비용 차감 수익']
++  ] : flow.repetition ? [
++    ['현재 회차',`${number(flow.source.rep_index)} / ${number(flow.source.total_repetitions)}`],
++    ['완료 회차',`${number(flow.source.completed_repetitions)} / ${number(flow.source.total_repetitions)}`],
++    ['전체 스텝',`${number(flow.source.step)} / ${number(flow.source.total_steps)}`],
++    ['장치',flow.source.device || '미기록'],
++    ['학습 자료',numeric(flow.source.rows) ? `${number(flow.source.rows)}행` : '미기록'],
++    ['학습률',numeric(flow.source.learning_rate) ? number(flow.source.learning_rate,8) : '미기록']
++  ] : flow.track === '사전학습 모델 연구' ? [
++    ['현재 단계',stepIndex === undefined ? flow.status : stepNames[stepIndex]],
++    ['현재 스텝',`${number(flow.source.step)} / ${number(flow.source.total_steps)}`],
++    ['학습 자료',numeric(flow.source.rows) ? `${number(flow.source.rows)}행` : '미기록'],
++    ['장치',flow.source.device || '미기록'],
++    ['문맥 길이',numeric(flow.source.context_length) ? `${number(flow.source.context_length)}개` : '미기록'],
++    ['배치 크기',numeric(flow.source.batch_size) ? `${number(flow.source.batch_size)}개` : '미기록']
++  ] : [
++    ['현재 단계', stepIndex === undefined ? (states[t.state] || '기록 대기') : stepNames[stepIndex]],
++    t.state === 'waiting_data' ? ['처리 완료 / 목표', `${gb(external.ingested_archive_bytes)} / ${gb(external.target_archive_bytes)}`] : ['완료 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],
++    ['학습 회차', number(s.services?.trainer?.iteration)],
++    ['GPU 모델 · 장치 전체', gpu.gpu_name || '미기록'],
++    t.state === 'waiting_data' ? ['다운로드 검증', gb(external.verified_archive_bytes)] : ['학습 자료 · 최근 집계', numeric(t.rows) ? `${number(t.rows)}개` : '미집계'],
++    t.state === 'waiting_data' ? ['외부 고유 분봉', numeric(external.unique_minute_rows) ? (external.unique_minute_rows >= 10000 ? `${number(external.unique_minute_rows / 10000, 1)}만 개` : `${number(external.unique_minute_rows)}개`) : '미집계'] : ['학습 항목 · 최근 집계', numeric(t.features) ? `${number(t.features)}개` : '미집계']
++  ]);
++  const stripIcons = ['timer', 'check', 'refresh-cw', 'cpu', 'receipt-text', 'database'];
++  [...$('learning-strip').children].forEach((item, index) => {
++    const icon = document.createElement('i');
++    icon.dataset.lucide = stripIcons[index];
++    item.prepend(icon);
++  });
++  const currentEntries = [
++    ['현재 코인', coinNames[t.market?.replace('KRW-', '')] || text(t.market)],
++    ['현재 상태 · 단계', `${states[t.state] || text(t.state)} · ${stages[t.stage] || text(t.stage)}`],
++    ['완료 후보 / 전체 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`],
++    ['현재 후보', text(t.candidate)], ['실시간 진행 시작', date(t.progress_started_utc)],
++    ['현재 진행 경과', numeric(t.elapsed_seconds) ? `${number(t.elapsed_seconds, 1)}초` : '대기'],
++    ['모델 반복 진행', numeric(t.current_round) || numeric(t.target_rounds) ? `${numeric(t.current_round) ? number(t.current_round) : '미기록'} / ${numeric(t.target_rounds) ? number(t.target_rounds) : '미기록'}회` : '미기록'],
++    ['데이터 · 최근 집계', numeric(t.rows) ? `${number(t.rows)}개` : '대기'],
++    ['특징 · 최근 집계', numeric(t.features) ? `${number(t.features)}개` : '대기'],
++    ['기본 시간봉', numeric(t.timeframe) ? `${number(t.timeframe)}분` : text(t.timeframe)],
++    ['GPU 사용률 · 장치 전체', numeric(gpu.gpu_utilization_pct) ? `${number(gpu.gpu_utilization_pct)}%` : '대기']
++  ];
++  if (numeric(t.learning_rate)) currentEntries.push(['학습률 · eta', `${number(t.learning_rate, 5)} · 한 번에 반영하는 정도`]);
++  details('current-learning', currentEntries);
++  const research = s.research || {};
++  details('recent-experiment-summary', [
++    ['예측 대상', numeric(research.horizon_minutes) ? `다음 ${number(research.horizon_minutes)}분의 가격 움직임` : '예측 기간 미기록'],
++    ['실험 방식', '다양한 조건으로 순환 실험'],
++    ['관측 항목', '정확도 · 정밀도 · 재현율 · F1 점수 · 혼동 행렬'],
++    ['평가 결과', numeric(s.validation?.accuracy) ? `후속 평가 정확도 ${percent(s.validation.accuracy)} · ${research.promoted === true ? '운용 적용' : research.promoted === false ? '운용 미적용' : '적용 여부 미기록'}` : '평가 결과 미기록']
++  ]);
++  details('recent-experiment', [
++    ['실험 내용', numeric(research.horizon_minutes) ? `${number(research.horizon_minutes)}분 후 가격 방향 분류` : '예측 기간 미기록'],
++    ['표본 가중 방식', research.class_weight_mode === 'bounded_inverse_sqrt' ? '분류별 표본 불균형을 고려한 가중치' : research.class_weight_mode === 'recency' ? '최근 표본에 비중을 둔 가중치' : '미기록'],
++    ['예측 기간', numeric(research.horizon_minutes) ? `${number(research.horizon_minutes)}분` : '미기록', 'recent-experiment-horizon'],
++    ['라벨 기준', numeric(research.label_threshold) ? `변화율 ${percent(research.label_threshold)} 기준` : '미기록', 'recent-experiment-threshold'],
++    ['분류', '하락 · 관망 · 상승'],
++    ['평가 정확도', numeric(s.validation?.accuracy) ? percent(s.validation.accuracy) : '미기록'],
++    ['적용 여부', research.promoted === true ? '승격됨' : research.promoted === false ? '운용에 적용하지 않음' : '미기록', 'recent-experiment-promotion']
++  ]);
++  details('training-details', [
++    ['현재 진행 상태', states[t.state] || text(t.state)], ['현재 단계', stages[t.stage] || text(t.stage)],
++    ['현재 처리 시장', text(t.market)], ['시장 내 후보 번호', text(t.candidate)],
++    ['전체 완료 후보 / 전체 후보', `${number(t.candidate_index)} / ${number(t.candidate_total)}`], ['기본 시간봉', numeric(t.timeframe) ? `${number(t.timeframe)}분` : text(t.timeframe)],
++    ['GPU · 장치 전체', text(gpu.gpu_name)], ['GPU 메모리 · 장치 전체', `${number(gpu.gpu_memory_used_mb)} / ${number(gpu.gpu_memory_total_mb)} MiB`],
++    ['GPU 사용률 · 장치 전체', numeric(gpu.gpu_utilization_pct) ? `${number(gpu.gpu_utilization_pct)}%` : '대기'], ['GPU 관측', `${text(gpu.state)} · ${date(gpu.checked_utc)}`],
++    ['진행 상태 갱신', date(t.updated_utc)], ['직전 완료 모델 실제 시작', date(t.started_utc)],
++    ['직전 완료 모델 실제 완료', t.finished_utc ? date(t.finished_utc) : '완료 시각 미기록'],
++    ['직전 완료 모델 총 소요', numeric(t.duration_seconds) ? `${number(t.duration_seconds, 2)}초` : '대기'],
++    ['보고서 기록 시각', date(t.recorded_utc)], ['실시간 진행 시작', date(t.progress_started_utc), 'current-learning-started'],
++    ['현재 진행 경과', numeric(t.elapsed_seconds) ? `${number(t.elapsed_seconds, 2)}초` : '대기'],
++    ['현재 단계 표본 / 튜닝 표본', `${number(t.rows)} / ${number(t.tune_rows)}`],
++    ['특성 수', number(t.features)], ['현재 부스팅 반복 / 최대 반복', `${number(t.current_round)} / ${number(t.target_rounds)}`],
++    ['현재 튜닝 로그 손실', number(t.validation_logloss, 5)],
++    ['최적화 학습률 · eta', numeric(t.learning_rate) ? number(t.learning_rate, 5) : '미기록'],
++    ['실제 학습 데이터 시작', date(starts[0])], ['실제 학습 데이터 종료', date(ends.at(-1))],
++    ['실제 학습 표본 수', trainSplits.length ? number(trainSplits.reduce((sum, split) => sum + split.rows, 0)) : '대기'],
++    ['최근 완료 실험 후보', text(research.candidate_id), 'recent-experiment-candidate'],
++    ['직전 완료 모델 ID', text(t.model_id)], ['현재 운용 모델 · 포인터', text(s.current_model?.run)],
++    ['최근 모의계좌 적용 모델', text(a.model_run)], ['진행 실행 ID', text(t.run), 'current-learning-run'],
++    ['학습 후보 승격 판단', promotion.promote === true ? '승격 대상' : promotion.promote === false ? '승격하지 않음' : '판단 대기'],
++    ['승격 사유', text(promotion.reason)],
++    ['승격 비교 기준', promotion.comparison_baseline === 'cash' ? '현금 보유 · 수익률 0' : promotion.probability_comparable === true ? '검증된 운용 모델 · 확률·거래 비교' : '기록 대기'],
++    ['비교 제외 이전 모델', text(promotion.excluded_incumbent_run)],
++    ['후보 · 로그 손실 / 수익률 / MDD', `${number(promotion.candidate?.logloss, 4)} / ${percent(promotion.candidate?.net_return)} / ${percent(promotion.candidate?.MDD)}`],
++    ['기존 · 로그 손실 / 수익률 / MDD', `${number(promotion.incumbent?.logloss, 4)} / ${percent(promotion.incumbent?.net_return)} / ${percent(promotion.incumbent?.MDD)}`],
++    ['실제 부스터 장치', [...new Set(gpuFits.map(fit => fit.actual_device).filter(Boolean))].join(' · ') || '대기'],
++    ['후보 깊이 / 최적 반복', gpuFits.map(fit => `${number(fit.depth)} / ${number(fit.best_iteration)}`).join(' · ') || '대기'],
++    ['완료 후보 부스팅 반복', gpuFits.map(fit => number(fit.boosted_rounds)).join(' · ') || '대기'],
++    ['완료 후보 소요 시간 · 초', gpuFits.map(fit => number(fit.duration_seconds, 2)).join(' · ') || '대기']
++  ]);
++  progress('training-progress', t.progress, '전체 후보 진행률');
++  const splitRows = marketEntries.flatMap(([market, report]) => ['train', 'tune', 'calibration', 'rule', 'validation'].map(name => ({market, name, split: report.splits?.[name] || (['train', 'tune', 'calibration'].includes(name) ? report[name] : null)})));
++  table('training-splits', splitRows, ({market, name, split}) => [market.replace('KRW-', ''), ({train: '학습', tune: '튜닝', calibration: '확률 보정', rule: '정책 선정', validation: '후속 평가'})[name], number(split?.rows), date(split?.period_start), date(split?.period_end), distributionText(split?.class_distribution)], 6);
++  table('evaluation', [[validationLabel, selected === 'all' ? s.validation : selectedReport?.validation], ['잠금 시험 · 최종 평가', selected === 'all' ? s.locked_test : selectedReport?.locked_test]],
++    ([name, m]) => [name, percent(m?.accuracy), percent(m?.macro_f1), percent(m?.balanced_accuracy), percent(m?.baseline_accuracy), number(m?.samples), `${date(m?.period_start)} ~ ${date(m?.period_end)}`], 7);
++  const testState = s.locked_test_state;
++  set('evaluation-scope', `평가 구간: ${validationLabel} · 잠금 시험: ${text(testState?.status)} · 후보 선정 사용: ${testState?.used_for_selection === false ? '아니요' : testState?.used_for_selection === true ? '예' : '확인 대기'} · 전체 Macro F1·균형 정확도: 원자료 결합 대기`);
++  const marketRows = Object.entries(s.markets || {}).flatMap(([market, report]) => [[validationLabel, report.validation], ['잠금 시험', report.locked_test]].map(([split, metrics]) => ({market, split, metrics})));
++  table('market-evaluation', marketRows, ({market, split, metrics: m}) => [market.replace('KRW-', ''), split, percent(m?.accuracy), percent(m?.macro_f1), percent(m?.balanced_accuracy), percent(m?.baseline_accuracy), number(m?.samples), `${date(m?.period_start)} ~ ${date(m?.period_end)}`], 8);
++  const distribution = $('distribution');
++  distribution.replaceChildren();
++  for (const [label, value] of [['학습', sumDistribution(marketEntries.map(([, report]) => report.train?.class_distribution))], [validationLabel, selected === 'all' ? s.class_distribution : selectedReport?.validation?.class_distribution], ['잠금 시험', selected === 'all' ? s.locked_test?.class_distribution : selectedReport?.locked_test?.class_distribution]]) {
++    const item = document.createElement('span');
++    item.textContent = `${label}: ${distributionText(value)}`;
++    distribution.append(item);
++  }
++  table('rounds', (s.rounds || []).slice(-20).reverse(), row => {
++    const validation = selected === 'all' ? row : row.markets?.[selected]?.validation;
++    const locked = selected === 'all' ? {accuracy: row.locked_accuracy, samples: row.locked_samples} : row.markets?.[selected]?.locked_test;
++    return [text(row.run), row.finished_utc ? date(row.finished_utc) : '완료 시각 미기록', text(row.state), percent(validation?.accuracy), percent(validation?.macro_f1), number(validation?.samples), percent(locked?.accuracy), number(locked?.samples)];
++  }, 8);
++  const d = s.data || {};
++  details('data-details', [['수집 상태', text(d.state)], ['누적 행 수', number(d.total_rows)], ['저장 용량', numeric(d.total_bytes) ? `${number(d.total_bytes / 1024 ** 2, 2)} MiB` : '대기'], ['갱신 시각', date(d.updated_utc)], ['최초 시각', date(d.period_start)], ['최종 시각', date(d.period_end)], ['누락 수', number(d.missing_count)], ['요청 진행', `${number(d.completed_requests)} / ${number(d.total_requests)}`]]);
++  progress('data-progress', d.progress, '수집 진행률');
++  const datasets = (s.datasets || []).filter(row => $('data-filter').value === 'all' || row.symbol?.replace('KRW-', '') === $('data-filter').value);
++  table('datasets', datasets, row => [row.symbol, text(row.timeframe), number(row.rows), numeric(row.bytes) ? `${number(row.bytes / 1024 ** 2, 2)} MiB` : '대기', date(row.period_start), date(row.period_end), number(row.missing_count), text(row.state)], 8);
++  const trades = (s.trades || []).filter(row => ($('trade-filter').value === 'all' || row.symbol?.replace('KRW-', '') === $('trade-filter').value) && ($('side-filter').value === 'all' || row.side?.toLowerCase() === $('side-filter').value));
++  table('trades-body', trades.slice().reverse(), row => [date(row.timestamp), row.symbol, ({buy: '매수', sell: '매도'})[row.side?.toLowerCase()] || text(row.side), number(row.quantity, 8), money(row.price), money(row.fee), money(row.realized_pnl), text(row.reason)], 8, '조건에 맞는 모의 체결 기록 없음');
++  const sources = Object.values(s.sources || {});
++  set('source-state', `스냅숏 ${sources.filter(v => v === 'ok').length}개 연결 · ${sources.filter(v => v !== 'ok').length}개 대기/확인 필요`);
++  drawCharts();
++  icons();
++}
++function canvas(id) {
++  const element = $(id);
++  const rect = element.getBoundingClientRect();
++  if (!rect.width || !rect.height) return null;
++  const scale = Math.min(window.devicePixelRatio || 1, 1.25);
++  element.width = Math.round(rect.width * scale);
++  element.height = Math.round(rect.height * scale);
++  const ctx = element.getContext('2d');
++  ctx.scale(scale, scale);
++  ctx.font = '700 11px Nanum, sans-serif';
++  return {ctx, width: rect.width, height: rect.height};
++}
++function drawCharts() {
++  if (!snapshot) return;
++  const palette = getComputedStyle(document.documentElement);
++  const color = name => palette.getPropertyValue(name).trim();
++  const hours = $('range').value;
++  const cutoff = hours === 'all' ? -Infinity : Date.now() - Number(hours) * 3600000;
++  const points = (snapshot.equity || []).filter(row => numeric(row.equity) && Number.isFinite(Date.parse(row.timestamp)) && Date.parse(row.timestamp) >= cutoff).sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
++  $('chart-empty').hidden = points.length > 0;
++  set('chart-caption', points.length ? `${points.length.toLocaleString('ko-KR')}개 평가 기록 · ${date(points[0].timestamp)} ~ ${date(points.at(-1).timestamp)} · KRW` : '선택 구간의 실제 모의계좌 평가 기록 없음');
++  const chart = canvas('equity-chart');
++  if (chart) {
++    const {ctx, width: w, height: h} = chart;
++    ctx.strokeStyle = color('--line');
++    for (let i = 0; i < 4; i++) { const y = 20 + i * (h - 50) / 3; ctx.beginPath(); ctx.moveTo(75, y); ctx.lineTo(w - 12, y); ctx.stroke(); }
++    if (points.length) {
++      const values = points.map(row => row.equity);
++      let min = Math.min(...values), max = Math.max(...values);
++      const padding = (max - min) * .12 || Math.max(1, Math.abs(max) * .001);
++      min -= padding; max += padding;
++      const start = Date.parse(points[0].timestamp), end = Date.parse(points.at(-1).timestamp);
++      const x = row => 75 + (end === start ? .5 : (Date.parse(row.timestamp) - start) / (end - start)) * Math.max(1, w - 90);
++      const y = value => 20 + (max - value) / (max - min) * (h - 50);
++      ctx.fillStyle = color('--muted');
++      for (let i = 0; i < 4; i++) ctx.fillText(number(max - i * (max - min) / 3), 0, 24 + i * (h - 50) / 3);
++      ctx.strokeStyle = color('--teal'); ctx.lineWidth = 2;
++      ctx.beginPath(); points.forEach((row, i) => i ? ctx.lineTo(x(row), y(row.equity)) : ctx.moveTo(x(row), y(row.equity))); ctx.stroke();
++      if (points.length === 1) { ctx.fillStyle = color('--teal'); ctx.beginPath(); ctx.arc(x(points[0]), y(points[0].equity), 4, 0, Math.PI * 2); ctx.fill(); }
++    }
++  }
++  const datasets = (snapshot.datasets || []).filter(row => numeric(row.rows) && ($('data-filter').value === 'all' || row.symbol?.replace('KRW-', '') === $('data-filter').value));
++  $('data-empty').hidden = datasets.length > 0;
++  const bars = canvas('data-chart');
++  if (bars && datasets.length) {
++    const totals = coins.map(symbol => ({symbol, rows: datasets.filter(row => row.symbol?.replace('KRW-', '') === symbol).reduce((sum, row) => sum + row.rows, 0)}));
++    const max = Math.max(1, ...totals.map(row => row.rows));
++    const {ctx, width: w, height: h} = bars;
++    totals.forEach((row, i) => { const y = 12 + i * (h - 20) / 4; ctx.fillStyle = color('--muted'); ctx.fillText(row.symbol, 0, y + 14); ctx.fillStyle = color(['--teal', '--blue', '--violet', '--gold', '--coral'][i]); ctx.fillRect(48, y, Math.max(0, w - 145) * row.rows / max, 20); ctx.fillStyle = color('--ink'); ctx.fillText(number(row.rows), Math.max(50, 56 + Math.max(0, w - 145) * row.rows / max), y + 14); });
++  }
++}
++async function refresh() {
++  if (loading) return;
++  loading = true;
++  $('refresh').disabled = true;
++  const controller = new AbortController();
++  const timeout = setTimeout(() => controller.abort(), 8000);
++  try {
++    const response = await fetch('/api/status', {signal: controller.signal, cache: 'no-store'});
++    if (!response.ok) throw new Error(`HTTP ${response.status}`);
++    snapshot = await response.json();
++    lastSuccess = new Date().toISOString();
++    $('error').hidden = true;
++    set('connection', '로컬 상태 서버 연결됨');
++    set('last-refresh', `${date(lastSuccess)} KST`);
++    render();
++  } catch (error) {
++    set('connection', '연결 확인 필요');
++    $('error').hidden = false;
++    $('error').textContent = `현재 상태를 가져오지 못했습니다. ${lastSuccess ? '마지막 수신 자료를 표시합니다. ' : ''}${error.name === 'AbortError' ? '응답 시간 초과' : error.message}`;
++  } finally { clearTimeout(timeout); loading = false; $('refresh').disabled = false; }
++}
++function openTab(button) {
++  for (const tab of document.querySelectorAll('[role=tab]')) {
++    const selected = tab === button;
++    tab.setAttribute('aria-selected', String(selected)); tab.tabIndex = selected ? 0 : -1;
++    $(tab.dataset.tab).hidden = !selected;
++  }
++  set('page-title', {account: '자금 현황', training: 'AI 학습', data: '시장', trades: '거래'}[button.dataset.tab]);
++  drawCharts();
++  window.dispatchEvent(new Event('resize'));
++}
++const tabs = [...document.querySelectorAll('[role=tab]')];
++tabs.forEach((button, index) => {
++  button.addEventListener('click', () => openTab(button));
++  button.addEventListener('keydown', event => {
++    const offset = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
++    if (!offset && !['Home', 'End'].includes(event.key)) return;
++    event.preventDefault();
++    const next = tabs[event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + offset + tabs.length) % tabs.length];
++    openTab(next); next.focus();
++  });
++});
++['range', 'data-filter', 'trade-filter', 'side-filter', 'market-filter'].forEach(id => $(id).addEventListener('change', render));
++$('refresh').addEventListener('click', refresh);
++window.addEventListener('resize', drawCharts);
++document.fonts.ready.then(drawCharts);
++setInterval(() => { if ($('auto').checked && !document.hidden) refresh(); }, 5000);
++refresh();
++
++function icons() {
++  const vendor = window.UpbitVendors;
++  if (vendor?.createIcons && vendor.icons) vendor.createIcons({icons: vendor.icons});
++}
++
++function quoteTime(value) {
++  return Number.isFinite(Date.parse(value)) ? new Date(value).toLocaleTimeString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false}) : '시각 미기록';
++}
++function quoteCurrent(value) {
++  const age = Date.now() - Date.parse(value);
++  // 화면 참고가격의 신선도만 60초로 구분하며 실행 호가의 안전 기준과 분리합니다.
++  return Number.isFinite(age) && age >= -5000 && age <= 60000;
++}
++function quoteAge(value) {
++  const age = (Date.now() - Date.parse(value)) / 1000;
++  return !Number.isFinite(age) ? '경과 미기록' : age < -5 ? '관측 시각 확인 필요' : `${number(Math.max(0, Math.floor(age)))}초 전`;
++}
++function renderResearch(s) {
++  const flow = window.UpbitWorkflow.resolve(s), names = window.UpbitWorkflow.names;
++  const repetition = flow.repetition;
++  const titles = ['시장 데이터를 수집하고 있습니다', '학습 데이터를 정리하고 있습니다', 'GPU에서 모델을 학습하고 있습니다', '모델의 예측을 검증하고 있습니다', '모델 적용 조건을 확인하고 있습니다'];
++  set('research-track',flow.returnResearch ? '수익 예측 연구 · 10차' : repetition ? 'Chronos 추가 학습 · 8차' : flow.track === '사전학습 모델 연구' ? '사전학습 모델 · 별도 연구 후보' : flow.track);
++  set('research-state',flow.status);
++  $('research-state').dataset.state = flow.failed ? 'error' : flow.status === '재시도 중' ? 'retry' : flow.active ? 'active' : 'waiting';
++  set('workflow-title',flow.failed ? '연구 오류를 확인해 주세요' : flow.source.state === 'stopped' ? '연구를 중단했습니다' : repetition && flow.source.state === 'complete' ? '추가 학습 10회 완료 · 성능 평가 전' : repetition && flow.source.state === 'waiting' ? '추가 학습 자료를 기다리고 있습니다' : repetition && flow.stage === 3 && flow.active ? '추가 학습 가중치를 확인하고 있습니다' : repetition && flow.active && flow.stage === 2 ? `추가 학습 ${number(repetition.rep_index)} / 10회를 진행하고 있습니다` : flow.source.state === 'waiting' ? '새 미사용 자료를 기다리고 있습니다' : flow.active && flow.stage !== null ? titles[flow.stage] : flow.source.state === 'complete' ? '이번 연구를 마쳤습니다' : '다음 연구를 기다리고 있습니다');
++  set('workflow-subtitle',flow.returnResearch ? '수익·불확실성 비교 · 현재 가상투자 모델은 유지됩니다' : repetition ? '추가 학습만 진행 · 성능 평가 전 · 현재 가상투자 모델은 유지됩니다' : flow.track === '사전학습 모델 연구' ? '별도 연구 후보 · 현재 가상투자 적용 모델과 다릅니다' : '기존 모델 연구 · 가상투자는 별도로 진행됩니다');
++  if (flow.returnResearch && flow.source.state === 'complete' && flow.source.candidate_ready === false) {
++    set('workflow-title','실험을 마쳤습니다 · 채택 보류');
++    set('workflow-subtitle','새 연구 후보는 현재 가상투자에 적용하지 않았습니다');
++  }
++  if (flow.benchmark) {
++    set('research-track','TimesFM 2.5 · 11차');
++    set('workflow-title',flow.failed ? '모델 평가 오류를 확인해 주세요' : flow.source.state === 'stopped' ? '모델 평가를 중단했습니다' : flow.source.state === 'complete' ? '사전학습 모델 평가를 마쳤습니다 · 미적용' : flow.stage === 2 ? '사전학습 모델로 GPU 예측을 진행하고 있습니다' : flow.stage === 3 ? '비용을 반영해 거래 결과를 평가하고 있습니다' : '사전학습 모델 평가 자료를 준비하고 있습니다');
++    set('workflow-subtitle','추가 학습 없는 비교 실험 · 기존 가상투자는 별도로 계속됩니다');
++  }
++  $('training-scene').setAttribute('aria-label',flow.benchmark ? '자료 준비, GPU 예측, 거래 평가와 적용 확인의 입체 흐름' : '클라우드 수집, 데이터 정리, GPU 학습, 검증, 모델 적용의 입체 흐름');
++  [...$('workflow-steps').children].forEach((item,index) => {
++    item.querySelector('b').textContent = flow.benchmark && index === 2 ? 'GPU 예측' : names[index];
++    const current = flow.stage === index;
++    const researchComplete = (flow.track === '사전학습 모델 연구' || flow.returnResearch || flow.benchmark) && flow.source.state === 'complete' && index === 3;
++    const priorComplete = flow.completedStages.includes(index) && index < 3;
++    const done = index === 4 && flow.applied || researchComplete || priorComplete;
++    item.classList.toggle('current',current);
++    item.dataset.state = flow.failed && current ? 'error' : current && flow.status === '재시도 중' ? 'retry' : current && flow.active ? 'active' : done ? 'complete' : 'waiting';
++    item.querySelector('span').textContent = flow.failed && current ? '오류' : repetition && current && index === 3 && flow.active ? '가중치 확인' : current && flow.active ? flow.status : researchComplete ? '연구 완료' : priorComplete ? index === 0 ? '자료 확보' : '완료' : done ? '적용 확인' : current && flow.source.state === 'stopped' ? '중단' : '대기';
++    if (current) item.setAttribute('aria-current','step'); else item.removeAttribute('aria-current');
++  });
++  set('workflow-status',`${flow.track} · ${names[flow.stage] || '단계 미기록'} · ${flow.status}${repetition ? ' · 성능 평가 전' : ''}`);
++  set('research-progress-label',flow.progressLabel);
++  set('research-progress-value',numeric(flow.value) ? percent(Math.max(0,Math.min(1,flow.value))) : '미기록');
++  if (numeric(flow.value)) $('research-progress').value = Math.max(0,Math.min(100,flow.value*100));
++  else $('research-progress').removeAttribute('value');
++  const external = s.external_data || {};
++  set('research-progress-detail',flow.returnResearch ? `${number(flow.source.completed_fits)} / ${number(flow.source.max_fits)} 모델 · 구간 ${number(flow.source.fold_index)} / ${number(flow.source.fold_total)}` : repetition ? `${number(repetition.rep_index)} / 10회 · 완료 ${number(repetition.completed_repetitions)}회 · ${number(repetition.step)} / 500 스텝` : flow.track === '사전학습 모델 연구' ? `${number(flow.source.step)} / ${number(flow.source.total_steps)} 스텝` :
++    s.training?.state === 'waiting_data' ? `${number(external.ingested_archive_bytes/1e9,2)} / ${number(external.target_archive_bytes/1e9,2)} GB` : `${number(s.training?.candidate_index)} / ${number(s.training?.candidate_total)} 후보`);
++  set('research-next',flow.failed ? '오류 확인 후 재시도' : flow.source.state === 'stopped' ? '연구 중단' : flow.returnResearch ? flow.stage < 3 ? names[flow.stage+1] : '결과 검토 · 운용 미적용' : repetition ? flow.source.state === 'complete' ? '성능 평가 전 · 모델 적용 대기' : flow.source.state === 'waiting' ? '고정 학습 자료 준비' : '가중치 저장·확인 · 매매 적용 아님' : flow.source.state === 'waiting' ? '새 미사용 자료 확보' : flow.stage === null ? '단계 기록 대기' : flow.stage < 3 ? names[flow.stage+1] : flow.track === '사전학습 모델 연구' ? '별도 후보 검토 · 운용 미적용' : flow.stage === 3 ? names[4] : flow.applied ? '다음 연구' : '적용 여부 확인');
++  const f = flow.benchmark || repetition || flow.foundation;
++  const labels = {running:'진행 중',training:'진행 중',complete:'연구 완료 · 적용 아님',failed:'오류',error:'오류',retrying:'재시도 중',not_started:'미실행',idle:'미실행',unavailable:'미실행',waiting_data:'자료 준비 대기',waiting:'새 미사용 자료 대기',stopped:'중단'};
++  const foundationStages = {preflight:'사전 점검',extract:'자료 추출',load:'모델 불러오기',finetune:'추가 학습',checkpoint_verify:'체크포인트 확인',verify:'체크포인트 확인',validation:'후속 평가',complete:repetition ? '추가 학습 완료 · 평가 전' : '연구 완료'};
++  set('foundation-state',f ? f.has_error ? '오류' : repetition && f.state === 'complete' ? '추가 학습 10회 완료 · 성능 평가 전' : repetition && f.state === 'waiting' ? '고정 학습 자료 대기' : f.has_status_warning === true && f.state === 'complete' ? '연구 완료 · 상태 기록 확인 필요' : labels[f.state] || '상태 확인 필요' : '미실행');
++  $('foundation-state').dataset.warning = f?.has_status_warning === true ? 'true' : 'false';
++  details('foundation-summary',f ? [['모델',f.model_id || '미기록'],['단계',foundationStages[f.stage] || f.stage || '미기록'],
++    ['체크포인트',f.checkpoint_verified === true ? '검증됨' : f.checkpoint_verified === false ? '검증 전' : '미기록'],
++    ['별도 후보',repetition ? '성능 평가 전 · 운용 미적용' : f.candidate_ready === true ? '준비됨 · 매매 적용 아님' : f.candidate_ready === false ? '준비 전' : '미기록'],
++    ...(f.has_status_warning === true ? [['상태 기록','모델 완료 · 화면 기록 재동기화 필요']] : [])] : [['모델','미기록'],['연구 기록','아직 수신되지 않음']]);
++  details('foundation-details',f ? [['입력·예측','5분봉 종가 · 60분(12스텝) 분위수 예측'],['스텝',`${number(f.step)} / ${number(f.total_steps)}`],
++    ['손실',numeric(f.loss) ? number(f.loss,6) : '미기록'],['학습률',numeric(f.learning_rate) ? number(f.learning_rate,8) : '미기록'],['갱신',f.updated_utc ? date(f.updated_utc) : '미기록'],
++    ['상대 MAE',numeric(f.validation_mae) ? percent(f.validation_mae) : '미평가'],
++    ['종가유지 상대 MAE',numeric(f.baseline_mae) ? percent(f.baseline_mae) : '미평가'],
++    ['방향 정확도',numeric(f.direction_accuracy) ? percent(f.direction_accuracy) : '미평가'],
++    ['순수익률',numeric(f.net_return) ? percent(f.net_return) : '미평가'],['완료 거래',numeric(f.trades) ? `${number(f.trades)}건` : '미평가'],
++    ...(repetition ? [['학습 모드','추가 학습만 · 성능 평가 없음'],['현재 회차',`${number(repetition.rep_index)} / 10`],['완료 회차',`${number(repetition.completed_repetitions)} / 10`],
++      ['문맥 길이',number(repetition.context_length)],['배치 크기',number(repetition.batch_size)],
++      ...(flow.foundation ? [['7차 연구 상태 · 보존',labels[flow.foundation.state] || '미기록'],['7차 실행 ID · 보존',flow.foundation.run || '미기록'],
++        ['7차 상대 MAE · 보존',numeric(flow.foundation.validation_mae) ? percent(flow.foundation.validation_mae) : '미평가'],
++        ['7차 체크포인트 · 보존',flow.foundation.checkpoint_verified === true ? '검증됨' : '미기록']] : [])] : [])] : [['연구 기록','아직 수신되지 않음']]);
++  const a = s.account || {};
++  details('research-account',[['평가 자산',money(a.equity)],['총 손익',money(a.total_pnl)],['수익률',numeric(a.return_pct) ? `${number(a.return_pct,2)}%` : '미기록'],
++    ['낙폭 제한',numeric(a.drawdown_limit_pct) ? `${number(a.drawdown_limit_pct,2)}% · ${a.drawdown_halted === true ? '신규 매수 중지' : a.drawdown_halted === false ? '미도달' : '상태 확인'}` : '미기록']]);
++  if (flow.benchmark) {
++    details('foundation-summary',[['모델','TimesFM 2.5 200M'],['방식','사전학습 가중치 예측'],['적용','기존 모델 유지']]);
++    details('foundation-details',[['문맥','완료된 5분봉 512개'],['예측 지평','12봉 · 60분'],['추가 학습','없음'],
++      ['예측 창',`${number(flow.source.windows_completed)} / ${number(flow.source.total_windows)}`],['갱신',date(flow.source.updated_utc)]]);
++    set('workflow-status',`${flow.track} · ${flow.stage === 2 ? 'GPU 예측' : names[flow.stage]} · ${flow.status}`);
++    set('research-progress-detail',`${number(flow.source.windows_completed)} / ${number(flow.source.total_windows)} 예측 창 · 추가 학습 없음`);
++    set('research-next',flow.failed ? '오류 확인' : flow.source.state === 'stopped' ? '평가 중단' : flow.stage < 3 ? '거래 평가' : '결과 검토 · 기존 모델 유지');
++  }
++  const profit = flow.benchmark || flow.returnResearch || s.return_research;
++  const candidates = {cash:'현금',trend:'추세 기준선',incumbent:'기존 모델',mean:'수익 예측',plain:'평균 수익',selected:'정책 선택',mean_return:'수익 예측',uncertainty:'불확실성 반영',uncertainty_adjusted:'불확실성 반영'};
++  if ($('return-results')) table('return-results',profit?.comparisons || [],row=>[
++    flow.benchmark ? '후속 평가' : number(row.fold),row.candidate === 'foundation' ? '사전학습 모델' : candidates[row.candidate] || '미기록',`${number(row.cost_multiplier)}배`,percent(row.net_return),percent(row.MDD),number(row.trades)],6,'연구 결과 대기');
++  const activity = [];
++  if (flow.benchmark?.updated_utc) activity.push({time:flow.source.updated_utc,job:'11차 사전학습 모델 평가',state:flow.status});
++  if (flow.returnResearch?.updated_utc) activity.push({time:flow.source.updated_utc,job:'10차 수익 예측 연구',state:flow.status});
++  if (f?.updated_utc) activity.push({time:f.updated_utc,job:repetition ? '8차 Chronos 추가 학습' : '사전학습 후보 연구',state:repetition && f.state === 'complete' ? '10회 학습 완료 · 평가 전' : labels[f.state] || '상태 확인 필요'});
++  if (repetition && flow.foundation?.updated_utc) activity.push({time:flow.foundation.updated_utc,job:'7차 사전학습 연구 · 보존',state:labels[flow.foundation.state] || '상태 확인 필요'});
++  if (s.training?.updated_utc) activity.push({time:s.training.updated_utc,job:'기존 모델 연구',state:({running:'진행 중',complete:'완료',failed:'오류',error:'오류',waiting_data:'자료 준비'})[s.training.state] || '대기'});
++  for (const row of (s.rounds || []).slice(-3)) if (row.finished_utc) activity.push({time:row.finished_utc,job:'모델 연구 회차',state:row.state || '미기록'});
++  for (const row of (s.trades || []).slice(-3)) if (row.timestamp) activity.push({time:row.timestamp,job:`${row.symbol} 가상 ${row.side === 'buy' ? '매수' : row.side === 'sell' ? '매도' : '체결'}`,state:'체결 기록'});
++  activity.sort((a,b)=>Date.parse(b.time)-Date.parse(a.time));
++  table('research-activity',activity.slice(0,4),row=>[date(row.time),row.job,row.state],3,'최근 기록 없음');
++  return flow;
++}
++function renderOverview(s) {
++  const a = s.account || {};
++  const health = healthStatus(s);
++  set('health-summary', health.label);
++  $('health-summary').classList.toggle('health-delayed', health.delayed);
++  $('health-summary').title = health.delayed ? '점검 작업자 오류 또는 검사 기록 10분 초과입니다. 학습·수집 상태와 별개이며 이전 검사 결과는 서비스 상세에서 확인할 수 있습니다.' : '운용 점검 결과이며 학습·시세 연결 상태와 별개입니다.';
++  $('health-warning').hidden = !health.delayed && health.label === '검사통과';
++  set('collector-summary', text(s.services?.collector?.state));
++  set('trainer-summary', ({running: '진행 중', complete: '완료', failed: '오류', error: '오류'})[s.training?.state] || text(s.services?.trainer?.state));
++  const quoteTimes = [...(s.assets || []), ...(s.quotes || [])].map(asset => asset.quote_utc).filter(value => Number.isFinite(Date.parse(value)));
++  if (a.quote_utc && Number.isFinite(Date.parse(a.quote_utc))) quoteTimes.push(a.quote_utc);
++  const latestQuote = quoteTimes.sort((x, y) => Date.parse(y) - Date.parse(x))[0];
++  set('quote-summary', latestQuote ? `${quoteCurrent(latestQuote) ? '호가 관측' : '갱신 지연'} · ${quoteAge(latestQuote)}` : '관측 미기록');
++  $('quote-summary').classList.toggle('quote-stale', Boolean(latestQuote) && !quoteCurrent(latestQuote));
++  $('quote-summary').title = latestQuote ? `${date(latestQuote)} · 거래소 최신성은 별도 확인이 필요합니다.` : '로컬 서버 연결은 거래소 최신 호가 수신의 증거가 아닙니다.';
++  $('connection').title = latestQuote ? `공개 호가 관측 ${date(latestQuote)} · 로컬 서버 응답과 시세 최신성은 별개입니다.` : '로컬 상태 서버의 응답입니다. 공개 호가 시각은 미기록입니다.';
++  set('trade-count', Array.isArray(s.trades) ? `${number(s.trades.length)}건` : '미기록');
++  const paperState = s.services?.paper?.state || '';
++  const paperError = /오류|실패/.test(paperState);
++  const positions = (s.assets || []).some(asset => numeric(asset.quantity) && asset.quantity > 0);
++  set('operation-state', paperError ? '확인이 필요해요' : a.entry_guard ? '기다리는 중' : positions ? '자산 보유 중' : '기회를 살피는 중');
++  set('state-summary', paperError ? '거래 판단 상태를 확인해 주세요.' : a.entry_guard ? '투자 기준을 확인하고 있어요.' : positions ? '보유한 자산을 지켜보고 있어요.' : '조건이 맞을 때까지 기다려요.');
++  $('operation-state').title = a.entry_guard || text(s.services?.paper?.state);
++  const container = $('market-summary');
++  container.replaceChildren();
++  for (const coin of coins) {
++    const market = `KRW-${coin}`;
++    const decision = s.decision_diagnostics?.[market] || {};
++    const inference = s.inference_diagnostics?.[market] || {};
++    const report = s.markets?.[market] || {};
++    const asset = (s.assets || []).find(row => row.symbol?.replace('KRW-', '') === coin);
++    const quote = (s.quotes || []).find(row => row.symbol?.replace('KRW-', '') === coin);
++    const priceSource = numeric(quote?.price) ? quote : asset;
++    const row = document.createElement('article');
++    row.className = 'market-row';
++    const name = document.createElement('div');
++    name.className = 'market-name';
++    const image = document.createElement('img');
++    image.src = `/assets/${coin.toLowerCase()}.png`;
++    image.alt = '';
++    image.width = 28;
++    image.height = 28;
++    const label = document.createElement('b');
++    label.textContent = `${coinNames[coin]} · ${coin}`;
++    name.append(image, label);
++    const price = document.createElement('div');
++    price.className = 'market-price';
++    const observedPrice = numeric(priceSource?.price) ? `${number(priceSource.price, 8)} 원` : '시세 미기록';
++    price.textContent = observedPrice;
++    price.title = numeric(priceSource?.price) ? `마지막 호가 참고값 ${observedPrice} · ${date(priceSource.quote_utc)}` : '실제 시세 미기록';
++    const priceCaption = document.createElement('small');
++    priceCaption.className = 'quote-caption';
++    const stale = numeric(priceSource?.price) && !quoteCurrent(priceSource.quote_utc);
++    priceCaption.classList.toggle('quote-stale', stale);
++    priceCaption.textContent = `${quote ? '공개 호가 중간값' : '호가 참고값'} · ${quoteTime(priceSource?.quote_utc)} · ${quoteAge(priceSource?.quote_utc)}${stale ? ' · 갱신 지연' : ''}`;
++    price.append(priceCaption);
++    const signal = document.createElement('span');
++    signal.className = 'signal';
++    const actualSignal = inference.signal ?? decision.signal;
++    signal.textContent = ({0: '하락', 1: '중립', 2: '상승'})[actualSignal] || '판단 대기';
++    const reason = document.createElement('p');
++    const reasonValue = inference.reason || decision.guard || decision.reason;
++    reason.textContent = diagnosticValues[reasonValue] || reasonValue || (report.diagnostics?.policy_eligible === false ? '운용 기준 미달' : '판단 근거 대기');
++    row.append(name, price, signal, reason);
++    container.append(row);
++  }
++  const t = s.training || {};
++  const stageLabels = {features: '데이터·피처 구성', fit: 'GPU 후보 학습', calibration: '확률 보정', locked_test: '잠금 시험', complete: '승격 판단'};
++  const current = t.stage === 'locked_test' ? 'calibration' : t.stage;
++  for (const item of $('stage-rail').children) {
++    const active = item.dataset.stage === current;
++    item.classList.toggle('current', active);
++    if (active) item.setAttribute('aria-current', 'step');
++    else item.removeAttribute('aria-current');
++  }
++  const state = ({running: '학습 중', complete: '학습 완료', failed: '학습 오류', error: '학습 오류', waiting_data: '50GB 자료 준비'})[t.state] || '학습 기록 대기';
++  const external = s.external_data || {};
++  const waiting = t.state === 'waiting_data';
++  set('learning-summary', waiting ? `${state} · 처리 ${number((external.ingested_archive_bytes || 0) / 1e9, 2)} / ${number((external.target_archive_bytes || 50000000000) / 1e9)} GB` : `${state} · ${coinNames[t.market?.replace('KRW-', '')] || '시장 확인 중'}${numeric(t.candidate_index) && numeric(t.candidate_total) ? ` · 후보 ${number(t.candidate_index)} / ${number(t.candidate_total)}` : ''}`);
++  $('home-progress').setAttribute('aria-label', waiting ? '초기 외부 자료 처리 진행률' : '실제 전체 후보 학습 진행률');
++  if (waiting && numeric(external.ingested_archive_bytes) && numeric(external.target_archive_bytes) && external.target_archive_bytes > 0) $('home-progress').value = Math.max(0, Math.min(100, 100 * external.ingested_archive_bytes / external.target_archive_bytes));
++  else if (numeric(t.progress)) $('home-progress').value = Math.max(0, Math.min(100, t.progress * 100));
++  else $('home-progress').removeAttribute('value');
++}
++
++// 기존 차트·보유자산·진단 노드를 이동해 ID와 렌더링 계약을 보존합니다.
++function arrangeWorkspace() {
++  const account = $('account');
++  const assets = document.createElement('details');
++  assets.id = 'account-detail';
++  assets.className = 'raw-details';
++  const assetsSummary = document.createElement('summary');
++  assetsSummary.textContent = '자금·보유자산 상세';
++  assets.append(assetsSummary);
++  while (account.firstChild) assets.append(account.firstChild);
++  const accountFacts = $('account-facts');
++  assets.insertBefore(accountFacts, assetsSummary.nextSibling);
++  assetsSummary.textContent = '자금·보유자산 상세';
++  assets.append($('status-facts'), document.querySelector('.policy'), $('connection-details'));
++  account.append($('home-overview'), $('prediction-workspace'), document.querySelector('.training-overview'), $('health-warning'), assets);
++  const marketHeading = document.createElement('h2');
++  marketHeading.textContent = '공개 호가 참고값';
++  const marketSummary = document.createElement('div');
++  marketSummary.id = 'market-summary';
++  marketSummary.className = 'market-summary';
++  $('data').prepend(marketHeading, marketSummary);
++  $('data').append($('decision-raw'));
++  const serviceDetails = $('services').closest('details');
++  $('data').append(serviceDetails);
++  for (const coin of coins) {
++    const heading = document.createElement('div');
++    heading.className = 'coin-heading';
++    const logo = document.createElement('img');
++    logo.src = `/assets/${coin.toLowerCase()}.png`;
++    logo.alt = '';
++    logo.width = 36;
++    logo.height = 36;
++    const name = document.createElement('b');
++    name.textContent = coinNames[coin];
++    const symbol = document.createElement('small');
++    symbol.textContent = coin;
++    const caption = document.createElement('span');
++    caption.append(name, symbol);
++    heading.append(logo, caption);
++    $('coin-headings').append(heading);
++  }
++  for (const id of ['market-filter', 'data-filter', 'trade-filter']) {
++    const select = $(id);
++    for (const coin of coins) {
++      const value = id === 'market-filter' ? `KRW-${coin}` : coin;
++      if (![...select.options].some(option => option.value === value)) select.add(new Option(coinNames[coin], value));
++      const option = [...select.options].find(option => option.value === value);
++      option.textContent = coinNames[coin];
++    }
++  }
++  const training = $('training');
++  const raw = document.createElement('details');
++  raw.id = 'training-raw';
++  raw.className = 'raw-details';
++  const title = document.createElement('summary');
++  title.textContent = '기존 XGBoost 학습 세부 관측·평가·진단 원문';
++  raw.append(title);
++  raw.append($('accuracy-target'));
++  // 기술 지표·필터·원문 표는 상세에 보존하고 개념도와 요약만 먼저 표시합니다.
++  const head = training.firstElementChild;
++  const progressLine = $('training-progress').parentElement;
++  for (const node of [...training.children]) if (node !== head && node !== progressLine && !node.classList.contains('learning-workspace') && !node.classList.contains('learning-information')) raw.append(node);
++  training.append(raw);
++  raw.prepend(head, progressLine);
++  raw.prepend($('stage-rail'));
++}
++arrangeWorkspace();
++openTab($('tab-training'));
++window.dispatchEvent(new Event('resize'));
++for (const detail of document.querySelectorAll('details')) detail.addEventListener('toggle', () => { if (detail.open) render(); });
++icons();
++$('account-link').addEventListener('click', () => { $('account-detail').open = true; $('account-detail').scrollIntoView({block: 'start'}); });
++$('research-account-link').addEventListener('click', () => { openTab($('tab-account')); $('account-detail').open = true; $('tab-account').focus(); });
++document.querySelector('.brand').addEventListener('click', event => { event.preventDefault(); openTab($('tab-account')); window.scrollTo({top: 0}); });
++$('training-link').addEventListener('click', () => {
++  openTab($('tab-training'));
++  $('tab-training').focus();
++  $('training').scrollIntoView({block: 'start'});
++});
++let motionEnabled = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
++function updateMotionButton() {
++  const button = $('motion-toggle');
++  button.setAttribute('aria-pressed', String(!motionEnabled));
++  button.setAttribute('aria-label', motionEnabled ? '화면 모션 정지' : '화면 모션 재생');
++  button.replaceChildren();
++  const icon = document.createElement('i');
++  icon.dataset.lucide = motionEnabled ? 'pause' : 'play';
++  button.append(icon);
++  document.documentElement.classList.toggle('motion-paused', !motionEnabled);
++  window.UpbitScene?.setMotion(motionEnabled);
++  icons();
++}
++$('motion-toggle').addEventListener('click', () => { motionEnabled = !motionEnabled; updateMotionButton(); });
++updateMotionButton();
++
++function updateThemeButton() {
++  const dark = document.documentElement.dataset.theme 

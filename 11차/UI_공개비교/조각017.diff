@@ -1,0 +1,854 @@
+eDistance;
++	#include <uv_vertex>
++	#include <color_vertex>
++	#include <morphinstance_vertex>
++	#include <morphcolor_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	#include <fog_vertex>
++}`,yy=`uniform vec3 diffuse;
++uniform float opacity;
++uniform float dashSize;
++uniform float totalSize;
++varying float vLineDistance;
++#include <common>
++#include <color_pars_fragment>
++#include <uv_pars_fragment>
++#include <map_pars_fragment>
++#include <fog_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	if ( mod( vLineDistance, totalSize ) > dashSize ) {
++		discard;
++	}
++	vec3 outgoingLight = vec3( 0.0 );
++	#include <logdepthbuf_fragment>
++	#include <map_fragment>
++	#include <color_fragment>
++	outgoingLight = diffuseColor.rgb;
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++}`,Sy=`#include <common>
++#include <batching_pars_vertex>
++#include <uv_pars_vertex>
++#include <envmap_pars_vertex>
++#include <color_pars_vertex>
++#include <fog_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <skinning_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++void main() {
++	#include <uv_vertex>
++	#include <color_vertex>
++	#include <morphinstance_vertex>
++	#include <morphcolor_vertex>
++	#include <batching_vertex>
++	#if defined ( USE_ENVMAP ) || defined ( USE_SKINNING )
++		#include <beginnormal_vertex>
++		#include <morphnormal_vertex>
++		#include <skinbase_vertex>
++		#include <skinnormal_vertex>
++		#include <defaultnormal_vertex>
++	#endif
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <skinning_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	#include <worldpos_vertex>
++	#include <envmap_vertex>
++	#include <fog_vertex>
++}`,My=`uniform vec3 diffuse;
++uniform float opacity;
++#ifndef FLAT_SHADED
++	varying vec3 vNormal;
++#endif
++#include <common>
++#include <dithering_pars_fragment>
++#include <color_pars_fragment>
++#include <uv_pars_fragment>
++#include <map_pars_fragment>
++#include <alphamap_pars_fragment>
++#include <alphatest_pars_fragment>
++#include <alphahash_pars_fragment>
++#include <aomap_pars_fragment>
++#include <lightmap_pars_fragment>
++#include <envmap_common_pars_fragment>
++#include <envmap_pars_fragment>
++#include <fog_pars_fragment>
++#include <specularmap_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	#include <logdepthbuf_fragment>
++	#include <map_fragment>
++	#include <color_fragment>
++	#include <alphamap_fragment>
++	#include <alphatest_fragment>
++	#include <alphahash_fragment>
++	#include <specularmap_fragment>
++	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
++	#ifdef USE_LIGHTMAP
++		vec4 lightMapTexel = texture2D( lightMap, vLightMapUv );
++		reflectedLight.indirectDiffuse += lightMapTexel.rgb * lightMapIntensity * RECIPROCAL_PI;
++	#else
++		reflectedLight.indirectDiffuse += vec3( 1.0 );
++	#endif
++	#include <aomap_fragment>
++	reflectedLight.indirectDiffuse *= diffuseColor.rgb;
++	vec3 outgoingLight = reflectedLight.indirectDiffuse;
++	#include <envmap_fragment>
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++	#include <dithering_fragment>
++}`,by=`#define LAMBERT
++varying vec3 vViewPosition;
++#include <common>
++#include <batching_pars_vertex>
++#include <uv_pars_vertex>
++#include <displacementmap_pars_vertex>
++#include <envmap_pars_vertex>
++#include <color_pars_vertex>
++#include <fog_pars_vertex>
++#include <normal_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <skinning_pars_vertex>
++#include <shadowmap_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++void main() {
++	#include <uv_vertex>
++	#include <color_vertex>
++	#include <morphinstance_vertex>
++	#include <morphcolor_vertex>
++	#include <batching_vertex>
++	#include <beginnormal_vertex>
++	#include <morphnormal_vertex>
++	#include <skinbase_vertex>
++	#include <skinnormal_vertex>
++	#include <defaultnormal_vertex>
++	#include <normal_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <skinning_vertex>
++	#include <displacementmap_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	vViewPosition = - mvPosition.xyz;
++	#include <worldpos_vertex>
++	#include <envmap_vertex>
++	#include <shadowmap_vertex>
++	#include <fog_vertex>
++}`,Ay=`#define LAMBERT
++uniform vec3 diffuse;
++uniform vec3 emissive;
++uniform float opacity;
++#include <common>
++#include <dithering_pars_fragment>
++#include <color_pars_fragment>
++#include <uv_pars_fragment>
++#include <map_pars_fragment>
++#include <alphamap_pars_fragment>
++#include <alphatest_pars_fragment>
++#include <alphahash_pars_fragment>
++#include <aomap_pars_fragment>
++#include <lightmap_pars_fragment>
++#include <emissivemap_pars_fragment>
++#include <cube_uv_reflection_fragment>
++#include <envmap_common_pars_fragment>
++#include <envmap_pars_fragment>
++#include <envmap_physical_pars_fragment>
++#include <fog_pars_fragment>
++#include <bsdfs>
++#include <lights_pars_begin>
++#include <normal_pars_fragment>
++#include <lights_lambert_pars_fragment>
++#include <shadowmap_pars_fragment>
++#include <bumpmap_pars_fragment>
++#include <normalmap_pars_fragment>
++#include <specularmap_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
++	vec3 totalEmissiveRadiance = emissive;
++	#include <logdepthbuf_fragment>
++	#include <map_fragment>
++	#include <color_fragment>
++	#include <alphamap_fragment>
++	#include <alphatest_fragment>
++	#include <alphahash_fragment>
++	#include <specularmap_fragment>
++	#include <normal_fragment_begin>
++	#include <normal_fragment_maps>
++	#include <emissivemap_fragment>
++	#include <lights_lambert_fragment>
++	#include <lights_fragment_begin>
++	#include <lights_fragment_maps>
++	#include <lights_fragment_end>
++	#include <aomap_fragment>
++	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;
++	#include <envmap_fragment>
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++	#include <dithering_fragment>
++}`,wy=`#define MATCAP
++varying vec3 vViewPosition;
++#include <common>
++#include <batching_pars_vertex>
++#include <uv_pars_vertex>
++#include <color_pars_vertex>
++#include <displacementmap_pars_vertex>
++#include <fog_pars_vertex>
++#include <normal_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <skinning_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++void main() {
++	#include <uv_vertex>
++	#include <color_vertex>
++	#include <morphinstance_vertex>
++	#include <morphcolor_vertex>
++	#include <batching_vertex>
++	#include <beginnormal_vertex>
++	#include <morphnormal_vertex>
++	#include <skinbase_vertex>
++	#include <skinnormal_vertex>
++	#include <defaultnormal_vertex>
++	#include <normal_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <skinning_vertex>
++	#include <displacementmap_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	#include <fog_vertex>
++	vViewPosition = - mvPosition.xyz;
++}`,Ty=`#define MATCAP
++uniform vec3 diffuse;
++uniform float opacity;
++uniform sampler2D matcap;
++varying vec3 vViewPosition;
++#include <common>
++#include <dithering_pars_fragment>
++#include <color_pars_fragment>
++#include <uv_pars_fragment>
++#include <map_pars_fragment>
++#include <alphamap_pars_fragment>
++#include <alphatest_pars_fragment>
++#include <alphahash_pars_fragment>
++#include <fog_pars_fragment>
++#include <normal_pars_fragment>
++#include <bumpmap_pars_fragment>
++#include <normalmap_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	#include <logdepthbuf_fragment>
++	#include <map_fragment>
++	#include <color_fragment>
++	#include <alphamap_fragment>
++	#include <alphatest_fragment>
++	#include <alphahash_fragment>
++	#include <normal_fragment_begin>
++	#include <normal_fragment_maps>
++	vec3 viewDir = normalize( vViewPosition );
++	vec3 x = normalize( vec3( viewDir.z, 0.0, - viewDir.x ) );
++	vec3 y = cross( viewDir, x );
++	vec2 uv = vec2( dot( x, normal ), dot( y, normal ) ) * 0.495 + 0.5;
++	#ifdef USE_MATCAP
++		vec4 matcapColor = texture2D( matcap, uv );
++	#else
++		vec4 matcapColor = vec4( vec3( mix( 0.2, 0.8, uv.y ) ), 1.0 );
++	#endif
++	vec3 outgoingLight = diffuseColor.rgb * matcapColor.rgb;
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++	#include <dithering_fragment>
++}`,Ey=`#define NORMAL
++#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP_TANGENTSPACE )
++	varying vec3 vViewPosition;
++#endif
++#include <common>
++#include <batching_pars_vertex>
++#include <uv_pars_vertex>
++#include <displacementmap_pars_vertex>
++#include <normal_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <skinning_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++void main() {
++	#include <uv_vertex>
++	#include <batching_vertex>
++	#include <beginnormal_vertex>
++	#include <morphinstance_vertex>
++	#include <morphnormal_vertex>
++	#include <skinbase_vertex>
++	#include <skinnormal_vertex>
++	#include <defaultnormal_vertex>
++	#include <normal_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <skinning_vertex>
++	#include <displacementmap_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP_TANGENTSPACE )
++	vViewPosition = - mvPosition.xyz;
++#endif
++}`,Cy=`#define NORMAL
++uniform float opacity;
++#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP_TANGENTSPACE )
++	varying vec3 vViewPosition;
++#endif
++#include <uv_pars_fragment>
++#include <normal_pars_fragment>
++#include <bumpmap_pars_fragment>
++#include <normalmap_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( 0.0, 0.0, 0.0, opacity );
++	#include <clipping_planes_fragment>
++	#include <logdepthbuf_fragment>
++	#include <normal_fragment_begin>
++	#include <normal_fragment_maps>
++	gl_FragColor = vec4( normalize( normal ) * 0.5 + 0.5, diffuseColor.a );
++	#ifdef OPAQUE
++		gl_FragColor.a = 1.0;
++	#endif
++}`,Ry=`#define PHONG
++varying vec3 vViewPosition;
++#include <common>
++#include <batching_pars_vertex>
++#include <uv_pars_vertex>
++#include <displacementmap_pars_vertex>
++#include <envmap_pars_vertex>
++#include <color_pars_vertex>
++#include <fog_pars_vertex>
++#include <normal_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <skinning_pars_vertex>
++#include <shadowmap_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++void main() {
++	#include <uv_vertex>
++	#include <color_vertex>
++	#include <morphcolor_vertex>
++	#include <batching_vertex>
++	#include <beginnormal_vertex>
++	#include <morphinstance_vertex>
++	#include <morphnormal_vertex>
++	#include <skinbase_vertex>
++	#include <skinnormal_vertex>
++	#include <defaultnormal_vertex>
++	#include <normal_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <skinning_vertex>
++	#include <displacementmap_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	vViewPosition = - mvPosition.xyz;
++	#include <worldpos_vertex>
++	#include <envmap_vertex>
++	#include <shadowmap_vertex>
++	#include <fog_vertex>
++}`,Py=`#define PHONG
++uniform vec3 diffuse;
++uniform vec3 emissive;
++uniform vec3 specular;
++uniform float shininess;
++uniform float opacity;
++#include <common>
++#include <dithering_pars_fragment>
++#include <color_pars_fragment>
++#include <uv_pars_fragment>
++#include <map_pars_fragment>
++#include <alphamap_pars_fragment>
++#include <alphatest_pars_fragment>
++#include <alphahash_pars_fragment>
++#include <aomap_pars_fragment>
++#include <lightmap_pars_fragment>
++#include <emissivemap_pars_fragment>
++#include <cube_uv_reflection_fragment>
++#include <envmap_common_pars_fragment>
++#include <envmap_pars_fragment>
++#include <envmap_physical_pars_fragment>
++#include <fog_pars_fragment>
++#include <bsdfs>
++#include <lights_pars_begin>
++#include <normal_pars_fragment>
++#include <lights_phong_pars_fragment>
++#include <shadowmap_pars_fragment>
++#include <bumpmap_pars_fragment>
++#include <normalmap_pars_fragment>
++#include <specularmap_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
++	vec3 totalEmissiveRadiance = emissive;
++	#include <logdepthbuf_fragment>
++	#include <map_fragment>
++	#include <color_fragment>
++	#include <alphamap_fragment>
++	#include <alphatest_fragment>
++	#include <alphahash_fragment>
++	#include <specularmap_fragment>
++	#include <normal_fragment_begin>
++	#include <normal_fragment_maps>
++	#include <emissivemap_fragment>
++	#include <lights_phong_fragment>
++	#include <lights_fragment_begin>
++	#include <lights_fragment_maps>
++	#include <lights_fragment_end>
++	#include <aomap_fragment>
++	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
++	#include <envmap_fragment>
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++	#include <dithering_fragment>
++}`,Iy=`#define STANDARD
++varying vec3 vViewPosition;
++#ifdef USE_TRANSMISSION
++	varying vec3 vWorldPosition;
++#endif
++#include <common>
++#include <batching_pars_vertex>
++#include <uv_pars_vertex>
++#include <displacementmap_pars_vertex>
++#include <color_pars_vertex>
++#include <fog_pars_vertex>
++#include <normal_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <skinning_pars_vertex>
++#include <shadowmap_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++void main() {
++	#include <uv_vertex>
++	#include <color_vertex>
++	#include <morphinstance_vertex>
++	#include <morphcolor_vertex>
++	#include <batching_vertex>
++	#include <beginnormal_vertex>
++	#include <morphnormal_vertex>
++	#include <skinbase_vertex>
++	#include <skinnormal_vertex>
++	#include <defaultnormal_vertex>
++	#include <normal_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <skinning_vertex>
++	#include <displacementmap_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	vViewPosition = - mvPosition.xyz;
++	#include <worldpos_vertex>
++	#include <shadowmap_vertex>
++	#include <fog_vertex>
++#ifdef USE_TRANSMISSION
++	vWorldPosition = worldPosition.xyz;
++#endif
++}`,Ly=`#define STANDARD
++#ifdef PHYSICAL
++	#define IOR
++	#define USE_SPECULAR
++#endif
++uniform vec3 diffuse;
++uniform vec3 emissive;
++uniform float roughness;
++uniform float metalness;
++uniform float opacity;
++#ifdef IOR
++	uniform float ior;
++#endif
++#ifdef USE_SPECULAR
++	uniform float specularIntensity;
++	uniform vec3 specularColor;
++	#ifdef USE_SPECULAR_COLORMAP
++		uniform sampler2D specularColorMap;
++	#endif
++	#ifdef USE_SPECULAR_INTENSITYMAP
++		uniform sampler2D specularIntensityMap;
++	#endif
++#endif
++#ifdef USE_CLEARCOAT
++	uniform float clearcoat;
++	uniform float clearcoatRoughness;
++#endif
++#ifdef USE_DISPERSION
++	uniform float dispersion;
++#endif
++#ifdef USE_RETROREFLECTION
++	uniform float retroreflectivity;
++#endif
++#ifdef USE_IRIDESCENCE
++	uniform float iridescence;
++	uniform float iridescenceIOR;
++	uniform float iridescenceThicknessMinimum;
++	uniform float iridescenceThicknessMaximum;
++#endif
++#ifdef USE_SHEEN
++	uniform vec3 sheenColor;
++	uniform float sheenRoughness;
++	#ifdef USE_SHEEN_COLORMAP
++		uniform sampler2D sheenColorMap;
++	#endif
++	#ifdef USE_SHEEN_ROUGHNESSMAP
++		uniform sampler2D sheenRoughnessMap;
++	#endif
++#endif
++#ifdef USE_ANISOTROPY
++	uniform vec2 anisotropyVector;
++	#ifdef USE_ANISOTROPYMAP
++		uniform sampler2D anisotropyMap;
++	#endif
++#endif
++varying vec3 vViewPosition;
++#include <common>
++#include <dithering_pars_fragment>
++#include <color_pars_fragment>
++#include <uv_pars_fragment>
++#include <map_pars_fragment>
++#include <alphamap_pars_fragment>
++#include <alphatest_pars_fragment>
++#include <alphahash_pars_fragment>
++#include <aomap_pars_fragment>
++#include <lightmap_pars_fragment>
++#include <emissivemap_pars_fragment>
++#include <iridescence_fragment>
++#include <cube_uv_reflection_fragment>
++#include <envmap_common_pars_fragment>
++#include <envmap_physical_pars_fragment>
++#include <fog_pars_fragment>
++#include <lights_pars_begin>
++#include <normal_pars_fragment>
++#include <lights_physical_pars_fragment>
++#include <transmission_pars_fragment>
++#include <shadowmap_pars_fragment>
++#include <bumpmap_pars_fragment>
++#include <normalmap_pars_fragment>
++#include <clearcoat_pars_fragment>
++#include <iridescence_pars_fragment>
++#include <roughnessmap_pars_fragment>
++#include <metalnessmap_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
++	vec3 totalEmissiveRadiance = emissive;
++	#include <logdepthbuf_fragment>
++	#include <map_fragment>
++	#include <color_fragment>
++	#include <alphamap_fragment>
++	#include <alphatest_fragment>
++	#include <alphahash_fragment>
++	#include <roughnessmap_fragment>
++	#include <metalnessmap_fragment>
++	#include <normal_fragment_begin>
++	#include <normal_fragment_maps>
++	#include <clearcoat_normal_fragment_begin>
++	#include <clearcoat_normal_fragment_maps>
++	#include <emissivemap_fragment>
++	#include <lights_physical_fragment>
++	#include <lights_fragment_begin>
++	#include <lights_fragment_maps>
++	#include <lights_fragment_end>
++	#include <aomap_fragment>
++	vec3 totalDiffuse = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;
++	vec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;
++	#include <transmission_fragment>
++	vec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;
++	#ifdef USE_SHEEN
++ 
++		outgoingLight = outgoingLight + sheenSpecularDirect + sheenSpecularIndirect;
++ 
++ 	#endif
++	#ifdef USE_CLEARCOAT
++		float dotNVcc = saturate( dot( geometryClearcoatNormal, geometryViewDir ) );
++		vec3 Fcc = F_Schlick( material.clearcoatF0, material.clearcoatF90, dotNVcc );
++		outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + ( clearcoatSpecularDirect + clearcoatSpecularIndirect ) * material.clearcoat;
++	#endif
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++	#include <dithering_fragment>
++}`,Dy=`#define TOON
++varying vec3 vViewPosition;
++#include <common>
++#include <batching_pars_vertex>
++#include <uv_pars_vertex>
++#include <displacementmap_pars_vertex>
++#include <color_pars_vertex>
++#include <fog_pars_vertex>
++#include <normal_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <skinning_pars_vertex>
++#include <shadowmap_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++void main() {
++	#include <uv_vertex>
++	#include <color_vertex>
++	#include <morphinstance_vertex>
++	#include <morphcolor_vertex>
++	#include <batching_vertex>
++	#include <beginnormal_vertex>
++	#include <morphnormal_vertex>
++	#include <skinbase_vertex>
++	#include <skinnormal_vertex>
++	#include <defaultnormal_vertex>
++	#include <normal_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <skinning_vertex>
++	#include <displacementmap_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	vViewPosition = - mvPosition.xyz;
++	#include <worldpos_vertex>
++	#include <shadowmap_vertex>
++	#include <fog_vertex>
++}`,Uy=`#define TOON
++uniform vec3 diffuse;
++uniform vec3 emissive;
++uniform float opacity;
++#include <common>
++#include <dithering_pars_fragment>
++#include <color_pars_fragment>
++#include <uv_pars_fragment>
++#include <map_pars_fragment>
++#include <alphamap_pars_fragment>
++#include <alphatest_pars_fragment>
++#include <alphahash_pars_fragment>
++#include <aomap_pars_fragment>
++#include <lightmap_pars_fragment>
++#include <emissivemap_pars_fragment>
++#include <gradientmap_pars_fragment>
++#include <fog_pars_fragment>
++#include <bsdfs>
++#include <lights_pars_begin>
++#include <normal_pars_fragment>
++#include <lights_toon_pars_fragment>
++#include <shadowmap_pars_fragment>
++#include <bumpmap_pars_fragment>
++#include <normalmap_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
++	vec3 totalEmissiveRadiance = emissive;
++	#include <logdepthbuf_fragment>
++	#include <map_fragment>
++	#include <color_fragment>
++	#include <alphamap_fragment>
++	#include <alphatest_fragment>
++	#include <alphahash_fragment>
++	#include <normal_fragment_begin>
++	#include <normal_fragment_maps>
++	#include <emissivemap_fragment>
++	#include <lights_toon_fragment>
++	#include <lights_fragment_begin>
++	#include <lights_fragment_maps>
++	#include <lights_fragment_end>
++	#include <aomap_fragment>
++	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++	#include <dithering_fragment>
++}`,Ny=`uniform float size;
++uniform float scale;
++#include <common>
++#include <color_pars_vertex>
++#include <fog_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++#ifdef USE_POINTS_UV
++	varying vec2 vUv;
++	uniform mat3 uvTransform;
++#endif
++void main() {
++	#ifdef USE_POINTS_UV
++		vUv = ( uvTransform * vec3( uv, 1 ) ).xy;
++	#endif
++	#include <color_vertex>
++	#include <morphinstance_vertex>
++	#include <morphcolor_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <project_vertex>
++	gl_PointSize = size;
++	#ifdef USE_SIZEATTENUATION
++		bool isPerspective = isPerspectiveMatrix( projectionMatrix );
++		if ( isPerspective ) gl_PointSize *= ( scale / - mvPosition.z );
++	#endif
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	#include <worldpos_vertex>
++	#include <fog_vertex>
++}`,Fy=`uniform vec3 diffuse;
++uniform float opacity;
++#include <common>
++#include <color_pars_fragment>
++#include <map_particle_pars_fragment>
++#include <alphatest_pars_fragment>
++#include <alphahash_pars_fragment>
++#include <fog_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	vec3 outgoingLight = vec3( 0.0 );
++	#include <logdepthbuf_fragment>
++	#include <map_particle_fragment>
++	#include <color_fragment>
++	#include <alphatest_fragment>
++	#include <alphahash_fragment>
++	outgoingLight = diffuseColor.rgb;
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++}`,By=`#include <common>
++#include <batching_pars_vertex>
++#include <fog_pars_vertex>
++#include <morphtarget_pars_vertex>
++#include <skinning_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <shadowmap_pars_vertex>
++void main() {
++	#include <batching_vertex>
++	#include <beginnormal_vertex>
++	#include <morphinstance_vertex>
++	#include <morphnormal_vertex>
++	#include <skinbase_vertex>
++	#include <skinnormal_vertex>
++	#include <defaultnormal_vertex>
++	#include <begin_vertex>
++	#include <morphtarget_vertex>
++	#include <skinning_vertex>
++	#include <project_vertex>
++	#include <logdepthbuf_vertex>
++	#include <worldpos_vertex>
++	#include <shadowmap_vertex>
++	#include <fog_vertex>
++}`,Oy=`uniform vec3 color;
++uniform float opacity;
++#include <common>
++#include <fog_pars_fragment>
++#include <bsdfs>
++#include <lights_pars_begin>
++#include <logdepthbuf_pars_fragment>
++#include <shadowmap_pars_fragment>
++#include <shadowmask_pars_fragment>
++void main() {
++	#include <logdepthbuf_fragment>
++	gl_FragColor = vec4( color, opacity * ( 1.0 - getShadowMask() ) );
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++	#include <premultiplied_alpha_fragment>
++}`,ky=`uniform float rotation;
++uniform vec2 center;
++#include <common>
++#include <uv_pars_vertex>
++#include <fog_pars_vertex>
++#include <logdepthbuf_pars_vertex>
++#include <clipping_planes_pars_vertex>
++void main() {
++	#include <uv_vertex>
++	vec4 mvPosition = modelViewMatrix[ 3 ];
++	vec2 scale = vec2( length( modelMatrix[ 0 ].xyz ), length( modelMatrix[ 1 ].xyz ) );
++	#ifndef USE_SIZEATTENUATION
++		bool isPerspective = isPerspectiveMatrix( projectionMatrix );
++		if ( isPerspective ) scale *= - mvPosition.z;
++	#endif
++	vec2 alignedPosition = ( position.xy - ( center - vec2( 0.5 ) ) ) * scale;
++	vec2 rotatedPosition;
++	rotatedPosition.x = cos( rotation ) * alignedPosition.x - sin( rotation ) * alignedPosition.y;
++	rotatedPosition.y = sin( rotation ) * alignedPosition.x + cos( rotation ) * alignedPosition.y;
++	mvPosition.xy += rotatedPosition;
++	gl_Position = projectionMatrix * mvPosition;
++	#include <logdepthbuf_vertex>
++	#include <clipping_planes_vertex>
++	#include <fog_vertex>
++}`,zy=`uniform vec3 diffuse;
++uniform float opacity;
++#include <common>
++#include <uv_pars_fragment>
++#include <map_pars_fragment>
++#include <alphamap_pars_fragment>
++#include <alphatest_pars_fragment>
++#include <alphahash_pars_fragment>
++#include <fog_pars_fragment>
++#include <logdepthbuf_pars_fragment>
++#include <clipping_planes_pars_fragment>
++void main() {
++	vec4 diffuseColor = vec4( diffuse, opacity );
++	#include <clipping_planes_fragment>
++	vec3 outgoingLight = vec3( 0.0 );
++	#include <logdepthbuf_fragment>
++	#include <map_fragment>
++	#include <alphamap_fragment>
++	#include <alphatest_fragment>
++	#include <alphahash_fragment>
++	outgoingLight = diffuseColor.rgb;
++	#include <opaque_fragment>
++	#include <tonemapping_fragment>
++	#include <colorspace_fragment>
++	#include <fog_fragment>
++}`,Ke={alphahash_fragment:o_,alphahash_pars_fragment:l_,alphamap_fragment:c_,alphamap_pars_fragment:f_,alphatest_fragment:u_,alphatest_pars_fragment:d_,aomap_fragment:h_,aomap_pars_fragment:p_,batching_pars_vertex:m_,batching_vertex:x_,begin_vertex:g_,beginnormal_vertex:__,bsdfs:v_,iridescence_fragment:y_,bumpmap_pars_fragment:S_,clipping_planes_fragment:M_,clipping_planes_pars_fragment:b_,clipping_planes_pars_vertex:A_,clipping_planes_vertex:w_,color_fragment:T_,color_pars_fragment:E_,color_pars_vertex:C_,color_vertex:R_,common:P_,cube_uv_reflection_fragment:I_,defaultnormal_vertex:L_,displacementmap_pars_vertex:D_,displacementmap_vertex:U_,emissivemap_fragment:N_,emissivemap_pars_fragment:F_,colorspace_fragment:B_,colorspace_pars_fragment:O_,envmap_fragment:k_,envmap_common_pars_fragment:z_,envmap_pars_fragment:V_,envmap_pars_vertex:G_,envmap_physical_pars_fragment:j_,envmap_vertex:H_,fog_vertex:W_,fog_pars_vertex:X_,fog_fragment:q_,fog_pars_fragment:Y_,gradientmap_pars_fragment:Z_,lightmap_pars_fragment:J_,lights_lambert_fragment:K_,lights_lambert_pars_fragment:$_,lights_pars_begin:Q_,lights_toon_fragment:ev,lights_toon_pars_fragment:tv,lights_phong_fragment:nv,lights_phong_pars_fragment:iv,lights_physical_fragment:rv,lights_physical_pars_fragment:sv,lights_fragment_begin:av,lights_fragment_maps:ov,lights_fragment_end:lv,lightprobes_pars_fragment:cv,logdepthbuf_fragment:fv,logdepthbuf_pars_fragment:uv,logdepthbuf_pars_vertex:dv,logdepthbuf_vertex:hv,map_fragment:pv,map_pars_fragment:mv,map_particle_fragment:xv,map_particle_pars_fragment:gv,metalnessmap_fragment:_v,metalnessmap_pars_fragment:vv,morphinstance_vertex:yv,morphcolor_vertex:Sv,morphnormal_vertex:Mv,morphtarget_pars_vertex:bv,morphtarget_vertex:Av,normal_fragment_begin:wv,normal_fragment_maps:Tv,normal_pars_fragment:Ev,normal_pars_vertex:Cv,normal_vertex:Rv,normalmap_pars_fragment:Pv,clearcoat_normal_fragment_begin:Iv,clearcoat_normal_fragment_maps:Lv,clearcoat_pars_fragment:Dv,iridescence_pars_fragment:Uv,opaque_fragment:Nv,packing:Fv,premultiplied_alpha_fragment:Bv,project_vertex:Ov,dithering_fragment:kv,dithering_pars_fragment:zv,roughnessmap_fragment:Vv,roughnessmap_pars_fragment:Gv,shadowmap_pars_fragment:Hv,shadowmap_pars_vertex:Wv,shadowmap_vertex:Xv,shadowmask_pars_fragment:qv,skinbase_vertex:Yv,skinning_pars_vertex:Zv,skinning_vertex:Jv,skinnormal_vertex:Kv,specularmap_fragment:$v,specularmap_pars_fragment:Qv,tonemapping_fragment:jv,tonemapping_pars_fragment:ey,transmission_fragment:ty,transmission_pars_fragment:ny,uv_pars_fragment:iy,uv_pars_vertex:ry,uv_vertex:sy,worldpos_vertex:ay,background_vert:oy,background_frag:ly,backgroundCube_vert:cy,backgroundCube_frag:fy,cube_vert:uy,cube_frag:dy,depth_vert:hy,depth_frag:py,distance_vert:my,distance_frag:xy,equirect_vert:gy,equirect_frag:_y,linedashed_vert:vy,linedashed_frag:yy,meshbasic_vert:Sy,meshbasic_frag:My,meshlambert_vert:by,meshlambert_frag:Ay,meshmatcap_vert:wy,meshmatcap_frag:Ty,meshnormal_vert:Ey,meshnormal_frag:Cy,meshphong_vert:Ry,meshphong_frag:Py,meshphysical_vert:Iy,meshphysical_frag:Ly,meshtoon_vert:Dy,meshtoon_frag:Uy,points_vert:Ny,points_frag:Fy,shadow_vert:By,shadow_frag:Oy,sprite_vert:ky,sprite_frag:zy},xe={common:{diffuse:{value:new Se(16777215)},opacity:{value:1},map:{value:null},mapTransform:{value:new Xe},alphaMap:{value:null},alphaMapTransform:{value:new Xe},alphaTest:{value:0}},specularmap:{specularMap:{value:null},specularMapTransform:{value:new Xe}},envmap:{envMap:{value:null},envMapRotation:{value:new Xe},reflectivity:{value:1},ior:{value:1.5},refractionRatio:{value:.98},dfgLUT:{value:null}},aomap:{aoMap:{value:null},aoMapIntensity:{value:1},aoMapTransform:{value:new Xe}},lightmap:{lightMap:{value:null},lightMapIntensity:{value:1},lightMapTransform:{value:new Xe}},bumpmap:{bumpMap:{value:null},bumpMapTransform:{value:new Xe},bumpScale:{value:1}},normalmap:{normalMap:{value:null},normalMapTransform:{value:new Xe},normalScale:{value:new ne(1,1)}},displacementmap:{displacementMap:{value:null},displacementMapTransform:{value:new Xe},displacementScale:{value:1},displacementBias:{value:0}},emissivemap:{emissiveMap:{value:null},emissiveMapTransform:{value:new Xe}},metalnessmap:{metalnessMap:{value:null},metalnessMapTransform:{value:new Xe}},roughnessmap:{roughnessMap:{value:null},roughnessMapTransform:{value:new Xe}},gradientmap:{gradientMap:{value:null}},fog:{fogDensity:{value:25e-5},fogNear:{value:1},fogFar:{value:2e3},fogColor:{value:new Se(16777215)}},lights:{ambientLightColor:{value:[]},lightProbe:{value:[]},sunLights:{value:[],properties:{direction:{},color:{}}},sunLightShadows:{value:[],properties:{shadowIntensity:1,shadowBias:{},shadowNormalBias:{},shadowRadius:{},shadowMapSize:{}}},sunShadowMatrix:{value:[]},sunShadowCascade:{value:[]},directionalLights:{value:[],properties:{direction:{},color:{}}},directionalLightShadows:{value:[],properties:{shadowIntensity:1,shadowBias:{},shadowNormalBias:{},shadowRadius:{},shadowMapSize:{}}},directionalShadowMatrix:{value:[]},spotLights:{value:[],properties:{color:{},position:{},direction:{},distance:{},coneCos:{},penumbraCos:{},decay:{}}},spotLightShadows:{value:[],properties:{shadowIntensity:1,shadowBias:{},shadowNormalBias:{},shadowRadius:{},shadowMapSize:{}}},spotLightMap:{value:[]},spotLightMatrix:{value:[]},pointLights:{value:[],properties:{color:{},position:{},decay:{},distance:{}}},pointLightShadows:{value:[],properties:{shadowIntensity:1,shadowBias:{},shadowNormalBias:{},shadowRadius:{},shadowMapSize:{},shadowCameraNear:{},shadowCameraFar:{}}},pointShadowMatrix:{value:[]},hemisphereLights:{value:[],properties:{direction:{},skyColor:{},groundColor:{}}},rectAreaLights:{value:[],properties:{color:{},position:{},width:{},height:{}}},ltc_1:{value:null},ltc_2:{value:null},probesSH:{value:null},probesMin:{value:new C},probesMax:{value:new C},probesResolution:{value:new C}},points:{diffuse:{value:new Se(16777215)},opacity:{value:1},size:{value:1},scale:{value:1},map:{value:null},alphaMap:{value:null},alphaMapTransform:{value:new Xe},alphaTest:{value:0},uvTransform:{value:new Xe}},sprite:{diffuse:{value:new Se(16777215)},opacity:{value:1},center:{value:new ne(.5,.5)},rotation:{value:0},map:{value:null},mapTransform:{value:new Xe},alphaMap:{value:null},alphaMapTransform:{value:new Xe},alphaTest:{value:0}}},zn={basic:{uniforms:Yt([xe.common,xe.specularmap,xe.envmap,xe.aomap,xe.lightmap,xe.fog]),vertexShader:Ke.meshbasic_vert,fragmentShader:Ke.meshbasic_frag},lambert:{uniforms:Yt([xe.common,xe.specularmap,xe.envmap,xe.aomap,xe.lightmap,xe.emissivemap,xe.bumpmap,xe.normalmap,xe.displacementmap,xe.fog,xe.lights,{emissive:{value:new Se(0)},envMapIntensity:{value:1}}]),vertexShader:Ke.meshlambert_vert,fragmentShader:Ke.meshlambert_frag},phong:{uniforms:Yt([xe.common,xe.specularmap,xe.envmap,xe.aomap,xe.lightmap,xe.emissivemap,xe.bumpmap,xe.normalmap,xe.displacementmap,xe.fog,xe.lights,{emissive:{value:new Se(0)},specular:{value:new Se(1118481)},shininess:{value:30},envMapIntensity:{value:1}}]),vertexShader:Ke.meshphong_vert,fragmentShader:Ke.meshphong_frag},standard:{uniforms:Yt([xe.common,xe.envmap,xe.aomap,xe.lightmap,xe.emissivemap,xe.bumpmap,xe.normalmap,xe.displacementmap,xe.roughnessmap,xe.metalnessmap,xe.fog,xe.lights,{emissive:{value:new Se(0)},roughness:{value:1},metalness:{value:0},envMapIntensity:{value:1}}]),vertexShader:Ke.meshphysical_vert,fragmentShader:Ke.meshphysical_frag},toon:{uniforms:Yt([xe.common,xe.aomap,xe.lightmap,xe.emissivemap,xe.bumpmap,xe.normalmap,xe.displacementmap,xe.gradientmap,xe.fog,xe.lights,{emissive:{value:new Se(0)}}]),vertexShader:Ke.meshtoon_vert,fragmentShader:Ke.meshtoon_frag},matcap:{uniforms:Yt([xe.common,xe.bumpmap,xe.normalmap,xe.displacementmap,xe.fog,{matcap:{value:null}}]),vertexShader:Ke.meshmatcap_vert,fragmentShader:Ke.meshmatcap_frag},points:{uniforms:Yt([xe.points,xe.fog]),vertexShader:Ke.points_vert,fragmentShader:Ke.points_frag},dashed:{uniforms:Yt([xe.common,xe.fog,{scale:{value:1},dashSize:{value:1},totalSize:{value:2}}]),vertexShader:Ke.linedashed_vert,fragmentShader:Ke.linedashed_frag},depth:{uniforms:Yt([xe.common,xe.displacementmap]),vertexShader:Ke.depth_vert,fragmentShader:Ke.depth_frag},normal:{uniforms:Yt([xe.common,xe.bumpmap,xe.normalmap,xe.displacementmap,{opacity:{value:1}}]),vertexShader:Ke.meshnormal_vert,fragmentShader:Ke.meshnormal_frag},sprite:{uniforms:Yt([xe.sprite,xe.fog]),vertexShader:Ke.sprite_vert,fragmentShader:Ke.sprite_frag},background:{uniforms:{uvTransform:{value:new Xe},t2D:{value:null},backgroundIntensity:{value:1}},vertexShader:Ke.background_vert,fragmentShader:Ke.background_frag},backgroundCube:{uniforms:{envMap:{value:null},backgroundBlurriness:{value:0},backgroundIntensity:{value:1},backgroundRotation:{value:new Xe}},vertexShader:Ke.backgroundCube_vert,fragmentShader:Ke.backgroundCube_frag},cube:{uniforms:{tCube:{value:null},tFlip:{value:-1},opacity:{value:1}},vertexShader:Ke.cube_vert,fragmentShader:Ke.cube_frag},equirect:{uniforms:{tEquirect:{value:null}},vertexShader:Ke.equirect_vert,fragmentShader:Ke.equirect_frag},distance:{uniforms:Yt([xe.common,xe.displacementmap,{referencePosition:{value:new C},nearDistance:{value:1},farDistance:{value:1e3}}]),vertexShader:Ke.distance_vert,fragmentShader:Ke.distance_frag},shadow:{uniforms:Yt([xe.lights,xe.fog,{color:{value:new Se(0)},opacity:{value:1}}]),vertexShader:Ke.shadow_vert,fragmentShader:Ke.shadow_frag}};zn.physical={uniforms:Yt([zn.standard.uniforms,{clearcoat:{value:0},clearcoatMap:{value:null},clearcoatMapTransform:{value:new Xe},clearcoatNormalMap:{value:null},clearcoatNormalMapTransform:{value:new Xe},clearcoatNormalScale:{value:new ne(1,1)},clearcoatRoughness:{value:0},clearcoatRoughnessMap:{value:null},clearcoatRoughnessMapTransform:{value:new Xe},dispersion:{value:0},retroreflectivity:{value:0},iridescence:{value:0},iridescenceMap:{value:null},iridescenceMapTransform:{value:new Xe},iridescenceIOR:{value:1.3},iridescenceThicknessMinimum:{value:100},iridescenceThicknessMaximum:{value:400},iridescenceThicknessMap:{value:null},iridescenceThicknessMapTransform:{value:new Xe},sheen:{value:0},sheenColor:{value:new Se(0)},sheenColorMap:{value:null},sheenColorMapTransform:{value:new Xe},sheenRoughness:{value:1},sheenRoughnessMap:{value:null},sheenRoughnessMapTransform:{value:new Xe},transmission:{value:0},transmissionMap:{value:null},transmissionMapTransform:{value:new Xe},transmissionSamplerSize:{value:new ne},transmissionSamplerMap:{value:null},thickness:{value:0},thicknessMap:{value:null},thicknessMapTransform:{value:new Xe},attenuationDistance:{value:0},attenuationColor:{value:new Se(0)},specularColor:{value:new Se(1,1,1)},specularColorMap:{value:null},specularColorMapTransform:{value:new Xe},specularIntensity:{value:1},specularIntensityMap:{value:null},specularIntensityMapTransform:{value:new Xe},anisotropyVector:{value:new ne},anisotropyMap:{value:null},anisotropyMapTransform:{value:new Xe}}]),vertexShader:Ke.meshphysical_vert,fragmentShader:Ke.meshphysical_frag};var Yf={r:0,b:0,g:0},Vy=new We,Vx=new Xe;Vx.set(-1,0,0,0,1,0,0,0,1);function Gy(r,e,t,n,i,s){let a=new Se(0),o=i===!0?0:1,l,c,f=null,d=0,u=null;function h(y){let b=y.isScene===!0?y.background:null;if(b&&b.isTexture){let _=y.backgroundBlurriness>0;b=e.get(b,_)}return b}function p(y){let b=!1,_=h(y);_===null?x(a,o):_&&_.isColor&&(x(_,1),b=!0);let w=r.xr.getEnvironmentBlendMode();w==="additive"?t.buffers.color.setClear(0,0,0,1,s):w==="alpha-blend"&&t.buffers.color.setClear(0,0,0,0,s),(r.autoClear||b)&&(t.buffers.depth.setTest(!0),t.buffers.depth.setMask(!0),t.buffers.color.setMask(!0),r.clear(r.autoClearColor,r.autoClearDepth,r.autoClearStencil))}function g(y,b){let _=h(b);_&&(_.isCubeTexture||_.mapping===_r)?(c===void 0&&(c=new ot(new yn(1,1,1),new en({name:"BackgroundCubeMaterial",uniforms:Mr(zn.backgroundCube.uniforms),vertexShader:zn.backgroundCube.vertexShader,fragmentShader:zn.backgroundCube.fragmentShader,side:Ot,depthTest:!1,depthWrite:!1,fog:!1,allowOverride:!1})),c.geometry.deleteAttribute("normal"),c.geometry.deleteAttribute("uv"),c.onBeforeRender=function(w,A,R){this.matrixWorld.copyPosition(R.matrixWorld)},Object.defineProperty(c.material,"envMap",{get:function(){return this.uniforms.envMap.value}}),n.update(c)),c.material.uniforms.envMap.value=_,c.material.uniforms.backgroundBlurriness.value=b.backgroundBlurriness,c.material.uniforms.backgroundIntensity.value=b.backgroundIntensity,c.material.uniforms.backgroundRotation.value.setFromMatrix4(Vy.makeRotationFromEuler(b.backgroundRotation)).transpose(),_.isCubeTexture&&_.isRenderTargetTexture===!1&&c.material.uniforms.backgroundRotation.value.premultiply(Vx),c.material.toneMapped=Qe.getTransfer(_.colorSpace)!==at,(f!==_||d!==_.version||u!==r.toneMapping)&&(c.material.needsUpdate=!0,f=_,d=_.version,u=r.toneMapping),c.layers.enableAll(),y.unshift(c,c.geometry,c.material,0,0,null)):_&&_.isTexture&&(l===void 0&&(l=new ot(new cr(2,2),new en({name:"BackgroundMaterial",uniforms:Mr(zn.background.uniforms),vertexShader:zn.background.vertexShader,fragmentShader:zn.background.fragmentShader,side:di,depthTest:!1,depthWrite:!1,fog:!1,allowOverride:!1})),l.geometry.deleteAttribute("normal"),Object.defineProperty(l.material,"map",{get:function(){return this.uniforms.t2D.value}}),n.update(l)),l.material.uniforms.t2D.value=_,l.material.uniforms.backgroundIntensity.value=b.backgroundIntensity,l.material.toneMapped=Qe.getTransfer(_.colorSpace)!==at,_.matrixAutoUpdate===!0&&_.updateMatrix(),l.material.uniforms.uvTransform.value.copy(_.matrix),(f!==_||d!==_.version||u!==r.toneMapping)&&(l.material.needsUpdate=!0,f=_,d=_.version,u=r.toneMapping),l.layers.enableAll(),y.unshift(l,l.geometry,l.material,0,0,null))}function x(y,b){y.getRGB(Yf,Vd(r)),t.buffers.color.setClear(Yf.r,Yf.g,Yf.b,b,s)}function m(){c!==void 0&&(c.geometry.dispose(),c.material.dispose(),c=void 0),l!==void 0&&(l.geometry.dispose(),l.material.dispose(),l=void 0)}return{getClearColor:function(){return a},setClearColor:function(y,b=1){a.set(y),o=b,x(a,o)},getClearAlpha:function(){return o},setClearAlpha:function(y){o=y,x(a,o)},render:p,addToRenderList:g,dispose:m}}function Hy(r,e){let t=r.getParameter(r.MAX_VERTEX_ATTRIBS),n={},i=u(null),s=i,a=!1;function o(L,F,k,D,O){let X=!1,W=d(L,D,k,F);s!==W&&(s=W,c(s.object)),X=h(L,D,k,O),X&&p(L,D,k,O),O!==null&&e.update(O,r.ELEMENT_ARRAY_BUFFER),(X||a)&&(a=!1,_(L,F,k,D),O!==null&&r.bindBuffer(r.ELEMENT_ARRAY_BUFFER,e.get(O).buffer))}function l(){return r.createVertexArray()}function c(L){return r.bindVertexArray(L)}function f(L){return r.deleteVertexArray(L)}function d(L,F,k,D){let O=D.wireframe===!0,X=n[F.id];X===void 0&&(X={},n[F.id]=X);let W=L.isInstancedMesh===!0?L.id:0,re=X[W];re===void 0&&(re={},X[W]=re);let q=re[k.id];q===void 0&&(q={},re[k.id]=q);let Q=q[O];return Q===void 0&&(Q=u(l()),q[O]=Q),Q}function u(L){let F=[],k=[],D=[];for(let O=0;O<t;O++)F[O]=0,k[O]=0,D[O]=0;return{geometry:null,program:null,wireframe:!1,newAttributes:F,enabledAttributes:k,attributeDivisors:D,object:L,attributes:{},index:null}}function h(L,F,k,D){let O=s.attributes,X=F.attributes,W=0,re=k.getAttributes();for(let q in re)if(re[q].location>=0){let te=O[q],De=X[q];if(De===void 0&&(q==="instanceMatrix"&&L.instanceMatrix&&(De=L.instanceMatrix),q==="instanceColor"&&L.instanceColor&&(De=L.instanceColor)),te===void 0||te.attribute!==De||De&&te.data!==De.data)return!0;W++}return s.attributesNum!==W||s.index!==D}function p(L,F,k,D){let O={},X=F.attributes,W=0,re=k.getAttributes();for(let q in re)if(re[q].location>=0){let te=X[q];te===void 0&&(q==="instanceMatrix"&&L.instanceMatrix&&(te=L.instanceMatrix),q==="instanceColor"&&L.instanceColor&&(te=L.instanceColor));let De={};De.attribute=te,te&&te.data&&(De.data=te.data),O[q]=De,W++}s.attributes=O,s.attributesNum=W,s.index=D}function g(){let L=s.newAttributes;for(let F=0,k=L.length;F<k;F++)L[F]=0}function x(L){m(L,0)}function m(L,F){let k=s.newAttributes,D=s.enabledAttributes,O=s.attributeDivisors;k[L]=1,D[L]===0&&(r.enableVertexAttribArray(L),D[L]=1),O[L]!==F&&(r.vertexAttribDivisor(L,F),O[L]=F)}function y(){let L=s.newAttributes,F=s.enabledAttributes;for(let k=0,D=F.length;k<D;k++)F[k]!==L[k]&&(r.disableVertexAttribArray(k),F[k]=0)}function b(L,F,k,D,O,X,W){W===!0?r.vertexAttribIPointer(L,F,k,O,X):r.vertexAttribPointer(L,F,k,D,O,X)}function _(L,F,k,D){g();let O=D.attributes,X=k.getAttributes(),W=F.defaultAttributeValues;for(let re in X){let q=X[re];if(q.location>=0){let Q=O[re];if(Q===void 0&&(re==="instanceMatrix"&&L.instanceMatrix&&(Q=L.instanceMatrix),re==="instanceColor"&&L.instanceColor&&(Q=L.instanceColor)),Q!==void 0){let te=Q.normalized,De=Q.itemSize,Ee=e.get(Q);if(Ee===void 0)continue;let st=Ee.buffer,je=Ee.type,it=Ee.bytesPerElement,J=je===r.INT||je===r.UNSIGNED_INT||Q.gpuType===Po;if(Q.isInterleavedBufferAttribute){let j=Q.data,_e=j.stride,ze=Q.offset;if(j.isInstancedInterleavedBuffer){for(let Ae=0;Ae<q.locationSize;Ae++)m(q.location+Ae,j.meshPerAttribute);L.isInstancedMesh!==!0&&D._maxInstanceCount===void 0&&(D._maxInstanceCount=j.meshPerAttribute*j.count)}else for(let Ae=0;Ae<q.locationSize;Ae++)x(q.location+Ae);r.bindBuffer(r.ARRAY_BUFFER,st);for(let Ae=0;Ae<q.locationSize;Ae++)b(q.location+Ae,De/q.locationSize,je,te,_e*it,(ze+De/q.locationSize*Ae)*it,J)}else{if(Q.isInstancedBufferAttribute){for(let j=0;j<q.locationSize;j++)m(q.location+j,Q.meshPerAttribute);L.isInstancedMesh!==!0&&D._maxInstanceCount===void 0&&(D._maxInstanceCount=Q.meshPerAttribute*Q.count)}else for(let j=0;j<q.locationSize;j++)x(q.location+j);r.bindBuffer(r.ARRAY_BUFFER,st);for(let j=0;j<q.locationSize;j++)b(q.location+j,De/q.locationSize,je,te,De*it,De/q.locationSize*j*it,J)}}else if(W!==void 0){let te=W[re];if(te!==void 0)switch(te.length){case 2:r.vertexAttrib2fv(q.location,te);break;case 3:r.vertexAttrib3fv(q.location,te);break;case 4:r.vertexAttrib4fv(q.location,te);break;default:r.vertexAttrib1fv(q.location,te)}}}}y()}function w(){T();for(let L in n){let F=n[L];for(let k in F){let D=F[k];for(let O in D){let X=D[O];for(let W in X)f(X[W].object),delete X[W];delete D[O]}}delete n[L]}}function A(L){if(n[L.id]===void 0)return;let F=n[L.id];for(let k in F){let D=F[k];for(let O in D){let X=D[O];for(let W in X)f(X[W].object),delete X[W];delete D[O]}}delete n[L.id]}function R(L){for(let F in n){let k=n[F];for(let D in k){let O=k[D];if(O[L.id]===void 0)continue;let X=O[L.id];for(let W in X)f(X[W].object),delete X[W];delete O[L.id]}}}function v(L){for(let F in n){let k=n[F],D=L.isInstancedMesh===!0?L.id:0,O=k[D];if(O!==void 0){for(let X in O){let W=O[X];for(let re in W)f(W[re].object),delete W[re];delete O[X]}delete k[D],Object.keys(k).length===0&&delete n[F]}}}function T(){P(),a=!0,s!==i&&(s=i,c(s.object))}function P(){i.geometry=null,i.program=null,i.wireframe=!1}return{setup:o,reset:T,resetDefaultState:P,dispose:w,releaseStatesOfGeometry:A,releaseStatesOfObject:v,releaseStatesOfProgram:R,initAttributes:g,enableAttribute:x,disableUnusedAttributes:y}}function Wy(r,e,t){let n;function i(l){n=l}function s(l,c){r.drawArrays(n,l,c),t.update(c,n,1)}function a(l,c,f){f!==0&&(r.drawArraysInstanced(n,l,c,f),t.update(c,n,f))}function o(l,c,f){if(f===0)return;e.get("WEBGL_multi_draw").multiDrawArraysWEBGL(n,l,0,c,0,f);let u=0;for(let h=0;h<f;h++)u+=c[h];t.update(u,n,1)}this.setMode=i,this.render=s,this.renderInstances=a,this.renderMultiDraw=o}function Xy(r,e,t,n){let i;function s(){if(i!==void 0)return i;if(e.has("EXT_texture_filter_anisotropic")===!0){let R=e.get("EXT_texture_filter_anisotropic");i=r.getParameter(R.MAX_TEXTURE_MAX_ANISOTROPY_EXT)}else i=0;return i}function a(R){return!(R!==qt&&n.convert(R)!==r.getParameter(r.IMPLEMENTATION_COLOR_READ_FORMAT))}function o(R){let v=R===bn&&(e.has("EXT_color_buffer_half_float")||e.has("EXT_color_buffer_float"));return!(R!==nn&&R!==Xt&&!v&&n.convert(R)!==r.getParameter(r.IMPLEMENTATION_COLOR_READ_TYPE))}function l(R){if(R==="highp"){if(r.getShaderPrecisionFormat(r.VERTEX_SHADER,r.HIGH_FLOAT).precision>0&&r.getShaderPrecisionFormat(r.FRAGMENT_SHADER,r.HIGH_FLOAT).precision>0)return"highp";R="mediump"}return R==="mediump"&&r.getShaderPrecisionFormat(r.VERTEX_SHADER,r.MEDIUM_FLOAT).precision>0&&r.getShaderPre
