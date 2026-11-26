@@ -22,7 +22,7 @@
   <source media="(max-width: 600px)" srcset="assets/readme/flow-ko-light-mobile.svg" />
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/flow-ko-dark.svg" />
   <source media="(prefers-color-scheme: light)" srcset="assets/readme/flow-ko-light.svg" />
-  <img src="assets/readme/flow-ko-light.svg" alt="Upbit Paper Trading Project: 공개 캔들 · 호가 → 시계열 모델 평가 → 모의계좌 · 진단" width="100%" />
+  <img src="assets/readme/flow-ko-light.svg" alt="공개 캔들 · 호가: 공개 캔들과 호가 자료 → 시계열 모델 평가: 시계열 구간 분리와 후보 모델 평가 → 모의계좌 · 진단: 모의계좌·평가·대시보드" width="100%" />
 </picture>
 <!-- readme-header32:end -->
 
